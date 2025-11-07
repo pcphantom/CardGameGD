@@ -129,14 +129,14 @@ func parse_card_data(cards_array: Array) -> void:
 			all_cards[card.get_name().to_lower()] = card
 
 func create_card_from_dict(data: Dictionary) -> Card:
-	var type_str: String = data.get("type", "FIRE")
+	var type_str: String = str(data.get("type", "FIRE"))
 	var card_type: CardType.Type = CardType.from_string(type_str) as CardType.Type
 
 	var card: Card = Card.new(card_type)
 
-	card.set_name(data.get("name", ""))
-	card.set_cardname(data.get("cardname", ""))
-	card.set_desc(data.get("desc", ""))
+	card.set_name(str(data.get("name", "")))
+	card.set_cardname(str(data.get("cardname", "")))
+	card.set_desc(str(data.get("desc", "")))
 
 	var attack: int = data.get("attack", 0)
 	card.set_attack(attack)
@@ -159,13 +159,13 @@ func create_card_from_dict(data: Dictionary) -> Card:
 	card.set_targetable(data.get("targetable", false))
 	card.set_targetable_on_empty_slot_only(data.get("targetableOnEmptySlot", false))
 
-	var target_str: String = data.get("target", "OWNER")
+	var target_str: String = str(data.get("target", "OWNER"))
 	var target_type: Card.TargetType = Card.from_target_type_string(target_str)
 	card.set_target_type(target_type)
 
 	card.set_self_inflicting_damage(data.get("selfInflictingDamage", 0))
 	card.set_wall(data.get("wall", false))
-	card.set_must_be_summoned_on_card(data.get("mustBeSummoneOnCard", ""))
+	card.set_must_be_summoned_on_card(str(data.get("mustBeSummoneOnCard", "")))
 
 	return card
 
