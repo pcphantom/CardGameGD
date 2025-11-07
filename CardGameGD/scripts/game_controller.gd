@@ -174,7 +174,21 @@ func setup_starting_decks() -> void:
 		_draw_card(local_player, player_visual)
 		_draw_card(opponent_player, opponent_visual)
 
-func _add_test_cards_to_player(_player: Player) -> void:
+func _add_test_cards_to_player(player: Player) -> void:
+	# REASON FOR EDIT: Fix deck selection - was always adding to player_deck
+	# PROBLEM: Method is called for both local_player AND opponent_player
+	# PROBLEM: But it always added cards to player_deck
+	# FIX: Check which player this is and add to the correct deck array
+	# WHY: Opponent needs cards in opponent_deck, not player_deck
+
+	var deck: Array
+
+	# Determine which deck to use based on player ID
+	if player.get_id() == local_player.get_id():
+		deck = player_deck
+	else:
+		deck = opponent_deck
+
 	# Create test creature cards
 	for i in range(10):
 		var card := Card.new()
@@ -184,7 +198,7 @@ func _add_test_cards_to_player(_player: Player) -> void:
 		card.set_life(5 + i % 5)
 		card.set_type(CardType.Type.FIRE + (i % 5))
 		card.set_cost(2 + i % 3)
-		player_deck.append(card)
+		deck.append(card)
 
 	# Create test spell cards
 	for i in range(5):
@@ -193,7 +207,7 @@ func _add_test_cards_to_player(_player: Player) -> void:
 		card.set_spell(true)
 		card.set_type(CardType.Type.FIRE + (i % 5))
 		card.set_cost(3)
-		player_deck.append(card)
+		deck.append(card)
 
 func _draw_card(player: Player, visual: PlayerVisual) -> void:
 	# REASON FOR EDIT: Fix deck/hand selection - was always using player_deck/player_hand
