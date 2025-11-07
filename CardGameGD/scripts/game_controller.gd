@@ -113,14 +113,26 @@ func initialize_game() -> void:
 		log_panel.add_with_color("Game started!", LogPanel.COLOR_GAME_OVER)
 
 func _setup_ui_references() -> void:
-	# Create player visuals
+	# REASON FOR EDIT: Fix grey screen - Control nodes don't render under Node2D
+	# PROBLEM: PlayerVisual extends Control, but was being added as child of GameController (Node2D)
+	# PROBLEM: In Godot, Control nodes MUST be in a CanvasLayer to render properly
+	# FIX: Get the PlayerUI CanvasLayer from scene and add PlayerVisual nodes to it
+	# WHY: This ensures UI nodes are in the correct rendering layer
+
+	# Get the PlayerUI CanvasLayer from the scene
+	var player_ui_layer: CanvasLayer = get_node_or_null("PlayerUI")
+	if not player_ui_layer:
+		push_error("GameController: PlayerUI CanvasLayer not found in scene!")
+		return
+
+	# Create player visuals and add them to the CanvasLayer (not directly to Node2D)
 	player_visual = PlayerVisual.new()
 	player_visual.name = "PlayerVisual"
-	add_child(player_visual)
+	player_ui_layer.add_child(player_visual)
 
 	opponent_visual = PlayerVisual.new()
 	opponent_visual.name = "OpponentVisual"
-	add_child(opponent_visual)
+	player_ui_layer.add_child(opponent_visual)
 
 	# Get end turn button from scene
 	end_turn_button = get_node_or_null("GameUI/EndTurnButton")
