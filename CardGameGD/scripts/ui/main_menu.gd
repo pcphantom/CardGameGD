@@ -16,7 +16,7 @@ class_name MainMenu
 @onready var version_label: Label = $CenterContainer/VBoxContainer/VersionLabel
 
 # Scene paths
-const GAME_SCENE_PATH: String = "res://scenes/game/game_scene.tscn"
+const GAME_SCENE_PATH: String = "res://scenes/main.tscn"
 const MULTIPLAYER_MENU_SCENE_PATH: String = "res://scenes/ui/multiplayer_menu.tscn"
 const SETTINGS_MENU_SCENE_PATH: String = "res://scenes/ui/settings_menu.tscn"
 
