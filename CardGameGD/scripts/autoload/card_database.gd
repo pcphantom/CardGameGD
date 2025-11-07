@@ -115,7 +115,7 @@ func load_from_json(file_path: String) -> void:
 	else:
 		push_error("CardDatabase: JSON file missing 'cards' array")
 
-func load_from_xml(file_path: String) -> void:
+func load_from_xml(_file_path: String) -> void:
 	push_warning("CardDatabase: XML parsing not yet implemented")
 	push_warning("CardDatabase: Please convert cards.xml to cards.json or implement XMLParser")
 
@@ -130,7 +130,7 @@ func parse_card_data(cards_array: Array) -> void:
 
 func create_card_from_dict(data: Dictionary) -> Card:
 	var type_str: String = data.get("type", "FIRE")
-	var card_type: CardType.Type = CardType.from_string(type_str)
+	var card_type: CardType.Type = CardType.from_string(type_str) as CardType.Type
 
 	var card: Card = Card.new(card_type)
 
@@ -204,8 +204,8 @@ func create_sample_cards() -> void:
 	sample_spell.set_spell(true)
 	all_cards["samplespell"] = sample_spell
 
-func get_card_by_name(name: String) -> Card:
-	var key: String = name.to_lower()
+func get_card_by_name(card_name: String) -> Card:
+	var key: String = card_name.to_lower()
 	if all_cards.has(key):
 		return all_cards[key].clone()
 	return null
@@ -283,8 +283,8 @@ func get_all_card_names() -> Array:
 func get_card_count() -> int:
 	return all_cards.size()
 
-func has_card(name: String) -> bool:
-	return all_cards.has(name.to_lower())
+func has_card(card_name: String) -> bool:
+	return all_cards.has(card_name.to_lower())
 
 func reload_cards() -> void:
 	is_loaded = false

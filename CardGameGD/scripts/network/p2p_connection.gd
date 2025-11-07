@@ -11,7 +11,7 @@ const MAX_CLIENTS: int = 2  # 1v1 game
 # Properties
 var peer: ENetMultiplayerPeer = null
 var is_server: bool = false
-var is_connected: bool = false
+var connected_to_peer: bool = false
 var remote_player_id: int = -1
 
 # Signals
@@ -58,7 +58,7 @@ func create_server(port: int = DEFAULT_PORT) -> bool:
 
 	# Mark as server
 	is_server = true
-	is_connected = true
+	connected_to_peer = true
 
 	print("P2PConnection: Server created successfully on port %d" % port)
 	print("P2PConnection: Server peer ID: %d" % multiplayer.get_unique_id())
@@ -95,7 +95,7 @@ func connect_to_server(host: String, port: int = DEFAULT_PORT) -> bool:
 
 # Send network event to remote peer
 func send_event(event: NetworkEvent) -> void:
-	if not is_connected:
+	if not connected_to_peer:
 		push_warning("P2PConnection: Cannot send event - not connected")
 		return
 
@@ -145,7 +145,7 @@ func receive_event(event_data: Dictionary) -> void:
 
 # Send player info to remote peer
 func send_player_info(player_data: Dictionary) -> void:
-	if not is_connected:
+	if not connected_to_peer:
 		push_warning("P2PConnection: Cannot send player info - not connected")
 		return
 
@@ -171,7 +171,7 @@ func disconnect_from_game() -> void:
 	multiplayer.multiplayer_peer = null
 
 	is_server = false
-	is_connected = false
+	connected_to_peer = false
 	remote_player_id = -1
 
 	print("P2PConnection: Disconnected")
@@ -187,7 +187,7 @@ func is_valid_peer(peer_id: int) -> bool:
 
 # Get connection status string
 func get_connection_status() -> String:
-	if not is_connected:
+	if not connected_to_peer:
 		return "Disconnected"
 	elif is_server:
 		return "Server (Port: %d)" % DEFAULT_PORT if peer != null else "Server"
@@ -196,7 +196,7 @@ func get_connection_status() -> String:
 
 # Get number of connected peers
 func get_connected_peer_count() -> int:
-	if not is_connected:
+	if not connected_to_peer:
 		return 0
 
 	if peer == null:
@@ -213,7 +213,7 @@ func _on_peer_connected(peer_id: int) -> void:
 	# Store remote player ID
 	if remote_player_id == -1:
 		remote_player_id = peer_id
-		is_connected = true
+		connected_to_peer = true
 		print("P2PConnection: Remote player ID set to %d" % peer_id)
 
 	# Emit signal
@@ -225,7 +225,7 @@ func _on_peer_disconnected(peer_id: int) -> void:
 	# Clear remote player ID if it was this peer
 	if remote_player_id == peer_id:
 		remote_player_id = -1
-		is_connected = false
+		connected_to_peer = false
 		print("P2PConnection: Remote player disconnected")
 
 	# Emit signal
@@ -237,7 +237,7 @@ func _on_connection_succeeded() -> void:
 	# For clients, store server as remote player
 	if not is_server:
 		remote_player_id = 1  # Server is always peer ID 1
-		is_connected = true
+		connected_to_peer = true
 
 	# Emit signal
 	connection_succeeded.emit()
@@ -251,7 +251,7 @@ func _on_connection_failed() -> void:
 		peer = null
 
 	multiplayer.multiplayer_peer = null
-	is_connected = false
+	connected_to_peer = false
 	remote_player_id = -1
 
 	# Emit signal
@@ -266,7 +266,7 @@ func _on_server_disconnected() -> void:
 		peer = null
 
 	multiplayer.multiplayer_peer = null
-	is_connected = false
+	connected_to_peer = false
 	remote_player_id = -1
 
 	# Emit as player disconnected signal
@@ -278,11 +278,11 @@ func get_local_peer_id() -> int:
 
 # Check if currently hosting
 func is_hosting() -> bool:
-	return is_server and is_connected
+	return is_server and connected_to_peer
 
 # Check if currently connected as client
 func is_client_connected() -> bool:
-	return not is_server and is_connected
+	return not is_server and connected_to_peer
 
 # Get peer info
 func get_peer_info() -> Dictionary:
@@ -290,7 +290,7 @@ func get_peer_info() -> Dictionary:
 		"local_peer_id": get_local_peer_id(),
 		"remote_peer_id": remote_player_id,
 		"is_server": is_server,
-		"is_connected": is_connected,
+		"is_connected": connected_to_peer,
 		"connection_status": get_connection_status(),
 		"peer_count": get_connected_peer_count()
 	}
@@ -301,7 +301,7 @@ func print_debug_info() -> void:
 	print("Local Peer ID: %d" % get_local_peer_id())
 	print("Remote Peer ID: %d" % remote_player_id)
 	print("Is Server: %s" % str(is_server))
-	print("Is Connected: %s" % str(is_connected))
+	print("Is Connected: %s" % str(connected_to_peer))
 	print("Connection Status: %s" % get_connection_status())
 	print("Peer Count: %d" % get_connected_peer_count())
 	print("================================")
