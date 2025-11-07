@@ -16,5 +16,6 @@ enum Sound {
 	SUMMONED,
 	DAMAGED,
 	DEATH,
-	GAMEOVER
+	GAMEOVER,
+	CLICK
 }

@@ -485,8 +485,8 @@ func get_connection_status() -> String:
 	else:
 		return "Connecting..."
 
-# Check if connected
-func is_connected() -> bool:
+# Check if connected to peer
+func is_peer_connected() -> bool:
 	if webrtc_peer == null:
 		return false
 

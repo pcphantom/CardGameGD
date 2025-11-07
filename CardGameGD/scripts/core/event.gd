@@ -17,7 +17,7 @@ enum Type {
 	GAME_OVER = 7
 }
 
-static func to_string(event_type: int) -> String:
+static func event_type_to_string(event_type: int) -> String:
 	match event_type:
 		Type.REMOTE_PLAYER_INFO_INIT:
 			return "REMOTE_PLAYER_INFO_INIT"

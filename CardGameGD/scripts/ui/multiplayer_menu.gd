@@ -131,7 +131,7 @@ func _on_create_private_pressed() -> void:
 		return
 
 	# Create private WebRTC match
-	var match_id: String = NetworkManager.create_private_webrtc_match()
+	var match_id: String = await NetworkManager.create_private_webrtc_match()
 
 	if not match_id.is_empty():
 		is_connecting = true
@@ -165,7 +165,7 @@ func _on_join_private_pressed() -> void:
 		return
 
 	# Join private WebRTC match
-	var success: bool = NetworkManager.join_private_webrtc_match(match_id)
+	var success: bool = await NetworkManager.join_private_webrtc_match(match_id)
 
 	if success:
 		is_connecting = true

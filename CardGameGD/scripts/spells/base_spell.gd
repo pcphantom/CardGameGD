@@ -79,13 +79,11 @@ func on_cast() -> void:
 		var spell_class_name: String = get_script().get_global_name() if get_script() else ""
 		if not spell_class_name.is_empty():
 			# Try to play spell-specific sound
-			var spell_sound_played: bool = SoundManager.play_spell_sound_by_class(spell_class_name)
-			if not spell_sound_played:
-				# Fallback to generic magic sound
-				SoundManager.play_sound_by_enum(SoundTypes.Sound.MAGIC)
+			SoundManager.play_spell_sound_by_class(spell_class_name)
+			# Note: play_spell_sound_by_class returns void, fallback handled internally
 		else:
 			# No class name, use generic magic sound
-			SoundManager.play_sound_by_enum(SoundManager.Sound.MAGIC)
+			SoundManager.play_sound_by_enum(SoundTypes.Sound.MAGIC)
 
 	if game != null and game.has_method("play_spell_sound"):
 		game.play_spell_sound(self)
