@@ -120,7 +120,6 @@ func setup_card(card_data: Card, size: String = "small") -> void:
 	# Set card size
 	var card_size: Vector2 = SMALL_SIZE if size == "small" else LARGE_SIZE
 	custom_minimum_size = card_size
-	size = card_size
 
 	# Update visual elements
 	update_visual()
@@ -171,7 +170,7 @@ func update_visual() -> void:
 
 	# Update cost label
 	var cost_text: String = ""
-	var costs := card.get_costs()
+	var costs: Array = card.get_costs()
 	if costs.size() > 0:
 		for cost_entry in costs:
 			var cost_type = cost_entry[0]
@@ -391,8 +390,8 @@ func update_drag_animation(mouse_pos: Vector2, velocity: Vector2) -> void:
 	global_position = global_position.lerp(mouse_pos, 0.3)
 
 	# Rotate based on velocity
-	var max_rotation := deg_to_rad(15)
-	var target_rotation := clamp(velocity.x * 0.001, -max_rotation, max_rotation)
+	var max_rotation: float = deg_to_rad(15)
+	var target_rotation: float = clamp(velocity.x * 0.001, -max_rotation, max_rotation)
 	rotation = lerp(rotation, target_rotation, 0.2)
 
 func end_drag_animation(target_pos: Vector2) -> void:

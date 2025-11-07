@@ -194,7 +194,7 @@ func _add_test_cards_to_player(player: Player) -> void:
 		player.get_deck().append(card)
 
 func _draw_card(player: Player, visual: PlayerVisual) -> void:
-	var deck := player.get_deck()
+	var deck: Array = player.get_deck()
 	if deck.size() > 0:
 		var card: Card = deck.pop_front()
 		player.get_hand().append(card)
@@ -393,7 +393,7 @@ func summon_creature(card: Card, slot_index: int) -> void:
 	local_player.get_hand().erase(card)
 
 	# Create creature instance
-	var creature := CreatureFactory.get_creature_class(
+	var creature: BaseCreature = CreatureFactory.get_creature_class(
 		card.get_name(),
 		self,
 		card,
@@ -445,7 +445,7 @@ func cast_spell(card: Card, target_slot: int) -> void:
 	local_player.get_hand().erase(card)
 
 	# Create spell instance
-	var spell := SpellFactory.get_spell_class(
+	var spell: BaseSpell = SpellFactory.get_spell_class(
 		card.get_name(),
 		self,
 		card,
@@ -491,8 +491,8 @@ func cast_spell(card: Card, target_slot: int) -> void:
 
 func _ai_play_cards() -> void:
 	# Simple AI: play first affordable card
-	var hand := opponent_player.get_hand()
-	var played_count := 0
+	var hand: Array = opponent_player.get_hand()
+	var played_count: int = 0
 
 	for card in hand.duplicate():
 		if played_count >= 2:
@@ -526,7 +526,7 @@ func _ai_summon_creature(card: Card, slot_index: int) -> void:
 	opponent_player.get_hand().erase(card)
 
 	# Create creature
-	var creature := CreatureFactory.get_creature_class(
+	var creature: BaseCreature = CreatureFactory.get_creature_class(
 		card.get_name(),
 		self,
 		card,
@@ -574,8 +574,8 @@ func _ai_cast_spell(card: Card, target_slot: int) -> void:
 	player_visual.update_display()
 
 func can_play_card(card: Card, player: Player) -> bool:
-	var strength := player.strength
-	var costs := card.get_costs()
+	var strength: Dictionary = player.strength
+	var costs: Array = card.get_costs()
 
 	for cost_entry in costs:
 		var cost_type = cost_entry[0]
@@ -590,8 +590,8 @@ func _deduct_card_costs(card: Card, player: Player) -> bool:
 	if not can_play_card(card, player):
 		return false
 
-	var strength := player.strength
-	var costs := card.get_costs()
+	var strength: Dictionary = player.strength
+	var costs: Array = card.get_costs()
 
 	for cost_entry in costs:
 		var cost_type = cost_entry[0]
@@ -667,7 +667,7 @@ func _handle_remote_card_summoned(event: NetworkEvent) -> void:
 	card.set_type(CardType.Type.FIRE)  # Default type
 
 	# Create creature instance
-	var creature := CreatureFactory.get_creature_class(
+	var creature: BaseCreature = CreatureFactory.get_creature_class(
 		card_name,
 		self,
 		card,
@@ -744,7 +744,7 @@ func _handle_remote_spell_cast(event: NetworkEvent) -> void:
 	card.set_name(spell_name)
 	card.set_creature(false)
 
-	var spell := SpellFactory.get_spell_class(
+	var spell: BaseSpell = SpellFactory.get_spell_class(
 		spell_name,
 		self,
 		card,
@@ -1144,9 +1144,9 @@ func show_victory_defeat_screen(winner_id: String) -> void:
 	if not victory_defeat_screen:
 		return
 
-	var is_victory := winner_id == local_player.get_uuid()
-	var title_label := victory_defeat_screen.get_node("TitleLabel") as Label
-	var winner_label := victory_defeat_screen.get_node("WinnerLabel") as Label
+	var is_victory: bool = winner_id == local_player.get_uuid()
+	var title_label: Label = victory_defeat_screen.get_node("TitleLabel") as Label
+	var winner_label: Label = victory_defeat_screen.get_node("WinnerLabel") as Label
 
 	if is_victory:
 		title_label.text = "VICTORY!"
