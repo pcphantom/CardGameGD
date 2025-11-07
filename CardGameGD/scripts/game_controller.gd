@@ -11,6 +11,12 @@ var opponent_visual: PlayerVisual = null
 # Game state
 var local_player: Player = null
 var opponent_player: Player = null
+
+# Player decks and hands
+var player_deck: Array = []
+var player_hand: Array = []
+var opponent_deck: Array = []
+var opponent_hand: Array = []
 var selected_card: CardVisual = null
 var selected_slot: SlotVisual = null
 var is_turn_active: bool = false
@@ -178,7 +184,7 @@ func _add_test_cards_to_player(player: Player) -> void:
 		card.set_life(5 + i % 5)
 		card.set_type(CardType.Type.FIRE + (i % 5))
 		card.set_cost(2 + i % 3)
-		player.get_deck().append(card)
+		player_deck.append(card)
 
 	# Create test spell cards
 	for i in range(5):
@@ -187,13 +193,13 @@ func _add_test_cards_to_player(player: Player) -> void:
 		card.set_spell(true)
 		card.set_type(CardType.Type.FIRE + (i % 5))
 		card.set_cost(3)
-		player.get_deck().append(card)
+		player_deck.append(card)
 
 func _draw_card(player: Player, visual: PlayerVisual) -> void:
-	var deck: Array = player.get_deck()
+	var deck: Array = player_deck
 	if deck.size() > 0:
 		var card: Card = deck.pop_front()
-		player.get_hand().append(card)
+		player_hand.append(card)
 		visual.add_card_to_hand(card)
 
 func start_first_turn() -> void:
@@ -386,7 +392,7 @@ func summon_creature(card: Card, slot_index: int) -> void:
 
 	# Remove card from hand
 	player_visual.remove_card_from_hand(selected_card)
-	local_player.get_hand().erase(card)
+	player_hand.erase(card)
 
 	# Create creature instance
 	var creature: BaseCreature = CreatureFactory.get_creature_class(
@@ -438,7 +444,7 @@ func cast_spell(card: Card, target_slot: int) -> void:
 
 	# Remove card from hand
 	player_visual.remove_card_from_hand(selected_card)
-	local_player.get_hand().erase(card)
+	player_hand.erase(card)
 
 	# Create spell instance
 	var _spell: BaseSpell = SpellFactory.get_spell_class(
@@ -488,7 +494,7 @@ func cast_spell(card: Card, target_slot: int) -> void:
 
 func _ai_play_cards() -> void:
 	# Simple AI: play first affordable card
-	var hand: Array = opponent_player.get_hand()
+	var hand: Array = opponent_hand
 	var played_count: int = 0
 
 	for card in hand.duplicate():
@@ -520,7 +526,7 @@ func _ai_summon_creature(card: Card, slot_index: int) -> void:
 	_deduct_card_costs(card, opponent_player)
 
 	# Remove from hand
-	opponent_player.get_hand().erase(card)
+	opponent_hand.erase(card)
 
 	# Create creature
 	var creature: BaseCreature = CreatureFactory.get_creature_class(
@@ -550,7 +556,7 @@ func _ai_cast_spell(card: Card, target_slot: int) -> void:
 	_deduct_card_costs(card, opponent_player)
 
 	# Remove from hand
-	opponent_player.get_hand().erase(card)
+	opponent_hand.erase(card)
 
 	# Cast on target
 	var target_slot_visual := player_visual.get_slot_at_index(target_slot)
