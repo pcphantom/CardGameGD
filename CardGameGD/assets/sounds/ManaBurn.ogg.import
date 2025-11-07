@@ -3,12 +3,12 @@
 importer="oggvorbisstr"
 type="AudioStreamOggVorbis"
 uid="uid://brbyj70k0hwup"
-path="res://.godot/imported/ManaBurn.ogg-2c11cbff5705c69e8800bc341c5653d3.oggvorbisstr"
+path="res://.godot/imported/ManaBurn.ogg-9b21131fd75421da21bc431b033d330d.oggvorbisstr"
 
 [deps]
 
-source_file="res://source-ref/main/resources/Audio/ManaBurn.ogg"
-dest_files=["res://.godot/imported/ManaBurn.ogg-2c11cbff5705c69e8800bc341c5653d3.oggvorbisstr"]
+source_file="res://assets/sounds/ManaBurn.ogg"
+dest_files=["res://.godot/imported/ManaBurn.ogg-9b21131fd75421da21bc431b033d330d.oggvorbisstr"]
 
 [params]
 

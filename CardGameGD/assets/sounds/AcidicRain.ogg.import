@@ -3,12 +3,12 @@
 importer="oggvorbisstr"
 type="AudioStreamOggVorbis"
 uid="uid://d07wevw1o1w0o"
-path="res://.godot/imported/AcidicRain.ogg-859f402f8480a0e600fc4348a0bc821f.oggvorbisstr"
+path="res://.godot/imported/AcidicRain.ogg-f6e99d996007f0bdbc32821e69851f44.oggvorbisstr"
 
 [deps]
 
-source_file="res://source-ref/main/resources/Audio/AcidicRain.ogg"
-dest_files=["res://.godot/imported/AcidicRain.ogg-859f402f8480a0e600fc4348a0bc821f.oggvorbisstr"]
+source_file="res://assets/sounds/AcidicRain.ogg"
+dest_files=["res://.godot/imported/AcidicRain.ogg-f6e99d996007f0bdbc32821e69851f44.oggvorbisstr"]
 
 [params]
 

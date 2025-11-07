@@ -3,12 +3,12 @@
 importer="oggvorbisstr"
 type="AudioStreamOggVorbis"
 uid="uid://cfejd8557foi"
-path="res://.godot/imported/NegativeEffect.ogg-8b8a0078297382cf6158ba3d2370aeef.oggvorbisstr"
+path="res://.godot/imported/NegativeEffect.ogg-a94811f25755a0eb19d3bf462e1cf801.oggvorbisstr"
 
 [deps]
 
-source_file="res://source-ref/main/resources/Audio/NegativeEffect.ogg"
-dest_files=["res://.godot/imported/NegativeEffect.ogg-8b8a0078297382cf6158ba3d2370aeef.oggvorbisstr"]
+source_file="res://assets/sounds/NegativeEffect.ogg"
+dest_files=["res://.godot/imported/NegativeEffect.ogg-a94811f25755a0eb19d3bf462e1cf801.oggvorbisstr"]
 
 [params]
 

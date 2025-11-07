@@ -3,12 +3,12 @@
 importer="oggvorbisstr"
 type="AudioStreamOggVorbis"
 uid="uid://dqra7yapb5qva"
-path="res://.godot/imported/GolemsFrenzy.ogg-8a93b18c63fecd091209eedb8179d6f1.oggvorbisstr"
+path="res://.godot/imported/GolemsFrenzy.ogg-6ee97129daa71a1d901d304e09480b46.oggvorbisstr"
 
 [deps]
 
-source_file="res://source-ref/main/resources/Audio/GolemsFrenzy.ogg"
-dest_files=["res://.godot/imported/GolemsFrenzy.ogg-8a93b18c63fecd091209eedb8179d6f1.oggvorbisstr"]
+source_file="res://assets/sounds/GolemsFrenzy.ogg"
+dest_files=["res://.godot/imported/GolemsFrenzy.ogg-6ee97129daa71a1d901d304e09480b46.oggvorbisstr"]
 
 [params]
 

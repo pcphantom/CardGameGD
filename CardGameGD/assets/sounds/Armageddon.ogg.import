@@ -3,12 +3,12 @@
 importer="oggvorbisstr"
 type="AudioStreamOggVorbis"
 uid="uid://1c8f5q5k3es6"
-path="res://.godot/imported/Armageddon.ogg-06281151bedb1a4319249f423f493a42.oggvorbisstr"
+path="res://.godot/imported/Armageddon.ogg-65a023840675276ccb1d27f812382f05.oggvorbisstr"
 
 [deps]
 
-source_file="res://source-ref/main/resources/Audio/Armageddon.ogg"
-dest_files=["res://.godot/imported/Armageddon.ogg-06281151bedb1a4319249f423f493a42.oggvorbisstr"]
+source_file="res://assets/sounds/Armageddon.ogg"
+dest_files=["res://.godot/imported/Armageddon.ogg-65a023840675276ccb1d27f812382f05.oggvorbisstr"]
 
 [params]
 

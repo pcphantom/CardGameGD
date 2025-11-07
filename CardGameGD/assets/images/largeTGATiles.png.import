@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bh4aa2aq067ge"
-path="res://.godot/imported/largeTGATiles.png-0baf7e01cdfbb4024b39aaf9e4c146c4.ctex"
+path="res://.godot/imported/largeTGATiles.png-4a129d67d7ca6c10577f722a5f144d43.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://source-ref/main/resources/images/largeTGATiles.png"
-dest_files=["res://.godot/imported/largeTGATiles.png-0baf7e01cdfbb4024b39aaf9e4c146c4.ctex"]
+source_file="res://assets/images/largeTGATiles.png"
+dest_files=["res://.godot/imported/largeTGATiles.png-4a129d67d7ca6c10577f722a5f144d43.ctex"]
 
 [params]
 

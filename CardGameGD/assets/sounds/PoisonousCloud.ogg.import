@@ -3,12 +3,12 @@
 importer="oggvorbisstr"
 type="AudioStreamOggVorbis"
 uid="uid://kxmahcbav0td"
-path="res://.godot/imported/PoisonousCloud.ogg-8f7c84aca201322c67f0eed9e3e40a2a.oggvorbisstr"
+path="res://.godot/imported/PoisonousCloud.ogg-6ce28d47fddeb19bfe9487ccf9528012.oggvorbisstr"
 
 [deps]
 
-source_file="res://source-ref/main/resources/Audio/PoisonousCloud.ogg"
-dest_files=["res://.godot/imported/PoisonousCloud.ogg-8f7c84aca201322c67f0eed9e3e40a2a.oggvorbisstr"]
+source_file="res://assets/sounds/PoisonousCloud.ogg"
+dest_files=["res://.godot/imported/PoisonousCloud.ogg-6ce28d47fddeb19bfe9487ccf9528012.oggvorbisstr"]
 
 [params]
 

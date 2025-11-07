@@ -3,12 +3,12 @@
 importer="font_data_bmfont"
 type="FontFile"
 uid="uid://qsu5qj3wsbvk"
-path="res://.godot/imported/Calisto_24.fnt-ebcddc5f01bace9d052ac14c3cc064a1.fontdata"
+path="res://.godot/imported/Calisto_24.fnt-b6b91d772ad2656122c91ddb96145a28.fontdata"
 
 [deps]
 
-source_file="res://source-ref/main/resources/fonts/Calisto_24.fnt"
-dest_files=["res://.godot/imported/Calisto_24.fnt-ebcddc5f01bace9d052ac14c3cc064a1.fontdata"]
+source_file="res://assets/fonts/Calisto_24.fnt"
+dest_files=["res://.godot/imported/Calisto_24.fnt-b6b91d772ad2656122c91ddb96145a28.fontdata"]
 
 [params]
 

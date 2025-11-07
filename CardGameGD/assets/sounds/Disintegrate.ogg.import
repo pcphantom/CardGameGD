@@ -3,12 +3,12 @@
 importer="oggvorbisstr"
 type="AudioStreamOggVorbis"
 uid="uid://bgo6xllw0mis"
-path="res://.godot/imported/Disintegrate.ogg-609d927938439dd3706e9cee22ebb001.oggvorbisstr"
+path="res://.godot/imported/Disintegrate.ogg-5d79800cd37468fe4d8c94e5464540d3.oggvorbisstr"
 
 [deps]
 
-source_file="res://source-ref/main/resources/Audio/Disintegrate.ogg"
-dest_files=["res://.godot/imported/Disintegrate.ogg-609d927938439dd3706e9cee22ebb001.oggvorbisstr"]
+source_file="res://assets/sounds/Disintegrate.ogg"
+dest_files=["res://.godot/imported/Disintegrate.ogg-5d79800cd37468fe4d8c94e5464540d3.oggvorbisstr"]
 
 [params]
 

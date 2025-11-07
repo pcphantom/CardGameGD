@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bpyf2b8eeidl3"
-path="res://.godot/imported/smallTiles.png-0a2b6b4e4804d05e9824c9f740921736.ctex"
+path="res://.godot/imported/smallTiles.png-aa84a45a5c59825a11afbb4760384a0c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://source-ref/main/resources/images/smallTiles.png"
-dest_files=["res://.godot/imported/smallTiles.png-0a2b6b4e4804d05e9824c9f740921736.ctex"]
+source_file="res://assets/images/smallTiles.png"
+dest_files=["res://.godot/imported/smallTiles.png-aa84a45a5c59825a11afbb4760384a0c.ctex"]
 
 [params]
 

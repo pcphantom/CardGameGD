@@ -3,12 +3,12 @@
 importer="oggvorbisstr"
 type="AudioStreamOggVorbis"
 uid="uid://brejnq26u662d"
-path="res://.godot/imported/Hellfire.ogg-858063f1bdc94cfbc7f288cc9d9fd767.oggvorbisstr"
+path="res://.godot/imported/Hellfire.ogg-9246fc81a8d1ed4e08161ca5170e7144.oggvorbisstr"
 
 [deps]
 
-source_file="res://source-ref/main/resources/Audio/Hellfire.ogg"
-dest_files=["res://.godot/imported/Hellfire.ogg-858063f1bdc94cfbc7f288cc9d9fd767.oggvorbisstr"]
+source_file="res://assets/sounds/Hellfire.ogg"
+dest_files=["res://.godot/imported/Hellfire.ogg-9246fc81a8d1ed4e08161ca5170e7144.oggvorbisstr"]
 
 [params]
 

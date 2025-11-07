@@ -3,12 +3,12 @@
 importer="oggvorbisstr"
 type="AudioStreamOggVorbis"
 uid="uid://b7iuoup7ckxnp"
-path="res://.godot/imported/CalltoAncientSpirits.ogg-f609153514b71a583efa2d48c806b040.oggvorbisstr"
+path="res://.godot/imported/CalltoAncientSpirits.ogg-bb7a238be8396bf517a861bdc2fcbc1d.oggvorbisstr"
 
 [deps]
 
-source_file="res://source-ref/main/resources/Audio/CalltoAncientSpirits.ogg"
-dest_files=["res://.godot/imported/CalltoAncientSpirits.ogg-f609153514b71a583efa2d48c806b040.oggvorbisstr"]
+source_file="res://assets/sounds/CalltoAncientSpirits.ogg"
+dest_files=["res://.godot/imported/CalltoAncientSpirits.ogg-bb7a238be8396bf517a861bdc2fcbc1d.oggvorbisstr"]
 
 [params]
 

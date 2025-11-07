@@ -3,12 +3,12 @@
 importer="oggvorbisstr"
 type="AudioStreamOggVorbis"
 uid="uid://duccgtyy1ih2r"
-path="res://.godot/imported/MoveFalcon.ogg-4e85307a38a508a8050ed643597f00f6.oggvorbisstr"
+path="res://.godot/imported/MoveFalcon.ogg-8515234a8663b8cd001df9a491ad16b1.oggvorbisstr"
 
 [deps]
 
-source_file="res://source-ref/main/resources/Audio/MoveFalcon.ogg"
-dest_files=["res://.godot/imported/MoveFalcon.ogg-4e85307a38a508a8050ed643597f00f6.oggvorbisstr"]
+source_file="res://assets/sounds/MoveFalcon.ogg"
+dest_files=["res://.godot/imported/MoveFalcon.ogg-8515234a8663b8cd001df9a491ad16b1.oggvorbisstr"]
 
 [params]
 

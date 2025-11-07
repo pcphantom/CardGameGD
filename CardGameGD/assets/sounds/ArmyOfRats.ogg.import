@@ -3,12 +3,12 @@
 importer="oggvorbisstr"
 type="AudioStreamOggVorbis"
 uid="uid://dd3tc2rkorc01"
-path="res://.godot/imported/ArmyOfRats.ogg-c005297fc91fc6c1f8fe2f5666ba0230.oggvorbisstr"
+path="res://.godot/imported/ArmyOfRats.ogg-92a291cc0959101fd043c1cea68e1132.oggvorbisstr"
 
 [deps]
 
-source_file="res://source-ref/main/resources/Audio/ArmyOfRats.ogg"
-dest_files=["res://.godot/imported/ArmyOfRats.ogg-c005297fc91fc6c1f8fe2f5666ba0230.oggvorbisstr"]
+source_file="res://assets/sounds/ArmyOfRats.ogg"
+dest_files=["res://.godot/imported/ArmyOfRats.ogg-92a291cc0959101fd043c1cea68e1132.oggvorbisstr"]
 
 [params]
 

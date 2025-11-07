@@ -3,12 +3,12 @@
 importer="oggvorbisstr"
 type="AudioStreamOggVorbis"
 uid="uid://cxu8o6ja0m20e"
-path="res://.godot/imported/ChainLightning.OGG-223079a2680d528be4b2f794b68cb8bb.oggvorbisstr"
+path="res://.godot/imported/ChainLightning.OGG-99d72e83abd7f3b8f62c8a4f41798525.oggvorbisstr"
 
 [deps]
 
-source_file="res://source-ref/main/resources/Audio/ChainLightning.OGG"
-dest_files=["res://.godot/imported/ChainLightning.OGG-223079a2680d528be4b2f794b68cb8bb.oggvorbisstr"]
+source_file="res://assets/sounds/ChainLightning.OGG"
+dest_files=["res://.godot/imported/ChainLightning.OGG-99d72e83abd7f3b8f62c8a4f41798525.oggvorbisstr"]
 
 [params]
 

@@ -3,12 +3,12 @@
 importer="oggvorbisstr"
 type="AudioStreamOggVorbis"
 uid="uid://n4olbm4ldtmq"
-path="res://.godot/imported/DivineMeddling.ogg-b93b2cf57249d91c0fba17c9aa55fb69.oggvorbisstr"
+path="res://.godot/imported/DivineMeddling.ogg-7312628407881ea6e5fc44b0059ac65b.oggvorbisstr"
 
 [deps]
 
-source_file="res://source-ref/main/resources/Audio/DivineMeddling.ogg"
-dest_files=["res://.godot/imported/DivineMeddling.ogg-b93b2cf57249d91c0fba17c9aa55fb69.oggvorbisstr"]
+source_file="res://assets/sounds/DivineMeddling.ogg"
+dest_files=["res://.godot/imported/DivineMeddling.ogg-7312628407881ea6e5fc44b0059ac65b.oggvorbisstr"]
 
 [params]
 

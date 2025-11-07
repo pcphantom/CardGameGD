@@ -3,12 +3,12 @@
 importer="oggvorbisstr"
 type="AudioStreamOggVorbis"
 uid="uid://8yaplnw75qcn"
-path="res://.godot/imported/PumpEnergy.ogg-abb6c9fee58ac71fa17295e2ad794984.oggvorbisstr"
+path="res://.godot/imported/PumpEnergy.ogg-e3a9db87d65324696cb639362c1feb03.oggvorbisstr"
 
 [deps]
 
-source_file="res://source-ref/main/resources/Audio/PumpEnergy.ogg"
-dest_files=["res://.godot/imported/PumpEnergy.ogg-abb6c9fee58ac71fa17295e2ad794984.oggvorbisstr"]
+source_file="res://assets/sounds/PumpEnergy.ogg"
+dest_files=["res://.godot/imported/PumpEnergy.ogg-e3a9db87d65324696cb639362c1feb03.oggvorbisstr"]
 
 [params]
 

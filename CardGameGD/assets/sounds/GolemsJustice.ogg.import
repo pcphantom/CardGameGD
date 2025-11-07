@@ -3,12 +3,12 @@
 importer="oggvorbisstr"
 type="AudioStreamOggVorbis"
 uid="uid://cghhfo1ac5jo3"
-path="res://.godot/imported/GolemsJustice.ogg-fc5045ec506333d5b97a45f41915ecf3.oggvorbisstr"
+path="res://.godot/imported/GolemsJustice.ogg-3b5c836b86ab1a67f474bc9a2c28372f.oggvorbisstr"
 
 [deps]
 
-source_file="res://source-ref/main/resources/Audio/GolemsJustice.ogg"
-dest_files=["res://.godot/imported/GolemsJustice.ogg-fc5045ec506333d5b97a45f41915ecf3.oggvorbisstr"]
+source_file="res://assets/sounds/GolemsJustice.ogg"
+dest_files=["res://.godot/imported/GolemsJustice.ogg-3b5c836b86ab1a67f474bc9a2c28372f.oggvorbisstr"]
 
 [params]
 

@@ -3,12 +3,12 @@
 importer="oggvorbisstr"
 type="AudioStreamOggVorbis"
 uid="uid://cg1mf42wc4jxu"
-path="res://.godot/imported/NaturesRitual.ogg-823cbcb49c786585e3f215669dc34e93.oggvorbisstr"
+path="res://.godot/imported/NaturesRitual.ogg-1db24eb948e0c921ff6b3468c458f1b6.oggvorbisstr"
 
 [deps]
 
-source_file="res://source-ref/main/resources/Audio/NaturesRitual.ogg"
-dest_files=["res://.godot/imported/NaturesRitual.ogg-823cbcb49c786585e3f215669dc34e93.oggvorbisstr"]
+source_file="res://assets/sounds/NaturesRitual.ogg"
+dest_files=["res://.godot/imported/NaturesRitual.ogg-1db24eb948e0c921ff6b3468c458f1b6.oggvorbisstr"]
 
 [params]
 

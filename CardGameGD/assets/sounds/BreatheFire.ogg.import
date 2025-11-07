@@ -3,12 +3,12 @@
 importer="oggvorbisstr"
 type="AudioStreamOggVorbis"
 uid="uid://badlbugq7uuc5"
-path="res://.godot/imported/BreatheFire.ogg-04f807630ac6fcb0f4f3744ec9a3ed5b.oggvorbisstr"
+path="res://.godot/imported/BreatheFire.ogg-24ee3e341115a32a19d896f639174f34.oggvorbisstr"
 
 [deps]
 
-source_file="res://source-ref/main/resources/Audio/BreatheFire.ogg"
-dest_files=["res://.godot/imported/BreatheFire.ogg-04f807630ac6fcb0f4f3744ec9a3ed5b.oggvorbisstr"]
+source_file="res://assets/sounds/BreatheFire.ogg"
+dest_files=["res://.godot/imported/BreatheFire.ogg-24ee3e341115a32a19d896f639174f34.oggvorbisstr"]
 
 [params]
 

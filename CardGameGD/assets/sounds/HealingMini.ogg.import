@@ -3,12 +3,12 @@
 importer="oggvorbisstr"
 type="AudioStreamOggVorbis"
 uid="uid://cdir5mephjydo"
-path="res://.godot/imported/HealingMini.ogg-dd9a02107e61316f9769fe9f04f4ad4c.oggvorbisstr"
+path="res://.godot/imported/HealingMini.ogg-af7a6030fb5c940073061d0987f6b82d.oggvorbisstr"
 
 [deps]
 
-source_file="res://source-ref/main/resources/Audio/HealingMini.ogg"
-dest_files=["res://.godot/imported/HealingMini.ogg-dd9a02107e61316f9769fe9f04f4ad4c.oggvorbisstr"]
+source_file="res://assets/sounds/HealingMini.ogg"
+dest_files=["res://.godot/imported/HealingMini.ogg-af7a6030fb5c940073061d0987f6b82d.oggvorbisstr"]
 
 [params]
 

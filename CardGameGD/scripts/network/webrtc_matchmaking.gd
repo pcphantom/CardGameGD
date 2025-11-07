@@ -194,8 +194,8 @@ func _setup_webrtc_peer() -> void:
 	# Add ICE servers (STUN/TURN)
 	for ice_server in ICE_SERVERS:
 		var urls: Array = ice_server.get("urls", [])
-		var _username: String = ice_server.get("username", "")
-		var _credential: String = ice_server.get("credential", "")
+		var username: String = ice_server.get("username", "")
+		var credential: String = ice_server.get("credential", "")
 
 		for url in urls:
 			# Note: Godot's WebRTC implementation handles ICE server configuration internally
@@ -277,10 +277,10 @@ func _add_ice_candidate(candidate: Dictionary) -> void:
 		pending_ice_candidates.append(candidate)
 		return
 
-	var _peer_id: int = candidate.get("peer_id", 0)
-	var _candidate_str: String = candidate.get("candidate", "")
-	var _sdp_mid: String = candidate.get("sdp_mid", "")
-	var _sdp_mline_index: int = candidate.get("sdp_mline_index", 0)
+	var peer_id: int = candidate.get("peer_id", 0)
+	var candidate_str: String = candidate.get("candidate", "")
+	var sdp_mid: String = candidate.get("sdp_mid", "")
+	var sdp_mline_index: int = candidate.get("sdp_mline_index", 0)
 
 	# Note: Godot's WebRTC handles ICE candidates internally
 	# This is a placeholder for when the API is extended

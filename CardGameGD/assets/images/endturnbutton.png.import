@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b7yr30fttqla5"
-path="res://.godot/imported/endturnbutton.png-9f8083b46271807ed5480c83b2b9be3a.ctex"
+path="res://.godot/imported/endturnbutton.png-c5d8f025b2927300633ddbf72e85ce06.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://source-ref/main/resources/images/endturnbutton.png"
-dest_files=["res://.godot/imported/endturnbutton.png-9f8083b46271807ed5480c83b2b9be3a.ctex"]
+source_file="res://assets/images/endturnbutton.png"
+dest_files=["res://.godot/imported/endturnbutton.png-c5d8f025b2927300633ddbf72e85ce06.ctex"]
 
 [params]
 

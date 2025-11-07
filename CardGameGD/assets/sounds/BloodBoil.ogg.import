@@ -3,12 +3,12 @@
 importer="oggvorbisstr"
 type="AudioStreamOggVorbis"
 uid="uid://nkjccokaanca"
-path="res://.godot/imported/BloodBoil.ogg-2c0b37e6fb99a24da65a9a17bc68ad8b.oggvorbisstr"
+path="res://.godot/imported/BloodBoil.ogg-a58ccf3253265a8b615b03a36c97599f.oggvorbisstr"
 
 [deps]
 
-source_file="res://source-ref/main/resources/Audio/BloodBoil.ogg"
-dest_files=["res://.godot/imported/BloodBoil.ogg-2c0b37e6fb99a24da65a9a17bc68ad8b.oggvorbisstr"]
+source_file="res://assets/sounds/BloodBoil.ogg"
+dest_files=["res://.godot/imported/BloodBoil.ogg-a58ccf3253265a8b615b03a36c97599f.oggvorbisstr"]
 
 [params]
 

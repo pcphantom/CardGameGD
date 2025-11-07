@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://chog42t3c2q3a"
-path="res://.godot/imported/ramkabig.png-38822f7b87925704e75ee47ee522a867.ctex"
+path="res://.godot/imported/ramkabig.png-1165fc9303798c20983f0a0dbc0a0645.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://source-ref/main/resources/images/ramkabig.png"
-dest_files=["res://.godot/imported/ramkabig.png-38822f7b87925704e75ee47ee522a867.ctex"]
+source_file="res://assets/images/ramkabig.png"
+dest_files=["res://.godot/imported/ramkabig.png-1165fc9303798c20983f0a0dbc0a0645.ctex"]
 
 [params]
 

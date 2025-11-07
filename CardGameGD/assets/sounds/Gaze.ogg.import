@@ -3,12 +3,12 @@
 importer="oggvorbisstr"
 type="AudioStreamOggVorbis"
 uid="uid://cc1wdqurgf2sy"
-path="res://.godot/imported/Gaze.ogg-e32e52ead762a3772ccb2b3b47ab7010.oggvorbisstr"
+path="res://.godot/imported/Gaze.ogg-980f55f8bf447a4b7a2d53e2990148a0.oggvorbisstr"
 
 [deps]
 
-source_file="res://source-ref/main/resources/Audio/Gaze.ogg"
-dest_files=["res://.godot/imported/Gaze.ogg-e32e52ead762a3772ccb2b3b47ab7010.oggvorbisstr"]
+source_file="res://assets/sounds/Gaze.ogg"
+dest_files=["res://.godot/imported/Gaze.ogg-980f55f8bf447a4b7a2d53e2990148a0.oggvorbisstr"]
 
 [params]
 

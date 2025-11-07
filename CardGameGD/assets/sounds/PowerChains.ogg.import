@@ -3,12 +3,12 @@
 importer="oggvorbisstr"
 type="AudioStreamOggVorbis"
 uid="uid://wo8cjlm3fgxc"
-path="res://.godot/imported/PowerChains.ogg-07101c77a41ad8972265d6ec950b911e.oggvorbisstr"
+path="res://.godot/imported/PowerChains.ogg-e9c8fffd6d309d472ab539e46f549ac5.oggvorbisstr"
 
 [deps]
 
-source_file="res://source-ref/main/resources/Audio/PowerChains.ogg"
-dest_files=["res://.godot/imported/PowerChains.ogg-07101c77a41ad8972265d6ec950b911e.oggvorbisstr"]
+source_file="res://assets/sounds/PowerChains.ogg"
+dest_files=["res://.godot/imported/PowerChains.ogg-e9c8fffd6d309d472ab539e46f549ac5.oggvorbisstr"]
 
 [params]
 

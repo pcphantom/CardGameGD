@@ -110,8 +110,8 @@ static func from_dict(data: Dictionary) -> NetworkEvent:
 		push_warning("NetworkEvent: Cannot deserialize empty dictionary")
 		return null
 
-	var evt_type: EventType = data.get("event_type", EventType.CARD_SUMMONED)
-	var event := NetworkEvent.new(evt_type, data.get("player_id", ""))
+	var event_type: EventType = data.get("event_type", EventType.CARD_SUMMONED)
+	var event := NetworkEvent.new(event_type, data.get("player_id", ""))
 
 	# Restore all properties
 	event.event_id = data.get("event_id", event.event_id)

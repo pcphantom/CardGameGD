@@ -3,12 +3,12 @@
 importer="oggvorbisstr"
 type="AudioStreamOggVorbis"
 uid="uid://rf1sc7bnnnip"
-path="res://.godot/imported/HealingSpray.ogg-e722c91623e4d714505caafc6b60cb19.oggvorbisstr"
+path="res://.godot/imported/HealingSpray.ogg-e974b8fb59523d73e86611c809851ea7.oggvorbisstr"
 
 [deps]
 
-source_file="res://source-ref/main/resources/Audio/HealingSpray.ogg"
-dest_files=["res://.godot/imported/HealingSpray.ogg-e722c91623e4d714505caafc6b60cb19.oggvorbisstr"]
+source_file="res://assets/sounds/HealingSpray.ogg"
+dest_files=["res://.godot/imported/HealingSpray.ogg-e974b8fb59523d73e86611c809851ea7.oggvorbisstr"]
 
 [params]
 

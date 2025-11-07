@@ -3,12 +3,12 @@
 importer="oggvorbisstr"
 type="AudioStreamOggVorbis"
 uid="uid://dfn416rowi6sp"
-path="res://.godot/imported/NaturalHealing.ogg-7146f10f7a8597da5967ebcec409b08b.oggvorbisstr"
+path="res://.godot/imported/NaturalHealing.ogg-d091e1e63549ed75a02895a93d7a3724.oggvorbisstr"
 
 [deps]
 
-source_file="res://source-ref/main/resources/Audio/NaturalHealing.ogg"
-dest_files=["res://.godot/imported/NaturalHealing.ogg-7146f10f7a8597da5967ebcec409b08b.oggvorbisstr"]
+source_file="res://assets/sounds/NaturalHealing.ogg"
+dest_files=["res://.godot/imported/NaturalHealing.ogg-d091e1e63549ed75a02895a93d7a3724.oggvorbisstr"]
 
 [params]
 

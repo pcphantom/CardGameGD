@@ -3,12 +3,12 @@
 importer="font_data_bmfont"
 type="FontFile"
 uid="uid://bopupk7e58jnc"
-path="res://.godot/imported/BellMT_16.fnt-8008bcbafcca82cb53367537f0fb1cce.fontdata"
+path="res://.godot/imported/BellMT_16.fnt-fc259250a8c4c082a3c1cc4d3f5c325f.fontdata"
 
 [deps]
 
-source_file="res://source-ref/main/resources/fonts/BellMT_16.fnt"
-dest_files=["res://.godot/imported/BellMT_16.fnt-8008bcbafcca82cb53367537f0fb1cce.fontdata"]
+source_file="res://assets/fonts/BellMT_16.fnt"
+dest_files=["res://.godot/imported/BellMT_16.fnt-fc259250a8c4c082a3c1cc4d3f5c325f.fontdata"]
 
 [params]
 

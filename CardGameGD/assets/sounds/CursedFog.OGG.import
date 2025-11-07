@@ -3,12 +3,12 @@
 importer="oggvorbisstr"
 type="AudioStreamOggVorbis"
 uid="uid://isp1xldgd4cm"
-path="res://.godot/imported/CursedFog.OGG-6f8dd2babc30e9e3ffe727d58a4e1db4.oggvorbisstr"
+path="res://.godot/imported/CursedFog.OGG-b3ed304cf89e7f3f17df7e1b4490a25e.oggvorbisstr"
 
 [deps]
 
-source_file="res://source-ref/main/resources/Audio/CursedFog.OGG"
-dest_files=["res://.godot/imported/CursedFog.OGG-6f8dd2babc30e9e3ffe727d58a4e1db4.oggvorbisstr"]
+source_file="res://assets/sounds/CursedFog.OGG"
+dest_files=["res://.godot/imported/CursedFog.OGG-b3ed304cf89e7f3f17df7e1b4490a25e.oggvorbisstr"]
 
 [params]
 

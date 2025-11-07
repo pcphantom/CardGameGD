@@ -3,12 +3,12 @@
 importer="oggvorbisstr"
 type="AudioStreamOggVorbis"
 uid="uid://x68s462iwmja"
-path="res://.godot/imported/CalltoThunder.ogg-655f0e7806ac55eada3b7acead500ec6.oggvorbisstr"
+path="res://.godot/imported/CalltoThunder.ogg-a0763f3fdff18af64ab38b18a36e4076.oggvorbisstr"
 
 [deps]
 
-source_file="res://source-ref/main/resources/Audio/CalltoThunder.ogg"
-dest_files=["res://.godot/imported/CalltoThunder.ogg-655f0e7806ac55eada3b7acead500ec6.oggvorbisstr"]
+source_file="res://assets/sounds/CalltoThunder.ogg"
+dest_files=["res://.godot/imported/CalltoThunder.ogg-a0763f3fdff18af64ab38b18a36e4076.oggvorbisstr"]
 
 [params]
 

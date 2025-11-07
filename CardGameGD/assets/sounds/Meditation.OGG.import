@@ -3,12 +3,12 @@
 importer="oggvorbisstr"
 type="AudioStreamOggVorbis"
 uid="uid://n4u6fowopqyl"
-path="res://.godot/imported/Meditation.OGG-c7576f2b2b323f13aebbcc082bf8d138.oggvorbisstr"
+path="res://.godot/imported/Meditation.OGG-59c1459db51314194ef6e5281a79938a.oggvorbisstr"
 
 [deps]
 
-source_file="res://source-ref/main/resources/Audio/Meditation.OGG"
-dest_files=["res://.godot/imported/Meditation.OGG-c7576f2b2b323f13aebbcc082bf8d138.oggvorbisstr"]
+source_file="res://assets/sounds/Meditation.OGG"
+dest_files=["res://.godot/imported/Meditation.OGG-59c1459db51314194ef6e5281a79938a.oggvorbisstr"]
 
 [params]
 

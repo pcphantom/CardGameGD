@@ -3,12 +3,12 @@
 importer="oggvorbisstr"
 type="AudioStreamOggVorbis"
 uid="uid://cnpso7obebkyq"
-path="res://.godot/imported/NaturesFury.ogg-3fa9655e98636c9a22666a29109b6cd5.oggvorbisstr"
+path="res://.godot/imported/NaturesFury.ogg-2e1e55a6158d55ef2361bb2ca2dd458a.oggvorbisstr"
 
 [deps]
 
-source_file="res://source-ref/main/resources/Audio/NaturesFury.ogg"
-dest_files=["res://.godot/imported/NaturesFury.ogg-3fa9655e98636c9a22666a29109b6cd5.oggvorbisstr"]
+source_file="res://assets/sounds/NaturesFury.ogg"
+dest_files=["res://.godot/imported/NaturesFury.ogg-2e1e55a6158d55ef2361bb2ca2dd458a.oggvorbisstr"]
 
 [params]
 

@@ -3,12 +3,12 @@
 importer="oggvorbisstr"
 type="AudioStreamOggVorbis"
 uid="uid://bow8m4n8gpsx6"
-path="res://.godot/imported/BloodRitual.OGG-d396ed5a45b3a427621b549da208eb65.oggvorbisstr"
+path="res://.godot/imported/BloodRitual.OGG-1fe74d3014e5350385f60a9d3c328334.oggvorbisstr"
 
 [deps]
 
-source_file="res://source-ref/main/resources/Audio/BloodRitual.OGG"
-dest_files=["res://.godot/imported/BloodRitual.OGG-d396ed5a45b3a427621b549da208eb65.oggvorbisstr"]
+source_file="res://assets/sounds/BloodRitual.OGG"
+dest_files=["res://.godot/imported/BloodRitual.OGG-1fe74d3014e5350385f60a9d3c328334.oggvorbisstr"]
 
 [params]
 
