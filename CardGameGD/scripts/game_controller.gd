@@ -500,14 +500,20 @@ func cast_spell(card: Card, target_slot: int) -> void:
 	# Log spell
 	log_panel.add_spell(card.get_name(), local_player.get_name())
 
+	# REASON FOR EDIT: Fix nonexistent creature methods
+	# PROBLEM: Calling target_creature.take_damage(), get_name(), get_life()
+	# PROBLEM: BaseCreature has NO take_damage(), get_name(), get_life() methods
+	# FIX: Use on_attacked() instead of take_damage(), access card for data
+	# WHY: BaseCreature has on_attacked() and creature.card has the stats
+
 	# Basic damage spell effect
 	var damage := 5  # Default spell damage
-	if target_creature:
-		target_creature.take_damage(damage, local_player)
-		log_panel.add_damage(target_creature.get_name(), damage)
+	if target_creature and target_creature.card:
+		target_creature.on_attacked(self, damage)
+		log_panel.add_damage(target_creature.card.get_name(), damage)
 
-		if target_creature.get_life() <= 0:
-			log_panel.add_death(target_creature.get_name())
+		if target_creature.card.get_life() <= 0:
+			log_panel.add_death(target_creature.card.get_name())
 			target_slot_visual.remove_card()
 
 	# Update displays
@@ -601,13 +607,16 @@ func _ai_cast_spell(card: Card, target_slot: int) -> void:
 
 	log_panel.add_spell(card.get_name(), opponent_player.get_name())
 
-	if target_creature:
+	# REASON FOR EDIT: Fix nonexistent creature methods (same as above)
+	# PROBLEM: Calling target_creature.take_damage(), get_name(), get_life()
+	# FIX: Use on_attacked() and access card for data
+	if target_creature and target_creature.card:
 		var damage := 5
-		target_creature.take_damage(damage, opponent_player)
-		log_panel.add_damage(target_creature.get_name(), damage)
+		target_creature.on_attacked(self, damage)
+		log_panel.add_damage(target_creature.card.get_name(), damage)
 
-		if target_creature.get_life() <= 0:
-			log_panel.add_death(target_creature.get_name())
+		if target_creature.card.get_life() <= 0:
+			log_panel.add_death(target_creature.card.get_name())
 			target_slot_visual.remove_card()
 
 	opponent_visual.update_display()
@@ -754,8 +763,12 @@ func _handle_remote_card_attack(event: NetworkEvent) -> void:
 	if SoundManager:
 		SoundManager.play_sound(SoundTypes.Sound.NEGATIVE_EFFECT)
 
+	# REASON FOR EDIT: Fix nonexistent creature.get_name()
+	# PROBLEM: Calling attacker.get_name() on BaseCreature
+	# FIX: Access card data through attacker.card
 	# Log
-	log_panel.add_with_color("%s attacks for %d damage!" % [attacker.get_name(), attack_value], LogPanel.COLOR_DAMAGE)
+	var attacker_name := attacker.card.get_name() if attacker.card else "Unknown"
+	log_panel.add_with_color("%s attacks for %d damage!" % [attacker_name, attack_value], LogPanel.COLOR_DAMAGE)
 
 	# Check for game over
 	if local_player.get_life() <= 0:
@@ -790,14 +803,17 @@ func _handle_remote_spell_cast(event: NetworkEvent) -> void:
 	# Log spell
 	log_panel.add_spell(spell_name, caster_name)
 
+	# REASON FOR EDIT: Fix nonexistent creature methods (same as above)
+	# PROBLEM: Calling target_creature.take_damage(), get_name(), get_life()
+	# FIX: Use on_attacked() and access card for data
 	# Execute spell effect (basic damage)
-	if target_creature and event.is_damage_via_spell():
+	if target_creature and target_creature.card and event.is_damage_via_spell():
 		var damage := 5  # Default spell damage
-		target_creature.take_damage(damage, opponent_player)
-		log_panel.add_damage(target_creature.get_name(), damage)
+		target_creature.on_attacked(self, damage)
+		log_panel.add_damage(target_creature.card.get_name(), damage)
 
-		if target_creature.get_life() <= 0:
-			log_panel.add_death(target_creature.get_name())
+		if target_creature.card.get_life() <= 0:
+			log_panel.add_death(target_creature.card.get_name())
 			target_slot_visual.remove_card()
 
 	# Update displays
@@ -821,7 +837,7 @@ func _handle_remote_start_turn_check(event: NetworkEvent) -> void:
 
 	# Trigger on_start_turn effect
 	if creature.has_method("on_start_turn"):
-		creature.on_start_turn()
+		creature.start_of_turn_check()
 
 	# Update display
 	opponent_visual.update_display()
@@ -843,7 +859,7 @@ func _handle_remote_end_turn_check(event: NetworkEvent) -> void:
 
 	# Trigger on_end_turn effect
 	if creature.has_method("on_end_turn"):
-		creature.on_end_turn()
+		creature.end_of_turn_check()
 
 	# Update display
 	opponent_visual.update_display()
@@ -930,7 +946,7 @@ func _send_start_turn_check_events() -> void:
 			if creature:
 				# Trigger local effect
 				if creature.has_method("on_start_turn"):
-					creature.on_start_turn()
+					creature.start_of_turn_check()
 
 				# Send network event
 				var event := NetworkEvent.new(NetworkEvent.EventType.CARD_START_TURN_CHECK, NetworkManager.local_player_id)
@@ -951,7 +967,7 @@ func _send_end_turn_check_events() -> void:
 			if creature:
 				# Trigger local effect
 				if creature.has_method("on_end_turn"):
-					creature.on_end_turn()
+					creature.end_of_turn_check()
 
 				# Send network event
 				var event := NetworkEvent.new(NetworkEvent.EventType.CARD_END_TURN_CHECK, NetworkManager.local_player_id)
