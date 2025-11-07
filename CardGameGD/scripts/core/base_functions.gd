@@ -15,6 +15,12 @@ var opponent = null
 var is_spell: bool = false
 var must_skip_next_attack: bool = false
 
+# Additional variables for creature/spell scripts
+var creature_card: Card = null
+var game_state = null
+var opponent_cards: Array = []
+var owner_cards: Array = []
+
 func inflict_damage(target_card, amount: int) -> bool:
 	if target_card == null or card_image == null:
 		return false

@@ -1,5 +1,5 @@
 extends BaseCreature
-class_name $(echo $name | sed 's/_\([a-z]\)/\U\1/g' | sed 's/^./\U&/')
+class_name VindictiveRaccoon
 
 func _init(game_ref, card_ref: Card, card_image_ref, slot_idx: int, owner_ref, opponent_ref) -> void:
 	super._init(game_ref, card_ref, card_image_ref, slot_idx, owner_ref, opponent_ref)
