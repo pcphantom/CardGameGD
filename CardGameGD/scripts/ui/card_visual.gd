@@ -150,16 +150,25 @@ func update_visual() -> void:
 	# FIX: Load proper frame texture based on card type and size
 	# WHY: CardGameGDX uses actual frame artwork for proper card rendering
 
-	# Update frame with proper texture
+	# REASON FOR EDIT: Frame positioning needs offset to create border effect
+	# PROBLEM: Frame at Vector2.ZERO doesn't create proper border around artwork
+	# FIX: Offset frame by Vector2(-11, -12) so artwork appears inside frame
+	# WHY: CardGameGDX renders frame slightly larger than card to create border
+
+	# Update frame with proper texture and position
 	if TextureManager and TextureManager.is_loaded:
 		var is_large: bool = (card_type == "large")
 		var is_spell: bool = card.is_spell()
 		var frame_texture: Texture2D = TextureManager.get_card_frame(is_spell, is_large)
 		if frame_texture:
 			frame.texture = frame_texture
-
-	frame.position = Vector2.ZERO
-	frame.size = card_size
+			# Frame is slightly larger and offset to create border effect
+			frame.position = Vector2(-11, -12)
+			frame.size = card_size + Vector2(22, 24)  # Frame extends beyond card edges
+	else:
+		# Fallback if textures not loaded
+		frame.position = Vector2.ZERO
+		frame.size = card_size
 
 	# Update background
 	var bg_color: Color = CARD_COLORS.get(card.get_type(), Color(0.3, 0.3, 0.3))
@@ -179,17 +188,26 @@ func update_visual() -> void:
 	portrait.position = Vector2(border_width + 5, border_width + 5)
 	portrait.size = Vector2(card_size.x - border_width * 2 - 10, portrait_height - 10)
 
+	# REASON FOR EDIT: Add debug printing for texture loading verification
+	# PROBLEM: Need to verify textures are actually loading from atlas
+	# FIX: Print card name and whether texture was found
+	# WHY: User needs to see if atlas lookup is working
+
 	# Load card texture from TextureManager
 	if TextureManager and TextureManager.is_loaded:
 		var card_texture: Texture2D = null
+		var card_name_lower := card.get_name().to_lower()
+
 		if card_type == "small":
-			card_texture = TextureManager.get_small_card_texture(card.get_name())
+			card_texture = TextureManager.get_small_card_texture(card_name_lower)
 		else:
-			card_texture = TextureManager.get_large_card_texture(card.get_name())
+			card_texture = TextureManager.get_large_card_texture(card_name_lower)
 
 		if card_texture != null:
 			portrait.texture = card_texture
+			print("CardVisual: Loaded texture for '%s'" % card_name_lower)
 		else:
+			push_warning("CardVisual: No texture found for card '%s' (type: %s)" % [card_name_lower, card_type])
 			# Fallback to colored rectangle if texture not found
 			if portrait.texture == null:
 				var placeholder_rect := ColorRect.new()
