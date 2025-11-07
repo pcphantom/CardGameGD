@@ -194,7 +194,7 @@ func send_network_event(event: NetworkEvent) -> void:
 
 	match current_connection_type:
 		ConnectionType.P2P_DIRECT:
-			if p2p_connection.is_connected:
+			if p2p_connection.connected_to_peer:
 				p2p_connection.send_event(event)
 				print("NetworkManager: Sent event via P2P: %s" % event.get_event_type_string())
 			else:
@@ -378,7 +378,7 @@ func is_multiplayer_connected() -> bool:
 			return false
 
 		ConnectionType.P2P_DIRECT:
-			return p2p_connection.is_connected
+			return p2p_connection.connected_to_peer
 
 		ConnectionType.WEBRTC_MATCHMAKING:
 			return webrtc_matchmaking.is_peer_connected()
