@@ -180,17 +180,10 @@ func update_visual() -> void:
 	name_label.size = Vector2(card_size.x - border_width * 2 - 10, 30)
 
 	# Update cost label
-	var cost_text: String = ""
-	var costs: Array = card.get_costs()
-	if costs.size() > 0:
-		for cost_entry in costs:
-			var cost_type = cost_entry[0]
-			var cost_value = cost_entry[1]
-			if cost_value > 0:
-				var type_symbol := _get_type_symbol(cost_type)
-				cost_text += "%s%d " % [type_symbol, cost_value]
-
-	cost_label.text = cost_text.strip_edges()
+	var card_type: CardType.Type = card.get_type()
+	var card_cost: int = card.get_cost()
+	var type_symbol: String = _get_type_symbol(card_type)
+	cost_label.text = "%s%d" % [type_symbol, card_cost]
 	cost_label.position = Vector2(border_width + 5, card_size.y - 50)
 	cost_label.size = Vector2(card_size.x - border_width * 2 - 10, 20)
 
