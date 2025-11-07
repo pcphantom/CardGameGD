@@ -60,13 +60,31 @@ func _create_visual_elements() -> void:
 	border.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(border)
 
-	# Background
-	background = ColorRect.new()
-	background.color = COLOR_NORMAL
-	background.position = Vector2(BORDER_WIDTH, BORDER_WIDTH)
-	background.size = SLOT_SIZE - Vector2(BORDER_WIDTH * 2, BORDER_WIDTH * 2)
-	background.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	add_child(background)
+	# Background with slot texture or color fallback
+	if TextureManager and TextureManager.slot_texture:
+		var slot_bg := TextureRect.new()
+		slot_bg.texture = TextureManager.slot_texture
+		slot_bg.position = Vector2(BORDER_WIDTH, BORDER_WIDTH)
+		slot_bg.size = SLOT_SIZE - Vector2(BORDER_WIDTH * 2, BORDER_WIDTH * 2)
+		slot_bg.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
+		slot_bg.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+		slot_bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		add_child(slot_bg)
+		# Keep background reference as ColorRect for overlay coloring
+		background = ColorRect.new()
+		background.color = Color(COLOR_NORMAL.r, COLOR_NORMAL.g, COLOR_NORMAL.b, 0.3)  # Semi-transparent overlay
+		background.position = Vector2(BORDER_WIDTH, BORDER_WIDTH)
+		background.size = SLOT_SIZE - Vector2(BORDER_WIDTH * 2, BORDER_WIDTH * 2)
+		background.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		add_child(background)
+	else:
+		# Fallback to solid color
+		background = ColorRect.new()
+		background.color = COLOR_NORMAL
+		background.position = Vector2(BORDER_WIDTH, BORDER_WIDTH)
+		background.size = SLOT_SIZE - Vector2(BORDER_WIDTH * 2, BORDER_WIDTH * 2)
+		background.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		add_child(background)
 
 	# Highlight overlay (initially hidden)
 	highlight = ColorRect.new()

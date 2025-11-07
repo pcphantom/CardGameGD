@@ -148,20 +148,31 @@ func update_visual() -> void:
 	background.position = Vector2(border_width, border_width)
 	background.size = card_size - Vector2(border_width * 2, border_width * 2)
 
-	# Update portrait
+	# Update portrait with card texture
 	var portrait_height: float = card_size.y * 0.5
 	portrait.position = Vector2(border_width + 5, border_width + 5)
 	portrait.size = Vector2(card_size.x - border_width * 2 - 10, portrait_height - 10)
 
-	# Create placeholder portrait background
-	if portrait.texture == null:
-		var placeholder_rect := ColorRect.new()
-		placeholder_rect.color = Color(0.15, 0.15, 0.15)
-		placeholder_rect.position = portrait.position
-		placeholder_rect.size = portrait.size
-		placeholder_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		add_child(placeholder_rect)
-		move_child(placeholder_rect, portrait.get_index())
+	# Load card texture from TextureManager
+	if TextureManager and TextureManager.is_loaded:
+		var card_texture: Texture2D = null
+		if card_type == "small":
+			card_texture = TextureManager.get_small_card_texture(card.get_name())
+		else:
+			card_texture = TextureManager.get_large_card_texture(card.get_name())
+
+		if card_texture != null:
+			portrait.texture = card_texture
+		else:
+			# Fallback to colored rectangle if texture not found
+			if portrait.texture == null:
+				var placeholder_rect := ColorRect.new()
+				placeholder_rect.color = Color(0.15, 0.15, 0.15)
+				placeholder_rect.position = portrait.position
+				placeholder_rect.size = portrait.size
+				placeholder_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+				add_child(placeholder_rect)
+				move_child(placeholder_rect, portrait.get_index())
 
 	# Update name label
 	name_label.text = card.get_name()

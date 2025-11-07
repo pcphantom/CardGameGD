@@ -1,13 +1,14 @@
-[gd_scene load_steps=2 format=3 uid="uid://bvq8x7y2n3m4k"]
+[gd_scene load_steps=3 format=3 uid="uid://bvq8x7y2n3m4k"]
 
-[ext_resource type="Script" path="res://scripts/ui/main_scene.gd" id="1_main"]
+[ext_resource type="Script" path="res://scripts/game_controller.gd" id="1_main"]
+[ext_resource type="Texture2D" uid="uid://davp2uf8ccxlq" path="res://assets/images/background.jpg" id="2_bg"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_main")
 
 [node name="Background" type="Sprite2D" parent="."]
 position = Vector2(512, 384)
-modulate = Color(0.2, 0.25, 0.3, 1)
+texture = ExtResource("2_bg")
 
 [node name="GameBoard" type="Node2D" parent="."]
 
