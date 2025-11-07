@@ -28,8 +28,8 @@ static func get_creature_class(
 	card: Card,
 	card_image: CardVisual,
 	slot_index: int,
-	owner: PlayerVisual,
-	opponent: PlayerVisual
+	owner_player: PlayerVisual,
+	opponent_player: PlayerVisual
 ) -> BaseCreature:
 
 	# Phase 3 Stub: Always return BaseCreature
@@ -38,7 +38,7 @@ static func get_creature_class(
 	var creature: BaseCreature = null
 
 	# Attempt to load specific creature class (will be implemented in Phase 5)
-	var creature_script_path: String = CREATURE_PATH + creature_class_name.to_lower() + ".gd"
+	var _creature_script_path: String = CREATURE_PATH + creature_class_name.to_lower() + ".gd"
 
 	# For now, we don't have specific creature implementations
 	# Always use BaseCreature
@@ -53,8 +53,8 @@ static func get_creature_class(
 		card,
 		card_image,
 		slot_index,
-		owner,
-		opponent
+		owner_player,
+		opponent_player
 	)
 
 	# Future Phase 5 implementation will look like:

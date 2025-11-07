@@ -445,7 +445,7 @@ func cast_spell(card: Card, target_slot: int) -> void:
 	local_player.get_hand().erase(card)
 
 	# Create spell instance
-	var spell: BaseSpell = SpellFactory.get_spell_class(
+	var _spell: BaseSpell = SpellFactory.get_spell_class(
 		card.get_name(),
 		self,
 		card,
@@ -745,7 +745,7 @@ func _handle_remote_spell_cast(event: NetworkEvent) -> void:
 	card.set_name(spell_name)
 	card.set_creature(false)
 
-	var spell: BaseSpell = SpellFactory.get_spell_class(
+	var _spell: BaseSpell = SpellFactory.get_spell_class(
 		spell_name,
 		self,
 		card,
@@ -957,10 +957,10 @@ func _on_game_over(winner_id: String) -> void:
 		event.player_data["winner_id"] = winner_id
 		NetworkManager.send_network_event(event)
 
-func _on_turn_started(player_id: String) -> void:
+func _on_turn_started(_player_id: String) -> void:
 	pass  # Already handled in turn methods
 
-func _on_card_summoned(card: Card, player_id: String, slot: int) -> void:
+func _on_card_summoned(_card: Card, _player_id: String, _slot: int) -> void:
 	pass  # Already logged in summon methods
 
 # =============================================================================

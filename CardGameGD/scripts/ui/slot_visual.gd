@@ -113,9 +113,9 @@ func _create_visual_elements() -> void:
 	drop_indicator.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(drop_indicator)
 
-func setup_slot(index: int, owner: String, is_player: bool) -> void:
+func setup_slot(index: int, slot_owner: String, is_player: bool) -> void:
 	slot_index = index
-	owner_id = owner
+	owner_id = slot_owner
 	is_player_slot = is_player
 	_update_visual()
 
