@@ -202,7 +202,6 @@ func update_visual() -> void:
 	var cost_value: int = card.get_cost()
 	var attack_value: int = 0
 	var life_value: int = 0
-	var is_large: bool = (card_type == "large")
 
 	if not card.is_spell():
 		attack_value = card.get_attack()
