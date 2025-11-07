@@ -1,12 +1,12 @@
-class_name CardVisual
+class_name CardImage
 extends Control
 
 ## Visual representation of a card on screen
 ## Replaces CardImage.java from the original game
 
-signal card_clicked(card_visual: CardVisual)
-signal card_hovered(card_visual: CardVisual)
-signal card_unhovered(card_visual: CardVisual)
+signal card_clicked(card_visual: CardImage)
+signal card_hovered(card_visual: CardImage)
+signal card_unhovered(card_visual: CardImage)
 
 # Card data and state
 var card: Card = null
@@ -363,8 +363,8 @@ func _on_mouse_exited() -> void:
 
 func _to_string() -> String:
 	if card != null:
-		return "CardVisual(%s)" % card.get_name()
-	return "CardVisual(empty)"
+		return "CardImage(%s)" % card.get_name()
+	return "CardImage(empty)"
 
 # ============================================================================
 # ANIMATION METHODS

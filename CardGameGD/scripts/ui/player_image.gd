@@ -1,4 +1,4 @@
-class_name PlayerVisual
+class_name PlayerImage
 extends Control
 
 ## Visual representation of a player's interface
@@ -452,4 +452,4 @@ func add_elemental_power_animation(element_type: int, amount: int) -> void:
 func _to_string() -> String:
 	var player_name: String = player_info.get_name() if player_info != null else "Unknown"
 	var side: String = "local" if is_local_player else "opponent"
-	return "PlayerVisual(%s, %s)" % [player_name, side]
+	return "PlayerImage(%s, %s)" % [player_name, side]

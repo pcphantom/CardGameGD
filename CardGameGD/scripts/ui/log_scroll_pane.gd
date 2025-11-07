@@ -1,4 +1,4 @@
-class_name LogPanel
+class_name LogScrollPane
 extends Panel
 
 ## Game log display panel
@@ -308,4 +308,4 @@ func _on_filter_toggled(enabled: bool, filter_type: String) -> void:
 			entry["label"].visible = enabled
 
 func _to_string() -> String:
-	return "LogPanel(%d entries)" % log_entries.size()
+	return "LogScrollPane(%d entries)" % log_entries.size()

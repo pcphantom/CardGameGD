@@ -1,12 +1,12 @@
-class_name SlotVisual
+class_name SlotImage
 extends Control
 
 ## Visual representation of a slot on the game board
 ## Replaces SlotImage.java from the original game
 
-signal slot_clicked(slot: SlotVisual)
-signal slot_hovered(slot: SlotVisual)
-signal slot_unhovered(slot: SlotVisual)
+signal slot_clicked(slot: SlotImage)
+signal slot_hovered(slot: SlotImage)
+signal slot_unhovered(slot: SlotImage)
 
 # Slot state
 var slot_index: int = -1
@@ -296,4 +296,4 @@ func update_creature_visual() -> void:
 func _to_string() -> String:
 	var status: String = "occupied" if is_occupied else "empty"
 	var owner_str: String = "player" if is_player_slot else "opponent"
-	return "SlotVisual[%d](%s, %s)" % [slot_index, owner_str, status]
+	return "SlotImage[%d](%s, %s)" % [slot_index, owner_str, status]
