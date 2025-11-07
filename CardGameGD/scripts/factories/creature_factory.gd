@@ -24,12 +24,12 @@ const CREATURE_PATH: String = "res://scripts/creatures/"
 
 static func get_creature_class(
 	class_name: String,
-	game,
+	game: GameController,
 	card: Card,
-	card_image,
+	card_image: CardVisual,
 	slot_index: int,
-	owner,
-	opponent
+	owner: PlayerVisual,
+	opponent: PlayerVisual
 ) -> BaseCreature:
 
 	# Phase 3 Stub: Always return BaseCreature
