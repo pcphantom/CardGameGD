@@ -20,7 +20,8 @@ const SOUND_CONFIG: Dictionary = {
 	SoundTypes.Sound.SUMMONED: {"path": "res://assets/sounds/summoned.ogg", "volume": 0.3, "looping": false},
 	SoundTypes.Sound.DAMAGED: {"path": "res://assets/sounds/damaged.ogg", "volume": 0.3, "looping": false},
 	SoundTypes.Sound.DEATH: {"path": "res://assets/sounds/death.ogg", "volume": 0.5, "looping": false},
-	SoundTypes.Sound.GAMEOVER: {"path": "res://assets/sounds/gameover.ogg", "volume": 0.5, "looping": false}
+	SoundTypes.Sound.GAMEOVER: {"path": "res://assets/sounds/gameover.ogg", "volume": 0.5, "looping": false},
+	SoundTypes.Sound.CLICK: {"path": "res://assets/sounds/click.ogg", "volume": 0.3, "looping": false}
 }
 
 # Sound priority levels

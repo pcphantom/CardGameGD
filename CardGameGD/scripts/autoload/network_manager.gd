@@ -202,7 +202,7 @@ func send_network_event(event: NetworkEvent) -> void:
 				pending_events.append(event)
 
 		ConnectionType.WEBRTC_MATCHMAKING:
-			if webrtc_matchmaking.is_connected():
+			if webrtc_matchmaking.is_peer_connected():
 				webrtc_matchmaking.send_game_event(event)
 				print("NetworkManager: Sent event via WebRTC: %s" % event.get_event_type_string())
 			else:
@@ -381,7 +381,7 @@ func is_multiplayer_connected() -> bool:
 			return p2p_connection.is_connected
 
 		ConnectionType.WEBRTC_MATCHMAKING:
-			return webrtc_matchmaking.is_connected()
+			return webrtc_matchmaking.is_peer_connected()
 
 		_:
 			return false
