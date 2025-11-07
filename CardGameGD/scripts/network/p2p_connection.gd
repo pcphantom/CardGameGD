@@ -156,8 +156,8 @@ func send_player_info(player_data: Dictionary) -> void:
 func get_remote_peer_id() -> int:
 	return remote_player_id
 
-# Check if this peer is the multiplayer authority
-func is_multiplayer_authority() -> bool:
+# Check if this peer is the multiplayer server/authority
+func is_server_peer() -> bool:
 	return multiplayer.is_server()
 
 # Disconnect from current game

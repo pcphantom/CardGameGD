@@ -83,7 +83,7 @@ func on_cast() -> void:
 			# Note: play_spell_sound_by_class returns void, fallback handled internally
 		else:
 			# No class name, use generic magic sound
-			SoundManager.play_sound_by_enum(SoundTypes.Sound.MAGIC)
+			SoundManager.play_sound(SoundTypes.Sound.MAGIC)
 
 	if game != null and game.has_method("play_spell_sound"):
 		game.play_spell_sound(self)

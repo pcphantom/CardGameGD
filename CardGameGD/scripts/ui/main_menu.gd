@@ -96,7 +96,7 @@ func _on_single_player_pressed() -> void:
 
 	# Play button sound
 	if SoundManager:
-		SoundManager.play_sound_by_enum(SoundTypes.Sound.POSITIVE_EFFECT)
+		SoundManager.play_sound(SoundTypes.Sound.POSITIVE_EFFECT)
 
 	# Disable all buttons
 	_disable_all_buttons()
@@ -114,7 +114,7 @@ func _on_multiplayer_pressed() -> void:
 
 	# Play button sound
 	if SoundManager:
-		SoundManager.play_sound_by_enum(SoundTypes.Sound.POSITIVE_EFFECT)
+		SoundManager.play_sound(SoundTypes.Sound.POSITIVE_EFFECT)
 
 	# Show multiplayer menu
 	_show_multiplayer_menu()
@@ -128,7 +128,7 @@ func _on_settings_pressed() -> void:
 
 	# Play button sound
 	if SoundManager:
-		SoundManager.play_sound_by_enum(SoundTypes.Sound.POSITIVE_EFFECT)
+		SoundManager.play_sound(SoundTypes.Sound.POSITIVE_EFFECT)
 
 	# Show settings menu
 	_show_settings_menu()
@@ -142,7 +142,7 @@ func _on_how_to_play_pressed() -> void:
 
 	# Play button sound
 	if SoundManager:
-		SoundManager.play_sound_by_enum(SoundTypes.Sound.POSITIVE_EFFECT)
+		SoundManager.play_sound(SoundTypes.Sound.POSITIVE_EFFECT)
 
 	# Show tutorial/instructions
 	_show_how_to_play()
@@ -156,7 +156,7 @@ func _on_credits_pressed() -> void:
 
 	# Play button sound
 	if SoundManager:
-		SoundManager.play_sound_by_enum(SoundTypes.Sound.POSITIVE_EFFECT)
+		SoundManager.play_sound(SoundTypes.Sound.POSITIVE_EFFECT)
 
 	# Show credits screen
 	_show_credits()
@@ -170,7 +170,7 @@ func _on_quit_pressed() -> void:
 
 	# Play button sound
 	if SoundManager:
-		SoundManager.play_sound_by_enum(SoundTypes.Sound.NEGATIVE_EFFECT)
+		SoundManager.play_sound(SoundTypes.Sound.NEGATIVE_EFFECT)
 
 	# Show quit confirmation
 	_show_quit_confirmation()

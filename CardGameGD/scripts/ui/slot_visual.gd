@@ -262,7 +262,7 @@ func play_occupation_animation() -> void:
 
 	# Play sound if available
 	if SoundManager:
-		SoundManager.play_sound_by_enum(SoundTypes.Sound.SUMMON_DROP)
+		SoundManager.play_sound(SoundTypes.Sound.SUMMON_DROP)
 
 func get_creature() -> BaseCreature:
 	"""Get the creature instance from the card in this slot."""

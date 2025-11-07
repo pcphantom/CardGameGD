@@ -148,12 +148,12 @@ func _on_close_pressed() -> void:
 func _play_page_turn_sound() -> void:
 	"""Play sound effect for page navigation."""
 	if SoundManager:
-		SoundManager.play_sound_by_enum(SoundTypes.Sound.CLICK)
+		SoundManager.play_sound(SoundTypes.Sound.CLICK)
 
 func _play_close_sound() -> void:
 	"""Play sound effect for closing tutorial."""
 	if SoundManager:
-		SoundManager.play_sound_by_enum(SoundTypes.Sound.CLICK)
+		SoundManager.play_sound(SoundTypes.Sound.CLICK)
 
 func _input(event: InputEvent) -> void:
 	"""Handle keyboard shortcuts."""

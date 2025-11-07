@@ -465,7 +465,7 @@ func _spawn_attack_particles(pos: Vector2) -> void:
 func play_damage_animation(damage: int) -> void:
 	# Play damage sound
 	if SoundManager:
-		SoundManager.play_sound_by_enum(SoundTypes.Sound.NEGATIVE_EFFECT)
+		SoundManager.play_sound(SoundTypes.Sound.NEGATIVE_EFFECT)
 
 	# Flash red
 	var tween := create_tween()
@@ -489,7 +489,7 @@ func play_damage_animation(damage: int) -> void:
 func play_heal_animation(heal_amount: int) -> void:
 	# Play heal sound
 	if SoundManager:
-		SoundManager.play_sound_by_enum(SoundTypes.Sound.POSITIVE_EFFECT)
+		SoundManager.play_sound(SoundTypes.Sound.POSITIVE_EFFECT)
 
 	# Flash green
 	var tween := create_tween()
@@ -524,7 +524,7 @@ func _spawn_heal_particles() -> void:
 func play_death_animation() -> void:
 	# Play death sound
 	if SoundManager:
-		SoundManager.play_sound_by_enum(SoundTypes.Sound.DEATH)
+		SoundManager.play_sound(SoundTypes.Sound.DEATH)
 
 	var tween := create_tween()
 	tween.set_parallel(true)
