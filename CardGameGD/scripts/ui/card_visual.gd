@@ -125,7 +125,15 @@ func setup_card(card_data: Card, card_size: String = "small") -> void:
 	update_visual()
 
 func update_visual() -> void:
+	# REASON FOR EDIT: Prevent errors when UI elements haven't been created yet
+	# PROBLEM: update_visual() can be called before _ready() creates the labels
+	# FIX: Return early if card is null OR if labels haven't been created
+	# WHY: Trying to set .position on nil label causes "Invalid assignment...Nil" error
 	if card == null:
+		return
+
+	# Check if visual elements exist (they're created in _ready())
+	if cost_label == null or name_label == null or attack_label == null or life_label == null:
 		return
 
 	var card_size: Vector2 = SMALL_SIZE if card_type == "small" else LARGE_SIZE
@@ -180,9 +188,14 @@ func update_visual() -> void:
 	name_label.size = Vector2(card_size.x - border_width * 2 - 10, 30)
 
 	# Update cost label
-	var card_type: CardType.Type = card.get_type()
+	# REASON FOR EDIT: Fix shadowed variable warning
+	# PROBLEM: "card_type" at line 13 is class member (String: "small"/"large")
+	# PROBLEM: Creating local "card_type" (CardType.Type enum) shadows the class member
+	# FIX: Rename local variable to "element_type" to avoid shadow
+	# WHY: Shadowing causes confusing errors and potential bugs
+	var element_type: CardType.Type = card.get_type()
 	var card_cost: int = card.get_cost()
-	var type_symbol: String = _get_type_symbol(card_type)
+	var type_symbol: String = _get_type_symbol(element_type)
 	cost_label.text = "%s%d" % [type_symbol, card_cost]
 	cost_label.position = Vector2(border_width + 5, card_size.y - 50)
 	cost_label.size = Vector2(card_size.x - border_width * 2 - 10, 20)
