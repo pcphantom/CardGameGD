@@ -1,0 +1,7 @@
+res://scripts/autoload/network_manager.gd
+res://scripts/autoload/sound_manager.gd
+res://scripts/core/event.gd
+res://scripts/core/sound_types.gd
+res://scripts/network/webrtc_matchmaking.gd
+res://scripts/spells/base_spell.gd
+res://scripts/ui/multiplayer_menu.gd

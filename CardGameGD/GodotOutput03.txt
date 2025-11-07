@@ -1,0 +1,19 @@
+Godot Engine v4.4.1.stable.official (c) 2007-present Juan Linietsky, Ariel Manzur & Godot Contributors.
+--- Debug adapter server started on port 6006 ---
+--- GDScript language server started on port 6005 ---
+  ERROR: res://scripts/network/p2p_connection.gd:160 - Parse Error: The method "is_multiplayer_authority()" overrides a method from native class "Node". This won't be called by the engine and may not work as expected. (Warning treated as error.)
+  ERROR: res://scripts/network/webrtc_matchmaking.gd:243 - Parse Error: Too few arguments for "add_peer()" call. Expected at least 2 but received 1.
+  ERROR: res://scripts/network/webrtc_matchmaking.gd:243 - Parse Error: Invalid argument for "add_peer()" function: argument 1 should be "WebRTCPeerConnection" but is "int".
+  ERROR: res://scripts/network/webrtc_matchmaking.gd:502 - Parse Error: Too few arguments for "is_connected()" call. Expected at least 2 but received 0.
+  ERROR: res://scripts/network/webrtc_matchmaking.gd:513 - Parse Error: Too few arguments for "is_connected()" call. Expected at least 2 but received 0.
+  ERROR: res://scripts/autoload/network_manager.gd:0 - Compile Error: Failed to compile depended scripts.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/autoload/network_manager.gd" with error "Parse error".
+  ERROR: res://scripts/spells/base_spell.gd:86 - Parse Error: Invalid argument for "play_sound_by_enum()" function: argument 1 should be "Sound" but is "SoundTypes.Sound".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/base_spell.gd" with error "Parse error".
+  ERROR: res://scripts/ui/main_menu.gd:99 - Parse Error: Invalid argument for "play_sound_by_enum()" function: argument 1 should be "Sound" but is "SoundTypes.Sound".
+  ERROR: res://scripts/ui/main_menu.gd:117 - Parse Error: Invalid argument for "play_sound_by_enum()" function: argument 1 should be "Sound" but is "SoundTypes.Sound".
+  ERROR: res://scripts/ui/main_menu.gd:131 - Parse Error: Invalid argument for "play_sound_by_enum()" function: argument 1 should be "Sound" but is "SoundTypes.Sound".
+  ERROR: res://scripts/ui/main_menu.gd:145 - Parse Error: Invalid argument for "play_sound_by_enum()" function: argument 1 should be "Sound" but is "SoundTypes.Sound".
+  ERROR: res://scripts/ui/main_menu.gd:159 - Parse Error: Invalid argument for "play_sound_by_enum()" function: argument 1 should be "Sound" but is "SoundTypes.Sound".
+  ERROR: res://scripts/ui/main_menu.gd:173 - Parse Error: Invalid argument for "play_sound_by_enum()" function: argument 1 should be "Sound" but is "SoundTypes.Sound".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/ui/main_menu.gd" with error "Parse error".
