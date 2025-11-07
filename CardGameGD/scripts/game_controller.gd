@@ -174,7 +174,7 @@ func setup_starting_decks() -> void:
 		_draw_card(local_player, player_visual)
 		_draw_card(opponent_player, opponent_visual)
 
-func _add_test_cards_to_player(player: Player) -> void:
+func _add_test_cards_to_player(_player: Player) -> void:
 	# Create test creature cards
 	for i in range(10):
 		var card := Card.new()
@@ -195,7 +195,7 @@ func _add_test_cards_to_player(player: Player) -> void:
 		card.set_cost(3)
 		player_deck.append(card)
 
-func _draw_card(player: Player, visual: PlayerVisual) -> void:
+func _draw_card(_player: Player, visual: PlayerVisual) -> void:
 	var deck: Array = player_deck
 	if deck.size() > 0:
 		var card: Card = deck.pop_front()
@@ -577,29 +577,19 @@ func _ai_cast_spell(card: Card, target_slot: int) -> void:
 	player_visual.update_display()
 
 func can_play_card(card: Card, player: Player) -> bool:
-	var strength: Dictionary = player.strength
-	var costs: Array = card.get_costs()
+	var card_type: CardType.Type = card.get_type()
+	var card_cost: int = card.get_cost()
+	var player_strength: int = player.get_strength(card_type)
 
-	for cost_entry in costs:
-		var cost_type = cost_entry[0]
-		var cost_value = cost_entry[1]
-
-		if strength.get(cost_type, 0) < cost_value:
-			return false
-
-	return true
+	return player_strength >= card_cost
 
 func _deduct_card_costs(card: Card, player: Player) -> bool:
 	if not can_play_card(card, player):
 		return false
 
-	var strength: Dictionary = player.strength
-	var costs: Array = card.get_costs()
-
-	for cost_entry in costs:
-		var cost_type = cost_entry[0]
-		var cost_value = cost_entry[1]
-		strength[cost_type] -= cost_value
+	var card_type: CardType.Type = card.get_type()
+	var card_cost: int = card.get_cost()
+	player.decrement_strength(card_type, card_cost)
 
 	return true
 
