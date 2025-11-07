@@ -90,28 +90,32 @@ func load_texture_atlas(atlas_path: String, image_path: String) -> Dictionary:
 	var current_height: int = 0
 
 	while not file.eof_reached():
-		var line := file.get_line().strip_edges()
+		var line := file.get_line()
 
-		# Skip empty lines and format lines
-		if line.is_empty() or line.begins_with("format:") or line.begins_with("filter:") or line.begins_with("repeat:"):
+		# Skip empty lines
+		if line.strip_edges().is_empty():
 			continue
 
-		# Skip the image name line
-		if line.ends_with(".png"):
+		# Check if this is a card name (no leading spaces and no colon)
+		if not line.begins_with(" ") and not line.begins_with("\t"):
+			# Skip format/filter/repeat lines and png filename
+			if line.begins_with("format:") or line.begins_with("filter:") or line.begins_with("repeat:") or line.ends_with(".png"):
+				continue
+			current_card_name = line.strip_edges().to_lower()
 			continue
 
-		# Check if this is a card name (doesn't have a colon or starts at beginning of line without indent)
-		if not line.contains(":") and not line.begins_with(" "):
-			current_card_name = line.to_lower()
+		# Parse properties (they have leading whitespace)
+		var trimmed := line.strip_edges()
+
 		# Parse coordinates
-		elif line.begins_with("xy:"):
-			var coords := line.replace("xy:", "").strip_edges().split(",")
+		if trimmed.begins_with("xy:"):
+			var coords := trimmed.replace("xy:", "").strip_edges().split(",")
 			if coords.size() == 2:
 				current_x = coords[0].strip_edges().to_int()
 				current_y = coords[1].strip_edges().to_int()
 		# Parse size
-		elif line.begins_with("size:"):
-			var size := line.replace("size:", "").strip_edges().split(",")
+		elif trimmed.begins_with("size:"):
+			var size := trimmed.replace("size:", "").strip_edges().split(",")
 			if size.size() == 2:
 				current_width = size[0].strip_edges().to_int()
 				current_height = size[1].strip_edges().to_int()
