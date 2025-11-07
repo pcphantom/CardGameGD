@@ -122,14 +122,21 @@ func _setup_ui_references() -> void:
 	opponent_visual.name = "OpponentVisual"
 	add_child(opponent_visual)
 
-	# Get end turn button from scene
-	end_turn_button = get_node_or_null("GameUI/EndTurnButton")
-	if end_turn_button:
-		end_turn_button.pressed.connect(on_end_turn_pressed)
+	# End Turn Button - EXACT position bottom-right
+	end_turn_button = Button.new()
+	end_turn_button.text = "End Turn"
+	end_turn_button.position = Vector2(850, 710)
+	end_turn_button.size = Vector2(150, 40)
+	end_turn_button.add_theme_font_size_override("font_size", 20)
+	end_turn_button.pressed.connect(on_end_turn_pressed)
+	add_child(end_turn_button)
 
-	# Create log panel
+	# Create log panel - EXACT position top-right
 	log_panel = LogPanel.new()
 	log_panel.name = "LogPanel"
+	log_panel.position = Vector2(850, 80)
+	log_panel.custom_minimum_size = Vector2(160, 300)
+	log_panel.z_index = 100
 	add_child(log_panel)
 
 func create_players() -> void:

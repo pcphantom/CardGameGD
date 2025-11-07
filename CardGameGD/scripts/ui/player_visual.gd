@@ -139,26 +139,28 @@ func setup_player(player: Player, is_local: bool) -> void:
 	player_info = player
 	is_local_player = is_local
 
-	# Position panel
+	# Position panel - EXACT coordinates
 	panel.position = Vector2(0, PANEL_Y_LOCAL if is_local else PANEL_Y_OPPONENT)
+	panel.custom_minimum_size = Vector2(1024, PANEL_HEIGHT)
 
-	# Position portrait
+	# Position portrait - EXACT coordinates
 	portrait.position = Vector2(10, 9)
 	portrait.size = PORTRAIT_SIZE
 
-	# Position name label
+	# Position name label - EXACT coordinates
 	name_label.position = Vector2(70, 5)
 	name_label.size = Vector2(150, 20)
 
-	# Position life label
-	life_label.position = Vector2(10, 10)
-	life_label.size = Vector2(150, 32)
+	# Position life label - EXACT coordinates
+	life_label.position = Vector2(70, 25)
+	life_label.size = Vector2(150, 25)
+	life_label.add_theme_font_size_override("font_size", 32)
 
-	# Position life bar
+	# Position life bar - EXACT coordinates
 	life_bar.position = Vector2(70, 50)
 	life_bar.size = Vector2(90, 10)
 
-	# Position strength labels with exact CardGameGDX coordinates
+	# Position strength labels - EXACT coordinates
 	var resource_types: Array = [
 		CardType.Type.FIRE,
 		CardType.Type.WATER,
@@ -166,14 +168,27 @@ func setup_player(player: Player, is_local: bool) -> void:
 		CardType.Type.EARTH,
 		CardType.Type.OTHER
 	]
-	var label_x_positions: Array[float] = [160.0, 260.0, 380.0, 500.0, 620.0]
 
 	for i in range(resource_types.size()):
 		var res_type = resource_types[i]
 		if strength_labels.has(res_type):
 			var label: Label = strength_labels[res_type]
-			label.position = Vector2(label_x_positions[i], 15)
+			label.position = Vector2(160 + i * 100, 15)  # Exact spacing: 160, 260, 360, 460, 560
 			label.size = Vector2(90, 30)
+			label.add_theme_font_size_override("font_size", 24)
+
+			# Set exact colors for each element
+			match res_type:
+				CardType.Type.FIRE:
+					label.add_theme_color_override("font_color", Color(1.0, 0.3, 0.3))
+				CardType.Type.WATER:
+					label.add_theme_color_override("font_color", Color(0.3, 0.5, 1.0))
+				CardType.Type.AIR:
+					label.add_theme_color_override("font_color", Color(0.9, 0.9, 0.5))
+				CardType.Type.EARTH:
+					label.add_theme_color_override("font_color", Color(0.6, 0.4, 0.2))
+				CardType.Type.OTHER:
+					label.add_theme_color_override("font_color", Color(0.7, 0.7, 0.7))
 
 	# Setup board slots
 	setup_slots(player.get_id())
