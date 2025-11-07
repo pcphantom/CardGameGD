@@ -56,15 +56,16 @@ func _ready() -> void:
 	_create_visual_elements()
 
 func _create_visual_elements() -> void:
-	# REASON FOR EDIT: Use actual frame textures instead of colored rectangles
-	# PROBLEM: CardGameGDX uses actual frame images (ramka.png), not colored boxes
-	# FIX: Create TextureRect for frame that will load ramka.png textures
-	# WHY: Proper card rendering requires actual frame artwork
+	# REASON: Ensure proper z-index layering so stats render on top of card artwork
+	# PROBLEM: Stats must be visible on top of all other card elements
+	# FIX: Create elements in correct order with explicit z-index values
+	# WHY: Stats in corners must be clearly visible for gameplay
 
-	# Frame (border) - now uses texture from TextureManager
+	# Frame first (z-index 0)
 	frame = TextureRect.new()
 	frame.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	frame.stretch_mode = TextureRect.STRETCH_SCALE
+	frame.z_index = 0
 	frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(frame)
 
@@ -74,49 +75,44 @@ func _create_visual_elements() -> void:
 	background.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(background)
 
-	# Portrait
+	# Portrait second (z-index 1)
 	portrait = TextureRect.new()
 	portrait.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
 	portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	portrait.z_index = 1
 	portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(portrait)
 
-	# Name label
+	# Name label (z-index 5)
 	name_label = Label.new()
 	name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	name_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	name_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	name_label.add_theme_font_size_override("font_size", 12)
+	name_label.z_index = 5
 	name_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(name_label)
 
-	# Cost label
+	# Stat labels LAST with highest z-index (z-index 10)
 	cost_label = Label.new()
 	cost_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	cost_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	cost_label.add_theme_font_size_override("font_size", 16)
-	cost_label.add_theme_color_override("font_color", Color.YELLOW)
+	cost_label.z_index = 10
 	cost_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(cost_label)
 
-	# Attack label (creatures only)
 	attack_label = Label.new()
 	attack_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	attack_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	attack_label.add_theme_font_size_override("font_size", 14)
-	attack_label.add_theme_color_override("font_color", Color.RED)
+	attack_label.z_index = 10
 	attack_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	attack_label.visible = false
 	add_child(attack_label)
 
-	# Life label (creatures only)
 	life_label = Label.new()
 	life_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	life_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	life_label.add_theme_font_size_override("font_size", 14)
-	life_label.add_theme_color_override("font_color", Color.GREEN)
+	life_label.z_index = 10
 	life_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	life_label.visible = false
 	add_child(life_label)
 
 func setup_card(card_data: Card, card_size: String = "small") -> void:
@@ -223,39 +219,87 @@ func update_visual() -> void:
 	name_label.position = Vector2(border_width + 5, portrait_height + border_width + 5)
 	name_label.size = Vector2(card_size.x - border_width * 2 - 10, 30)
 
-	# Update cost label
-	# REASON FOR EDIT: Fix shadowed variable warning
-	# PROBLEM: "card_type" at line 13 is class member (String: "small"/"large")
-	# PROBLEM: Creating local "card_type" (CardType.Type enum) shadows the class member
-	# FIX: Rename local variable to "element_type" to avoid shadow
-	# WHY: Shadowing causes confusing errors and potential bugs
-	var element_type: CardType.Type = card.get_type()
-	var card_cost: int = card.get_cost()
-	var type_symbol: String = _get_type_symbol(element_type)
-	cost_label.text = "%s%d" % [type_symbol, card_cost]
-	cost_label.position = Vector2(border_width + 5, card_size.y - 50)
-	cost_label.size = Vector2(card_size.x - border_width * 2 - 10, 20)
+	# REASON: Position stats in exact corner coordinates matching CardGameGDX
+	# PROBLEM: Stats were positioned in bottom center area, not corners like original
+	# FIX: Use exact pixel coordinates from CardDescriptionImage.java
+	# WHY: Cards must match original game appearance with corner stat positioning
 
-	# Update creature stats if applicable
-	var is_creature: bool = not card.is_spell()
-	attack_label.visible = is_creature
-	life_label.visible = is_creature
+	# Get stat values
+	var cost_value: int = card.get_cost()
+	var attack_value: int = 0
+	var life_value: int = 0
+	var is_large: bool = (card_type == "large")
 
-	if is_creature:
-		# REASON FOR EDIT: BaseCreature has no get_attack()/get_life() methods
-		# PROBLEM: Calling creature.get_attack() and creature.get_life()
-		# FIX: Always use card.get_attack() and card.get_life()
-		# WHY: Stats are on Card, not on BaseCreature wrapper
+	if not card.is_spell():
+		attack_value = card.get_attack()
+		life_value = card.get_life()
 
-		# Attack label (bottom left)
-		attack_label.text = "⚔ %d" % card.get_attack()
-		attack_label.position = Vector2(border_width + 5, card_size.y - 25)
-		attack_label.size = Vector2((card_size.x - border_width * 2 - 10) / 2, 20)
+	# EXACT stat label positioning for small cards
+	if not is_large:
+		# Cost (top-right corner) - EXACT position
+		var cost_x: float = 70.0 if cost_value < 10 else 68.0
+		cost_label.position = Vector2(cost_x, 90.0)
+		cost_label.size = Vector2(15, 15)
+		cost_label.add_theme_font_size_override("font_size", 12)
+		cost_label.add_theme_color_override("font_color", Color(1.0, 1.0, 0.0))
+		cost_label.text = str(cost_value)
+		cost_label.visible = true
 
-		# Life label (bottom right)
-		life_label.text = "♥ %d" % card.get_life()
-		life_label.position = Vector2(card_size.x / 2 + 5, card_size.y - 25)
-		life_label.size = Vector2((card_size.x - border_width * 2 - 10) / 2, 20)
+		if not card.is_spell():
+			# Attack (bottom-left corner) - EXACT position
+			var attack_x: float = 5.0 if attack_value < 10 else 3.0
+			attack_label.position = Vector2(attack_x, 15.0)
+			attack_label.size = Vector2(15, 15)
+			attack_label.add_theme_font_size_override("font_size", 12)
+			attack_label.add_theme_color_override("font_color", Color(1.0, 0.0, 0.0))
+			attack_label.text = str(attack_value)
+			attack_label.visible = true
+
+			# Life (bottom-right corner) - EXACT position
+			var life_x: float = 73.0 if life_value < 10 else 70.0
+			life_label.position = Vector2(life_x, 15.0)
+			life_label.size = Vector2(15, 15)
+			life_label.add_theme_font_size_override("font_size", 12)
+			life_label.add_theme_color_override("font_color", Color(0.0, 1.0, 0.0))
+			life_label.text = str(life_value)
+			life_label.visible = true
+		else:
+			attack_label.visible = false
+			life_label.visible = false
+
+	# EXACT stat label positioning for large cards
+	else:
+		# Cost position differs for creatures vs spells
+		var cost_x: float = 132.0 if cost_value < 10 else 130.0
+		var cost_y: float = 150.0 if not card.is_spell() else 15.0
+		cost_label.position = Vector2(cost_x, cost_y)
+		cost_label.size = Vector2(18, 18)
+		cost_label.add_theme_font_size_override("font_size", 14)
+		cost_label.add_theme_color_override("font_color", Color(1.0, 1.0, 0.0))
+		cost_label.text = str(cost_value)
+		cost_label.visible = true
+
+		if not card.is_spell():
+			# Attack (bottom-left corner) - EXACT position
+			var attack_x: float = 5.0 if attack_value < 10 else 7.0
+			attack_label.position = Vector2(attack_x, 15.0)
+			attack_label.size = Vector2(18, 18)
+			attack_label.add_theme_font_size_override("font_size", 14)
+			attack_label.add_theme_color_override("font_color", Color(1.0, 0.0, 0.0))
+			attack_label.text = str(attack_value)
+			attack_label.visible = true
+
+			# Life (bottom-right corner) - EXACT position
+			var life_x: float = 131.0 if life_value < 10 else 134.0
+			life_label.position = Vector2(life_x, 15.0)
+			life_label.size = Vector2(18, 18)
+			life_label.add_theme_font_size_override("font_size", 14)
+			life_label.add_theme_color_override("font_color", Color(0.0, 1.0, 0.0))
+			life_label.text = str(life_value)
+			life_label.visible = true
+		else:
+			attack_label.visible = false
+			life_label.visible = false
 
 	# REASON FOR EDIT: Frame is now TextureRect, use modulate instead of color
 	# PROBLEM: TextureRect has no .color property, only ColorRect does
