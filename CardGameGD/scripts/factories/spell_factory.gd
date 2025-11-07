@@ -23,7 +23,7 @@ class_name SpellFactory
 const SPELL_PATH: String = "res://scripts/spells/"
 
 static func get_spell_class(
-	class_name: String,
+	spell_class_name: String,
 	game: GameController,
 	card: Card,
 	card_image: CardVisual,
@@ -37,14 +37,14 @@ static func get_spell_class(
 	var spell: BaseSpell = null
 
 	# Attempt to load specific spell class (will be implemented in Phase 6)
-	var spell_script_path: String = SPELL_PATH + class_name.to_lower() + ".gd"
+	var spell_script_path: String = SPELL_PATH + spell_class_name.to_lower() + ".gd"
 
 	# For now, we don't have specific spell implementations
 	# Always use BaseSpell
 	if game != null and game.has_method("log_message"):
-		game.log_message("SpellFactory: Using base spell for %s - specific implementation pending" % class_name)
+		game.log_message("SpellFactory: Using base spell for %s - specific implementation pending" % spell_class_name)
 	else:
-		print("SpellFactory: Using base spell for %s - specific implementation pending" % class_name)
+		print("SpellFactory: Using base spell for %s - specific implementation pending" % spell_class_name)
 
 	# Create BaseSpell instance
 	spell = BaseSpell.new(
@@ -68,6 +68,6 @@ static func get_spell_class(
 
 	return spell
 
-static func spell_exists(class_name: String) -> bool:
-	var spell_script_path: String = SPELL_PATH + class_name.to_lower() + ".gd"
+static func spell_exists(spell_class_name: String) -> bool:
+	var spell_script_path: String = SPELL_PATH + spell_class_name.to_lower() + ".gd"
 	return ResourceLoader.exists(spell_script_path)

@@ -23,7 +23,7 @@ class_name CreatureFactory
 const CREATURE_PATH: String = "res://scripts/creatures/"
 
 static func get_creature_class(
-	class_name: String,
+	creature_class_name: String,
 	game: GameController,
 	card: Card,
 	card_image: CardVisual,
@@ -38,14 +38,14 @@ static func get_creature_class(
 	var creature: BaseCreature = null
 
 	# Attempt to load specific creature class (will be implemented in Phase 5)
-	var creature_script_path: String = CREATURE_PATH + class_name.to_lower() + ".gd"
+	var creature_script_path: String = CREATURE_PATH + creature_class_name.to_lower() + ".gd"
 
 	# For now, we don't have specific creature implementations
 	# Always use BaseCreature
 	if game != null and game.has_method("log_message"):
-		game.log_message("CreatureFactory: Using base creature for %s - specific implementation pending" % class_name)
+		game.log_message("CreatureFactory: Using base creature for %s - specific implementation pending" % creature_class_name)
 	else:
-		print("CreatureFactory: Using base creature for %s - specific implementation pending" % class_name)
+		print("CreatureFactory: Using base creature for %s - specific implementation pending" % creature_class_name)
 
 	# Create BaseCreature instance
 	creature = BaseCreature.new(
@@ -70,6 +70,6 @@ static func get_creature_class(
 
 	return creature
 
-static func creature_exists(class_name: String) -> bool:
-	var creature_script_path: String = CREATURE_PATH + class_name.to_lower() + ".gd"
+static func creature_exists(creature_class_name: String) -> bool:
+	var creature_script_path: String = CREATURE_PATH + creature_class_name.to_lower() + ".gd"
 	return ResourceLoader.exists(creature_script_path)
