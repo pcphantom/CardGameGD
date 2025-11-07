@@ -24,7 +24,7 @@ var name_label: Label = null
 var cost_label: Label = null
 var attack_label: Label = null
 var life_label: Label = null
-var frame: ColorRect = null
+var frame: TextureRect = null  # CHANGED: Use TextureRect for proper frame rendering
 
 # Animation state
 var is_being_dragged: bool = false
@@ -56,9 +56,15 @@ func _ready() -> void:
 	_create_visual_elements()
 
 func _create_visual_elements() -> void:
-	# Frame (border)
-	frame = ColorRect.new()
-	frame.color = Color.WHITE
+	# REASON FOR EDIT: Use actual frame textures instead of colored rectangles
+	# PROBLEM: CardGameGDX uses actual frame images (ramka.png), not colored boxes
+	# FIX: Create TextureRect for frame that will load ramka.png textures
+	# WHY: Proper card rendering requires actual frame artwork
+
+	# Frame (border) - now uses texture from TextureManager
+	frame = TextureRect.new()
+	frame.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	frame.stretch_mode = TextureRect.STRETCH_SCALE
 	frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(frame)
 
@@ -139,7 +145,19 @@ func update_visual() -> void:
 	var card_size: Vector2 = SMALL_SIZE if card_type == "small" else LARGE_SIZE
 	var border_width: float = 2.0
 
-	# Update frame
+	# REASON FOR EDIT: Load actual frame textures from TextureManager
+	# PROBLEM: Frame was just colored rectangle, not using ramka.png assets
+	# FIX: Load proper frame texture based on card type and size
+	# WHY: CardGameGDX uses actual frame artwork for proper card rendering
+
+	# Update frame with proper texture
+	if TextureManager and TextureManager.is_loaded:
+		var is_large: bool = (card_type == "large")
+		var is_spell: bool = card.is_spell()
+		var frame_texture: Texture2D = TextureManager.get_card_frame(is_spell, is_large)
+		if frame_texture:
+			frame.texture = frame_texture
+
 	frame.position = Vector2.ZERO
 	frame.size = card_size
 
@@ -206,25 +224,33 @@ func update_visual() -> void:
 	life_label.visible = is_creature
 
 	if is_creature:
+		# REASON FOR EDIT: BaseCreature has no get_attack()/get_life() methods
+		# PROBLEM: Calling creature.get_attack() and creature.get_life()
+		# FIX: Always use card.get_attack() and card.get_life()
+		# WHY: Stats are on Card, not on BaseCreature wrapper
+
 		# Attack label (bottom left)
-		var attack_value: int = creature.get_attack() if creature != null else card.get_attack()
-		attack_label.text = "⚔ %d" % attack_value
+		attack_label.text = "⚔ %d" % card.get_attack()
 		attack_label.position = Vector2(border_width + 5, card_size.y - 25)
 		attack_label.size = Vector2((card_size.x - border_width * 2 - 10) / 2, 20)
 
 		# Life label (bottom right)
-		var life_value: int = creature.get_life() if creature != null else card.get_life()
-		life_label.text = "♥ %d" % life_value
+		life_label.text = "♥ %d" % card.get_life()
 		life_label.position = Vector2(card_size.x / 2 + 5, card_size.y - 25)
 		life_label.size = Vector2((card_size.x - border_width * 2 - 10) / 2, 20)
 
-	# Update frame color based on state
+	# REASON FOR EDIT: Frame is now TextureRect, use modulate instead of color
+	# PROBLEM: TextureRect has no .color property, only ColorRect does
+	# FIX: Use .modulate to tint the frame texture
+	# WHY: Modulate tints textures to show selection/hover state
+
+	# Update frame tint based on state
 	if is_selected:
-		frame.color = Color.GOLD
+		frame.modulate = Color.GOLD
 	elif is_hovered and is_enabled:
-		frame.color = Color.WHITE
+		frame.modulate = Color(1.2, 1.2, 1.2)  # Brightened
 	else:
-		frame.color = Color(0.5, 0.5, 0.5)
+		frame.modulate = Color.WHITE  # Normal
 
 func _get_type_symbol(element_type: int) -> String:
 	match element_type:
