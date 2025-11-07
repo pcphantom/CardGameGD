@@ -1,0 +1,17 @@
+[remap]
+
+importer="font_data_bmfont"
+type="FontFile"
+uid="uid://bopupk7e58jnc"
+path="res://.godot/imported/BellMT_16.fnt-8008bcbafcca82cb53367537f0fb1cce.fontdata"
+
+[deps]
+
+source_file="res://source-ref/main/resources/fonts/BellMT_16.fnt"
+dest_files=["res://.godot/imported/BellMT_16.fnt-8008bcbafcca82cb53367537f0fb1cce.fontdata"]
+
+[params]
+
+fallbacks=[]
+compress=true
+scaling_mode=2

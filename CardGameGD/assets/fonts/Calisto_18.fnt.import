@@ -1,0 +1,17 @@
+[remap]
+
+importer="font_data_bmfont"
+type="FontFile"
+uid="uid://bsgoggymjaj35"
+path="res://.godot/imported/Calisto_18.fnt-f44501914c971ccb3f65191657cb2127.fontdata"
+
+[deps]
+
+source_file="res://source-ref/main/resources/fonts/Calisto_18.fnt"
+dest_files=["res://.godot/imported/Calisto_18.fnt-f44501914c971ccb3f65191657cb2127.fontdata"]
+
+[params]
+
+fallbacks=[]
+compress=true
+scaling_mode=2

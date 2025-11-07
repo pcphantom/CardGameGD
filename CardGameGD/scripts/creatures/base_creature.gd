@@ -18,7 +18,7 @@ func _init(game_ref, card_ref: Card, card_image_ref, slot_idx: int, owner_ref, o
 func on_summoned() -> void:
 	# Play summon sound effect
 	if SoundManager:
-		SoundManager.play_sound_by_enum(SoundTypes.Sound.SUMMONED)
+		SoundManager.play_sound(SoundTypes.Sound.SUMMONED)
 
 	if game != null and game.has_method("log_message"):
 		var class_title: String = ""
@@ -127,7 +127,7 @@ func on_attack() -> void:
 
 	# Play attack sound effect
 	if SoundManager:
-		SoundManager.play_sound_by_enum(SoundTypes.Sound.ATTACK)
+		SoundManager.play_sound(SoundTypes.Sound.ATTACK)
 
 	var opponent_cards: Array = []
 	if opponent != null and opponent.has_method("get_slot_cards"):
@@ -241,7 +241,7 @@ func on_attacked(attacker, damage: int) -> int:
 func on_dying() -> void:
 	# Play death sound effect
 	if SoundManager:
-		SoundManager.play_sound_by_enum(SoundTypes.Sound.NEGATIVE_EFFECT)
+		SoundManager.play_sound(SoundTypes.Sound.NEGATIVE_EFFECT)
 
 	var nl: int = slot_index - 1
 	var nr: int = slot_index + 1

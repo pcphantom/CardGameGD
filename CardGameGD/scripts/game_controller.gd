@@ -386,7 +386,7 @@ func summon_creature(card: Card, slot_index: int) -> void:
 
 	# Play summon drop sound
 	if SoundManager:
-		SoundManager.play_sound_by_enum(SoundTypes.Sound.SUMMON_DROP)
+		SoundManager.play_sound(SoundTypes.Sound.SUMMON_DROP)
 
 	# Remove card from hand
 	player_visual.remove_card_from_hand(selected_card)
@@ -722,7 +722,7 @@ func _handle_remote_card_attack(event: NetworkEvent) -> void:
 
 	# Play damage sound
 	if SoundManager:
-		SoundManager.play_sound_by_enum(SoundTypes.Sound.NEGATIVE_EFFECT)
+		SoundManager.play_sound(SoundTypes.Sound.NEGATIVE_EFFECT)
 
 	# Log
 	log_panel.add_with_color("%s attacks for %d damage!" % [attacker.get_name(), attack_value], LogPanel.COLOR_DAMAGE)
@@ -1154,7 +1154,7 @@ func show_victory_defeat_screen(winner_id: String) -> void:
 		winner_label.text = "You win!"
 		# Play victory sound
 		if SoundManager:
-			SoundManager.play_sound_by_enum(SoundTypes.Sound.GAMEOVER)
+			SoundManager.play_sound(SoundTypes.Sound.GAMEOVER)
 		# Spawn confetti particles
 		_spawn_confetti()
 	else:

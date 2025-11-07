@@ -239,12 +239,27 @@ func _create_answer(offer: Dictionary) -> void:
 		push_error("WebRTCMatchmaking: Invalid offer data")
 		return
 
-	# Add peer with offer
-	var err: Error = webrtc_peer.add_peer(peer_id)
+	# Create and configure peer connection
+	var peer_connection: WebRTCPeerConnection = WebRTCPeerConnection.new()
+	peer_connection.initialize({"iceServers": ICE_SERVERS})
+
+	# Set remote description (the offer)
+	peer_connection.set_remote_description("offer", sdp)
+
+	# Add peer to multiplayer peer
+	var err: Error = webrtc_peer.add_peer(peer_connection, peer_id)
 
 	if err != OK:
 		push_error("WebRTCMatchmaking: Failed to add peer. Error: %d" % err)
 		return
+
+	# Create answer
+	var answer_dict: Dictionary = await peer_connection.create_answer()
+	if answer_dict.has("error"):
+		push_error("WebRTCMatchmaking: Failed to create answer: %s" % answer_dict.get("error"))
+		return
+
+	peer_connection.set_local_description("answer", answer_dict.get("sdp", ""))
 
 	# Send answer back via signaling server
 	_send_signaling_message("answer", {
@@ -499,7 +514,7 @@ func get_match_info() -> Dictionary:
 		"match_id": match_id,
 		"is_host": is_host,
 		"local_player_id": local_player_id,
-		"is_connected": is_connected(),
+		"is_connected": is_peer_connected(),
 		"connection_status": get_connection_status(),
 		"signaling_connected": is_connected_to_signaling
 	}
@@ -510,7 +525,7 @@ func print_debug_info() -> void:
 	print("Match ID: %s" % match_id)
 	print("Is Host: %s" % str(is_host))
 	print("Local Player ID: %s" % local_player_id)
-	print("Is Connected: %s" % str(is_connected()))
+	print("Is Connected: %s" % str(is_peer_connected()))
 	print("Connection Status: %s" % get_connection_status())
 	print("Signaling Connected: %s" % str(is_connected_to_signaling))
 	print("=====================================")
