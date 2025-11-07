@@ -5,8 +5,8 @@ extends Node2D
 ## Replaces Cards.java main game logic from the original game
 
 # Player visuals
-var player_visual: PlayerVisual = null
-var opponent_visual: PlayerVisual = null
+var player_visual: PlayerImage = null
+var opponent_visual: PlayerImage = null
 
 # Game state
 var local_player: Player = null
@@ -17,8 +17,8 @@ var player_deck: Array = []
 var player_hand: Array = []
 var opponent_deck: Array = []
 var opponent_hand: Array = []
-var selected_card: CardVisual = null
-var selected_slot: SlotVisual = null
+var selected_card: CardImage = null
+var selected_slot: SlotImage = null
 var is_turn_active: bool = false
 var current_turn_player_id: String = ""
 
@@ -28,7 +28,7 @@ var is_my_turn: bool = true
 
 # UI elements
 var end_turn_button: Button = null
-var log_panel: LogPanel = null
+var log_panel: LogScrollPane = null
 var card_collection_grid: CardCollectionGrid = null
 var victory_defeat_screen: Panel = null
 var pause_menu: Panel = null
@@ -109,18 +109,18 @@ func initialize_game() -> void:
 	start_first_turn()
 
 	if is_multiplayer:
-		log_panel.add_with_color("Multiplayer game started!", LogPanel.COLOR_GAME_OVER)
+		log_panel.add_with_color("Multiplayer game started!", LogScrollPane.COLOR_GAME_OVER)
 	else:
-		log_panel.add_with_color("Game started!", LogPanel.COLOR_GAME_OVER)
+		log_panel.add_with_color("Game started!", LogScrollPane.COLOR_GAME_OVER)
 
 func _setup_ui_references() -> void:
 	# Create player visuals
-	player_visual = PlayerVisual.new()
-	player_visual.name = "PlayerVisual"
+	player_visual = PlayerImage.new()
+	player_visual.name = "PlayerImage"
 	add_child(player_visual)
 
-	opponent_visual = PlayerVisual.new()
-	opponent_visual.name = "OpponentVisual"
+	opponent_visual = PlayerImage.new()
+	opponent_visual.name = "OpponentImage"
 	add_child(opponent_visual)
 
 	# End Turn Button - EXACT position bottom-right
@@ -133,8 +133,8 @@ func _setup_ui_references() -> void:
 	add_child(end_turn_button)
 
 	# Create log panel - EXACT position top-right
-	log_panel = LogPanel.new()
-	log_panel.name = "LogPanel"
+	log_panel = LogScrollPane.new()
+	log_panel.name = "LogScrollPane"
 	log_panel.position = Vector2(850, 80)
 	log_panel.custom_minimum_size = Vector2(160, 300)
 	log_panel.z_index = 100
@@ -253,7 +253,7 @@ func _add_test_cards_to_player(player: Player) -> void:
 			CardType.Type.OTHER:
 				player.special_cards.append(card)
 
-func _draw_card(player: Player, visual: PlayerVisual) -> void:
+func _draw_card(player: Player, visual: PlayerImage) -> void:
 	# REASON FOR EDIT: Fix deck/hand selection - was always using player_deck/player_hand
 	# PROBLEM: Method was called for both local_player AND opponent_player
 	# PROBLEM: But it always drew from player_deck and added to player_hand
@@ -284,7 +284,7 @@ func start_first_turn() -> void:
 	# PROBLEM: GameManager has no start_turn() method, causing error on load
 	# FIX: Remove call - GameController manages own turn state
 	# WHY: GameController already sets current_turn_player_id and is_turn_active
-	log_panel.add_with_color("Your turn!", LogPanel.COLOR_NORMAL)
+	log_panel.add_with_color("Your turn!", LogScrollPane.COLOR_NORMAL)
 
 	# Add resources at start of turn
 	_add_turn_resources(local_player)
@@ -318,7 +318,7 @@ func on_end_turn_pressed() -> void:
 
 	# Check if it's player's turn in multiplayer
 	if is_multiplayer and not is_my_turn:
-		log_panel.add_with_color("Wait for your turn!", LogPanel.COLOR_DAMAGE)
+		log_panel.add_with_color("Wait for your turn!", LogScrollPane.COLOR_DAMAGE)
 		return
 
 	# Clear selection
@@ -335,7 +335,7 @@ func on_end_turn_pressed() -> void:
 	if is_multiplayer:
 		NetworkManager.send_turn_end_signal()
 		is_my_turn = false
-		log_panel.add_with_color("Waiting for opponent...", LogPanel.COLOR_NORMAL)
+		log_panel.add_with_color("Waiting for opponent...", LogScrollPane.COLOR_NORMAL)
 	else:
 		# Single player - start opponent turn
 		await get_tree().create_timer(0.5).timeout
@@ -347,7 +347,7 @@ func end_current_turn() -> void:
 	log_panel.add("Turn ended")
 
 func execute_opponent_turn() -> void:
-	log_panel.add_with_color("Opponent's turn", LogPanel.COLOR_NORMAL)
+	log_panel.add_with_color("Opponent's turn", LogScrollPane.COLOR_NORMAL)
 	current_turn_player_id = opponent_player.get_id()
 
 	# Add resources
@@ -382,7 +382,7 @@ func start_player_turn() -> void:
 	# REASON FOR EDIT: Remove nonexistent GameManager.start_turn() call
 	# PROBLEM: GameManager has no start_turn() method, causing error
 	# FIX: Remove call - GameController manages own turn state
-	log_panel.add_with_color("Your turn!", LogPanel.COLOR_NORMAL)
+	log_panel.add_with_color("Your turn!", LogScrollPane.COLOR_NORMAL)
 
 func _add_turn_resources(player: Player) -> void:
 	var strength := player.strength
@@ -392,18 +392,18 @@ func _add_turn_resources(player: Player) -> void:
 	strength[CardType.Type.EARTH] += 1
 	strength[CardType.Type.OTHER] += 1
 
-func _on_player_hand_card_clicked(card_visual: CardVisual) -> void:
+func _on_player_hand_card_clicked(card_visual: CardImage) -> void:
 	if not is_turn_active:
 		return
 
 	# Check if it's player's turn in multiplayer
 	if is_multiplayer and not is_my_turn:
-		log_panel.add_with_color("Wait for your turn!", LogPanel.COLOR_DAMAGE)
+		log_panel.add_with_color("Wait for your turn!", LogScrollPane.COLOR_DAMAGE)
 		return
 
 	var card := card_visual.get_card()
 	if not can_play_card(card, local_player):
-		log_panel.add_with_color("Not enough resources!", LogPanel.COLOR_DAMAGE)
+		log_panel.add_with_color("Not enough resources!", LogScrollPane.COLOR_DAMAGE)
 		return
 
 	# Deselect previous card
@@ -429,7 +429,7 @@ func _on_player_hand_card_clicked(card_visual: CardVisual) -> void:
 		awaiting_target = true
 		log_panel.add("Select a target for the spell")
 
-func _on_player_slot_clicked(slot: SlotVisual) -> void:
+func _on_player_slot_clicked(slot: SlotImage) -> void:
 	if not awaiting_summon_slot:
 		return
 
@@ -441,13 +441,13 @@ func _on_player_slot_clicked(slot: SlotVisual) -> void:
 		return
 
 	if not slot.is_empty():
-		log_panel.add_with_color("Slot is occupied!", LogPanel.COLOR_DAMAGE)
+		log_panel.add_with_color("Slot is occupied!", LogScrollPane.COLOR_DAMAGE)
 		return
 
 	# Summon creature
 	summon_creature(card, slot.get_slot_index())
 
-func _on_opponent_slot_clicked(slot: SlotVisual) -> void:
+func _on_opponent_slot_clicked(slot: SlotImage) -> void:
 	if not awaiting_target:
 		return
 
@@ -464,7 +464,7 @@ func _on_opponent_slot_clicked(slot: SlotVisual) -> void:
 func summon_creature(card: Card, slot_index: int) -> void:
 	# Deduct costs
 	if not _deduct_card_costs(card, local_player):
-		log_panel.add_with_color("Cannot play card!", LogPanel.COLOR_DAMAGE)
+		log_panel.add_with_color("Cannot play card!", LogScrollPane.COLOR_DAMAGE)
 		return
 
 	# Play summon drop sound
@@ -487,7 +487,7 @@ func summon_creature(card: Card, slot_index: int) -> void:
 	)
 
 	# Add to slot
-	var card_visual := CardVisual.new()
+	var card_visual := CardImage.new()
 	card_visual.setup_card(card, "small")
 	card_visual.set_creature(creature)
 
@@ -520,7 +520,7 @@ func summon_creature(card: Card, slot_index: int) -> void:
 func cast_spell(card: Card, target_slot: int) -> void:
 	# Deduct costs
 	if not _deduct_card_costs(card, local_player):
-		log_panel.add_with_color("Cannot cast spell!", LogPanel.COLOR_DAMAGE)
+		log_panel.add_with_color("Cannot cast spell!", LogScrollPane.COLOR_DAMAGE)
 		return
 
 	# Remove card from hand
@@ -627,7 +627,7 @@ func _ai_summon_creature(card: Card, slot_index: int) -> void:
 	)
 
 	# Add to slot
-	var card_visual := CardVisual.new()
+	var card_visual := CardImage.new()
 	card_visual.setup_card(card, "small")
 	card_visual.set_creature(creature)
 
@@ -761,7 +761,7 @@ func _handle_remote_card_summoned(event: NetworkEvent) -> void:
 	)
 
 	# Add to opponent's slot
-	var card_visual := CardVisual.new()
+	var card_visual := CardImage.new()
 	card_visual.setup_card(card, "small")
 	card_visual.set_creature(creature)
 
@@ -812,7 +812,7 @@ func _handle_remote_card_attack(event: NetworkEvent) -> void:
 	# FIX: Access card data through attacker.card
 	# Log
 	var attacker_name := attacker.card.get_name() if attacker.card else "Unknown"
-	log_panel.add_with_color("%s attacks for %d damage!" % [attacker_name, attack_value], LogPanel.COLOR_DAMAGE)
+	log_panel.add_with_color("%s attacks for %d damage!" % [attacker_name, attack_value], LogScrollPane.COLOR_DAMAGE)
 
 	# Check for game over
 	if local_player.get_life() <= 0:
@@ -961,7 +961,7 @@ func _on_multiplayer_turn_started() -> void:
 	_draw_card(local_player, player_visual)
 
 	# Update UI
-	log_panel.add_with_color("Your turn!", LogPanel.COLOR_NORMAL)
+	log_panel.add_with_color("Your turn!", LogScrollPane.COLOR_NORMAL)
 
 	# Enable player input (already enabled by is_my_turn = true)
 	print("GameController: Player input enabled")
@@ -974,7 +974,7 @@ func _on_multiplayer_turn_ended() -> void:
 	is_turn_active = false
 
 	# Update UI
-	log_panel.add_with_color("Opponent's turn...", LogPanel.COLOR_NORMAL)
+	log_panel.add_with_color("Opponent's turn...", LogScrollPane.COLOR_NORMAL)
 
 	# Disable player input (already disabled by is_my_turn = false)
 	print("GameController: Player input disabled")

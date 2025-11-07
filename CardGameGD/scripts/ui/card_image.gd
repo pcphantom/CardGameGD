@@ -171,11 +171,11 @@ func update_visual() -> void:
 
 		if card_texture != null:
 			portrait.texture = card_texture
-			print("CardVisual: Loaded texture for '%s'" % card_name)
+			print("CardImage: Loaded texture for '%s'" % card_name)
 		else:
 			# Fallback: dark gray if texture missing
 			portrait.texture = null
-			push_warning("CardVisual: Missing texture for card: %s" % card_name)
+			push_warning("CardImage: Missing texture for card: %s" % card_name)
 			# Create dark gray background as fallback
 			if portrait.get_child_count() == 0:
 				var fallback := ColorRect.new()

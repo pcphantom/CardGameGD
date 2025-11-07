@@ -11,7 +11,7 @@ const GRID_PADDING: int = 5
 const GRID_PANEL_WIDTH: int = 490
 const GRID_PANEL_HEIGHT: int = 400
 
-var card_visuals: Array[CardVisual] = []
+var card_visuals: Array[CardImage] = []
 var grid_container: GridContainer = null
 
 func _ready() -> void:
@@ -80,13 +80,13 @@ func _add_card_section(section_name: String, cards: Array, color: Color) -> void
 
 	# Add cards with EXACT size
 	for card in cards:
-		var card_visual := CardVisual.new()
+		var card_visual := CardImage.new()
 		card_visual.setup_card(card, "small")
 		card_visual.custom_minimum_size = Vector2(CARD_WIDTH, CARD_HEIGHT)
 		card_visual.card_clicked.connect(_on_card_clicked)
 		grid_container.add_child(card_visual)
 		card_visuals.append(card_visual)
 
-func _on_card_clicked(card_visual: CardVisual) -> void:
+func _on_card_clicked(card_visual: CardImage) -> void:
 	# Emit signal or handle card selection
 	pass

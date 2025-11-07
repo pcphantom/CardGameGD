@@ -26,9 +26,9 @@ static func get_spell_class(
 	spell_class_name: String,
 	game: GameController,
 	card: Card,
-	card_image: CardVisual,
-	owner: PlayerVisual,
-	opponent: PlayerVisual
+	card_image: CardImage,
+	owner: PlayerImage,
+	opponent: PlayerImage
 ) -> BaseSpell:
 
 	# Phase 3 Stub: Always return BaseSpell

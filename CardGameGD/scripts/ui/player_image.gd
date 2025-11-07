@@ -4,16 +4,16 @@ extends Control
 ## Visual representation of a player's interface
 ## Replaces PlayerImage.java from the original game
 
-signal hand_card_clicked(card: CardVisual)
-signal hand_card_hovered(card: CardVisual)
-signal slot_clicked(slot: SlotVisual)
-signal slot_hovered(slot: SlotVisual)
+signal hand_card_clicked(card: CardImage)
+signal hand_card_hovered(card: CardImage)
+signal slot_clicked(slot: SlotImage)
+signal slot_hovered(slot: SlotImage)
 
 # Player data
 var player_info: Player = null
 var is_local_player: bool = false
-var hand_cards: Array[CardVisual] = []
-var slot_visuals: Array[SlotVisual] = []
+var hand_cards: Array[CardImage] = []
+var slot_visuals: Array[SlotImage] = []
 
 # UI elements
 var panel: Panel = null
@@ -208,7 +208,7 @@ func setup_slots(owner_id: String) -> void:
 	var slot_x_positions: Array[float] = [80.0, 240.0, 400.0, 560.0, 720.0, 880.0]
 
 	for i in range(6):
-		var slot := SlotVisual.new()
+		var slot := SlotImage.new()
 		slot.setup_slot(i, owner_id, is_local_player)
 		slot.position = Vector2(slot_x_positions[i], slots_y)
 		add_child(slot)
@@ -295,7 +295,7 @@ func _get_type_name(card_type: int) -> String:
 			return "Unknown"
 
 func add_card_to_hand(card: Card) -> void:
-	var card_visual := CardVisual.new()
+	var card_visual := CardImage.new()
 	card_visual.setup_card(card, "small")
 	add_child(card_visual)
 	hand_cards.append(card_visual)
@@ -306,7 +306,7 @@ func add_card_to_hand(card: Card) -> void:
 
 	_update_hand_layout()
 
-func remove_card_from_hand(card_visual: CardVisual) -> void:
+func remove_card_from_hand(card_visual: CardImage) -> void:
 	var index := hand_cards.find(card_visual)
 	if index >= 0:
 		hand_cards.remove_at(index)
@@ -326,7 +326,7 @@ func _update_hand_layout() -> void:
 	var start_x: float = (1024 - total_width) / 2.0
 
 	for i in range(num_cards):
-		var card_visual: CardVisual = hand_cards[i]
+		var card_visual: CardImage = hand_cards[i]
 		card_visual.position = Vector2(start_x + i * HAND_CARD_SPACING, hand_y)
 
 func get_hand_cards() -> Array:
@@ -343,7 +343,7 @@ func get_slot_cards() -> Array:
 func get_slots() -> Array:
 	return slot_visuals.duplicate()
 
-func get_slot_at_index(index: int) -> SlotVisual:
+func get_slot_at_index(index: int) -> SlotImage:
 	if index >= 0 and index < slot_visuals.size():
 		return slot_visuals[index]
 	return null
@@ -355,8 +355,8 @@ func set_player_info(player: Player) -> void:
 	player_info = player
 	update_display()
 
-func find_card_visual_by_card(card: Card) -> CardVisual:
-	"""Find a CardVisual in hand by its Card data."""
+func find_card_visual_by_card(card: Card) -> CardImage:
+	"""Find a CardImage in hand by its Card data."""
 	for card_visual in hand_cards:
 		if card_visual.get_card() == card:
 			return card_visual
@@ -389,16 +389,16 @@ func get_occupied_slot_indices() -> Array[int]:
 			indices.append(slot.get_slot_index())
 	return indices
 
-func _on_hand_card_clicked(card_visual: CardVisual) -> void:
+func _on_hand_card_clicked(card_visual: CardImage) -> void:
 	hand_card_clicked.emit(card_visual)
 
-func _on_hand_card_hovered(card_visual: CardVisual) -> void:
+func _on_hand_card_hovered(card_visual: CardImage) -> void:
 	hand_card_hovered.emit(card_visual)
 
-func _on_slot_clicked(slot: SlotVisual) -> void:
+func _on_slot_clicked(slot: SlotImage) -> void:
 	slot_clicked.emit(slot)
 
-func _on_slot_hovered(slot: SlotVisual) -> void:
+func _on_slot_hovered(slot: SlotImage) -> void:
 	slot_hovered.emit(slot)
 
 func set_turn_active(active: bool) -> void:
