@@ -189,10 +189,17 @@ func _add_test_cards_to_player(player: Player) -> void:
 	else:
 		deck = opponent_deck
 
-	# Create test creature cards
+	# REASON FOR EDIT: Use actual card names so textures load from atlas
+	# PROBLEM: "Test Creature 1" doesn't match any card in smallCardsPack.txt
+	# FIX: Use real card names from the texture atlas
+	# WHY: Cards need proper names to load artwork textures
+
+	# Create test creature cards with real names from atlas
+	var creature_names := ["airelemental", "angel", "dragon", "basilisk", "waterelemental",
+	                        "fireelemental", "earthelemental", "titan", "vampire", "troll"]
 	for i in range(10):
 		var card := Card.new()
-		card.set_name("Test Creature %d" % (i + 1))
+		card.set_name(creature_names[i])
 		card.set_spell(false)
 		card.set_attack(3 + i % 3)
 		card.set_life(5 + i % 5)
@@ -200,10 +207,11 @@ func _add_test_cards_to_player(player: Player) -> void:
 		card.set_cost(2 + i % 3)
 		deck.append(card)
 
-	# Create test spell cards
+	# Create test spell cards with real names from atlas (use wall/temple cards as spells)
+	var spell_names := ["walloffire", "walloflightning", "templeoffire", "volcano", "wallofreflection"]
 	for i in range(5):
 		var card := Card.new()
-		card.set_name("Test Spell %d" % (i + 1))
+		card.set_name(spell_names[i])
 		card.set_spell(true)
 		card.set_type(CardType.Type.FIRE + (i % 5))
 		card.set_cost(3)

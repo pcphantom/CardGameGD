@@ -31,7 +31,7 @@ const HAND_CARD_SPACING: float = 130.0
 const HAND_Y_LOCAL: float = 600.0
 const HAND_Y_OPPONENT: float = 80.0
 const SLOTS_Y_LOCAL: float = 420.0
-const SLOTS_Y_OPPONENT: float = 150.0
+const SLOTS_Y_OPPONENT: float = 110.0
 const PANEL_Y_LOCAL: float = 700.0
 const PANEL_Y_OPPONENT: float = 0.0
 const PANEL_HEIGHT: float = 68.0
@@ -87,8 +87,8 @@ func _create_ui_elements() -> void:
 
 	# Life label
 	life_label = Label.new()
-	life_label.add_theme_font_size_override("font_size", 24)
-	life_label.add_theme_color_override("font_color", Color(1, 0.3, 0.3))
+	life_label.add_theme_font_size_override("font_size", 32)
+	life_label.add_theme_color_override("font_color", Color.WHITE)
 	panel.add_child(life_label)
 
 	# Life bar
@@ -116,7 +116,7 @@ func _create_ui_elements() -> void:
 	for i in range(resource_types.size()):
 		var res_type = resource_types[i]
 		var label := Label.new()
-		label.add_theme_font_size_override("font_size", 20)
+		label.add_theme_font_size_override("font_size", 24)
 		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 
 		# Color code by type
@@ -151,14 +151,14 @@ func setup_player(player: Player, is_local: bool) -> void:
 	name_label.size = Vector2(150, 20)
 
 	# Position life label
-	life_label.position = Vector2(70, 25)
-	life_label.size = Vector2(150, 25)
+	life_label.position = Vector2(10, 10)
+	life_label.size = Vector2(150, 32)
 
 	# Position life bar
 	life_bar.position = Vector2(70, 50)
 	life_bar.size = Vector2(90, 10)
 
-	# Position strength labels
+	# Position strength labels with exact CardGameGDX coordinates
 	var resource_types: Array = [
 		CardType.Type.FIRE,
 		CardType.Type.WATER,
@@ -166,12 +166,13 @@ func setup_player(player: Player, is_local: bool) -> void:
 		CardType.Type.EARTH,
 		CardType.Type.OTHER
 	]
+	var label_x_positions: Array[float] = [160.0, 260.0, 380.0, 500.0, 620.0]
 
 	for i in range(resource_types.size()):
 		var res_type = resource_types[i]
 		if strength_labels.has(res_type):
 			var label: Label = strength_labels[res_type]
-			label.position = Vector2(170 + i * 100, 20)
+			label.position = Vector2(label_x_positions[i], 15)
 			label.size = Vector2(90, 30)
 
 	# Setup board slots
