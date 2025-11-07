@@ -24,11 +24,11 @@ const SPELL_PATH: String = "res://scripts/spells/"
 
 static func get_spell_class(
 	class_name: String,
-	game: Variant,
+	game: GameController,
 	card: Card,
-	card_image: Variant,
-	owner: Variant,
-	opponent: Variant
+	card_image: CardVisual,
+	owner: PlayerVisual,
+	opponent: PlayerVisual
 ) -> BaseSpell:
 
 	# Phase 3 Stub: Always return BaseSpell
