@@ -1,0 +1,511 @@
+Godot Engine v4.4.1.stable.official (c) 2007-present Juan Linietsky, Ariel Manzur & Godot Contributors.
+--- Debug adapter server started on port 6006 ---
+--- GDScript language server started on port 6005 ---
+  ERROR: res://scripts/autoload/network_manager.gd:205 - Parse Error: Could not resolve external class member "is_connected".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/autoload/network_manager.gd" with error "Parse error".
+  ERROR: Failed to create an autoload, script 'res://scripts/autoload/network_manager.gd' is not compiling.
+  ERROR: res://scripts/core/battle_manager.gd:113 - Parse Error: Could not resolve class "SpellFactory", because of a parser error.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/core/battle_manager.gd" with error "Parse error".
+  ERROR: res://scripts/core/event.gd:20 - Parse Error: The function signature doesn't match the parent. Parent signature is "to_string() -> String".
+  ERROR: res://scripts/core/event.gd:20 - Parse Error: The method "to_string()" overrides a method from native class "Object". This won't be called by the engine and may not work as expected. (Warning treated as error.)
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/core/event.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/air_elemental.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: res://scripts/creatures/air_elemental.gd:13 - Parse Error: Function "damage_opponent()" not found in base self.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/air_elemental.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/ancient_dragon.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: res://scripts/creatures/ancient_dragon.gd:11 - Parse Error: Function "swap_card()" not found in base self.
+  ERROR: res://scripts/creatures/ancient_dragon.gd:23 - Parse Error: Function "swap_card()" not found in base self.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/ancient_dragon.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/ancient_giant.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/ancient_giant.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/ancient_horror.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/ancient_horror.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/ancient_witch.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/ancient_witch.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/angel.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/angel.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/angel_of_war.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/angel_of_war.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/angry_angry_bear.gd:2 - Parse Error: Expected identifier for the global class name after "class_name".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/angry_angry_bear.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/archangel.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/archangel.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/astral_guard.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/astral_guard.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/banshee.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/banshee.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/bargul.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/bargul.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/base_creature.gd:21 - Parse Error: Invalid argument for "play_sound_by_enum()" function: argument 1 should be "Sound" but is "SoundTypes.Sound".
+  ERROR: res://scripts/creatures/base_creature.gd:130 - Parse Error: Invalid argument for "play_sound_by_enum()" function: argument 1 should be "Sound" but is "SoundTypes.Sound".
+  ERROR: res://scripts/creatures/base_creature.gd:244 - Parse Error: Invalid argument for "play_sound_by_enum()" function: argument 1 should be "Sound" but is "SoundTypes.Sound".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/base_creature.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/basilisk.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: res://scripts/creatures/basilisk.gd:9 - Parse Error: Function "swap_card()" not found in base self.
+  ERROR: res://scripts/creatures/basilisk.gd:13 - Parse Error: Function "swap_card()" not found in base self.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/basilisk.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/bee_queen.gd:2 - Parse Error: Expected identifier for the global class name after "class_name".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/bee_queen.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/blind_prophet.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/blind_prophet.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/cannon.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/cannon.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/chastiser.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: res://scripts/creatures/chastiser.gd:15 - Parse Error: Identifier "creature_card" not declared in the current scope.
+  ERROR: res://scripts/creatures/chastiser.gd:15 - Parse Error: Identifier "creature_card" not declared in the current scope.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/chastiser.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/chrono_engine.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/chrono_engine.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/chrono_hunter.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/chrono_hunter.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/crazy_squirrel.gd:2 - Parse Error: Expected identifier for the global class name after "class_name".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/crazy_squirrel.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/crusader.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/crusader.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/damping_tower.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/damping_tower.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/death_falcon.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: res://scripts/creatures/death_falcon.gd:9 - Parse Error: Function "swap_card()" not found in base self.
+  ERROR: res://scripts/creatures/death_falcon.gd:16 - Parse Error: Function "swap_card()" not found in base self.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/death_falcon.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/demon_apostate.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/demon_apostate.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/demon_quartermaster.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: res://scripts/creatures/demon_quartermaster.gd:24 - Parse Error: Function "add_creature()" not found in base self.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/demon_quartermaster.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/devoted_servant.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: res://scripts/creatures/devoted_servant.gd:14 - Parse Error: Identifier "creature_card" not declared in the current scope.
+  ERROR: res://scripts/creatures/devoted_servant.gd:18 - Parse Error: Identifier "creature_card" not declared in the current scope.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/devoted_servant.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/dragon.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/dragon.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/dwarven_craftsman.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/dwarven_craftsman.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/dwarven_rifleman.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/dwarven_rifleman.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/earth_elemental.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/earth_elemental.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/elf_hermit.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/elf_hermit.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/elven_healer.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/elven_healer.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/emissary_of_dorlak.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/emissary_of_dorlak.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/energy_beast.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: res://scripts/creatures/energy_beast.gd:9 - Parse Error: Function "swap_card()" not found in base self.
+  ERROR: res://scripts/creatures/energy_beast.gd:13 - Parse Error: Function "swap_card()" not found in base self.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/energy_beast.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/enraged_beaver.gd:2 - Parse Error: Expected identifier for the global class name after "class_name".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/enraged_beaver.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/enraged_quartermaster.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/enraged_quartermaster.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/ergodemon.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/ergodemon.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/faerie_apprentice.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/faerie_apprentice.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/faerie_sage.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/faerie_sage.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/fanatic.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/fanatic.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/fire_drake.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/fire_drake.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/fire_elemental.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: res://scripts/creatures/fire_elemental.gd:20 - Parse Error: Function "damage_player()" not found in base self.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/fire_elemental.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/forest_sprite.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: res://scripts/creatures/forest_sprite.gd:19 - Parse Error: Function "damage_all_except_current_index()" not found in base self.
+  ERROR: res://scripts/creatures/forest_sprite.gd:28 - Parse Error: Function "damage_opponent()" not found in base self.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/forest_sprite.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/forest_wolf.gd:2 - Parse Error: Expected identifier for the global class name after "class_name".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/forest_wolf.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/ghoul.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/ghoul.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/giant_spider.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: res://scripts/creatures/giant_spider.gd:26 - Parse Error: Function "add_creature()" not found in base self.
+  ERROR: res://scripts/creatures/giant_spider.gd:31 - Parse Error: Function "add_creature()" not found in base self.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/giant_spider.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/giant_turtle.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/giant_turtle.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/goblin_berserker.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/goblin_berserker.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/goblin_hero.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/goblin_hero.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/goblin_looter.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/goblin_looter.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/goblin_raider.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: res://scripts/creatures/goblin_raider.gd:25 - Parse Error: Function "add_creature()" not found in base self.
+  ERROR: res://scripts/creatures/goblin_raider.gd:30 - Parse Error: Function "add_creature()" not found in base self.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/goblin_raider.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/goblin_saboteur.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/goblin_saboteur.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/goblin_shaman.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/goblin_shaman.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/golem.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/golem.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/golem_guide.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/golem_guide.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/golem_handler.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/golem_handler.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/golem_instructor.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/golem_instructor.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/greater_demon.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: res://scripts/creatures/greater_demon.gd:23 - Parse Error: Function "damage_opponent()" not found in base self.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/greater_demon.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/griffin.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: res://scripts/creatures/griffin.gd:15 - Parse Error: Function "damage_player()" not found in base self.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/griffin.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/guardian_statue.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/guardian_statue.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/holy_avenger.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/holy_avenger.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/holy_guard.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/holy_guard.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/hydra.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: res://scripts/creatures/hydra.gd:19 - Parse Error: Function "damage_all_except_current_index()" not found in base self.
+  ERROR: res://scripts/creatures/hydra.gd:28 - Parse Error: Function "damage_opponent()" not found in base self.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/hydra.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/hypnotist.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: res://scripts/creatures/hypnotist.gd:15 - Parse Error: Function "damage_opponent()" not found in base self.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/hypnotist.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/ice_golem.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/ice_golem.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/ice_guard.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/ice_guard.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/insanian_berserker.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/insanian_berserker.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/insanian_catapult.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/insanian_catapult.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/insanian_king.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/insanian_king.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/insanian_lord.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/insanian_lord.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/insanian_peacekeeper.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/insanian_peacekeeper.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/insanian_shaman.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/insanian_shaman.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/justicar.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/justicar.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/keeper_of_death.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/keeper_of_death.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/lemure.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: res://scripts/creatures/lemure.gd:20 - Parse Error: Function "add_creature()" not found in base self.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/lemure.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/lightning_cloud.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: res://scripts/creatures/lightning_cloud.gd:19 - Parse Error: Function "damage_all_except_current_index()" not found in base self.
+  ERROR: res://scripts/creatures/lightning_cloud.gd:28 - Parse Error: Function "damage_opponent()" not found in base self.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/lightning_cloud.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/magic_hamster.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: res://scripts/creatures/magic_hamster.gd:26 - Parse Error: Function "swap_card()" not found in base self.
+  ERROR: res://scripts/creatures/magic_hamster.gd:33 - Parse Error: Function "swap_card()" not found in base self.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/magic_hamster.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/magister_of_blood.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: res://scripts/creatures/magister_of_blood.gd:11 - Parse Error: Function "damage_opponent()" not found in base self.
+  ERROR: res://scripts/creatures/magister_of_blood.gd:15 - Parse Error: Identifier "opponent_cards" not declared in the current scope.
+  ERROR: res://scripts/creatures/magister_of_blood.gd:16 - Parse Error: Identifier "owner_cards" not declared in the current scope.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/magister_of_blood.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/master_healer.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/master_healer.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/master_lich.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/master_lich.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/merfolk_apostate.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/merfolk_apostate.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/merfolk_elder.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/merfolk_elder.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/merfolk_overlord.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/merfolk_overlord.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/mind_master.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/mind_master.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/minotaur_commander.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/minotaur_commander.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/monk.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/monk.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/oracle.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: res://scripts/creatures/oracle.gd:17 - Parse Error: Function "damage_opponent()" not found in base self.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/oracle.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/orc_chieftain.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/orc_chieftain.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/ornithopter.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/ornithopter.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/paladin.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/paladin.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/phantom_warrior.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/phantom_warrior.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/phoenix.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: res://scripts/creatures/phoenix.gd:25 - Parse Error: Function "add_creature()" not found in base self.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/phoenix.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/portal_jumper.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: res://scripts/creatures/portal_jumper.gd:20 - Parse Error: Function "try_move_to_another_random_slot()" not found in base self.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/portal_jumper.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/priestess_of_moments.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/priestess_of_moments.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/priest_of_fire.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/priest_of_fire.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/ratmaster.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/ratmaster.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/reaver.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/reaver.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/scorpion.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: res://scripts/creatures/scorpion.gd:11 - Parse Error: Function "swap_card()" not found in base self.
+  ERROR: res://scripts/creatures/scorpion.gd:26 - Parse Error: Function "swap_card()" not found in base self.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/scorpion.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/scrambled_lemure.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/scrambled_lemure.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/sea_sprite.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: res://scripts/creatures/sea_sprite.gd:15 - Parse Error: Function "damage_player()" not found in base self.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/sea_sprite.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/spectral_assassin.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: res://scripts/creatures/spectral_assassin.gd:12 - Parse Error: Function "damage_opponent()" not found in base self.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/spectral_assassin.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/spectral_mage.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/spectral_mage.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/steam_tank.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/steam_tank.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/steel_golem.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/steel_golem.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/templar.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/templar.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/three_headed_demon.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: res://scripts/creatures/three_headed_demon.gd:19 - Parse Error: Function "damage_all_except_current_index()" not found in base self.
+  ERROR: res://scripts/creatures/three_headed_demon.gd:27 - Parse Error: Function "damage_opponent()" not found in base self.
+  ERROR: res://scripts/creatures/three_headed_demon.gd:36 - Parse Error: Function "add_creature()" not found in base self.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/three_headed_demon.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/timeblazer.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/timeblazer.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/timeweaver.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/timeweaver.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/time_dragon.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/time_dragon.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/titan.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/titan.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/treefolk_protector.gd:2 - Parse Error: Expected identifier for the global class name after "class_name".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/treefolk_protector.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/troll.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/troll.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/vampire_elder.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: res://scripts/creatures/vampire_elder.gd:16 - Parse Error: Identifier "owner_cards" not declared in the current scope.
+  ERROR: res://scripts/creatures/vampire_elder.gd:17 - Parse Error: Function "add_creature()" not found in base self.
+  ERROR: res://scripts/creatures/vampire_elder.gd:19 - Parse Error: Identifier "owner_cards" not declared in the current scope.
+  ERROR: res://scripts/creatures/vampire_elder.gd:20 - Parse Error: Function "add_creature()" not found in base self.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/vampire_elder.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/vampire_mystic.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: res://scripts/creatures/vampire_mystic.gd:15 - Parse Error: Identifier "creature_card" not declared in the current scope.
+  ERROR: res://scripts/creatures/vampire_mystic.gd:15 - Parse Error: Identifier "creature_card" not declared in the current scope.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/vampire_mystic.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/vindictive_raccoon.gd:2 - Parse Error: Expected identifier for the global class name after "class_name".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/vindictive_raccoon.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/wall_of_fire.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/wall_of_fire.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/wall_of_lightning.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: res://scripts/creatures/wall_of_lightning.gd:13 - Parse Error: Function "damage_opponent()" not found in base self.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/wall_of_lightning.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/wall_of_reflection.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: res://scripts/creatures/wall_of_reflection.gd:19 - Parse Error: Function "damage_opponent()" not found in base self.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/wall_of_reflection.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/water_elemental.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/water_elemental.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/white_elephant.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: res://scripts/creatures/white_elephant.gd:9 - Parse Error: Function "swap_card()" not found in base self.
+  ERROR: res://scripts/creatures/white_elephant.gd:13 - Parse Error: Function "swap_card()" not found in base self.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/white_elephant.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/wolverine.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: res://scripts/creatures/wolverine.gd:9 - Parse Error: Function "swap_card()" not found in base self.
+  ERROR: res://scripts/creatures/wolverine.gd:16 - Parse Error: Function "swap_card()" not found in base self.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/wolverine.gd" with error "Parse error".
+  ERROR: res://scripts/creatures/zealot.gd:1 - Parse Error: Could not resolve class "BaseCreature".
+  ERROR: res://scripts/creatures/zealot.gd:13 - Parse Error: Identifier "creature_card" not declared in the current scope.
+  ERROR: res://scripts/creatures/zealot.gd:14 - Parse Error: Identifier "game_state" not declared in the current scope.
+  ERROR: res://scripts/creatures/zealot.gd:18 - Parse Error: Identifier "creature_card" not declared in the current scope.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/creatures/zealot.gd" with error "Parse error".
+  ERROR: res://scripts/factories/creature_factory.gd:25 - Parse Error: Expected parameter name.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/factories/creature_factory.gd" with error "Parse error".
+  ERROR: res://scripts/factories/spell_factory.gd:25 - Parse Error: Expected parameter name.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/factories/spell_factory.gd" with error "Parse error".
+  ERROR: res://scripts/network/p2p_connection.gd:160 - Parse Error: The method "is_multiplayer_authority()" overrides a method from native class "Node". This won't be called by the engine and may not work as expected. (Warning treated as error.)
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/network/p2p_connection.gd" with error "Parse error".
+  ERROR: res://scripts/network/webrtc_matchmaking.gd:489 - Parse Error: The function signature doesn't match the parent. Parent signature is "is_connected(StringName, Callable) -> bool".
+  ERROR: res://scripts/network/webrtc_matchmaking.gd:243 - Parse Error: Too few arguments for "add_peer()" call. Expected at least 2 but received 1.
+  ERROR: res://scripts/network/webrtc_matchmaking.gd:243 - Parse Error: Invalid argument for "add_peer()" function: argument 1 should be "WebRTCPeerConnection" but is "int".
+  ERROR: res://scripts/network/webrtc_matchmaking.gd:489 - Parse Error: The method "is_connected()" overrides a method from native class "Object". This won't be called by the engine and may not work as expected. (Warning treated as error.)
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/network/webrtc_matchmaking.gd" with error "Parse error".
+  ERROR: res://scripts/spells/acidic_rain.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/acidic_rain.gd" with error "Parse error".
+  ERROR: res://scripts/spells/armageddon.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: res://scripts/spells/armageddon.gd:23 - Parse Error: Function "damage_opponent()" not found in base self.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/armageddon.gd" with error "Parse error".
+  ERROR: res://scripts/spells/army_of_rats.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/army_of_rats.gd" with error "Parse error".
+  ERROR: res://scripts/spells/army_upgrade.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/army_upgrade.gd" with error "Parse error".
+  ERROR: res://scripts/spells/base_spell.gd:82 - Parse Error: Cannot get return value of call to "play_spell_sound_by_class()" because it returns "void".
+  ERROR: res://scripts/spells/base_spell.gd:82 - Parse Error: Cannot assign a value of type null to variable "spell_sound_played" with specified type bool.
+  ERROR: res://scripts/spells/base_spell.gd:85 - Parse Error: Invalid argument for "play_sound_by_enum()" function: argument 1 should be "Sound" but is "SoundTypes.Sound".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/base_spell.gd" with error "Parse error".
+  ERROR: res://scripts/spells/blood_boil.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: res://scripts/spells/blood_boil.gd:14 - Parse Error: Identifier "opponent_cards" not declared in the current scope.
+  ERROR: res://scripts/spells/blood_boil.gd:18 - Parse Error: Identifier "game_state" not declared in the current scope.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/blood_boil.gd" with error "Parse error".
+  ERROR: res://scripts/spells/blood_ritual.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/blood_ritual.gd" with error "Parse error".
+  ERROR: res://scripts/spells/breathe_fire.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: res://scripts/spells/breathe_fire.gd:12 - Parse Error: Function "damage_opponent()" not found in base self.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/breathe_fire.gd" with error "Parse error".
+  ERROR: res://scripts/spells/call_to_ancient_spirits.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/call_to_ancient_spirits.gd" with error "Parse error".
+  ERROR: res://scripts/spells/call_to_thunder.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: res://scripts/spells/call_to_thunder.gd:23 - Parse Error: Function "damage_opponent()" not found in base self.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/call_to_thunder.gd" with error "Parse error".
+  ERROR: res://scripts/spells/cannonade.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/cannonade.gd" with error "Parse error".
+  ERROR: res://scripts/spells/chain_lightning.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: res://scripts/spells/chain_lightning.gd:15 - Parse Error: Function "damage_opponent()" not found in base self.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/chain_lightning.gd" with error "Parse error".
+  ERROR: res://scripts/spells/chaotic_wave.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/chaotic_wave.gd" with error "Parse error".
+  ERROR: res://scripts/spells/cursed_fog.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: res://scripts/spells/cursed_fog.gd:18 - Parse Error: Function "damage_player()" not found in base self.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/cursed_fog.gd" with error "Parse error".
+  ERROR: res://scripts/spells/dark_ritual.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/dark_ritual.gd" with error "Parse error".
+  ERROR: res://scripts/spells/disintegrate.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/disintegrate.gd" with error "Parse error".
+  ERROR: res://scripts/spells/divine_intervention.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/divine_intervention.gd" with error "Parse error".
+  ERROR: res://scripts/spells/divine_justice.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/divine_justice.gd" with error "Parse error".
+  ERROR: res://scripts/spells/divine_meddling.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/divine_meddling.gd" with error "Parse error".
+  ERROR: res://scripts/spells/doom_bolt.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/doom_bolt.gd" with error "Parse error".
+  ERROR: res://scripts/spells/drain_souls.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: res://scripts/spells/drain_souls.gd:52 - Parse Error: Function "swap_card()" not found in base self.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/drain_souls.gd" with error "Parse error".
+  ERROR: res://scripts/spells/enrage.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/enrage.gd" with error "Parse error".
+  ERROR: res://scripts/spells/explosion.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/explosion.gd" with error "Parse error".
+  ERROR: res://scripts/spells/fireball.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/fireball.gd" with error "Parse error".
+  ERROR: res://scripts/spells/flame_wave.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/flame_wave.gd" with error "Parse error".
+  ERROR: res://scripts/spells/gaze.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/gaze.gd" with error "Parse error".
+  ERROR: res://scripts/spells/golems_frenzy.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/golems_frenzy.gd" with error "Parse error".
+  ERROR: res://scripts/spells/golems_justice.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/golems_justice.gd" with error "Parse error".
+  ERROR: res://scripts/spells/hasten.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/hasten.gd" with error "Parse error".
+  ERROR: res://scripts/spells/healing_spray.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/healing_spray.gd" with error "Parse error".
+  ERROR: res://scripts/spells/hellfire.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/hellfire.gd" with error "Parse error".
+  ERROR: res://scripts/spells/hypnosis.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: res://scripts/spells/hypnosis.gd:66 - Parse Error: Function "scale_image()" not found in base self.
+  ERROR: res://scripts/spells/hypnosis.gd:73 - Parse Error: Function "damage_player()" not found in base self.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/hypnosis.gd" with error "Parse error".
+  ERROR: res://scripts/spells/inferno.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/inferno.gd" with error "Parse error".
+  ERROR: res://scripts/spells/lightning_bolt.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: res://scripts/spells/lightning_bolt.gd:17 - Parse Error: Function "damage_opponent()" not found in base self.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/lightning_bolt.gd" with error "Parse error".
+  ERROR: res://scripts/spells/madness.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/madness.gd" with error "Parse error".
+  ERROR: res://scripts/spells/mana_burn.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/mana_burn.gd" with error "Parse error".
+  ERROR: res://scripts/spells/meditation.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/meditation.gd" with error "Parse error".
+  ERROR: res://scripts/spells/move_falcon.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: res://scripts/spells/move_falcon.gd:28 - Parse Error: Function "move_card_to_another_slot()" not found in base self.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/move_falcon.gd" with error "Parse error".
+  ERROR: res://scripts/spells/natural_healing.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/natural_healing.gd" with error "Parse error".
+  ERROR: res://scripts/spells/natures_fury.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: res://scripts/spells/natures_fury.gd:38 - Parse Error: Function "damage_opponent()" not found in base self.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/natures_fury.gd" with error "Parse error".
+  ERROR: res://scripts/spells/natures_ritual.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/natures_ritual.gd" with error "Parse error".
+  ERROR: res://scripts/spells/overtime.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/overtime.gd" with error "Parse error".
+  ERROR: res://scripts/spells/poison.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/poison.gd" with error "Parse error".
+  ERROR: res://scripts/spells/power_chains.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/power_chains.gd" with error "Parse error".
+  ERROR: res://scripts/spells/pump_energy.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/pump_energy.gd" with error "Parse error".
+  ERROR: res://scripts/spells/rage_of_god.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/rage_of_god.gd" with error "Parse error".
+  ERROR: res://scripts/spells/rage_of_souls.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/rage_of_souls.gd" with error "Parse error".
+  ERROR: res://scripts/spells/rejuvenation.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/rejuvenation.gd" with error "Parse error".
+  ERROR: res://scripts/spells/rescue_operation.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: res://scripts/spells/rescue_operation.gd:20 - Parse Error: Function "try_move_to_another_random_open_slot()" not found in base self.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/rescue_operation.gd" with error "Parse error".
+  ERROR: res://scripts/spells/ritual_of_glory.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/ritual_of_glory.gd" with error "Parse error".
+  ERROR: res://scripts/spells/ritual_of_the_forest.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/ritual_of_the_forest.gd" with error "Parse error".
+  ERROR: res://scripts/spells/sacrifice.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/sacrifice.gd" with error "Parse error".
+  ERROR: res://scripts/spells/sonic_boom.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/sonic_boom.gd" with error "Parse error".
+  ERROR: res://scripts/spells/steal_essence.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/steal_essence.gd" with error "Parse error".
+  ERROR: res://scripts/spells/stone_rain.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/stone_rain.gd" with error "Parse error".
+  ERROR: res://scripts/spells/time_stop.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/time_stop.gd" with error "Parse error".
+  ERROR: res://scripts/spells/tornado.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/tornado.gd" with error "Parse error".
+  ERROR: res://scripts/spells/trumpet.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/trumpet.gd" with error "Parse error".
+  ERROR: res://scripts/spells/wrath_of_god.gd:1 - Parse Error: Could not resolve class "BaseSpell".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/spells/wrath_of_god.gd" with error "Parse error".
+  ERROR: res://scripts/ui/card_visual.gd:123 - Parse Error: Value of type "Vector2" cannot be assigned to a variable of type "String".
+  ERROR: res://scripts/ui/card_visual.gd:174 - Parse Error: Cannot infer the type of "costs" variable because the value doesn't have a set type.
+  ERROR: res://scripts/ui/card_visual.gd:468 - Parse Error: Invalid argument for "play_sound_by_enum()" function: argument 1 should be "Sound" but is "SoundTypes.Sound".
+  ERROR: res://scripts/ui/card_visual.gd:492 - Parse Error: Invalid argument for "play_sound_by_enum()" function: argument 1 should be "Sound" but is "SoundTypes.Sound".
+  ERROR: res://scripts/ui/card_visual.gd:527 - Parse Error: Invalid argument for "play_sound_by_enum()" function: argument 1 should be "Sound" but is "SoundTypes.Sound".
+  ERROR: res://scripts/ui/card_visual.gd:395 - Parse Error: The variable type is being inferred from a Variant value, so it will be typed as Variant. (Warning treated as error.)
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/ui/card_visual.gd" with error "Parse error".
+  ERROR: res://scripts/ui/main_menu.gd:99 - Parse Error: Invalid argument for "play_sound_by_enum()" function: argument 1 should be "Sound" but is "SoundTypes.Sound".
+  ERROR: res://scripts/ui/main_menu.gd:117 - Parse Error: Invalid argument for "play_sound_by_enum()" function: argument 1 should be "Sound" but is "SoundTypes.Sound".
+  ERROR: res://scripts/ui/main_menu.gd:131 - Parse Error: Invalid argument for "play_sound_by_enum()" function: argument 1 should be "Sound" but is "SoundTypes.Sound".
+  ERROR: res://scripts/ui/main_menu.gd:145 - Parse Error: Invalid argument for "play_sound_by_enum()" function: argument 1 should be "Sound" but is "SoundTypes.Sound".
+  ERROR: res://scripts/ui/main_menu.gd:159 - Parse Error: Invalid argument for "play_sound_by_enum()" function: argument 1 should be "Sound" but is "SoundTypes.Sound".
+  ERROR: res://scripts/ui/main_menu.gd:173 - Parse Error: Invalid argument for "play_sound_by_enum()" function: argument 1 should be "Sound" but is "SoundTypes.Sound".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/ui/main_menu.gd" with error "Parse error".
+  ERROR: res://scripts/ui/multiplayer_menu.gd:134 - Parse Error: Function "create_private_webrtc_match()" is a coroutine, so it must be called with "await".
+  ERROR: res://scripts/ui/multiplayer_menu.gd:168 - Parse Error: Function "join_private_webrtc_match()" is a coroutine, so it must be called with "await".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/ui/multiplayer_menu.gd" with error "Parse error".
+  ERROR: res://scripts/ui/card_visual.gd:123 - Parse Error: Value of type "Vector2" cannot be assigned to a variable of type "String".
+  ERROR: res://scripts/ui/card_visual.gd:174 - Parse Error: Cannot infer the type of "costs" variable because the value doesn't have a set type.
+  ERROR: res://scripts/ui/card_visual.gd:468 - Parse Error: Invalid argument for "play_sound_by_enum()" function: argument 1 should be "Sound" but is "SoundTypes.Sound".
+  ERROR: res://scripts/ui/card_visual.gd:492 - Parse Error: Invalid argument for "play_sound_by_enum()" function: argument 1 should be "Sound" but is "SoundTypes.Sound".
+  ERROR: res://scripts/ui/card_visual.gd:527 - Parse Error: Invalid argument for "play_sound_by_enum()" function: argument 1 should be "Sound" but is "SoundTypes.Sound".
+  ERROR: res://scripts/ui/card_visual.gd:395 - Parse Error: The variable type is being inferred from a Variant value, so it will be typed as Variant. (Warning treated as error.)
+  ERROR: res://scripts/ui/slot_visual.gd:265 - Parse Error: Invalid argument for "play_sound_by_enum()" function: argument 1 should be "Sound" but is "SoundTypes.Sound".
+  ERROR: res://scripts/ui/player_visual.gd:0 - Compile Error: Failed to compile depended scripts.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/ui/player_visual.gd" with error "Parse error".
+  ERROR: res://scripts/ui/tutorial.gd:151 - Parse Error: Cannot find member "CLICK" in base "SoundTypes.Sound".
+  ERROR: res://scripts/ui/tutorial.gd:156 - Parse Error: Cannot find member "CLICK" in base "SoundTypes.Sound".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/ui/tutorial.gd" with error "Parse error".
+  ERROR: res://scripts/game_controller.gd:197 - Parse Error: Cannot infer the type of "deck" variable because the value doesn't have a set type.
+  ERROR: res://scripts/game_controller.gd:389 - Parse Error: Invalid argument for "play_sound_by_enum()" function: argument 1 should be "Sound" but is "SoundTypes.Sound".
+  ERROR: res://scripts/game_controller.gd:396 - Parse Error: Could not resolve class "CreatureFactory", because of a parser error.
+  ERROR: res://scripts/game_controller.gd:396 - Parse Error: Cannot infer the type of "creature" variable because the value doesn't have a set type.
+  ERROR: res://scripts/game_controller.gd:448 - Parse Error: Could not resolve class "SpellFactory", because of a parser error.
+  ERROR: res://scripts/game_controller.gd:448 - Parse Error: Cannot infer the type of "spell" variable because the value doesn't have a set type.
+  ERROR: res://scripts/game_controller.gd:494 - Parse Error: Cannot infer the type of "hand" variable because the value doesn't have a set type.
+  ERROR: res://scripts/game_controller.gd:529 - Parse Error: Could not resolve class "CreatureFactory", because of a parser error.
+  ERROR: res://scripts/game_controller.gd:529 - Parse Error: Cannot infer the type of "creature" variable because the value doesn't have a set type.
+  ERROR: res://scripts/game_controller.gd:578 - Parse Error: Cannot infer the type of "costs" variable because the value doesn't have a set type.
+  ERROR: res://scripts/game_controller.gd:594 - Parse Error: Cannot infer the type of "costs" variable because the value doesn't have a set type.
+  ERROR: res://scripts/game_controller.gd:670 - Parse Error: Could not resolve class "CreatureFactory", because of a parser error.
+  ERROR: res://scripts/game_controller.gd:670 - Parse Error: Cannot infer the type of "creature" variable because the value doesn't have a set type.
+  ERROR: res://scripts/game_controller.gd:725 - Parse Error: Invalid argument for "play_sound_by_enum()" function: argument 1 should be "Sound" but is "SoundTypes.Sound".
+  ERROR: res://scripts/game_controller.gd:747 - Parse Error: Could not resolve class "SpellFactory", because of a parser error.
+  ERROR: res://scripts/game_controller.gd:747 - Parse Error: Cannot infer the type of "spell" variable because the value doesn't have a set type.
+  ERROR: res://scripts/game_controller.gd:1147 - Parse Error: Cannot infer the type of "is_victory" variable because the value doesn't have a set type.
+  ERROR: res://scripts/game_controller.gd:1157 - Parse Error: Invalid argument for "play_sound_by_enum()" function: argument 1 should be "Sound" but is "SoundTypes.Sound".
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/game_controller.gd" with error "Parse error".
