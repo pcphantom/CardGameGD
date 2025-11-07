@@ -195,7 +195,7 @@ func update_visual() -> void:
 	cost_label.size = Vector2(card_size.x - border_width * 2 - 10, 20)
 
 	# Update creature stats if applicable
-	var is_creature: bool = card.is_creature()
+	var is_creature: bool = not card.is_spell()
 	attack_label.visible = is_creature
 	life_label.visible = is_creature
 
