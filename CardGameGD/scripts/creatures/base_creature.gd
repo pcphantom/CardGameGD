@@ -1,4 +1,4 @@
-extends "res://scripts/core/base_functions.gd"
+extends BaseFunctions
 class_name BaseCreature
 
 func _init(game_ref, card_ref: Card, card_image_ref, slot_idx: int, owner_ref, opponent_ref) -> void:

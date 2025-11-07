@@ -1,4 +1,5 @@
 extends RefCounted
+class_name BaseFunctions
 
 var card: Card = null
 var card_image = null
