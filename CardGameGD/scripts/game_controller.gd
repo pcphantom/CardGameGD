@@ -236,7 +236,10 @@ func start_first_turn() -> void:
 	current_turn_player_id = local_player.get_id()
 	is_turn_active = true
 
-	GameManager.start_turn(local_player.get_id())
+	# REASON FOR EDIT: Remove nonexistent GameManager.start_turn() call
+	# PROBLEM: GameManager has no start_turn() method, causing error on load
+	# FIX: Remove call - GameController manages own turn state
+	# WHY: GameController already sets current_turn_player_id and is_turn_active
 	log_panel.add_with_color("Your turn!", LogPanel.COLOR_NORMAL)
 
 	# Add resources at start of turn
@@ -307,7 +310,9 @@ func execute_opponent_turn() -> void:
 	_add_turn_resources(opponent_player)
 	opponent_visual.update_display()
 
-	GameManager.start_turn(opponent_player.get_id())
+	# REASON FOR EDIT: Remove nonexistent GameManager.start_turn() call
+	# PROBLEM: GameManager has no start_turn() method, causing error
+	# FIX: Remove call - GameController manages own turn state
 
 	# Wait before playing
 	await get_tree().create_timer(1.0).timeout
@@ -330,7 +335,9 @@ func start_player_turn() -> void:
 	# Draw a card
 	_draw_card(local_player, player_visual)
 
-	GameManager.start_turn(local_player.get_id())
+	# REASON FOR EDIT: Remove nonexistent GameManager.start_turn() call
+	# PROBLEM: GameManager has no start_turn() method, causing error
+	# FIX: Remove call - GameController manages own turn state
 	log_panel.add_with_color("Your turn!", LogPanel.COLOR_NORMAL)
 
 func _add_turn_resources(player: Player) -> void:
