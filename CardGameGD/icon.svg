@@ -1,0 +1,27 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="128" height="128" fill="#1a1a2e" rx="16"/>
+
+  <!-- Card Shape -->
+  <rect x="24" y="16" width="80" height="96" fill="#16213e" rx="8" stroke="#e94560" stroke-width="3"/>
+
+  <!-- Element Symbols -->
+  <!-- Fire (top-left) -->
+  <circle cx="40" cy="36" r="8" fill="#ff6b6b"/>
+
+  <!-- Water (top-right) -->
+  <circle cx="88" cy="36" r="8" fill="#4ecdc4"/>
+
+  <!-- Air (bottom-left) -->
+  <circle cx="40" cy="92" r="8" fill="#ffe66d"/>
+
+  <!-- Earth (bottom-right) -->
+  <circle cx="88" cy="92" r="8" fill="#95e1d3"/>
+
+  <!-- Center Magic Symbol -->
+  <circle cx="64" cy="64" r="12" fill="none" stroke="#e94560" stroke-width="2"/>
+  <circle cx="64" cy="64" r="6" fill="#e94560"/>
+
+  <!-- Title -->
+  <text x="64" y="120" font-family="Arial, sans-serif" font-size="12" fill="#e94560" text-anchor="middle" font-weight="bold">SPECTRO</text>
+</svg>

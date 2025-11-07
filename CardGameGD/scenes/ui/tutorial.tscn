@@ -1,0 +1,110 @@
+[gd_scene load_steps=2 format=3 uid="uid://cwl6j8yx3xq5k"]
+
+[ext_resource type="Script" path="res://scripts/ui/tutorial.gd" id="1_tutorial"]
+
+[node name="Tutorial" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_tutorial")
+
+[node name="DarkOverlay" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.8)
+
+[node name="TutorialPanel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -400.0
+offset_top = -300.0
+offset_right = 400.0
+offset_bottom = 300.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="TutorialPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TutorialPanel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="TitleLabel" type="Label" parent="TutorialPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Tutorial Title"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="TutorialPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="TutorialPanel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 400)
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="ContentLabel" type="RichTextLabel" parent="TutorialPanel/MarginContainer/VBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 16
+bbcode_enabled = true
+text = "Tutorial content goes here..."
+fit_content = true
+
+[node name="HSeparator2" type="HSeparator" parent="TutorialPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="NavigationContainer" type="HBoxContainer" parent="TutorialPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="PreviousButton" type="Button" parent="TutorialPanel/MarginContainer/VBoxContainer/NavigationContainer"]
+custom_minimum_size = Vector2(120, 40)
+layout_mode = 2
+text = "< Previous"
+
+[node name="PageLabel" type="Label" parent="TutorialPanel/MarginContainer/VBoxContainer/NavigationContainer"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Page 1 of 10"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="NextButton" type="Button" parent="TutorialPanel/MarginContainer/VBoxContainer/NavigationContainer"]
+custom_minimum_size = Vector2(120, 40)
+layout_mode = 2
+text = "Next >"
+
+[node name="CloseButton" type="Button" parent="TutorialPanel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 45)
+layout_mode = 2
+text = "Close Tutorial"
+
+[connection signal="pressed" from="TutorialPanel/MarginContainer/VBoxContainer/NavigationContainer/PreviousButton" to="." method="_on_previous_pressed"]
+[connection signal="pressed" from="TutorialPanel/MarginContainer/VBoxContainer/NavigationContainer/NextButton" to="." method="_on_next_pressed"]
+[connection signal="pressed" from="TutorialPanel/MarginContainer/VBoxContainer/CloseButton" to="." method="_on_close_pressed"]
