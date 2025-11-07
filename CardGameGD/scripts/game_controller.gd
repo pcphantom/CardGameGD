@@ -173,7 +173,7 @@ func _add_test_cards_to_player(player: Player) -> void:
 	for i in range(10):
 		var card := Card.new()
 		card.set_name("Test Creature %d" % (i + 1))
-		card.set_creature(true)
+		card.set_spell(false)
 		card.set_attack(3 + i % 3)
 		card.set_life(5 + i % 5)
 		card.set_type(CardType.Type.FIRE + (i % 5))
@@ -184,7 +184,7 @@ func _add_test_cards_to_player(player: Player) -> void:
 	for i in range(5):
 		var card := Card.new()
 		card.set_name("Test Spell %d" % (i + 1))
-		card.set_creature(false)
+		card.set_spell(true)
 		card.set_type(CardType.Type.FIRE + (i % 5))
 		card.add_cost(card.get_type(), 3)
 		player.get_deck().append(card)
@@ -328,7 +328,7 @@ func _on_player_hand_card_clicked(card_visual: CardVisual) -> void:
 	selected_card.set_selected(true)
 
 	# Highlight available slots
-	if card.is_creature():
+	if not card.is_spell():
 		var empty_slots := player_visual.get_empty_slot_indices()
 		player_visual.highlight_all_slots(false)
 		for slot_idx in empty_slots:
@@ -350,7 +350,7 @@ func _on_player_slot_clicked(slot: SlotVisual) -> void:
 		return
 
 	var card := selected_card.get_card()
-	if not card.is_creature():
+	if card.is_spell():
 		return
 
 	if not slot.is_empty():
@@ -368,7 +368,7 @@ func _on_opponent_slot_clicked(slot: SlotVisual) -> void:
 		return
 
 	var card := selected_card.get_card()
-	if card.is_creature():
+	if not card.is_spell():
 		return
 
 	# Cast spell on target
@@ -498,7 +498,7 @@ func _ai_play_cards() -> void:
 		if not can_play_card(card, opponent_player):
 			continue
 
-		if card.is_creature():
+		if not card.is_spell():
 			# Find empty slot
 			var empty_slots := opponent_visual.get_empty_slot_indices()
 			if empty_slots.size() > 0:
@@ -658,7 +658,7 @@ func _handle_remote_card_summoned(event: NetworkEvent) -> void:
 	# Create card for opponent
 	var card := Card.new()
 	card.set_name(card_name)
-	card.set_creature(true)
+	card.set_spell(false)
 	card.set_life(life)
 	card.set_attack(attack)
 	card.set_type(CardType.Type.FIRE)  # Default type
@@ -739,7 +739,7 @@ func _handle_remote_spell_cast(event: NetworkEvent) -> void:
 	# Create spell instance
 	var card := Card.new()
 	card.set_name(spell_name)
-	card.set_creature(false)
+	card.set_spell(true)
 
 	var _spell: BaseSpell = SpellFactory.get_spell_class(
 		spell_name,
