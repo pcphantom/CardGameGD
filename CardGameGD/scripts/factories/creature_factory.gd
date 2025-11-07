@@ -28,8 +28,8 @@ static func get_creature_class(
 	card: Card,
 	card_image: CardVisual,
 	slot_index: int,
-	owner_player: PlayerVisual,
-	opponent_player: PlayerVisual
+	owner: PlayerVisual,
+	opponent: PlayerVisual
 ) -> BaseCreature:
 
 	# Phase 3 Stub: Always return BaseCreature
@@ -53,8 +53,8 @@ static func get_creature_class(
 		card,
 		card_image,
 		slot_index,
-		owner_player,
-		opponent_player
+		owner,
+		opponent
 	)
 
 	# Future Phase 5 implementation will look like:

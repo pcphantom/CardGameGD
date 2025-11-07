@@ -27,8 +27,8 @@ static func get_spell_class(
 	game: GameController,
 	card: Card,
 	card_image: CardVisual,
-	owner_player: PlayerVisual,
-	opponent_player: PlayerVisual
+	owner: PlayerVisual,
+	opponent: PlayerVisual
 ) -> BaseSpell:
 
 	# Phase 3 Stub: Always return BaseSpell
@@ -51,8 +51,8 @@ static func get_spell_class(
 		game,
 		card,
 		card_image,
-		owner_player,
-		opponent_player
+		owner,
+		opponent
 	)
 
 	# Future Phase 6 implementation will look like:

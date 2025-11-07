@@ -175,7 +175,7 @@ func setup_player(player: Player, is_local: bool) -> void:
 			label.size = Vector2(90, 30)
 
 	# Setup board slots
-	setup_slots(player.get_uuid())
+	setup_slots(player.get_id())
 
 	# Update display
 	update_display()
