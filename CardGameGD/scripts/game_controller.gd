@@ -197,10 +197,10 @@ func _draw_card(player: Player, visual: PlayerVisual) -> void:
 		visual.add_card_to_hand(card)
 
 func start_first_turn() -> void:
-	current_turn_player_id = local_player.get_uuid()
+	current_turn_player_id = local_player.get_id()
 	is_turn_active = true
 
-	GameManager.start_turn(local_player.get_uuid())
+	GameManager.start_turn(local_player.get_id())
 	log_panel.add_with_color("Your turn!", LogPanel.COLOR_NORMAL)
 
 	# Add resources at start of turn
@@ -265,13 +265,13 @@ func end_current_turn() -> void:
 
 func execute_opponent_turn() -> void:
 	log_panel.add_with_color("Opponent's turn", LogPanel.COLOR_NORMAL)
-	current_turn_player_id = opponent_player.get_uuid()
+	current_turn_player_id = opponent_player.get_id()
 
 	# Add resources
 	_add_turn_resources(opponent_player)
 	opponent_visual.update_display()
 
-	GameManager.start_turn(opponent_player.get_uuid())
+	GameManager.start_turn(opponent_player.get_id())
 
 	# Wait before playing
 	await get_tree().create_timer(1.0).timeout
@@ -284,7 +284,7 @@ func execute_opponent_turn() -> void:
 	start_player_turn()
 
 func start_player_turn() -> void:
-	current_turn_player_id = local_player.get_uuid()
+	current_turn_player_id = local_player.get_id()
 	is_turn_active = true
 
 	# Add resources
@@ -294,7 +294,7 @@ func start_player_turn() -> void:
 	# Draw a card
 	_draw_card(local_player, player_visual)
 
-	GameManager.start_turn(local_player.get_uuid())
+	GameManager.start_turn(local_player.get_id())
 	log_panel.add_with_color("Your turn!", LogPanel.COLOR_NORMAL)
 
 func _add_turn_resources(player: Player) -> void:
@@ -412,7 +412,7 @@ func summon_creature(card: Card, slot_index: int) -> void:
 
 	# Log summon
 	log_panel.add_summon(card.get_name(), local_player.get_name(), slot_index)
-	GameManager.emit_signal("card_summoned", card, local_player.get_uuid(), slot_index)
+	GameManager.emit_signal("card_summoned", card, local_player.get_id(), slot_index)
 
 	# Send network event in multiplayer
 	if is_multiplayer:
@@ -478,7 +478,7 @@ func cast_spell(card: Card, target_slot: int) -> void:
 		event.slot = target_slot
 		event.caster = local_player.get_name()
 		event.spell_target_card_name = target_creature.get_name() if target_creature else ""
-		event.targeted_card_owner_id = opponent_player.get_uuid()
+		event.targeted_card_owner_id = opponent_player.get_id()
 		event.damage_via_spell = true
 		NetworkManager.send_network_event(event)
 		print("GameController: Sent SPELL_CAST event for %s targeting slot %d" % [card.get_name(), target_slot])
@@ -726,7 +726,7 @@ func _handle_remote_card_attack(event: NetworkEvent) -> void:
 
 	# Check for game over
 	if local_player.get_life() <= 0:
-		GameManager.game_over.emit(opponent_player.get_uuid())
+		GameManager.game_over.emit(opponent_player.get_id())
 
 # Handle remote spell cast
 func _handle_remote_spell_cast(event: NetworkEvent) -> void:
@@ -836,9 +836,9 @@ func _handle_remote_game_over(event: NetworkEvent) -> void:
 
 	var winner_id: String = event.player_data.get("winner_id", "")
 
-	if winner_id == local_player.get_uuid():
+	if winner_id == local_player.get_id():
 		log_panel.add_game_over(local_player.get_name())
-	elif winner_id == opponent_player.get_uuid():
+	elif winner_id == opponent_player.get_id():
 		log_panel.add_game_over(opponent_player.get_name())
 	else:
 		log_panel.add_game_over("Unknown")
@@ -937,9 +937,9 @@ func _on_game_over(winner_id: String) -> void:
 	is_my_turn = false
 
 	var winner_name := "Unknown"
-	if winner_id == local_player.get_uuid():
+	if winner_id == local_player.get_id():
 		winner_name = local_player.get_name()
-	elif winner_id == opponent_player.get_uuid():
+	elif winner_id == opponent_player.get_id():
 		winner_name = opponent_player.get_name()
 
 	log_panel.add_game_over(winner_name)
@@ -1142,7 +1142,7 @@ func show_victory_defeat_screen(winner_id: String) -> void:
 	if not victory_defeat_screen:
 		return
 
-	var is_victory: bool = winner_id == local_player.get_uuid()
+	var is_victory: bool = winner_id == local_player.get_id()
 	var title_label: Label = victory_defeat_screen.get_node("TitleLabel") as Label
 	var winner_label: Label = victory_defeat_screen.get_node("WinnerLabel") as Label
 
@@ -1257,7 +1257,7 @@ func _do_forfeit() -> void:
 	get_tree().paused = false
 
 	# Opponent wins
-	show_victory_defeat_screen(opponent_player.get_uuid())
+	show_victory_defeat_screen(opponent_player.get_id())
 
 func _on_pause_quit_pressed() -> void:
 	"""Quit to main menu from pause."""
