@@ -177,7 +177,7 @@ func _add_test_cards_to_player(player: Player) -> void:
 		card.set_attack(3 + i % 3)
 		card.set_life(5 + i % 5)
 		card.set_type(CardType.Type.FIRE + (i % 5))
-		card.add_cost(card.get_type(), 2 + i % 3)
+		card.set_cost(2 + i % 3)
 		player.get_deck().append(card)
 
 	# Create test spell cards
@@ -186,7 +186,7 @@ func _add_test_cards_to_player(player: Player) -> void:
 		card.set_name("Test Spell %d" % (i + 1))
 		card.set_spell(true)
 		card.set_type(CardType.Type.FIRE + (i % 5))
-		card.add_cost(card.get_type(), 3)
+		card.set_cost(3)
 		player.get_deck().append(card)
 
 func _draw_card(player: Player, visual: PlayerVisual) -> void:
@@ -1214,7 +1214,7 @@ func show_card_tooltip(card: Card, mouse_pos: Vector2) -> void:
 	else:
 		stats_label.visible = false
 
-	desc_label.text = card.get_description() if card.has_method("get_description") else ""
+	desc_label.text = card.get_desc() if card.has_method("get_desc") else ""
 
 	# Position tooltip near mouse
 	tooltip_panel.position = mouse_pos + Vector2(15, 15)
