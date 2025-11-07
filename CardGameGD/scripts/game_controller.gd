@@ -131,8 +131,6 @@ func create_players() -> void:
 	local_player = Player.new()
 	local_player.set_name("Player")
 	local_player.set_life(50)
-	local_player.set_uuid(local_player.generate_uuid())
-	local_player.set_human(true)
 
 	# Set starting resources
 	local_player.strength[CardType.Type.FIRE] = 1
@@ -145,8 +143,6 @@ func create_players() -> void:
 	opponent_player = Player.new()
 	opponent_player.set_name("Opponent")
 	opponent_player.set_life(50)
-	opponent_player.set_uuid(opponent_player.generate_uuid())
-	opponent_player.set_human(false)
 
 	# Set starting resources
 	opponent_player.strength[CardType.Type.FIRE] = 1
