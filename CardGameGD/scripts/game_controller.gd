@@ -29,6 +29,7 @@ var is_my_turn: bool = true
 # UI elements
 var end_turn_button: Button = null
 var log_panel: LogPanel = null
+var card_collection_grid: CardCollectionGrid = null
 var victory_defeat_screen: Panel = null
 var pause_menu: Panel = null
 var turn_timer_label: Label = null
@@ -139,6 +140,14 @@ func _setup_ui_references() -> void:
 	log_panel.z_index = 100
 	add_child(log_panel)
 
+	# REASON: Create card collection grid to display player's cards
+	# POSITION: (520, 350) - exact position from CardGameGDX
+	# WHY: Shows all cards grouped by element type in 5-column scrollable grid
+	card_collection_grid = CardCollectionGrid.new()
+	card_collection_grid.name = "CardCollectionGrid"
+	card_collection_grid.position = Vector2(520, 350)
+	add_child(card_collection_grid)
+
 func create_players() -> void:
 	# Create local player
 	local_player = Player.new()
@@ -180,6 +189,11 @@ func setup_starting_decks() -> void:
 	for i in range(5):
 		_draw_card(local_player, player_visual)
 		_draw_card(opponent_player, opponent_visual)
+
+	# REASON: Populate card collection grid with local player's cards
+	# WHY: Shows all available cards grouped by element type
+	if card_collection_grid and local_player:
+		card_collection_grid.populate_cards(local_player.get_all_cards())
 
 func _add_test_cards_to_player(player: Player) -> void:
 	# REASON FOR EDIT: Fix deck selection - was always adding to player_deck
@@ -223,6 +237,21 @@ func _add_test_cards_to_player(player: Player) -> void:
 		card.set_type(CardType.Type.FIRE + (i % 5))
 		card.set_cost(3)
 		deck.append(card)
+
+	# REASON: Also add cards to player's collection arrays for card grid display
+	# WHY: CardCollectionGrid needs access to player.get_all_cards() which combines all typed arrays
+	for card in deck:
+		match card.get_type():
+			CardType.Type.FIRE:
+				player.fire_cards.append(card)
+			CardType.Type.WATER:
+				player.water_cards.append(card)
+			CardType.Type.AIR:
+				player.air_cards.append(card)
+			CardType.Type.EARTH:
+				player.earth_cards.append(card)
+			CardType.Type.OTHER:
+				player.special_cards.append(card)
 
 func _draw_card(player: Player, visual: PlayerVisual) -> void:
 	# REASON FOR EDIT: Fix deck/hand selection - was always using player_deck/player_hand

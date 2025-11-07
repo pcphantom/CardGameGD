@@ -192,6 +192,17 @@ func get_earth_cards() -> Array:
 func get_special_cards() -> Array:
 	return special_cards
 
+func get_all_cards() -> Array:
+	# REASON: Card collection grid needs all player cards combined
+	# RETURNS: Array of all cards from all element types
+	var cards: Array = []
+	cards.append_array(fire_cards)
+	cards.append_array(air_cards)
+	cards.append_array(water_cards)
+	cards.append_array(earth_cards)
+	cards.append_array(special_cards)
+	return cards
+
 func enable_disable_cards(type: CardType.Type) -> void:
 	var pstr: int = get_strength(type)
 	var cards: Array = get_cards(type)
