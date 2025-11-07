@@ -1,4 +1,4 @@
-extends "res://scripts/core/base_functions.gd"
+extends BaseFunctions
 class_name BaseSpell
 
 var targeted_card_image = null
