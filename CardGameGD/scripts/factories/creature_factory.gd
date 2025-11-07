@@ -26,10 +26,10 @@ static func get_creature_class(
 	creature_class_name: String,
 	game: GameController,
 	card: Card,
-	card_image: CardVisual,
+	card_image: CardImage,
 	slot_index: int,
-	owner: PlayerVisual,
-	opponent: PlayerVisual
+	owner: PlayerImage,
+	opponent: PlayerImage
 ) -> BaseCreature:
 
 	# Phase 3 Stub: Always return BaseCreature

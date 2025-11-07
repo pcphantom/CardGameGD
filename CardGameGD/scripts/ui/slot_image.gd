@@ -1,17 +1,17 @@
-class_name SlotVisual
+class_name SlotImage
 extends Control
 
 ## Visual representation of a slot on the game board
 ## Replaces SlotImage.java from the original game
 
-signal slot_clicked(slot: SlotVisual)
-signal slot_hovered(slot: SlotVisual)
-signal slot_unhovered(slot: SlotVisual)
+signal slot_clicked(slot: SlotImage)
+signal slot_hovered(slot: SlotImage)
+signal slot_unhovered(slot: SlotImage)
 
 # Slot state
 var slot_index: int = -1
 var is_occupied: bool = false
-var card_visual: CardVisual = null
+var card_visual: CardImage = null
 var owner_id: String = ""
 var is_player_slot: bool = false
 var is_highlighted: bool = false
@@ -126,7 +126,7 @@ func set_occupied(occupied: bool) -> void:
 func get_occupied() -> bool:
 	return is_occupied
 
-func set_card(card_vis: CardVisual) -> void:
+func set_card(card_vis: CardImage) -> void:
 	# Remove existing card if any
 	if card_visual != null and card_visual.get_parent() == self:
 		remove_child(card_visual)
@@ -145,11 +145,11 @@ func set_card(card_vis: CardVisual) -> void:
 
 	_update_visual()
 
-func get_card() -> CardVisual:
+func get_card() -> CardImage:
 	return card_visual
 
-func remove_card() -> CardVisual:
-	var removed_card: CardVisual = card_visual
+func remove_card() -> CardImage:
+	var removed_card: CardImage = card_visual
 
 	if card_visual != null and card_visual.get_parent() == self:
 		remove_child(card_visual)
@@ -296,4 +296,4 @@ func update_creature_visual() -> void:
 func _to_string() -> String:
 	var status: String = "occupied" if is_occupied else "empty"
 	var owner_str: String = "player" if is_player_slot else "opponent"
-	return "SlotVisual[%d](%s, %s)" % [slot_index, owner_str, status]
+	return "SlotImage[%d](%s, %s)" % [slot_index, owner_str, status]

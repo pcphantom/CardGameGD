@@ -1,12 +1,12 @@
-class_name CardVisual
+class_name CardImage
 extends Control
 
 ## Visual representation of a card on screen
 ## Replaces CardImage.java from the original game
 
-signal card_clicked(card_visual: CardVisual)
-signal card_hovered(card_visual: CardVisual)
-signal card_unhovered(card_visual: CardVisual)
+signal card_clicked(card_visual: CardImage)
+signal card_hovered(card_visual: CardImage)
+signal card_unhovered(card_visual: CardImage)
 
 # Card data and state
 var card: Card = null
@@ -171,11 +171,11 @@ func update_visual() -> void:
 
 		if card_texture != null:
 			portrait.texture = card_texture
-			print("CardVisual: Loaded texture for '%s'" % card_name)
+			print("CardImage: Loaded texture for '%s'" % card_name)
 		else:
 			# Fallback: dark gray if texture missing
 			portrait.texture = null
-			push_warning("CardVisual: Missing texture for card: %s" % card_name)
+			push_warning("CardImage: Missing texture for card: %s" % card_name)
 			# Create dark gray background as fallback
 			if portrait.get_child_count() == 0:
 				var fallback := ColorRect.new()
@@ -363,8 +363,8 @@ func _on_mouse_exited() -> void:
 
 func _to_string() -> String:
 	if card != null:
-		return "CardVisual(%s)" % card.get_name()
-	return "CardVisual(empty)"
+		return "CardImage(%s)" % card.get_name()
+	return "CardImage(empty)"
 
 # ============================================================================
 # ANIMATION METHODS

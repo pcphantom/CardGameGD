@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://bvq8x7y2n3m4k"]
 
-[ext_resource type="Script" path="res://scripts/game_controller.gd" id="1_main"]
+[ext_resource type="Script" path="res://scripts/cards.gd" id="1_main"]
 [ext_resource type="Texture2D" uid="uid://davp2uf8ccxlq" path="res://assets/images/background.jpg" id="2_bg"]
 
 [node name="Main" type="Node2D"]
