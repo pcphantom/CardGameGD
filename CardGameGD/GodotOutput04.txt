@@ -1,0 +1,28 @@
+Godot Engine v4.4.1.stable.official (c) 2007-present Juan Linietsky, Ariel Manzur & Godot Contributors.
+--- Debug adapter server started on port 6006 ---
+--- GDScript language server started on port 6005 ---
+  ERROR: res://scripts/ui/card_visual.gd:123 - Parse Error: Value of type "Vector2" cannot be assigned to a variable of type "String".
+  ERROR: res://scripts/ui/card_visual.gd:174 - Parse Error: Cannot infer the type of "costs" variable because the value doesn't have a set type.
+  ERROR: res://scripts/ui/card_visual.gd:395 - Parse Error: The variable type is being inferred from a Variant value, so it will be typed as Variant. (Warning treated as error.)
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/ui/card_visual.gd" with error "Parse error".
+  ERROR: res://scripts/ui/card_visual.gd:123 - Parse Error: Value of type "Vector2" cannot be assigned to a variable of type "String".
+  ERROR: res://scripts/ui/card_visual.gd:174 - Parse Error: Cannot infer the type of "costs" variable because the value doesn't have a set type.
+  ERROR: res://scripts/ui/card_visual.gd:395 - Parse Error: The variable type is being inferred from a Variant value, so it will be typed as Variant. (Warning treated as error.)
+  ERROR: res://scripts/ui/slot_visual.gd:0 - Compile Error: Failed to compile depended scripts.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/ui/slot_visual.gd" with error "Parse error".
+  ERROR: res://scripts/game_controller.gd:197 - Parse Error: Cannot infer the type of "deck" variable because the value doesn't have a set type.
+  ERROR: res://scripts/game_controller.gd:396 - Parse Error: Could not resolve class "CreatureFactory", because of a parser error.
+  ERROR: res://scripts/game_controller.gd:396 - Parse Error: Cannot infer the type of "creature" variable because the value doesn't have a set type.
+  ERROR: res://scripts/game_controller.gd:448 - Parse Error: Could not resolve class "SpellFactory", because of a parser error.
+  ERROR: res://scripts/game_controller.gd:448 - Parse Error: Cannot infer the type of "spell" variable because the value doesn't have a set type.
+  ERROR: res://scripts/game_controller.gd:494 - Parse Error: Cannot infer the type of "hand" variable because the value doesn't have a set type.
+  ERROR: res://scripts/game_controller.gd:529 - Parse Error: Could not resolve class "CreatureFactory", because of a parser error.
+  ERROR: res://scripts/game_controller.gd:529 - Parse Error: Cannot infer the type of "creature" variable because the value doesn't have a set type.
+  ERROR: res://scripts/game_controller.gd:578 - Parse Error: Cannot infer the type of "costs" variable because the value doesn't have a set type.
+  ERROR: res://scripts/game_controller.gd:594 - Parse Error: Cannot infer the type of "costs" variable because the value doesn't have a set type.
+  ERROR: res://scripts/game_controller.gd:670 - Parse Error: Could not resolve class "CreatureFactory", because of a parser error.
+  ERROR: res://scripts/game_controller.gd:670 - Parse Error: Cannot infer the type of "creature" variable because the value doesn't have a set type.
+  ERROR: res://scripts/game_controller.gd:747 - Parse Error: Could not resolve class "SpellFactory", because of a parser error.
+  ERROR: res://scripts/game_controller.gd:747 - Parse Error: Cannot infer the type of "spell" variable because the value doesn't have a set type.
+  ERROR: res://scripts/game_controller.gd:1147 - Parse Error: Cannot infer the type of "is_victory" variable because the value doesn't have a set type.
+  ERROR: modules/gdscript/gdscript.cpp:3022 - Failed to load script "res://scripts/game_controller.gd" with error "Parse error".
