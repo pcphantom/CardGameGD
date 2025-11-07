@@ -18,13 +18,12 @@ var creature: BaseCreature = null
 var spell: BaseSpell = null
 
 # Visual elements
-var background: ColorRect = null
 var portrait: TextureRect = null
 var name_label: Label = null
 var cost_label: Label = null
 var attack_label: Label = null
 var life_label: Label = null
-var frame: TextureRect = null  # CHANGED: Use TextureRect for proper frame rendering
+var frame: TextureRect = null
 
 # Animation state
 var is_being_dragged: bool = false
@@ -56,44 +55,33 @@ func _ready() -> void:
 	_create_visual_elements()
 
 func _create_visual_elements() -> void:
-	# REASON: Ensure proper z-index layering so stats render on top of card artwork
-	# PROBLEM: Stats must be visible on top of all other card elements
-	# FIX: Create elements in correct order with explicit z-index values
-	# WHY: Stats in corners must be clearly visible for gameplay
+	# REASON: Cards use only frame texture and artwork texture, no colored backgrounds
+	# PROBLEM: Previous code created colored ColorRect backgrounds
+	# FIX: Create only frame, portrait, and label elements with proper z-index
+	# WHY: Cards must render exactly like original with texture atlas artwork
 
-	# Frame first (z-index 0)
+	# 1. Frame (border) - z_index 0
 	frame = TextureRect.new()
-	frame.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	frame.stretch_mode = TextureRect.STRETCH_SCALE
 	frame.z_index = 0
 	frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(frame)
 
-	# Background
-	background = ColorRect.new()
-	background.color = Color(0.2, 0.2, 0.2)
-	background.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	add_child(background)
-
-	# Portrait second (z-index 1)
+	# 2. Portrait (artwork) - z_index 1
 	portrait = TextureRect.new()
-	portrait.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
-	portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	portrait.z_index = 1
 	portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(portrait)
 
-	# Name label (z-index 5)
+	# 3. Name label - z_index 5
 	name_label = Label.new()
 	name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	name_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	name_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	name_label.add_theme_font_size_override("font_size", 12)
 	name_label.z_index = 5
 	name_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(name_label)
 
-	# Stat labels LAST with highest z-index (z-index 10)
+	# 4. Stat labels - z_index 10 (highest, always on top)
 	cost_label = Label.new()
 	cost_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	cost_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
@@ -105,6 +93,7 @@ func _create_visual_elements() -> void:
 	attack_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	attack_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	attack_label.z_index = 10
+	attack_label.visible = false
 	attack_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(attack_label)
 
@@ -112,6 +101,7 @@ func _create_visual_elements() -> void:
 	life_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	life_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	life_label.z_index = 10
+	life_label.visible = false
 	life_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(life_label)
 
@@ -138,86 +128,70 @@ func update_visual() -> void:
 	if cost_label == null or name_label == null or attack_label == null or life_label == null:
 		return
 
-	var card_size: Vector2 = SMALL_SIZE if card_type == "small" else LARGE_SIZE
-	var border_width: float = 2.0
+	# REASON: Render cards with exact artwork and frame from texture atlas
+	# PROBLEM: Previous code used colored backgrounds and incorrect sizing
+	# FIX: Use exact pixel dimensions from CardGameGDX and load textures properly
+	# WHY: Cards must display actual artwork with proper frames matching original game
 
-	# REASON FOR EDIT: Load actual frame textures from TextureManager
-	# PROBLEM: Frame was just colored rectangle, not using ramka.png assets
-	# FIX: Load proper frame texture based on card type and size
-	# WHY: CardGameGDX uses actual frame artwork for proper card rendering
+	# Determine EXACT sizes based on card type
+	var is_large: bool = (card_type == "large")
+	var card_width: int = 150 if is_large else 80
+	var card_height: int = 207 if is_large else 100
+	var frame_width: int = 172 if is_large else 100
+	var frame_height: int = 231 if is_large else 111
 
-	# REASON FOR EDIT: Frame positioning needs offset to create border effect
-	# PROBLEM: Frame at Vector2.ZERO doesn't create proper border around artwork
-	# FIX: Offset frame by Vector2(-11, -12) so artwork appears inside frame
-	# WHY: CardGameGDX renders frame slightly larger than card to create border
+	# Position and set frame texture - frame extends beyond card edges
+	frame.position = Vector2(-11, -12)  # EXACT offset to create border
+	frame.size = Vector2(frame_width, frame_height)
+	frame.expand_mode = TextureRect.EXPAND_KEEP_SIZE
+	frame.stretch_mode = TextureRect.STRETCH_KEEP
 
-	# Update frame with proper texture and position
+	# Load correct frame based on card type
 	if TextureManager and TextureManager.is_loaded:
-		var is_large: bool = (card_type == "large")
-		var is_spell: bool = card.is_spell()
-		var frame_texture: Texture2D = TextureManager.get_card_frame(is_spell, is_large)
-		if frame_texture:
-			frame.texture = frame_texture
-			# Frame is slightly larger and offset to create border effect
-			frame.position = Vector2(-11, -12)
-			frame.size = card_size + Vector2(22, 24)  # Frame extends beyond card edges
-	else:
-		# Fallback if textures not loaded
-		frame.position = Vector2.ZERO
-		frame.size = card_size
-
-	# Update background
-	var bg_color: Color = CARD_COLORS.get(card.get_type(), Color(0.3, 0.3, 0.3))
-	if not is_enabled:
-		bg_color = bg_color.darkened(0.5)
-	elif is_selected:
-		bg_color = bg_color.lightened(0.3)
-	elif is_hovered:
-		bg_color = bg_color.lightened(0.15)
-
-	background.color = bg_color
-	background.position = Vector2(border_width, border_width)
-	background.size = card_size - Vector2(border_width * 2, border_width * 2)
-
-	# Update portrait with card texture
-	var portrait_height: float = card_size.y * 0.5
-	portrait.position = Vector2(border_width + 5, border_width + 5)
-	portrait.size = Vector2(card_size.x - border_width * 2 - 10, portrait_height - 10)
-
-	# REASON FOR EDIT: Add debug printing for texture loading verification
-	# PROBLEM: Need to verify textures are actually loading from atlas
-	# FIX: Print card name and whether texture was found
-	# WHY: User needs to see if atlas lookup is working
-
-	# Load card texture from TextureManager
-	if TextureManager and TextureManager.is_loaded:
-		var card_texture: Texture2D = null
-		var card_name_lower := card.get_name().to_lower()
-
-		if card_type == "small":
-			card_texture = TextureManager.get_small_card_texture(card_name_lower)
+		if card.is_spell():
+			frame.texture = TextureManager.ramka_big_spell if is_large else TextureManager.spell_ramka
 		else:
-			card_texture = TextureManager.get_large_card_texture(card_name_lower)
+			frame.texture = TextureManager.ramka_big if is_large else TextureManager.ramka
+
+	# Position and set card artwork
+	portrait.position = Vector2(0, 0)  # Card artwork at origin
+	portrait.size = Vector2(card_width, card_height)
+	portrait.expand_mode = TextureRect.EXPAND_KEEP_SIZE
+	portrait.stretch_mode = TextureRect.STRETCH_KEEP
+
+	# Load card artwork from texture atlas
+	if TextureManager and TextureManager.is_loaded:
+		var card_name: String = card.get_name().to_lower()
+		var card_texture: Texture2D = null
+
+		if is_large:
+			card_texture = TextureManager.get_large_card_texture(card_name)
+		else:
+			card_texture = TextureManager.get_small_card_texture(card_name)
 
 		if card_texture != null:
 			portrait.texture = card_texture
-			print("CardVisual: Loaded texture for '%s'" % card_name_lower)
+			print("CardVisual: Loaded texture for '%s'" % card_name)
 		else:
-			push_warning("CardVisual: No texture found for card '%s' (type: %s)" % [card_name_lower, card_type])
-			# Fallback to colored rectangle if texture not found
-			if portrait.texture == null:
-				var placeholder_rect := ColorRect.new()
-				placeholder_rect.color = Color(0.15, 0.15, 0.15)
-				placeholder_rect.position = portrait.position
-				placeholder_rect.size = portrait.size
-				placeholder_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
-				add_child(placeholder_rect)
-				move_child(placeholder_rect, portrait.get_index())
+			# Fallback: dark gray if texture missing
+			portrait.texture = null
+			push_warning("CardVisual: Missing texture for card: %s" % card_name)
+			# Create dark gray background as fallback
+			if portrait.get_child_count() == 0:
+				var fallback := ColorRect.new()
+				fallback.color = Color(0.15, 0.15, 0.15)
+				fallback.size = Vector2(card_width, card_height)
+				fallback.z_index = -1
+				fallback.mouse_filter = Control.MOUSE_FILTER_IGNORE
+				portrait.add_child(fallback)
 
-	# Update name label
-	name_label.text = card.get_name()
-	name_label.position = Vector2(border_width + 5, portrait_height + border_width + 5)
-	name_label.size = Vector2(card_size.x - border_width * 2 - 10, 30)
+	# Set card visual's overall size to frame size
+	custom_minimum_size = Vector2(frame_width, frame_height)
+	size = Vector2(frame_width, frame_height)
+
+	# Update name label (hidden for now as original game doesn't show name on card face)
+	name_label.text = ""
+	name_label.visible = false
 
 	# REASON: Position stats in exact corner coordinates matching CardGameGDX
 	# PROBLEM: Stats were positioned in bottom center area, not corners like original
@@ -706,7 +680,7 @@ func _create_drag_ghost() -> void:
 
 	# Create ghost visual (simplified)
 	var ghost_bg := ColorRect.new()
-	ghost_bg.color = background.color if background != null else Color.GRAY
+	ghost_bg.color = Color(0.5, 0.5, 0.5, 0.3)  # Semi-transparent gray
 	ghost_bg.size = size
 	drag_ghost.add_child(ghost_bg)
 
