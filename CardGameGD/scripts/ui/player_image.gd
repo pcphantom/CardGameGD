@@ -28,12 +28,12 @@ var turn_glow_tween: Tween = null
 # Layout constants
 const PORTRAIT_SIZE: Vector2 = Vector2(50, 50)
 const HAND_CARD_SPACING: float = 130.0
-const HAND_Y_LOCAL: float = 600.0
+const HAND_Y_LOCAL: float = 328.0
 const HAND_Y_OPPONENT: float = 80.0
-const SLOTS_Y_LOCAL: float = 420.0
-const SLOTS_Y_OPPONENT: float = 110.0
-const PANEL_Y_LOCAL: float = 700.0
-const PANEL_Y_OPPONENT: float = 0.0
+const SLOTS_Y_LOCAL: float = 290.0
+const SLOTS_Y_OPPONENT: float = 170.0
+const PANEL_Y_LOCAL: float = 300.0
+const PANEL_Y_OPPONENT: float = 125.0
 const PANEL_HEIGHT: float = 68.0
 
 func _ready() -> void:
@@ -205,7 +205,7 @@ func setup_slots(owner_id: String) -> void:
 
 	# Create 6 slots
 	var slots_y: float = SLOTS_Y_LOCAL if is_local_player else SLOTS_Y_OPPONENT
-	var slot_x_positions: Array[float] = [80.0, 240.0, 400.0, 560.0, 720.0, 880.0]
+	var slot_x_positions: Array[float] = [330.0, 427.0, 524.0, 621.0, 718.0, 815.0]
 
 	for i in range(6):
 		var slot := SlotImage.new()
