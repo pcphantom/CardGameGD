@@ -34,6 +34,7 @@ signal card_attacked(attacker: Card, target, damage: int)
 signal spell_cast(spell: Card, caster_id: String)
 signal player_damaged(player_id: String, damage: int)
 signal creature_died(creature: Card, slot: int, player_id: String)
+signal game_log_added(message: String, event_type: String)
 
 func _ready() -> void:
 	print("GameManager: Initializing autoload singleton")
@@ -120,7 +121,7 @@ func handle_game_over(exception: GameOverException) -> void:
 
 	game_over.emit(winner_id)
 
-func log_message(message: String) -> void:
+func log_message(message: String, event_type: String = "normal") -> void:
 	if message.is_empty():
 		return
 
@@ -133,6 +134,7 @@ func log_message(message: String) -> void:
 		game_log.pop_front()
 
 	print(log_entry)
+	game_log_added.emit(message, event_type)
 
 func get_log_history() -> Array:
 	return game_log.duplicate()

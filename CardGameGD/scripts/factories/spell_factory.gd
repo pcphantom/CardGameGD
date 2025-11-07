@@ -27,8 +27,8 @@ static func get_spell_class(
 	game: GameController,
 	card: Card,
 	card_image: CardVisual,
-	owner: PlayerVisual,
-	opponent: PlayerVisual
+	owner_player: PlayerVisual,
+	opponent_player: PlayerVisual
 ) -> BaseSpell:
 
 	# Phase 3 Stub: Always return BaseSpell
@@ -37,7 +37,7 @@ static func get_spell_class(
 	var spell: BaseSpell = null
 
 	# Attempt to load specific spell class (will be implemented in Phase 6)
-	var spell_script_path: String = SPELL_PATH + spell_class_name.to_lower() + ".gd"
+	var _spell_script_path: String = SPELL_PATH + spell_class_name.to_lower() + ".gd"
 
 	# For now, we don't have specific spell implementations
 	# Always use BaseSpell
@@ -51,8 +51,8 @@ static func get_spell_class(
 		game,
 		card,
 		card_image,
-		owner,
-		opponent
+		owner_player,
+		opponent_player
 	)
 
 	# Future Phase 6 implementation will look like:

@@ -63,7 +63,7 @@ func load_texture(path: String) -> Texture2D:
 func load_texture_atlas(atlas_path: String, image_path: String) -> Dictionary:
 	var atlas_dict: Dictionary = {}
 
-	if not ResourceLoader.exists(atlas_path):
+	if not FileAccess.file_exists(atlas_path):
 		push_warning("TextureManager: Atlas file not found: %s" % atlas_path)
 		return atlas_dict
 

@@ -113,13 +113,13 @@ func _create_visual_elements() -> void:
 	life_label.visible = false
 	add_child(life_label)
 
-func setup_card(card_data: Card, size: String = "small") -> void:
+func setup_card(card_data: Card, card_size: String = "small") -> void:
 	card = card_data
-	card_type = size
+	card_type = card_size
 
 	# Set card size
-	var card_size: Vector2 = SMALL_SIZE if size == "small" else LARGE_SIZE
-	custom_minimum_size = card_size
+	var card_dimensions: Vector2 = SMALL_SIZE if card_type == "small" else LARGE_SIZE
+	custom_minimum_size = card_dimensions
 
 	# Update visual elements
 	update_visual()
@@ -220,8 +220,8 @@ func update_visual() -> void:
 	else:
 		frame.color = Color(0.5, 0.5, 0.5)
 
-func _get_type_symbol(card_type: int) -> String:
-	match card_type:
+func _get_type_symbol(element_type: int) -> String:
+	match element_type:
 		CardType.Type.FIRE:
 			return "🔥"
 		CardType.Type.WATER:
@@ -472,7 +472,7 @@ func _spawn_attack_particles(pos: Vector2) -> void:
 		particle.queue_free()
 
 # Card damage effect
-func play_damage_animation(damage: int) -> void:
+func play_damage_animation(_damage: int) -> void:
 	# Play damage sound
 	if SoundManager:
 		SoundManager.play_sound(SoundTypes.Sound.NEGATIVE_EFFECT)
@@ -496,7 +496,7 @@ func play_damage_animation(damage: int) -> void:
 	shake_tween.tween_property(self, "position", original_pos, 0.04)
 
 # Card heal effect
-func play_heal_animation(heal_amount: int) -> void:
+func play_heal_animation(_heal_amount: int) -> void:
 	# Play heal sound
 	if SoundManager:
 		SoundManager.play_sound(SoundTypes.Sound.POSITIVE_EFFECT)

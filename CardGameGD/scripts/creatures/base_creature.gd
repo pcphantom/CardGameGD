@@ -182,7 +182,7 @@ func on_attack() -> void:
 			if owner_card.get_name().to_lower() == "monumenttorage":
 				owner_card.decrement_life(attack)
 
-func on_attacked(attacker, damage: int) -> int:
+func on_attacked(_attacker, damage: int) -> int:
 	var nl: int = slot_index - 1
 	var nr: int = slot_index + 1
 
