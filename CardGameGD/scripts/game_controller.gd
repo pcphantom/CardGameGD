@@ -449,6 +449,7 @@ func cast_spell(card: Card, target_slot: int) -> void:
 		card.get_name(),
 		self,
 		card,
+		null,  # card_image
 		local_player,
 		opponent_player
 	)
@@ -748,6 +749,7 @@ func _handle_remote_spell_cast(event: NetworkEvent) -> void:
 		spell_name,
 		self,
 		card,
+		null,  # card_image
 		opponent_player,
 		local_player
 	)
