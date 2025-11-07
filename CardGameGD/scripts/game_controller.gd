@@ -399,8 +399,8 @@ func summon_creature(card: Card, slot_index: int) -> void:
 		card,
 		null,  # card_image
 		slot_index,
-		local_player,
-		opponent_player
+		player_visual,
+		opponent_visual
 	)
 
 	# Add to slot
@@ -450,8 +450,8 @@ func cast_spell(card: Card, target_slot: int) -> void:
 		self,
 		card,
 		null,  # card_image
-		local_player,
-		opponent_player
+		player_visual,
+		opponent_visual
 	)
 
 	# Cast spell (basic implementation)
@@ -533,8 +533,8 @@ func _ai_summon_creature(card: Card, slot_index: int) -> void:
 		card,
 		null,
 		slot_index,
-		opponent_player,
-		local_player
+		opponent_visual,
+		player_visual
 	)
 
 	# Add to slot
@@ -674,8 +674,8 @@ func _handle_remote_card_summoned(event: NetworkEvent) -> void:
 		card,
 		null,
 		slot_index,
-		opponent_player,
-		local_player
+		opponent_visual,
+		player_visual
 	)
 
 	# Add to opponent's slot
@@ -750,8 +750,8 @@ func _handle_remote_spell_cast(event: NetworkEvent) -> void:
 		self,
 		card,
 		null,  # card_image
-		opponent_player,
-		local_player
+		opponent_visual,
+		player_visual
 	)
 
 	# Get target
