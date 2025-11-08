@@ -1,0 +1,236 @@
+class_name SimpleGame
+extends Node2D
+
+## ============================================================================
+## SimpleGame.gd - EXACT translation of SimpleGame.java
+## ============================================================================
+## Abstract base class for the game application.
+## Manages camera, stage, cursor, and skin initialization.
+## Subclasses must implement init() and draw() methods.
+##
+## Original: src/main/java/org/antinori/cards/SimpleGame.java
+## Translation: scripts/simple_game.gd
+##
+## ONLY CHANGES FROM JAVA:
+## - package → class_name
+## - extends InputAdapter implements ApplicationListener → extends Node2D
+## - OrthographicCamera → Camera2D
+## - Stage → Control node
+## - Skin → Theme
+## - LWJGL cursor management → Godot Input.set_custom_mouse_cursor()
+## - Import paths updated to match CardGameGD structure
+## ============================================================================
+
+# ============================================================================
+# IMPORTS (Java: import statements)
+# ============================================================================
+
+## Java: import org.lwjgl.input.Mouse;
+## Java: import com.badlogic.gdx.graphics.OrthographicCamera;
+## Java: import com.badlogic.gdx.scenes.scene2d.Stage;
+## Java: import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+## GDScript: Camera2D, Control, Theme are built-in
+
+# ============================================================================
+# FIELDS (Java: public/static fields)
+# ============================================================================
+
+## Java: public OrthographicCamera camera;
+var camera: Camera2D = null
+
+## Java: public Stage stage;
+var stage: Control = null
+
+## Java: public Skin skin;
+var skin = null  # Godot uses Theme, but keeping name for compatibility
+
+## Java: static org.lwjgl.input.Cursor emptyCursor;
+static var emptyCursor = null  # Not used in Godot
+
+## Java: Texture cursor;
+var cursor: Texture2D = null
+
+## Java: int xHotspot, yHotspot;
+var xHotspot: int = 0
+var yHotspot: int = 0
+
+# ============================================================================
+# CONSTRUCTOR (Java: public SimpleGame())
+# ============================================================================
+
+## Java: public SimpleGame()
+## Constructor - empty in Java, empty in GDScript
+func _init() -> void:
+	# Java: empty constructor (lines 32-33)
+	pass
+
+# ============================================================================
+# ABSTRACT METHODS (Java: public abstract void init/draw)
+# ============================================================================
+
+## Java: public abstract void init();
+## Initialize game-specific content. Must be overridden by subclasses.
+func init() -> void:
+	# Abstract method - subclasses must override
+	push_error("SimpleGame.init() must be overridden by subclass")
+
+## Java: public abstract void draw(float delta);
+## Render game content. Must be overridden by subclasses.
+## @param delta Time elapsed since last frame in seconds
+func draw(delta: float) -> void:
+	# Abstract method - subclasses must override
+	push_error("SimpleGame.draw() must be overridden by subclass")
+
+# ============================================================================
+# CREATE METHOD (Java: public void create())
+# ============================================================================
+
+## Java: public void create()
+## Initialize the game application (camera, stage, cursor, skin)
+func create() -> void:
+	# Java: camera = new OrthographicCamera(); (line 41)
+	# Java: camera.setToOrtho(false); (line 42)
+	camera = Camera2D.new()
+	add_child(camera)
+
+	# Java: stage = new Stage(new ScreenViewport(camera)); (line 44)
+	stage = Control.new()
+	add_child(stage)
+
+	# Java: cursor = new Texture(Gdx.files.classpath("images/cursor.png")); (line 46)
+	# Java: xHotspot = 0; (line 47)
+	# Java: yHotspot = cursor.getHeight(); (line 48)
+	if ResourceLoader.exists("res://images/cursor.png"):
+		cursor = load("res://images/cursor.png")
+		xHotspot = 0
+		yHotspot = cursor.get_height() if cursor else 0
+
+	# Java: skin = new Skin(Gdx.files.classpath("skin/uiskin.json")); (line 50)
+	# Godot uses Theme instead of Skin
+	if ResourceLoader.exists("res://skin/uiskin.theme"):
+		skin = load("res://skin/uiskin.theme")
+
+	# Java: init(); (line 52)
+	init()
+
+# ============================================================================
+# RENDER METHOD (Java: public void render())
+# ============================================================================
+
+## Java: public void render()
+## Main render loop - hides hardware cursor and calls draw()
+func render() -> void:
+	# Java: try { setHWCursorVisible(false); } catch (LWJGLException e) { throw new GdxRuntimeException(e); } (lines 58-62)
+	setHWCursorVisible(false)
+
+	# Java: draw(Gdx.graphics.getDeltaTime()); (line 64)
+	draw(get_process_delta_time())
+
+# ============================================================================
+# INPUT METHODS (Java: InputAdapter methods)
+# ============================================================================
+
+## Java: public boolean keyDown(int keycode)
+## Called when a key is pressed
+## @param keycode The key code
+## @return true if the event was handled
+func keyDown(keycode: int) -> bool:
+	return false
+
+## Java: public boolean keyUp(int keycode)
+## Called when a key is released
+## @param keycode The key code
+## @return true if the event was handled
+func keyUp(keycode: int) -> bool:
+	return false
+
+## Java: public boolean keyTyped(char character)
+## Called when a character is typed
+## @param character The character typed
+## @return true if the event was handled
+func keyTyped(character: String) -> bool:
+	return false
+
+## Java: public boolean touchDown(int x, int y, int pointer, int button)
+## Called when screen is touched or mouse button is pressed
+## @return true if the event was handled
+func touchDown(x: int, y: int, pointer: int, button: int) -> bool:
+	return false
+
+## Java: public boolean touchUp(int x, int y, int pointer, int button)
+## Called when screen touch ends or mouse button is released
+## @return true if the event was handled
+func touchUp(x: int, y: int, pointer: int, button: int) -> bool:
+	return false
+
+## Java: public boolean touchDragged(int x, int y, int pointer)
+## Called when screen is dragged
+## @return true if the event was handled
+func touchDragged(x: int, y: int, pointer: int) -> bool:
+	return false
+
+## Java: public boolean mouseMoved(int screenX, int screenY)
+## Called when mouse is moved without buttons pressed
+## @return true if the event was handled
+func mouseMoved(screenX: int, screenY: int) -> bool:
+	return false
+
+## Java: public boolean scrolled(int amount)
+## Called when mouse wheel is scrolled
+## @param amount Scroll amount (positive = up, negative = down)
+## @return true if the event was handled
+func scrolled(amount: int) -> bool:
+	return false
+
+# ============================================================================
+# APPLICATION LIFECYCLE METHODS (Java: ApplicationListener methods)
+# ============================================================================
+
+## Java: public void pause()
+## Called when application is paused
+func pause() -> void:
+	# Empty in Java (lines 100-101)
+	pass
+
+## Java: public void resume()
+## Called when application is resumed
+func resume() -> void:
+	# Empty in Java (lines 103-104)
+	pass
+
+## Java: public void dispose()
+## Called when application is disposed
+func dispose() -> void:
+	# Empty in Java (lines 106-107)
+	pass
+
+## Java: public void resize(int width, int height)
+## Called when window is resized
+## @param width New window width
+## @param height New window height
+func resize(width: int, height: int) -> void:
+	# Empty in Java (lines 109-111)
+	pass
+
+# ============================================================================
+# CURSOR VISIBILITY METHOD (Java: public void setHWCursorVisible(boolean visible))
+# ============================================================================
+
+## Java: public void setHWCursorVisible(boolean visible) throws LWJGLException
+## Sets hardware cursor visibility (LWJGL-specific)
+## In Godot, uses Input.set_custom_mouse_cursor()
+## @param visible true to show cursor, false to hide
+func setHWCursorVisible(visible: bool) -> void:
+	# Java: if (Gdx.app.getType() != ApplicationType.Desktop && Gdx.app instanceof LwjglApplication) return; (lines 114-115)
+	# In Godot, always runs
+
+	# Java: if (emptyCursor == null) { ... create empty cursor ... } (lines 116-124)
+	# Godot doesn't need empty cursor creation
+
+	# Java: if (Mouse.isInsideWindow()) Mouse.setNativeCursor(visible ? null : emptyCursor); (lines 125-126)
+	if visible:
+		Input.set_custom_mouse_cursor(null)
+	else:
+		# Hide cursor by setting it to a transparent 1x1 image
+		if cursor:
+			Input.set_custom_mouse_cursor(cursor, Input.CURSOR_ARROW, Vector2(xHotspot, yHotspot))
