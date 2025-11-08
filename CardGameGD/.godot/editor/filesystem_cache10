@@ -1,5 +1,5 @@
 63f7b34db8d8cdea90c76aacccf841ec
-::res://::1762624026
+::res://::1762625363
 ASSETS.md::TextFile/TextFile::-1::1762465666::0::1::::<><><>0<>0<><>::
 CHANGELOG.md::TextFile/TextFile::-1::1762465754::0::1::::<><><>0<>0<><>::
 GodotOutput01.txt::TextFile/TextFile::-1::1762466532::0::1::::<><><>0<>0<><>::
@@ -109,8 +109,8 @@ settings_menu.tscn::PackedScene/PackedScene::7138271846213266015::1762462378::0:
 tutorial.tscn::PackedScene/PackedScene::6341604153067692958::1762465127::0::1::::<><><>0<>0<><>::res://scripts/ui/tutorial.gd
 ::res://scripts/::1762623794
 cards.gd::GDScript::1224895267452411491::1762592616::0::1::::GameController<>Node2D<><>0<>0<><>::
-::res://scripts/autoload/::1762623794
-card_database.gd::GDScript::4343136270763960560::1762498750::0::1::::<>Node<><>0<>0<><>::
+::res://scripts/autoload/::1762625337
+card_setup.gd::GDScript::8126692599959205559::1762625231::0::1::::<>Node<><>0<>0<><>::
 game_manager.gd::GDScript::1478736537686268533::1762503575::0::1::::<>Node<><>0<>0<><>::
 network_manager.gd::GDScript::8544629091040203827::1762497858::0::1::::<>Node<><>0<>0<><>::
 sound_manager.gd::GDScript::6450754251943745024::1762497283::0::1::::<>Node<><>0<>0<><>::
@@ -119,7 +119,7 @@ texture_manager.gd::GDScript::128429643773889553::1762592615::0::1::::<>Node<><>
 base_functions.gd::GDScript::4204838658625101389::1762592616::0::1::::BaseFunctions<>RefCounted<><>0<>0<><>::
 battle_manager.gd::GDScript/GDScript::234705884273407788::1762480407::0::1::::BattleManager<>RefCounted<><>0<>0<><>::
 card.gd::GDScript::5839650897726763204::1762597005::0::1::::Card<>RefCounted<><>0<>0<><>::
-card_type.gd::GDScript/GDScript::1332969016187307132::1762481624::0::1::::CardType<>RefCounted<><>0<>0<><>::
+card_type.gd::GDScript::1332969016187307132::1762624695::0::1::::CardType<>RefCounted<><>0<>0<><>::
 creature.gd::GDScript/GDScript::7921653350302196219::1762416848::0::1::::Creature<>RefCounted<><>0<>0<><>::
 dice.gd::GDScript/GDScript::4557281926913216614::1762414267::0::1::::Dice<>RefCounted<><>0<>0<><>::
 event.gd::GDScript/GDScript::4666351725729204987::1762486889::0::1::::Event<>RefCounted<><>0<>0<><>::
