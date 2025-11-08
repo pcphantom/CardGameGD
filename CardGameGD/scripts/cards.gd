@@ -29,7 +29,7 @@ var is_my_turn: bool = true
 # UI elements
 var end_turn_button: Button = null
 var log_panel: LogScrollPane = null
-var card_collection_grid: CardCollectionGrid = null
+# var card_collection_grid: CardCollectionGrid = null  # REMOVED - replaced by OpponentCardWindow
 var victory_defeat_screen: Panel = null
 var pause_menu: Panel = null
 var turn_timer_label: Label = null
@@ -140,13 +140,14 @@ func _setup_ui_references() -> void:
 	log_panel.z_index = 100
 	add_child(log_panel)
 
+	# REMOVED - CardCollectionGrid was incorrect implementation, replaced by OpponentCardWindow
 	# REASON: Create card collection grid to display player's cards
 	# POSITION: (520, 350) - exact position from CardGameGDX
 	# WHY: Shows all cards grouped by element type in 5-column scrollable grid
-	card_collection_grid = CardCollectionGrid.new()
-	card_collection_grid.name = "CardCollectionGrid"
-	card_collection_grid.position = Vector2(520, 350)
-	add_child(card_collection_grid)
+	# card_collection_grid = CardCollectionGrid.new()
+	# card_collection_grid.name = "CardCollectionGrid"
+	# card_collection_grid.position = Vector2(520, 350)
+	# add_child(card_collection_grid)
 
 func create_players() -> void:
 	# Create local player
@@ -239,7 +240,7 @@ func _add_test_cards_to_player(player: Player) -> void:
 		deck.append(card)
 
 	# REASON: Also add cards to player's collection arrays for card grid display
-	# WHY: CardCollectionGrid needs access to player.get_all_cards() which combines all typed arrays
+	# WHY: OpponentCardWindow needs access to player.getCards() for each type
 	for card in deck:
 		match card.get_type():
 			CardType.Type.FIRE:
