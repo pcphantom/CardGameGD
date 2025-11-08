@@ -392,7 +392,7 @@ func set_creature(new_creature) -> void:
 	creature = new_creature
 
 # Java: public boolean isHighlighted()
-func is_highlighted() -> bool:
+func get_is_highlighted() -> bool:
 	return is_highlighted
 
 # Java: public void setHighlighted(boolean isHighlighted)

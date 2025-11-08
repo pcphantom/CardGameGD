@@ -232,20 +232,20 @@ func set_type(new_type: CardType.Type) -> void:
 	self.type = new_type
 
 ## Java: public void setSpell(boolean spell)
-func set_spell(is_spell: bool) -> void:
-	self.spell = is_spell
+func set_spell(value: bool) -> void:
+	self.spell = value
 
 ## Java: public void setDesc(String desc)
 func set_desc(new_desc: String) -> void:
 	self.desc = new_desc
 
 ## Java: public void setTargetable(boolean targetable)
-func set_targetable(is_targetable: bool) -> void:
-	self.targetable = is_targetable
+func set_targetable(value: bool) -> void:
+	self.targetable = value
 
 ## Java: public void setWall(boolean wall)
-func set_wall(is_wall: bool) -> void:
-	self.wall = is_wall
+func set_wall(value: bool) -> void:
+	self.wall = value
 
 ## Java: public void setOriginalLife(int originalLife)
 func set_original_life(original: int) -> void:
