@@ -289,6 +289,7 @@ func draw(delta: float) -> void:
 		# Java: if (NET_GAME != null) { (line 288)
 		if NET_GAME != null:
 			# TODO: Draw turn indicator and connected host
+			pass
 
 		# Java: batch.end(); (line 292)
 
@@ -380,6 +381,7 @@ func initialize() -> void:
 	# Java: if (NET_GAME != null) { (lines 372-381)
 	if NET_GAME != null:
 		# TODO: Network handshake
+		pass
 
 	# Java: for (CardType type : Player.TYPES) { (lines 384-387)
 	for type in Player.TYPES:
