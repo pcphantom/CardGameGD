@@ -181,7 +181,10 @@ func init(game_ref) -> void:
 	var y: int = ydown(253)  # Convert from bottom-origin to top-origin
 
 	# Java: cbgimg.setPosition(x, 0);
-	cbgimg.position = Vector2(x, ydown(0))  # Bottom of screen in Java = top in Godot
+	# In Java, setPosition() sets BOTTOM-LEFT corner at (x, y from bottom)
+	# In Godot, position is TOP-LEFT corner from top
+	# cbgimg is 512 tall, bottom at Y=0 (Java) means top at Y=512 (Java) = Y=256 (Godot)
+	cbgimg.position = Vector2(x, ydown(cbgimg.texture.get_height()))
 
 	# Java: Button lpb = createButton(x += 34, y, pi, playerIndex, true);
 	x += 34
