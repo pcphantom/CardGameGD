@@ -293,6 +293,12 @@ func draw(delta: float) -> void:
 			# Java: Thread t = new Thread(new InitializeGameThread()); t.start(); (lines 278-279)
 			_initialize_game_thread()
 
+			# Hide and remove chooser to show battle UI
+			chooser.hide()
+			remove_child(chooser)
+			chooser.queue_free()
+			chooser = null
+
 			# Java: Gdx.input.setInputProcessor(new InputMultiplexer(this, stage)); (line 281)
 			# TODO: Set input processor
 

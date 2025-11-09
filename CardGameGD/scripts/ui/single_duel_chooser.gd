@@ -81,13 +81,14 @@ var select_hosts_shown: bool = false
 func init(game_ref) -> void:
 	self.game = game_ref
 
+	# Set up this Control to fill screen
+	position = Vector2.ZERO
+	size = Vector2(1024, 768)
+	set_anchors_preset(Control.PRESET_FULL_RECT)
+
 	# Java: stage = new Stage(new ScreenViewport());
-	# GDScript: stage is just the Control tree, needs explicit sizing
-	stage = Control.new()
-	stage.position = Vector2.ZERO
-	stage.size = Vector2(1024, 768)
-	stage.set_anchors_preset(Control.PRESET_FULL_RECT)
-	add_child(stage)
+	# GDScript: Don't create separate stage, add children directly to self
+	stage = self
 
 	# Java: background = new TextureRegion(new Texture(Gdx.files.classpath("images/splash.png")));
 	# Java: bgimg = new Image(background);
