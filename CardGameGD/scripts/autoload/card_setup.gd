@@ -245,36 +245,27 @@ func get_card_images_by_type(atlas1, atlas2, type: CardType.Type, max_number: in
 	# Java: List<Card> picks = getCardsByType(type, maxNumber);
 	var picks: Array = get_cards_by_type(type, max_number)
 
+	print("    [DEBUG] get_card_images_by_type: picks.size() = ", picks.size())
+
 	# Java: List<CardImage> images = new ArrayList<CardImage>();
 	var images: Array = []
 
 	# Java: for (Card c : picks)
 	for c in picks:
-		# Java: Sprite sp = atlas1.createSprite(c.getName().toLowerCase());
-		# Godot: atlas is Dictionary, lookup by key
-		var sprite_name: String = c.get_name().to_lower()
-		var sp: Texture2D = atlas1.get(sprite_name) if atlas1 is Dictionary else null
-
-		# Java: if (sp == null) { sp = atlas2.createSprite(...); if (sp != null) sp.flip(false, true); }
-		if sp == null and atlas2 is Dictionary:
-			sp = atlas2.get(sprite_name)
-			# Note: Texture2D doesn't have flip() - flipping handled by Sprite2D at render time
-
-		# Java: if (sp == null) throw new Exception("Sprite is null for card: " + c);
-		if sp == null:
-			push_error("Texture is null for card: %s" % c.get_name())
-			continue
-
-		# Java: sp.flip(false, true);
-		# Note: Skipping flip - Texture2D doesn't have flip method
-
 		# Java: CardImage img = new CardImage(sp, c);
-		# NOTE: Godot CardImage._init() takes no parameters - this needs refactoring
+		# Godot: CardImage has setup_card() method that handles initialization
 		var img: CardImage = CardImage.new()
-		# TODO: Set texture and card properties on img after creation
+
+		# Call setup_card to properly initialize the CardImage with the card data
+		# This replaces the Java constructor CardImage(Sprite, Card)
+		img.setup_card(c, "small")
+
+		print("      [DEBUG] Created CardImage for card: ", c.get_name())
 
 		# Java: images.add(img);
 		images.append(img)
+
+	print("    [DEBUG] get_card_images_by_type: returning ", images.size(), " images")
 
 	# Java: return images;
 	return images
@@ -289,28 +280,13 @@ func get_card_image_by_name(atlas1, atlas2, name: String) -> CardImage:
 		push_error("Card not found: %s" % name)
 		return null
 
-	# Java: Sprite sp = atlas1.createSprite(c.getName().toLowerCase());
-	# Godot: atlas is Dictionary, lookup by key
-	var sprite_name: String = c.get_name().to_lower()
-	var sp: Texture2D = atlas1.get(sprite_name) if atlas1 is Dictionary else null
-
-	# Java: if (sp == null) { sp = atlas2.createSprite(...); if (sp != null) sp.flip(false, true); }
-	if sp == null and atlas2 is Dictionary:
-		sp = atlas2.get(sprite_name)
-		# Note: Texture2D doesn't have flip() - flipping handled by Sprite2D at render time
-
-	# Java: if (sp == null) throw new Exception("Sprite is null for card: " + c);
-	if sp == null:
-		push_error("Texture is null for card: %s" % c.get_name())
-		return null
-
-	# Java: sp.flip(false, true);
-	# Note: Skipping flip - Texture2D doesn't have flip method
-
 	# Java: CardImage img = new CardImage(sp, c);
-	# NOTE: Godot CardImage._init() takes no parameters - this needs refactoring
+	# Godot: CardImage has setup_card() method that handles initialization
 	var img: CardImage = CardImage.new()
-	# TODO: Set texture and card properties on img after creation
+
+	# Call setup_card to properly initialize the CardImage with the card data
+	# This replaces the Java constructor CardImage(Sprite, Card)
+	img.setup_card(c, "small")
 
 	# Java: return img;
 	return img
