@@ -22,6 +22,9 @@ var slot_texture: Texture2D = null
 # Background
 var background_texture: Texture2D = null
 
+# Card status indicators
+var stunned: Texture2D = null
+
 # Loading state
 var is_loaded: bool = false
 
@@ -57,6 +60,9 @@ func load_textures() -> void:
 
 	background_texture = load_texture("res://assets/images/background.jpg")
 	print("  - background.jpg: %s" % ("LOADED" if background_texture != null else "FAILED"))
+
+	stunned = load_texture("res://assets/images/stunned.png")
+	print("  - stunned.png: %s" % ("LOADED" if stunned != null else "FAILED"))
 
 	print("TextureManager: Loading card atlases...")
 	# Load card atlases
