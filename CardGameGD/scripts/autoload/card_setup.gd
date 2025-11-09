@@ -47,46 +47,36 @@ func get_spell_cards() -> Dictionary:
 
 # Java: public void parseCards()
 func parse_cards() -> void:
-	print("CardSetup.parse_cards() START")
 	# Java: DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 	# Java: factory.setValidating(true);
 	# Java: factory.setIgnoringElementContentWhitespace(true);
 	# GDScript: Use XMLParser instead
-
+	
 	var xml_parser := XMLParser.new()
-
+	
 	# Java: InputStream is = CardSetup.class.getResourceAsStream("/cards.xml");
 	# GDScript: Load from res:// path
 	var xml_path: String = "res://data/cards.xml"
-
+	
 	if not FileAccess.file_exists(xml_path):
 		push_error("CardSetup: cards.xml not found at %s" % xml_path)
-		print("CardSetup.parse_cards() FAILED - file not found")
 		return
-
-	print("CardSetup.parse_cards() - Opening XML file...")
+	
 	var error := xml_parser.open(xml_path)
 	if error != OK:
 		push_error("CardSetup: Failed to open cards.xml: %d" % error)
-		print("CardSetup.parse_cards() FAILED - error code: ", error)
 		return
-
-	print("CardSetup.parse_cards() - Starting XML parsing loop...")
+	
 	# Java: NodeList locater = doc.getElementsByTagName("cards");
 	# Java: NodeList cards = locater.item(0).getChildNodes();
 	# GDScript: Parse XML nodes
-
-	var card_count: int = 0
+	
 	while xml_parser.read() == OK:
 		if xml_parser.get_node_type() == XMLParser.NODE_ELEMENT:
 			var node_name: String = xml_parser.get_node_name()
-
+			
 			# Java: if (node_name1 == "card")
 			if node_name == "card":
-				card_count += 1
-				if card_count % 50 == 0:
-					print("  Parsed ", card_count, " cards so far...")
-
 				# Java: String type = getAttrText(n1, "type");
 				var type_str: String = _get_attr_text(xml_parser, "type")
 				
@@ -161,17 +151,12 @@ func parse_cards() -> void:
 				
 				# Java: cardSet.add(c);
 				card_set[c] = null  # Dictionary used as Set
-
+				
 				# Java: if (c.isSpell()) { spellCards.add(c); } else { creatureCards.add(c); }
 				if c.is_spell():
 					spell_cards[c] = null
 				else:
 					creature_cards[c] = null
-
-	print("CardSetup.parse_cards() COMPLETE - Parsed ", card_count, " cards total")
-	print("  card_set size: ", card_set.size())
-	print("  spell_cards size: ", spell_cards.size())
-	print("  creature_cards size: ", creature_cards.size())
 
 # ============================================================================
 # GET CARD BY NAME - EXACT TRANSLATION
