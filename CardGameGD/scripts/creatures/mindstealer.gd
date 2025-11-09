@@ -51,7 +51,7 @@ func on_attacked(attacker, damage: int) -> int:
 	# Java: if (died) { (line 18)
 	if died:
 		# Java: disposeCardImage(opponent, slotIndex); (line 19)
-		disposeCardImage(opponent, slot_index)
+		dispose_card_image(opponent, slot_index)
 
 	# Java: return 0; (line 21)
 	return 0
