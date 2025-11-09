@@ -185,6 +185,13 @@ func set_img(sprite_img: Sprite2D) -> void:
 func set_frame(frame_tex: Texture2D) -> void:
     self.frame = frame_tex
 
+## Godot helper: Set texture directly (creates or updates Sprite2D)
+## Used by SingleDuelChooser when setting face textures
+func set_texture(tex: Texture2D) -> void:
+    if img == null:
+        img = Sprite2D.new()
+    img.texture = tex
+
 ## Java: public void setFont(BitmapFont font)
 func set_font(p_font: Font) -> void:
     self.font = p_font
