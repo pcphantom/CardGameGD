@@ -74,7 +74,10 @@ func parse_cards() -> void:
 		return
 
 	# Parse each card from JSON (193 cards converted from cards.xml)
+	var card_count: int = 0
 	for card_data in data["cards"]:
+		card_count += 1
+
 		# Create card with type
 		var type_str: String = card_data.get("type", "")
 		var card_type: CardType.Type = CardType.from_string(type_str)
@@ -125,7 +128,8 @@ func parse_cards() -> void:
 		var wall: bool = card_data.get("wall", false)
 		c.set_wall(wall)
 
-		c.set_must_be_summone_on_card(card_data.get("mustBeSummoneOnCard", ""))
+		# FIXED TYPO: set_must_be_summoned_on_card (not summone)
+		c.set_must_be_summoned_on_card(card_data.get("mustBeSummoneOnCard", ""))
 
 		# Add to sets
 		card_set[c] = null
@@ -133,6 +137,10 @@ func parse_cards() -> void:
 			spell_cards[c] = null
 		else:
 			creature_cards[c] = null
+
+	print("CardSetup: Successfully loaded ", card_count, " cards from JSON")
+	print("  Creature cards: ", creature_cards.size())
+	print("  Spell cards: ", spell_cards.size())
 
 # ============================================================================
 # GET CARD BY NAME - EXACT TRANSLATION
