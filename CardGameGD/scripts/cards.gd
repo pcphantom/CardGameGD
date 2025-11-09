@@ -241,8 +241,9 @@ func init() -> void:
 
 	# Java: logScrollPane = new LogScrollPane(skin); (lines 241-242)
 	# Java: logScrollPane.setBounds(24, 36, 451, 173);
+	# Java Y=36 is bottom of control, height=173, so top is at 36+173=209 from bottom
 	logScrollPane = LogScrollPane.new()
-	logScrollPane.position = Vector2(24, 36)
+	logScrollPane.position = Vector2(24, ydown(36 + 173))
 	logScrollPane.custom_minimum_size = Vector2(451, 173)
 
 	# Java: stage.addActor(player); etc. (lines 244-249)

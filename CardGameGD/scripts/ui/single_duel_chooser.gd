@@ -18,6 +18,13 @@ extends Control
 ## ============================================================================
 
 # ============================================================================
+# CONSTANTS
+# ============================================================================
+
+## Screen dimensions (must match Cards.SCREEN_HEIGHT for ydown() conversion)
+const SCREEN_HEIGHT: int = 768
+
+# ============================================================================
 # FIELDS (Java: instance variables)
 # ============================================================================
 
@@ -40,7 +47,17 @@ var oi: PlayerImage = null
 var game = null  # Reference to main Cards (game controller)
 
 ## Java: AtomicBoolean done = new AtomicBoolean(false);
-var done: bool = false
+var _done: bool = false
+var done: bool:
+	get:
+		return _done
+	set(value):
+		if value != _done:
+			print("SingleDuelChooser: done changed from ", _done, " to ", value)
+			if value:
+				print("  Stack trace:")
+				print_stack()
+		_done = value
 
 ## Java: final AtomicInteger playerIndex = new AtomicInteger(1);
 var player_index: int = 1
@@ -67,6 +84,14 @@ var classes_opponent: OptionButton = null
 var select_hosts_shown: bool = false
 
 # ============================================================================
+# COORDINATE CONVERSION
+# ============================================================================
+
+## Convert Y coordinate from libGDX (bottom-left origin) to Godot (top-left origin)
+static func ydown(y: int) -> int:
+	return SCREEN_HEIGHT - y
+
+# ============================================================================
 # INIT METHOD (Java: public void init(Cards game))
 # ============================================================================
 
@@ -81,10 +106,11 @@ var select_hosts_shown: bool = false
 func init(game_ref) -> void:
 	self.game = game_ref
 
-	# Set up this Control to fill screen
+	# Set up this Control with fixed screen size
+	# DO NOT use set_anchors_preset - it causes scaling issues
 	position = Vector2.ZERO
+	custom_minimum_size = Vector2(1024, 768)
 	size = Vector2(1024, 768)
-	set_anchors_preset(Control.PRESET_FULL_RECT)
 
 	# Java: stage = new Stage(new ScreenViewport());
 	# GDScript: Don't create separate stage, add children directly to self
@@ -152,10 +178,10 @@ func init(game_ref) -> void:
 	# Java: int x = 300;
 	# Java: int y = 253;
 	var x: int = 300
-	var y: int = 253
+	var y: int = ydown(253)  # Convert from bottom-origin to top-origin
 
 	# Java: cbgimg.setPosition(x, 0);
-	cbgimg.position = Vector2(x, 0)
+	cbgimg.position = Vector2(x, ydown(0))  # Bottom of screen in Java = top in Godot
 
 	# Java: Button lpb = createButton(x += 34, y, pi, playerIndex, true);
 	x += 34
@@ -185,18 +211,18 @@ func init(game_ref) -> void:
 	# Java: lbl.setPosition(465, 430);
 	var lbl = Label.new()
 	lbl.text = "Single Duel"
-	lbl.position = Vector2(465, 430)
+	lbl.position = Vector2(465, ydown(430))
 
 	# Java: play.setBounds(410, 133, 60, 25);
-	play.position = Vector2(410, 133)
+	play.position = Vector2(410, ydown(133 + 25))  # Java Y is bottom of button, Godot Y is top
 	play.custom_minimum_size = Vector2(60, 25)
 
 	# Java: selectHostsButton.setBounds(475, 133, 60, 25);
-	select_hosts_button.position = Vector2(475, 133)
+	select_hosts_button.position = Vector2(475, ydown(133 + 25))
 	select_hosts_button.custom_minimum_size = Vector2(60, 25)
 
 	# Java: startNetworkServer.setBounds(540, 133, 60, 25);
-	start_network_server.position = Vector2(540, 133)
+	start_network_server.position = Vector2(540, ydown(133 + 25))
 	start_network_server.custom_minimum_size = Vector2(60, 25)
 
 	# Java: stage.addActor(bgimg);
@@ -227,7 +253,7 @@ func init(game_ref) -> void:
 	# Java: classesPlayer.setHeight(25);
 	# Java: classesPlayer.setWidth(123);
 	stage.add_child(classes_player)
-	classes_player.position = Vector2(355, 194)
+	classes_player.position = Vector2(355, ydown(194 + 25))  # Java Y is bottom, Godot Y is top
 	classes_player.custom_minimum_size = Vector2(123, 25)
 
 	# Java: stage.addActor(classesOpponent);
@@ -235,7 +261,7 @@ func init(game_ref) -> void:
 	# Java: classesOpponent.setHeight(25);
 	# Java: classesOpponent.setWidth(123);
 	stage.add_child(classes_opponent)
-	classes_opponent.position = Vector2(548, 194)
+	classes_opponent.position = Vector2(548, ydown(194 + 25))
 	classes_opponent.custom_minimum_size = Vector2(123, 25)
 
 	# Java: stage.addActor(play);
