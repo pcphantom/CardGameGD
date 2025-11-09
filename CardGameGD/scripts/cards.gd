@@ -513,12 +513,12 @@ func addSlotImages(pi: PlayerImage, x: int, y: int, bottom: bool) -> void:
 		# Java: SlotImage s = new SlotImage(slotTexture, i, bottom); (line 466)
 		var s := SlotImage.new(slotTexture, i, bottom)
 
-		# Java: s.setBounds(x1, y, s.getWidth(), s.getHeight()); (line 467)
+		# Java: s.setBounds(x1, y, s.texture.get_width(), s.texture.get_height()); (line 467)
 		s.position = Vector2(x1, y)
-		s.size = Vector2(s.getWidth(), s.getHeight())
+		s.size = Vector2(s.texture.get_width(), s.texture.get_height())
 
-		# Java: x1 += (spacing + s.getWidth()); (line 468)
-		x1 += (spacing + s.getWidth())
+		# Java: x1 += (spacing + s.texture.get_width()); (line 468)
+		x1 += (spacing + s.texture.get_width())
 
 		# Java: s.addListener(sl); (line 469)
 		# TODO: Add listener
