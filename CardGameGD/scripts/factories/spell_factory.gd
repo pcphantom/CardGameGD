@@ -24,7 +24,7 @@ const SPELL_PATH: String = "res://scripts/spells/"
 
 static func get_spell_class(
 	spell_class_name: String,
-	game: GameController,
+	game,  # Cards (main game controller)
 	card: Card,
 	card_image: CardImage,
 	owner: PlayerImage,

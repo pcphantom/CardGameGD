@@ -67,7 +67,8 @@ func is_occupied() -> bool:
 	return occupied
 
 ## Java: public int getIndex()
-func get_index() -> int:
+## Renamed to get_slot_index() to avoid conflict with Node.get_index()
+func get_slot_index() -> int:
 	return index
 
 ## Java: public boolean isHighlighted()
