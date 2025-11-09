@@ -138,13 +138,19 @@ func _create_visual_elements() -> void:
 # Java: public CardImage(Sprite img, Card info)
 func setup_card(card_data: Card, size_type: String = "small") -> void:
 	card = card_data
-	
+
 	if card == null:
 		push_warning("CardImage: setup_card called with null card")
 		return
-	
+
+	# CRITICAL: Ensure visual elements exist before _render_card() tries to use them
+	# _ready() only runs when node is added to tree, but setup_card() is called before that
+	if portrait == null:
+		_init_static_textures()
+		_create_visual_elements()
+
 	set_name(card.get_name())
-	
+
 	# Render the card
 	_render_card(size_type)
 

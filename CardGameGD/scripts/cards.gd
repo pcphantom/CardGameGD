@@ -291,7 +291,7 @@ static func ydown(y: int) -> int:
 
 ## Java: @Override public void draw(float delta)
 ## Main rendering loop
-func draw(delta: float) -> void:
+func draw(_delta: float) -> void:
 	# Java: if (chooser != null) { (line 272)
 	if chooser != null:
 		# Java: if (!chooser.done.get()) { (line 274)
@@ -465,8 +465,8 @@ func initialize() -> void:
 # ============================================================================
 
 ## Java: public void initializePlayerCards(Player player, boolean visible) throws Exception
-func initializePlayerCards(p_player: Player, visible: bool) -> void:
-	print("    initializePlayerCards: visible=", visible)
+func initializePlayerCards(p_player: Player, is_visible: bool) -> void:
+	print("    initializePlayerCards: visible=", is_visible)
 	# Java: selectedCard = null; (line 393)
 	selectedCard = null
 
@@ -487,15 +487,16 @@ func initializePlayerCards(p_player: Player, visible: bool) -> void:
 				ci.queue_free()
 
 		# Java: List<CardImage> v1 = cs.getCardImagesByType(...); (line 408)
-		var v1: Array = cs.get_card_images_by_type(smallCardAtlas, smallTGACardAtlas, type, 4)
+		# Godot: TextureManager handles atlases internally, no atlas parameters needed
+		var v1: Array = cs.get_card_images_by_type(type, 4)
 		print("      Type ", CardType.get_title(type), ": created ", v1.size(), " cards")
 
 		# Java: x += 104; (line 409)
 		x += 104
 
 		# Java: addVerticalGroupCards(x, y, v1, player, type, visible); (line 410)
-		print("      Adding vertical group at x=", x, " y=", y, " visible=", visible)
-		addVerticalGroupCards(x, y, v1, p_player, type, visible)
+		print("      Adding vertical group at x=", x, " y=", y, " visible=", is_visible)
+		addVerticalGroupCards(x, y, v1, p_player, type, is_visible)
 
 		# Java: player.set_cards(type, v1); (line 411)
 		p_player.set_cards(type, v1)
@@ -525,7 +526,7 @@ func getPlayerStrength(pl: Player, type: CardType.Type) -> String:
 # ============================================================================
 
 ## Java: public void addVerticalGroupCards(...)
-func addVerticalGroupCards(x: int, y: int, cards: Array, p_player: Player, type: CardType.Type, addToStage: bool) -> void:
+func addVerticalGroupCards(x: int, y: int, cards: Array, _p_player: Player, _type: CardType.Type, addToStage: bool) -> void:
 	# Java: CardImage.sort(cards); (line 433)
 	CardImage.sort_cards(cards)
 
@@ -605,7 +606,7 @@ func _on_show_oppt_cards_pressed() -> void:
 	opptCardsShown = true
 
 	var title_text: String = getPlayerDescription(opponent.get_player_info())
-	var window = OpponentCardWindow.new(title_text, opponent.get_player_info(), self, skin)
+	var _window = OpponentCardWindow.new(title_text, opponent.get_player_info(), self, skin)
 
 	# TODO: Add close button and show window
 
@@ -667,7 +668,7 @@ func animateHealingText(value: int, target) -> void:
 		_animateHealingTextImpl(value, target.position.x + 90, target.position.y + 5, target.position.x + 90, target.position.y + 55)
 
 ## Java: private void animateDamageText(int value, float sx, float sy, float dx, float dy)
-func _animateDamageTextImpl(value: int, sx: float, sy: float, dx: float, dy: float) -> void:
+func _animateDamageTextImpl(value: int, sx: float, sy: float, _dx: float, _dy: float) -> void:
 	# Java: if (redStyle == null) { return; } (lines 796-798)
 	if redStyle == null:
 		return
@@ -692,7 +693,7 @@ func _animateDamageTextImpl(value: int, sx: float, sy: float, dx: float, dy: flo
 	# TODO: Create tween for animation
 
 ## Java: private void animateHealingText(int value, float sx, float sy, float dx, float dy)
-func _animateHealingTextImpl(value: int, sx: float, sy: float, dx: float, dy: float) -> void:
+func _animateHealingTextImpl(value: int, sx: float, sy: float, _dx: float, _dy: float) -> void:
 	# Java: if (greenStyle == null) { return; } (lines 812-814)
 	if greenStyle == null:
 		return

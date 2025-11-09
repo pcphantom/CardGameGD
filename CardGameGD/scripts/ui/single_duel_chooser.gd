@@ -282,8 +282,8 @@ func init(game_ref) -> void:
 	print("SingleDuelChooser.init() COMPLETE")
 	print("  Stage (self) size:", size, " pos:", position, " visible:", visible)
 	print("  Total children:", stage.get_child_count())
-	print("  bgimg size:", bgimg.size if bgimg.texture else "NO TEXTURE", " expand:", bgimg.expand_mode if bgimg.texture else "N/A")
-	print("  cbgimg size:", cbgimg.texture.get_size() if cbgimg.texture else "NO TEXTURE")
+	print("  bgimg size:", str(bgimg.size) if bgimg.texture else "NO TEXTURE", " expand:", str(bgimg.expand_mode) if bgimg.texture else "N/A")
+	print("  cbgimg size:", str(cbgimg.texture.get_size()) if cbgimg.texture else "NO TEXTURE")
 
 # ============================================================================
 # CREATE BUTTON METHOD (Java: private Button createButton(...))

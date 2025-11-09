@@ -76,8 +76,8 @@ func init() -> void:
 
 ## Java: public abstract void draw(float delta);
 ## Render game content. Must be overridden by subclasses.
-## @param delta Time elapsed since last frame in seconds
-func draw(delta: float) -> void:
+## @param _delta Time elapsed since last frame in seconds
+func draw(_delta: float) -> void:
 	# Abstract method - subclasses must override
 	push_error("SimpleGame.draw() must be overridden by subclass")
 
@@ -92,7 +92,7 @@ func _ready() -> void:
 
 ## Godot: func _process(delta: float)
 ## Called every frame - bridges to LibGDX render()
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	render()
 
 # ============================================================================
@@ -154,54 +154,54 @@ func render() -> void:
 
 ## Java: public boolean keyDown(int keycode)
 ## Called when a key is pressed
-## @param keycode The key code
+## @param _keycode The key code
 ## @return true if the event was handled
-func keyDown(keycode: int) -> bool:
+func keyDown(_keycode: int) -> bool:
 	return false
 
 ## Java: public boolean keyUp(int keycode)
 ## Called when a key is released
-## @param keycode The key code
+## @param _keycode The key code
 ## @return true if the event was handled
-func keyUp(keycode: int) -> bool:
+func keyUp(_keycode: int) -> bool:
 	return false
 
 ## Java: public boolean keyTyped(char character)
 ## Called when a character is typed
-## @param character The character typed
+## @param _character The character typed
 ## @return true if the event was handled
-func keyTyped(character: String) -> bool:
+func keyTyped(_character: String) -> bool:
 	return false
 
 ## Java: public boolean touchDown(int x, int y, int pointer, int button)
 ## Called when screen is touched or mouse button is pressed
 ## @return true if the event was handled
-func touchDown(x: int, y: int, pointer: int, button: int) -> bool:
+func touchDown(_x: int, _y: int, _pointer: int, _button: int) -> bool:
 	return false
 
 ## Java: public boolean touchUp(int x, int y, int pointer, int button)
 ## Called when screen touch ends or mouse button is released
 ## @return true if the event was handled
-func touchUp(x: int, y: int, pointer: int, button: int) -> bool:
+func touchUp(_x: int, _y: int, _pointer: int, _button: int) -> bool:
 	return false
 
 ## Java: public boolean touchDragged(int x, int y, int pointer)
 ## Called when screen is dragged
 ## @return true if the event was handled
-func touchDragged(x: int, y: int, pointer: int) -> bool:
+func touchDragged(_x: int, _y: int, _pointer: int) -> bool:
 	return false
 
 ## Java: public boolean mouseMoved(int screenX, int screenY)
 ## Called when mouse is moved without buttons pressed
 ## @return true if the event was handled
-func mouseMoved(screenX: int, screenY: int) -> bool:
+func mouseMoved(_screenX: int, _screenY: int) -> bool:
 	return false
 
 ## Java: public boolean scrolled(int amount)
 ## Called when mouse wheel is scrolled
-## @param amount Scroll amount (positive = up, negative = down)
+## @param _amount Scroll amount (positive = up, negative = down)
 ## @return true if the event was handled
-func scrolled(amount: int) -> bool:
+func scrolled(_amount: int) -> bool:
 	return false
 
 # ============================================================================
