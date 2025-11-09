@@ -465,8 +465,8 @@ func initialize() -> void:
 # ============================================================================
 
 ## Java: public void initializePlayerCards(Player player, boolean visible) throws Exception
-func initializePlayerCards(p_player: Player, is_visible: bool) -> void:
-	print("    initializePlayerCards: visible=", is_visible)
+func initializePlayerCards(p_player: Player, show_cards: bool) -> void:
+	print("    initializePlayerCards: visible=", show_cards)
 	# Java: selectedCard = null; (line 393)
 	selectedCard = null
 
@@ -495,8 +495,8 @@ func initializePlayerCards(p_player: Player, is_visible: bool) -> void:
 		x += 104
 
 		# Java: addVerticalGroupCards(x, y, v1, player, type, visible); (line 410)
-		print("      Adding vertical group at x=", x, " y=", y, " visible=", is_visible)
-		addVerticalGroupCards(x, y, v1, p_player, type, is_visible)
+		print("      Adding vertical group at x=", x, " y=", y, " visible=", show_cards)
+		addVerticalGroupCards(x, y, v1, p_player, type, show_cards)
 
 		# Java: player.set_cards(type, v1); (line 411)
 		p_player.set_cards(type, v1)

@@ -312,7 +312,7 @@ func clone_card() -> CardImage:
 # =============================================================================
 
 # Java: public boolean decrementLife(BaseFunctions attacker, int value, Cards game)
-func decrement_life(attacker, value: int, game) -> bool:
+func decrement_life(attacker, value: int, _game) -> bool:
 	if creature and creature.has_method("on_attacked"):
 		creature.on_attacked(attacker, value)
 	
@@ -405,6 +405,14 @@ func get_is_highlighted() -> bool:
 func set_highlighted(new_highlighted: bool) -> void:
 	is_highlighted = new_highlighted
 	# Can add visual highlight effect here if needed
+
+# Java: public Color getColor()
+func get_color() -> Color:
+	return modulate
+
+# Java: public void setColor(Color color)
+func set_color(color: Color) -> void:
+	modulate = color
 
 # =============================================================================
 # STATIC SORT METHOD (Java: static void sort)
