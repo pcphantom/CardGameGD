@@ -73,19 +73,17 @@ func parse_cards() -> void:
 		push_error("CardSetup: cards.json missing 'cards' array")
 		return
 
-	# Parse each card from JSON
+	# Parse each card from JSON (193 cards converted from cards.xml)
 	for card_data in data["cards"]:
-		if not card_data.has("enabled") or not card_data["enabled"]:
-			continue
-
 		# Create card with type
-		var card_type: CardType.Type = card_data.get("type", 0)
+		var type_str: String = card_data.get("type", "")
+		var card_type: CardType.Type = CardType.from_string(type_str)
 		var c: Card = Card.new(card_type)
 
-		# Set basic properties
-		c.set_name(card_data.get("class_name", ""))
-		c.set_cardname(card_data.get("name", ""))
-		c.set_desc(card_data.get("description", ""))
+		# Set basic properties (matching XML attributes exactly)
+		c.set_name(card_data.get("name", ""))
+		c.set_cardname(card_data.get("cardname", ""))
+		c.set_desc(card_data.get("desc", ""))
 
 		# Set stats
 		var attack: int = card_data.get("attack", 0)
@@ -96,19 +94,38 @@ func parse_cards() -> void:
 		c.set_life(life)
 		c.set_original_life(life)
 
-		# Set spell/creature
-		var is_creature: bool = card_data.get("is_creature", true)
-		c.set_spell(not is_creature)
+		# Set spell/creature flag
+		var spell: bool = card_data.get("spell", false)
+		c.set_spell(spell)
 
-		# Set cost (use first cost entry)
-		var costs = card_data.get("costs", [[0, 1]])
-		var cost: int = costs[0][1] if costs.size() > 0 else 1
+		# Set targetable properties
+		var targetable: bool = card_data.get("targetable", false)
+		c.set_targetable(targetable)
+
+		var targetable_on_empty: bool = card_data.get("targetableOnEmptySlot", false)
+		c.set_targetable_on_empty_slot_only(targetable_on_empty)
+
+		# Set target type
+		var target_str: String = card_data.get("target", "")
+		var target: Card.TargetType = Card.from_target_type_string(target_str)
+		c.set_target_type(target)
+
+		# Set cost (spell uses castingCost, creature uses summoningCost - same as XML)
+		var cost: int = 0
+		if spell:
+			cost = card_data.get("castingCost", 0)
+		else:
+			cost = card_data.get("summoningCost", 0)
 		c.set_cost(cost)
 
 		# Set other properties
-		c.set_wall(card_data.get("wall", false))
-		c.set_targetable(false)  # Default
-		c.set_target_type(Card.TargetType.NONE)
+		var self_inflicting: int = card_data.get("selfInflictingDamage", 0)
+		c.set_self_inflicting_damage(self_inflicting)
+
+		var wall: bool = card_data.get("wall", false)
+		c.set_wall(wall)
+
+		c.set_must_be_summone_on_card(card_data.get("mustBeSummoneOnCard", ""))
 
 		# Add to sets
 		card_set[c] = null
