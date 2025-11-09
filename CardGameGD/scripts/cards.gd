@@ -451,7 +451,7 @@ func setStrengthLabel(label: Label, pl: Player, type: CardType.Type) -> void:
 
 ## Java: public String getPlayerDescription(Player pl)
 func getPlayerDescription(pl: Player) -> String:
-	return pl.get_player_class().getTitle() + " Life: " + str(pl.get_life())
+	return pl.get_player_class().get_title() + " Life: " + str(pl.get_life())
 
 ## Java: public String getPlayerStrength(Player pl, CardType type)
 func getPlayerStrength(pl: Player, type: CardType.Type) -> String:

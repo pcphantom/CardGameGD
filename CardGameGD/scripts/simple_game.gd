@@ -108,7 +108,11 @@ func create() -> void:
 	add_child(camera)
 
 	# Java: stage = new Stage(new ScreenViewport(camera)); (line 44)
+	# In Godot, Control nodes need explicit sizing to match the viewport
 	stage = Control.new()
+	stage.position = Vector2.ZERO
+	stage.size = Vector2(1024, 768)
+	stage.set_anchors_preset(Control.PRESET_FULL_RECT)
 	add_child(stage)
 
 	# Java: cursor = new Texture(Gdx.files.classpath("images/cursor.png")); (line 46)

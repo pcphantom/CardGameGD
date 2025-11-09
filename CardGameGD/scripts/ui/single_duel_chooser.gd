@@ -82,8 +82,11 @@ func init(game_ref) -> void:
 	self.game = game_ref
 
 	# Java: stage = new Stage(new ScreenViewport());
-	# GDScript: stage is just the Control tree
+	# GDScript: stage is just the Control tree, needs explicit sizing
 	stage = Control.new()
+	stage.position = Vector2.ZERO
+	stage.size = Vector2(1024, 768)
+	stage.set_anchors_preset(Control.PRESET_FULL_RECT)
 	add_child(stage)
 
 	# Java: background = new TextureRegion(new Texture(Gdx.files.classpath("images/splash.png")));
