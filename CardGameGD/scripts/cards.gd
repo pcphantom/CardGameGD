@@ -260,7 +260,7 @@ func init() -> void:
 	# Java: chooser = new SingleDuelChooser(); chooser.init(this); (lines 258-259)
 	chooser = SingleDuelChooser.new()
 	chooser.init(self)
-	add_child(chooser)
+	stage.add_child(chooser)
 
 	# Java: Sounds.startBackGroundMusic(); (line 261)
 	if SoundManager:
@@ -290,14 +290,11 @@ func draw(delta: float) -> void:
 			# chooser renders automatically via _process()
 			pass
 		else:
+			# Hide chooser to show battle UI (initialize() will set chooser = null)
+			chooser.visible = false
+
 			# Java: Thread t = new Thread(new InitializeGameThread()); t.start(); (lines 278-279)
 			_initialize_game_thread()
-
-			# Hide and remove chooser to show battle UI
-			chooser.hide()
-			remove_child(chooser)
-			chooser.queue_free()
-			chooser = null
 
 			# Java: Gdx.input.setInputProcessor(new InputMultiplexer(this, stage)); (line 281)
 			# TODO: Set input processor
@@ -389,7 +386,13 @@ func initialize() -> void:
 	opponent.get_player_info().init()
 
 	# Java: chooser = null; gameOver = false; Cards.logScrollPane.clear(); (lines 363-365)
+	# Free chooser after copying data from it
+	var temp_chooser = chooser
 	chooser = null
+	if temp_chooser:
+		stage.remove_child(temp_chooser)
+		temp_chooser.queue_free()
+
 	gameOver = false
 	if logScrollPane:
 		logScrollPane.clear()
