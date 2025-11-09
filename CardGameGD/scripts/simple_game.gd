@@ -114,15 +114,15 @@ func create() -> void:
 	# Java: cursor = new Texture(Gdx.files.classpath("images/cursor.png")); (line 46)
 	# Java: xHotspot = 0; (line 47)
 	# Java: yHotspot = cursor.getHeight(); (line 48)
-	if ResourceLoader.exists("res://images/cursor.png"):
-		cursor = load("res://images/cursor.png")
+	if ResourceLoader.exists("res://assets/images/cursor.png"):
+		cursor = load("res://assets/images/cursor.png")
 		xHotspot = 0
 		yHotspot = cursor.get_height() if cursor else 0
 
 	# Java: skin = new Skin(Gdx.files.classpath("skin/uiskin.json")); (line 50)
 	# Godot uses Theme instead of Skin
-	if ResourceLoader.exists("res://skin/uiskin.theme"):
-		skin = load("res://skin/uiskin.theme")
+	if ResourceLoader.exists("res://assets/skin/uiskin.theme"):
+		skin = load("res://assets/skin/uiskin.theme")
 
 	# Java: init(); (line 52)
 	init()
