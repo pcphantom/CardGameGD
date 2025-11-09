@@ -19,7 +19,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 GameManager="*res://scripts/autoload/game_manager.gd"
-CardDatabase="*res://scripts/autoload/card_database.gd"
+CardSetup="*res://scripts/autoload/card_setup.gd"
 SoundManager="*res://scripts/autoload/sound_manager.gd"
 TextureManager="*res://scripts/autoload/texture_manager.gd"
 NetworkManager="*res://scripts/autoload/network_manager.gd"
