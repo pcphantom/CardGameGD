@@ -51,13 +51,13 @@ func _init(p_slot: int = 0, p_card: Card = null) -> void:
 ## Java: public int getSlot()
 ## Returns the slot index for this move
 ## @return The slot index
-func getSlot() -> int:
+func get_slot() -> int:
 	return slot
 
 ## Java: public Card getCard()
 ## Returns the card for this move
 ## @return The card to be played
-func getCard() -> Card:
+func get_card() -> Card:
 	return card
 
 # ============================================================================
@@ -67,11 +67,11 @@ func getCard() -> Card:
 ## Java: public void setSlot(int slot)
 ## Sets the slot index for this move
 ## @param slot The slot index
-func setSlot(p_slot: int) -> void:
+func set_slot(p_slot: int) -> void:
 	slot = p_slot
 
 ## Java: public void setCard(Card card)
 ## Sets the card for this move
 ## @param card The card to be played
-func setCard(p_card: Card) -> void:
+func set_card(p_card: Card) -> void:
 	card = p_card

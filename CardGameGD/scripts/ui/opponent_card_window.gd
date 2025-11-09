@@ -137,11 +137,11 @@ func _build_window_content(container: VBoxContainer) -> void:
 	# Java: for (int i = 0; i < 4; i++) { (line 46)
 	for i in range(4):
 		# Java: Actor a1 = getCard(fire,i); (lines 48-52)
-		var a1: Control = getCard(fire, i)
-		var a2: Control = getCard(air, i)
-		var a3: Control = getCard(water, i)
-		var a4: Control = getCard(earth, i)
-		var a5: Control = getCard(special, i)
+		var a1: Control = get_card(fire, i)
+		var a2: Control = get_card(air, i)
+		var a3: Control = get_card(water, i)
+		var a4: Control = get_card(earth, i)
+		var a5: Control = get_card(special, i)
 
 		# Create row container
 		var row := HBoxContainer.new()
@@ -176,11 +176,11 @@ func _build_window_content(container: VBoxContainer) -> void:
 ## @param cards List of CardImage objects for a specific type
 ## @param index The row index (0-3)
 ## @return Control node containing the card or empty slot
-func getCard(cards: Array, index: int) -> Control:
+func get_card(cards: Array, index: int) -> Control:
 	# Java: if (cards == null || cards.size() < index + 1) (line 78)
 	# Java:     return getEmptySlotImage(); (line 79)
 	if cards == null or cards.size() < index + 1:
-		return getEmptySlotImage()
+		return get_empty_slot_image()
 
 	# Java: CardImage ci = cards.get(index); (line 81)
 	var ci: CardImage = cards[index]
@@ -189,16 +189,16 @@ func getCard(cards: Array, index: int) -> Control:
 	# Java:     return getEmptySlotImage(); (line 83)
 	# Java: } (line 84)
 	if ci == null:
-		return getEmptySlotImage()
+		return get_empty_slot_image()
 
 	# Java: CardImage clone = ci.clone(); (line 86)
 	var clone: CardImage = ci.clone()
 
 	# Java: clone.setEnabled(cards.get(index).isEnabled()); (line 87)
-	clone.setEnabled(cards[index].isEnabled())
+	clone.set_enabled(cards[index].is_enabled())
 
 	# Java: clone.setColor(cards.get(index).getColor()); (line 88)
-	clone.setColor(cards[index].getColor())
+	clone.set_color(cards[index].get_color())
 
 	# Java: return clone; (line 89)
 	return clone
@@ -210,7 +210,7 @@ func getCard(cards: Array, index: int) -> Control:
 ## Java: private Image getEmptySlotImage()
 ## Creates a transparent empty slot image (89x100 pixels)
 ## @return TextureRect with transparent texture
-func getEmptySlotImage() -> TextureRect:
+func get_empty_slot_image() -> TextureRect:
 	# Java: Pixmap p = new Pixmap(89, 100, Pixmap.Format.RGBA8888); (line 93)
 	# Java: p.setColor(Color.CLEAR); (line 94)
 	# Java: p.fill(); (line 95)

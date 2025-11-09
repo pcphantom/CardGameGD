@@ -238,15 +238,15 @@ Sounds.playSound(sound) → SoundManager.play_sound(sound)
 
 #### Evaluation Methods
 ```
-Evaluation.evaluateMove(move) → Evaluation.evaluateMove(move)  ✅ KEEP JAVA NAME
-Evaluation.getFavoriteCard(cards) → Evaluation.getFavoriteCard(cards)  ✅ KEEP JAVA NAME
+Evaluation.evaluate(player, opponent, playerSlots, oppoSlots) → Evaluation.evaluate(...)  ✅ KEEP JAVA NAME (core API)
 ```
 
-#### Move Methods
+#### Move Methods (DEFAULT RULE: snake_case)
 ```
-Move.create(card, target) → Move.create(card, target)  ✅ KEEP JAVA NAME (static factory)
-Move.getCard() → Move.getCard()  ✅ KEEP JAVA NAME
-Move.getTarget() → Move.getTarget()  ✅ KEEP JAVA NAME
+Move.getSlot() → Move.get_slot()  ✅ VERIFIED (not core API, follows default rule)
+Move.getCard() → Move.get_card()  ✅ VERIFIED (not core API, follows default rule)
+Move.setSlot() → Move.set_slot()  ✅ VERIFIED (not core API, follows default rule)
+Move.setCard() → Move.set_card()  ✅ VERIFIED (not core API, follows default rule)
 ```
 
 ---
