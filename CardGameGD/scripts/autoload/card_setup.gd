@@ -177,12 +177,25 @@ func get_cards_by_type(type: CardType.Type, max_number: int) -> Array:
 func get_cards_by_type_from_set(type: CardType.Type, max_number: int, set: Dictionary) -> Array:
 	# Java: List<Card> result = (List<Card>) CollectionUtils.select(set, new CardPredicate(type));
 	var result: Array = []
-	
+
+	# DEBUG: Print what we're looking for
+	print("    [DEBUG] get_cards_by_type_from_set: Looking for type ", type, " (", CardType.get_title(type), ")")
+	print("    [DEBUG] card_set has ", set.size(), " cards total")
+
+	# DEBUG: Show first few card types
+	var count = 0
+	for card in set.keys():
+		if count < 3:
+			print("      [DEBUG] Card '", card.get_name(), "' has type ", card.get_type(), " (", CardType.get_title(card.get_type()), ")")
+			count += 1
+
 	# Filter cards by type (CardPredicate functionality)
 	for card in set.keys():
 		if card.get_type() == type:
 			result.append(card)
-	
+
+	print("    [DEBUG] Found ", result.size(), " cards of type ", CardType.get_title(type))
+
 	# Java: if (maxNumber > result.size()) return result;
 	if max_number > result.size():
 		return result
