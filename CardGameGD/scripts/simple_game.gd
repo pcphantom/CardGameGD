@@ -82,6 +82,20 @@ func draw(delta: float) -> void:
 	push_error("SimpleGame.draw() must be overridden by subclass")
 
 # ============================================================================
+# GODOT LIFECYCLE METHODS (Bridge to LibGDX lifecycle)
+# ============================================================================
+
+## Godot: func _ready()
+## Called when node enters scene tree - bridges to LibGDX create()
+func _ready() -> void:
+	create()
+
+## Godot: func _process(delta: float)
+## Called every frame - bridges to LibGDX render()
+func _process(delta: float) -> void:
+	render()
+
+# ============================================================================
 # CREATE METHOD (Java: public void create())
 # ============================================================================
 

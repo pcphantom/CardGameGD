@@ -226,9 +226,10 @@ func init() -> void:
 	cdi.setFont(greenfont)
 
 	# Java: logScrollPane = new LogScrollPane(skin); (lines 241-242)
-	# logScrollPane = LogScrollPane.new()
-	# logScrollPane.position = Vector2(24, 36)
-	# logScrollPane.size = Vector2(451, 173)
+	# Java: logScrollPane.setBounds(24, 36, 451, 173);
+	logScrollPane = LogScrollPane.new()
+	logScrollPane.position = Vector2(24, 36)
+	logScrollPane.custom_minimum_size = Vector2(451, 173)
 
 	# Java: stage.addActor(player); etc. (lines 244-249)
 	stage.add_child(player)
@@ -236,7 +237,7 @@ func init() -> void:
 	stage.add_child(playerInfoLabel)
 	stage.add_child(opptInfoLabel)
 	stage.add_child(cdi)
-	# stage.add_child(logScrollPane)
+	stage.add_child(logScrollPane)
 
 	# Java: sl = new SlotListener(); li = new MouseOverCardListener(); sdl = new ShowDescriptionListener(); (lines 251-253)
 	# TODO: Create listener instances
