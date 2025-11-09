@@ -234,7 +234,7 @@ func init() -> void:
 
 	# Java: cdi = new CardDescriptionImage(20, ydown(512)); (lines 238-239)
 	cdi = CardDescriptionImage.new(null, null, greenfont, null, 20, ydown(512))
-	cdi.set_font(greenfont)
+	cdi.setFont(greenfont)
 
 	# Java: logScrollPane = new LogScrollPane(skin); (lines 241-242)
 	# Java: logScrollPane.setBounds(24, 36, 451, 173);
@@ -425,7 +425,7 @@ func initializePlayerCards(p_player: Player, visible: bool) -> void:
 				ci.queue_free()
 
 		# Java: List<CardImage> v1 = cs.getCardImagesByType(...); (line 408)
-		var v1: Array = cs.getCardImagesByType(smallCardAtlas, smallTGACardAtlas, type, 4)
+		var v1: Array = cs.get_card_images_by_type(smallCardAtlas, smallTGACardAtlas, type, 4)
 
 		# Java: x += 104; (line 409)
 		x += 104
