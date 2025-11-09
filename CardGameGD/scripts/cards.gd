@@ -132,8 +132,9 @@ static var damageOffsetter: int = 0
 ## Initialize all game resources: textures, fonts, UI, player images
 func init() -> void:
 	# Java: cs = new CardSetup(); cs.parseCards(); (lines 120-121)
-	cs = CardSetup.new()
-	cs.parseCards()
+	# CardSetup is an autoload singleton, access directly
+	cs = CardSetup
+	CardSetup.parse_cards()
 
 	# Java: batch = new SpriteBatch(); (line 123)
 	# Not needed in Godot
