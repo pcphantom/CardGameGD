@@ -288,6 +288,7 @@ func draw(delta: float) -> void:
 		if not chooser.done:
 			# Java: chooser.draw(delta); (line 275)
 			# chooser renders automatically via _process()
+			pass
 		else:
 			# Java: Thread t = new Thread(new InitializeGameThread()); t.start(); (lines 278-279)
 			_initialize_game_thread()
