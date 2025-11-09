@@ -47,116 +47,75 @@ func get_spell_cards() -> Dictionary:
 
 # Java: public void parseCards()
 func parse_cards() -> void:
-	# Java: DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-	# Java: factory.setValidating(true);
-	# Java: factory.setIgnoringElementContentWhitespace(true);
-	# GDScript: Use XMLParser instead
-	
-	var xml_parser := XMLParser.new()
-	
-	# Java: InputStream is = CardSetup.class.getResourceAsStream("/cards.xml");
-	# GDScript: Load from res:// path
-	var xml_path: String = "res://data/cards.xml"
-	
-	if not FileAccess.file_exists(xml_path):
-		push_error("CardSetup: cards.xml not found at %s" % xml_path)
+	# Load from JSON instead of XML (cards.xml was crashing Godot)
+	var json_path: String = "res://data/cards.json"
+
+	if not FileAccess.file_exists(json_path):
+		push_error("CardSetup: cards.json not found at %s" % json_path)
 		return
-	
-	var error := xml_parser.open(xml_path)
+
+	var file = FileAccess.open(json_path, FileAccess.READ)
+	if not file:
+		push_error("CardSetup: Failed to open cards.json")
+		return
+
+	var json_text = file.get_as_text()
+	file.close()
+
+	var json = JSON.new()
+	var error = json.parse(json_text)
 	if error != OK:
-		push_error("CardSetup: Failed to open cards.xml: %d" % error)
+		push_error("CardSetup: Failed to parse cards.json: %s" % json.get_error_message())
 		return
-	
-	# Java: NodeList locater = doc.getElementsByTagName("cards");
-	# Java: NodeList cards = locater.item(0).getChildNodes();
-	# GDScript: Parse XML nodes
-	
-	while xml_parser.read() == OK:
-		if xml_parser.get_node_type() == XMLParser.NODE_ELEMENT:
-			var node_name: String = xml_parser.get_node_name()
-			
-			# Java: if (node_name1 == "card")
-			if node_name == "card":
-				# Java: String type = getAttrText(n1, "type");
-				var type_str: String = _get_attr_text(xml_parser, "type")
-				
-				# Java: Card c = new Card(CardType.fromString(type));
-				var card_type: CardType.Type = CardType.from_string(type_str)
-				var c: Card = Card.new(card_type)
-				
-				# Java: c.setName(getAttrText(n1, "name"));
-				c.set_name(_get_attr_text(xml_parser, "name"))
-				
-				# Java: c.setCardname(getAttrText(n1, "cardname"));
-				c.set_cardname(_get_attr_text(xml_parser, "cardname"))
-				
-				# Java: c.setDesc(getAttrText(n1, "desc"));
-				c.set_desc(_get_attr_text(xml_parser, "desc"))
-				
-				# Java: c.setAttack(getAttrNumber(n1, "attack"));
-				# Java: c.setOriginalAttack(c.getAttack());
-				var attack: int = _get_attr_number(xml_parser, "attack")
-				c.set_attack(attack)
-				c.set_original_attack(c.get_attack())
-				
-				# Java: c.setLife(getAttrNumber(n1, "life"));
-				# Java: c.setOriginalLife(c.getLife());
-				var life: int = _get_attr_number(xml_parser, "life")
-				c.set_life(life)
-				c.set_original_life(c.get_life())
-				
-				# Java: Boolean spell = Boolean.parseBoolean(getAttrText(n1, "spell"));
-				# Java: c.setSpell(spell);
-				var spell: bool = _get_attr_text(xml_parser, "spell").to_lower() == "true"
-				c.set_spell(spell)
-				
-				# Java: Boolean targetable = Boolean.parseBoolean(getAttrText(n1, "targetable"));
-				# Java: c.setTargetable(targetable);
-				var targetable: bool = _get_attr_text(xml_parser, "targetable").to_lower() == "true"
-				c.set_targetable(targetable)
-				
-				# Java: Boolean targetableOnEmptySlot = Boolean.parseBoolean(getAttrText(n1, "targetableOnEmptySlot"));
-				# Java: c.setTargetableOnEmptySlotOnly(targetableOnEmptySlot);
-				var targetable_on_empty: bool = _get_attr_text(xml_parser, "targetableOnEmptySlot").to_lower() == "true"
-				c.set_targetable_on_empty_slot_only(targetable_on_empty)
-				
-				# Java: Card.TargetType target = Card.fromTargetTypeString(getAttrText(n1, "target"));
-				# Java: c.setTargetType(target);
-				var target_str: String = _get_attr_text(xml_parser, "target")
-				var target: Card.TargetType = Card.from_target_type_string(target_str)
-				c.set_target_type(target)
-				
-				# Java: int cost = getAttrNumber(n1, "summoningCost");
-				# Java: if (spell) { cost = getAttrNumber(n1, "castingCost"); }
-				# Java: c.setCost(cost);
-				var cost: int = 0
-				if spell:
-					cost = _get_attr_number(xml_parser, "castingCost")
-				else:
-					cost = _get_attr_number(xml_parser, "summoningCost")
-				c.set_cost(cost)
-				
-				# Java: int selfInflicting = getAttrNumber(n1, "selfInflictingDamage");
-				# Java: c.setSelfInflictingDamage(selfInflicting);
-				var self_inflicting: int = _get_attr_number(xml_parser, "selfInflictingDamage")
-				c.set_self_inflicting_damage(self_inflicting)
-				
-				# Java: Boolean wall = Boolean.parseBoolean(getAttrText(n1, "wall"));
-				# Java: c.setWall(wall);
-				var wall: bool = _get_attr_text(xml_parser, "wall").to_lower() == "true"
-				c.set_wall(wall)
-				
-				# Java: c.setMustBeSummoneOnCard(getAttrText(n1, "mustBeSummoneOnCard"));
-				c.set_must_be_summone_on_card(_get_attr_text(xml_parser, "mustBeSummoneOnCard"))
-				
-				# Java: cardSet.add(c);
-				card_set[c] = null  # Dictionary used as Set
-				
-				# Java: if (c.isSpell()) { spellCards.add(c); } else { creatureCards.add(c); }
-				if c.is_spell():
-					spell_cards[c] = null
-				else:
-					creature_cards[c] = null
+
+	var data = json.data
+	if not data or not data.has("cards"):
+		push_error("CardSetup: cards.json missing 'cards' array")
+		return
+
+	# Parse each card from JSON
+	for card_data in data["cards"]:
+		if not card_data.has("enabled") or not card_data["enabled"]:
+			continue
+
+		# Create card with type
+		var card_type: CardType.Type = card_data.get("type", 0)
+		var c: Card = Card.new(card_type)
+
+		# Set basic properties
+		c.set_name(card_data.get("class_name", ""))
+		c.set_cardname(card_data.get("name", ""))
+		c.set_desc(card_data.get("description", ""))
+
+		# Set stats
+		var attack: int = card_data.get("attack", 0)
+		c.set_attack(attack)
+		c.set_original_attack(attack)
+
+		var life: int = card_data.get("life", 0)
+		c.set_life(life)
+		c.set_original_life(life)
+
+		# Set spell/creature
+		var is_creature: bool = card_data.get("is_creature", true)
+		c.set_spell(not is_creature)
+
+		# Set cost (use first cost entry)
+		var costs = card_data.get("costs", [[0, 1]])
+		var cost: int = costs[0][1] if costs.size() > 0 else 1
+		c.set_cost(cost)
+
+		# Set other properties
+		c.set_wall(card_data.get("wall", false))
+		c.set_targetable(false)  # Default
+		c.set_target_type(Card.TargetType.NONE)
+
+		# Add to sets
+		card_set[c] = null
+		if c.is_spell():
+			spell_cards[c] = null
+		else:
+			creature_cards[c] = null
 
 # ============================================================================
 # GET CARD BY NAME - EXACT TRANSLATION
