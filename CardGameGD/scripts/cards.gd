@@ -215,7 +215,7 @@ func init() -> void:
 	var incr: int = 103
 	for i in range(5):
 		var label := Label.new()
-		label.text = getPlayerStrength(player.playerInfo, CardType.Type.OTHER)
+		label.text = getPlayerStrength(player.get_player_info(), CardType.Type.OTHER)
 		x += incr
 		label.position = Vector2(x, y)
 		stage.add_child(label)
@@ -226,7 +226,7 @@ func init() -> void:
 	y = ydown(25)
 	for i in range(5):
 		var label := Label.new()
-		label.text = getPlayerStrength(opponent.playerInfo, CardType.Type.OTHER)
+		label.text = getPlayerStrength(opponent.get_player_info(), CardType.Type.OTHER)
 		x += incr
 		label.position = Vector2(x, y)
 		stage.add_child(label)
@@ -234,7 +234,7 @@ func init() -> void:
 
 	# Java: cdi = new CardDescriptionImage(20, ydown(512)); (lines 238-239)
 	cdi = CardDescriptionImage.new(null, null, greenfont, null, 20, ydown(512))
-	cdi.setFont(greenfont)
+	cdi.set_font(greenfont)
 
 	# Java: logScrollPane = new LogScrollPane(skin); (lines 241-242)
 	# Java: logScrollPane.setBounds(24, 36, 451, 173);
@@ -305,23 +305,23 @@ func draw(delta: float) -> void:
 
 		# Java: batch.end(); (line 292)
 
-		# Java: Player pInfo = player.getPlayerInfo(); (lines 294-295)
-		var pInfo: Player = player.getPlayerInfo()
-		var oInfo: Player = opponent.getPlayerInfo()
+		# Java: Player pInfo = player.get_player_info(); (lines 294-295)
+		var pInfo: Player = player.get_player_info()
+		var oInfo: Player = opponent.get_player_info()
 
 		# Java: playerInfoLabel.setText(getPlayerDescription(pInfo)); (lines 297-298)
 		playerInfoLabel.text = getPlayerDescription(pInfo)
 		opptInfoLabel.text = getPlayerDescription(oInfo)
 
 		# Java: CardType[] types = {...}; (line 300)
-		var types: Array = [CardType.Type.FIRE, CardType.Type.AIR, CardType.Type.WATER, CardType.Type.EARTH, opponent.getPlayerInfo().getPlayerClass().getType()]
+		var types: Array = [CardType.Type.FIRE, CardType.Type.AIR, CardType.Type.WATER, CardType.Type.EARTH, opponent.get_player_info().get_player_class().get_type()]
 
 		# Java: for (int i = 0; i < 5; i++) { setStrengthLabel(topStrengthLabels[i], oInfo, types[i]); } (lines 301-303)
 		for i in range(5):
 			setStrengthLabel(topStrengthLabels[i], oInfo, types[i])
 
-		# Java: types[4] = player.getPlayerInfo().getPlayerClass().getType(); (line 304)
-		types[4] = player.getPlayerInfo().getPlayerClass().getType()
+		# Java: types[4] = player.get_player_info().get_player_class().get_type(); (line 304)
+		types[4] = player.get_player_info().get_player_class().get_type()
 
 		# Java: for (int i = 0; i < 5; i++) { setStrengthLabel(bottomStrengthLabels[i], pInfo, types[i]); } (lines 305-307)
 		for i in range(5):
@@ -356,29 +356,29 @@ func initialize() -> void:
 
 	# Java: for (int index = 0; index < 6; index++) { (line 341)
 	for index in range(6):
-		# Java: if (player.getSlotCards()[index] != null) { player.getSlotCards()[index].remove(); } (lines 342-344)
-		if player.getSlotCards()[index] != null:
-			player.getSlotCards()[index].queue_free()
+		# Java: if (player.get_slot_cards()[index] != null) { player.get_slot_cards()[index].remove(); } (lines 342-344)
+		if player.get_slot_cards()[index] != null:
+			player.get_slot_cards()[index].queue_free()
 
-		player.getSlotCards()[index] = null
-		player.getSlots()[index].setOccupied(false)
+		player.get_slot_cards()[index] = null
+		player.get_slots()[index].set_occupied(false)
 
-		# Java: if (opponent.getSlotCards()[index] != null) { opponent.getSlotCards()[index].remove(); } (lines 348-350)
-		if opponent.getSlotCards()[index] != null:
-			opponent.getSlotCards()[index].queue_free()
+		# Java: if (opponent.get_slot_cards()[index] != null) { opponent.get_slot_cards()[index].remove(); } (lines 348-350)
+		if opponent.get_slot_cards()[index] != null:
+			opponent.get_slot_cards()[index].queue_free()
 
-		opponent.getSlotCards()[index] = null
-		opponent.getSlots()[index].setOccupied(false)
+		opponent.get_slot_cards()[index] = null
+		opponent.get_slots()[index].set_occupied(false)
 
-	# Java: player.setImg(chooser.pi.getImg()); (lines 355-357)
-	player.setImg(chooser.pi.getImg())
-	player.setPlayerInfo(chooser.pi.getPlayerInfo())
-	player.getPlayerInfo().init()
+	# Java: player.set_img(chooser.pi.get_img()); (lines 355-357)
+	player.set_img(chooser.pi.get_img())
+	player.set_player_info(chooser.pi.get_player_info())
+	player.get_player_info().init()
 
-	# Java: opponent.setImg(chooser.oi.getImg()); (lines 359-361)
-	opponent.setImg(chooser.oi.getImg())
-	opponent.setPlayerInfo(chooser.oi.getPlayerInfo())
-	opponent.getPlayerInfo().init()
+	# Java: opponent.set_img(chooser.oi.get_img()); (lines 359-361)
+	opponent.set_img(chooser.oi.get_img())
+	opponent.set_player_info(chooser.oi.get_player_info())
+	opponent.get_player_info().init()
 
 	# Java: chooser = null; gameOver = false; Cards.logScrollPane.clear(); (lines 363-365)
 	chooser = null
@@ -386,9 +386,9 @@ func initialize() -> void:
 	if logScrollPane:
 		logScrollPane.clear()
 
-	# Java: initializePlayerCards(player.getPlayerInfo(), true); (lines 369-370)
-	initializePlayerCards(player.getPlayerInfo(), true)
-	initializePlayerCards(opponent.getPlayerInfo(), false)
+	# Java: initializePlayerCards(player.get_player_info(), true); (lines 369-370)
+	initializePlayerCards(player.get_player_info(), true)
+	initializePlayerCards(opponent.get_player_info(), false)
 
 	# Java: if (NET_GAME != null) { (lines 372-381)
 	if NET_GAME != null:
@@ -397,8 +397,8 @@ func initialize() -> void:
 
 	# Java: for (CardType type : Player.TYPES) { (lines 384-387)
 	for type in Player.TYPES:
-		player.getPlayerInfo().enableDisableCards(type)
-		opponent.getPlayerInfo().enableDisableCards(type)
+		player.get_player_info().enable_disable_cards(type)
+		opponent.get_player_info().enable_disable_cards(type)
 
 # ============================================================================
 # INITIALIZE PLAYER CARDS METHOD (Java: lines 391-416)
@@ -414,14 +414,14 @@ func initializePlayerCards(p_player: Player, visible: bool) -> void:
 	var y: int = ydown(328)
 
 	# Java: CardType[] types = {...}; (line 398)
-	var types: Array = [CardType.Type.FIRE, CardType.Type.AIR, CardType.Type.WATER, CardType.Type.EARTH, p_player.getPlayerClass().getType()]
+	var types: Array = [CardType.Type.FIRE, CardType.Type.AIR, CardType.Type.WATER, CardType.Type.EARTH, p_player.get_player_class().get_type()]
 
 	# Java: for (CardType type : types) { (line 400)
 	for type in types:
-		# Java: if (player.getCards(type) != null && player.getCards(type).size() > 0) { (line 402)
-		if p_player.getCards(type) != null and p_player.getCards(type).size() > 0:
-			# Java: for (CardImage ci : player.getCards(type)) { ci.remove(); } (lines 403-405)
-			for ci in p_player.getCards(type):
+		# Java: if (player.get_cards(type) != null && player.get_cards(type).size() > 0) { (line 402)
+		if p_player.get_cards(type) != null and p_player.get_cards(type).size() > 0:
+			# Java: for (CardImage ci : player.get_cards(type)) { ci.remove(); } (lines 403-405)
+			for ci in p_player.get_cards(type):
 				ci.queue_free()
 
 		# Java: List<CardImage> v1 = cs.getCardImagesByType(...); (line 408)
@@ -433,11 +433,11 @@ func initializePlayerCards(p_player: Player, visible: bool) -> void:
 		# Java: addVerticalGroupCards(x, y, v1, player, type, visible); (line 410)
 		addVerticalGroupCards(x, y, v1, p_player, type, visible)
 
-		# Java: player.setCards(type, v1); (line 411)
-		p_player.setCards(type, v1)
+		# Java: player.set_cards(type, v1); (line 411)
+		p_player.set_cards(type, v1)
 
-		# Java: player.enableDisableCards(type); (line 413)
-		p_player.enableDisableCards(type)
+		# Java: player.enable_disable_cards(type); (line 413)
+		p_player.enable_disable_cards(type)
 
 # ============================================================================
 # HELPER METHODS (Java: lines 418-429)
@@ -449,11 +449,11 @@ func setStrengthLabel(label: Label, pl: Player, type: CardType.Type) -> void:
 
 ## Java: public String getPlayerDescription(Player pl)
 func getPlayerDescription(pl: Player) -> String:
-	return pl.getPlayerClass().getTitle() + " Life: " + str(pl.getLife())
+	return pl.get_player_class().getTitle() + " Life: " + str(pl.get_life())
 
 ## Java: public String getPlayerStrength(Player pl, CardType type)
 func getPlayerStrength(pl: Player, type: CardType.Type) -> String:
-	var str_val: int = 0 if pl == null else pl.getStrength(type)
+	var str_val: int = 0 if pl == null else pl.get_strength(type)
 	return CardType.get_title(type) + ":  " + str(str_val)
 
 # ============================================================================
@@ -477,21 +477,21 @@ func addVerticalGroupCards(x: int, y: int, cards: Array, p_player: Player, type:
 			x1 = 0
 			y1 = ydown(0)
 
-		# Java: ci.setFont(customFont); (line 446)
-		ci.setFont(customFont)
+		# Java: ci.set_font(customFont); (line 446)
+		ci.set_font(customFont)
 
-		# Java: ci.setFrame(ci.getCard().isSpell() ? spellramka : ramka); (line 447)
-		ci.setFrame(spellramka if ci.getCard().isSpell() else ramka)
+		# Java: ci.set_frame(ci.get_card().is_spell() ? spellramka : ramka); (line 447)
+		ci.set_frame(spellramka if ci.get_card().is_spell() else ramka)
 
 		# Java: ci.addListener(sdl); (line 448)
 		# TODO: Add listeners
 
-		# Java: y1 -= (spacing + ci.getFrame().getHeight()); (line 450)
-		y1 -= (spacing + ci.getFrame().get_height())
+		# Java: y1 -= (spacing + ci.get_frame().getHeight()); (line 450)
+		y1 -= (spacing + ci.get_frame().get_height())
 
-		# Java: ci.setBounds(x1, y1, ci.getFrame().getWidth(), ci.getFrame().getHeight()); (line 451)
+		# Java: ci.setBounds(x1, y1, ci.get_frame().getWidth(), ci.get_frame().getHeight()); (line 451)
 		ci.position = Vector2(x1, y1)
-		ci.size = Vector2(ci.getFrame().get_width(), ci.getFrame().get_height())
+		ci.size = Vector2(ci.get_frame().get_width(), ci.get_frame().get_height())
 
 		# Java: if (addToStage) { ci.addListener(li); stage.addActor(ci); } (lines 453-456)
 		if addToStage:
@@ -526,8 +526,8 @@ func addSlotImages(pi: PlayerImage, x: int, y: int, bottom: bool) -> void:
 		# Java: stage.addActor(s); (line 471)
 		stage.add_child(s)
 
-		# Java: pi.getSlots()[i] = s; (line 473)
-		pi.getSlots()[i] = s
+		# Java: pi.get_slots()[i] = s; (line 473)
+		pi.get_slots()[i] = s
 
 # ============================================================================
 # BUTTON SIGNAL HANDLERS (Godot-specific, replaces Java InputListeners)
@@ -540,8 +540,8 @@ func _on_show_oppt_cards_pressed() -> void:
 
 	opptCardsShown = true
 
-	var title_text: String = getPlayerDescription(opponent.getPlayerInfo())
-	var window = OpponentCardWindow.new(title_text, opponent.getPlayerInfo(), self, skin)
+	var title_text: String = getPlayerDescription(opponent.get_player_info())
+	var window = OpponentCardWindow.new(title_text, opponent.get_player_info(), self, skin)
 
 	# TODO: Add close button and show window
 
@@ -554,7 +554,7 @@ func _on_skip_turn_pressed() -> void:
 
 func _on_shuffle_cards_pressed() -> void:
 	# Java: lines 209-217
-	initializePlayerCards(player.getPlayerInfo(), true)
+	initializePlayerCards(player.get_player_info(), true)
 
 # ============================================================================
 # HELPER METHODS CONTINUED (Java: lines 751-968)
@@ -562,30 +562,30 @@ func _on_shuffle_cards_pressed() -> void:
 
 ## Java: public void clearHighlights()
 func clearHighlights() -> void:
-	# Java: for (CardImage ci : player.getSlotCards()) { (lines 752-758)
-	for ci in player.getSlotCards():
+	# Java: for (CardImage ci : player.get_slot_cards()) { (lines 752-758)
+	for ci in player.get_slot_cards():
 		if ci != null:
-			ci.setHighlighted(false)
-			ci.clearActions()
+			ci.set_highlighted(false)
+			ci.clear_actions()
 			ci.modulate = Color.WHITE
 
-	# Java: for (CardImage ci : opponent.getSlotCards()) { (lines 759-765)
-	for ci in opponent.getSlotCards():
+	# Java: for (CardImage ci : opponent.get_slot_cards()) { (lines 759-765)
+	for ci in opponent.get_slot_cards():
 		if ci != null:
-			ci.setHighlighted(false)
-			ci.clearActions()
+			ci.set_highlighted(false)
+			ci.clear_actions()
 			ci.modulate = Color.WHITE
 
-	# Java: for (SlotImage si : player.getSlots()) { (lines 766-770)
-	for si in player.getSlots():
-		si.setHighlighted(false)
-		si.clearActions()
+	# Java: for (SlotImage si : player.get_slots()) { (lines 766-770)
+	for si in player.get_slots():
+		si.set_highlighted(false)
+		si.clear_actions()
 		si.modulate = Color.WHITE
 
-	# Java: for (SlotImage si : opponent.getSlots()) { (lines 771-775)
-	for si in opponent.getSlots():
-		si.setHighlighted(false)
-		si.clearActions()
+	# Java: for (SlotImage si : opponent.get_slots()) { (lines 771-775)
+	for si in opponent.get_slots():
+		si.set_highlighted(false)
+		si.clear_actions()
 		si.modulate = Color.WHITE
 
 ## Java: public void animateDamageText(int value, CardImage ci)
@@ -663,12 +663,12 @@ func moveCardActorOnBattle(ci: CardImage, pi: PlayerImage) -> void:
 	if SoundManager:
 		SoundManager.play(SoundTypes.Sound.ATTACK)
 
-	# Java: if (pi.getSlots()[0] == null) { return; } (lines 836-838)
-	if pi.getSlots()[0] == null:
+	# Java: if (pi.get_slots()[0] == null) { return; } (lines 836-838)
+	if pi.get_slots()[0] == null:
 		return
 
-	# Java: boolean isBottom = pi.getSlots()[0].isBottomSlots(); (line 842)
-	var isBottom: bool = pi.getSlots()[0].isBottomSlots()
+	# Java: boolean isBottom = pi.get_slots()[0].is_bottom_slots(); (line 842)
+	var isBottom: bool = pi.get_slots()[0].is_bottom_slots()
 
 	# Java: ci.addAction(sequence(moveBy(0, isBottom ? 20 : -20, 0.5f), moveBy(0, isBottom ? -20 : 20, 0.5f), ...)); (lines 844-849)
 	var tween := create_tween()
@@ -684,8 +684,8 @@ func moveCardActorOnMagic(ci: CardImage, pi: PlayerImage) -> void:
 		push_error("moveCardActorOnMagic: null ci or pi")
 		return
 
-	# Java: boolean isBottom = pi.getSlots()[0].isBottomSlots(); (line 870)
-	var isBottom: bool = pi.getSlots()[0].isBottomSlots()
+	# Java: boolean isBottom = pi.get_slots()[0].is_bottom_slots(); (line 870)
+	var isBottom: bool = pi.get_slots()[0].is_bottom_slots()
 
 	# Java: pi.addAction(sequence(moveBy(0, isBottom ? -20 : 20, 0.5f), moveBy(0, isBottom ? 20 : -20, 0.5f), ...)); (lines 872-877)
 	var tween := create_tween()
@@ -719,12 +719,12 @@ func getPlayerImage(id: String) -> PlayerImage:
 	# Java: PlayerImage ret = null; (line 916)
 	var ret: PlayerImage = null
 
-	# Java: if (player.getPlayerInfo().getId().equalsIgnoreCase(id)) { ret = player; } (lines 917-919)
-	if player.getPlayerInfo().getId().to_lower() == id.to_lower():
+	# Java: if (player.get_player_info().get_id().equalsIgnoreCase(id)) { ret = player; } (lines 917-919)
+	if player.get_player_info().get_id().to_lower() == id.to_lower():
 		ret = player
 
-	# Java: if (opponent.getPlayerInfo().getId().equalsIgnoreCase(id)) { ret = opponent; } (lines 921-923)
-	if opponent.getPlayerInfo().getId().to_lower() == id.to_lower():
+	# Java: if (opponent.get_player_info().get_id().equalsIgnoreCase(id)) { ret = opponent; } (lines 921-923)
+	if opponent.get_player_info().get_id().to_lower() == id.to_lower():
 		ret = opponent
 
 	# Java: if (ret == null) { throw new Exception("Could not find player with id: " + id); } (lines 925-927)
@@ -736,20 +736,20 @@ func getPlayerImage(id: String) -> PlayerImage:
 
 ## Java: public void setOpposingPlayerId(String id)
 func setOpposingPlayerId(id: String) -> void:
-	# Java: opponent.getPlayerInfo().setId(id); (line 933)
-	opponent.getPlayerInfo().setId(id)
+	# Java: opponent.get_player_info().set_id(id); (line 933)
+	opponent.get_player_info().set_id(id)
 
 ## Java: public PlayerImage getOpposingPlayerImage(String id)
 func getOpposingPlayerImage(id: String) -> PlayerImage:
 	# Java: PlayerImage ret = null; (line 938)
 	var ret: PlayerImage = null
 
-	# Java: if (player.getPlayerInfo().getId().equalsIgnoreCase(id)) { ret = opponent; } (lines 940-942)
-	if player.getPlayerInfo().getId().to_lower() == id.to_lower():
+	# Java: if (player.get_player_info().get_id().equalsIgnoreCase(id)) { ret = opponent; } (lines 940-942)
+	if player.get_player_info().get_id().to_lower() == id.to_lower():
 		ret = opponent
 
-	# Java: if (opponent.getPlayerInfo().getId().equalsIgnoreCase(id)) { ret = player; } (lines 944-946)
-	if opponent.getPlayerInfo().getId().to_lower() == id.to_lower():
+	# Java: if (opponent.get_player_info().get_id().equalsIgnoreCase(id)) { ret = player; } (lines 944-946)
+	if opponent.get_player_info().get_id().to_lower() == id.to_lower():
 		ret = player
 
 	# Java: return ret; (line 948)
