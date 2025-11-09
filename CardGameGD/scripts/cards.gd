@@ -131,6 +131,9 @@ static var damageOffsetter: int = 0
 ## Java: @Override public void init()
 ## Initialize all game resources: textures, fonts, UI, player images
 func init() -> void:
+	# Initialize Specializations static data before accessing any specializations
+	Specializations._ensure_initialized()
+
 	# Java: cs = new CardSetup(); cs.parseCards(); (lines 120-121)
 	# CardSetup is an autoload singleton, access directly
 	cs = CardSetup
