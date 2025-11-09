@@ -228,9 +228,9 @@ func dispose() -> void:
 
 ## Java: public void resize(int width, int height)
 ## Called when window is resized
-## @param width New window width
-## @param height New window height
-func resize(width: int, height: int) -> void:
+## @param _width New window width
+## @param _height New window height
+func resize(_width: int, _height: int) -> void:
 	# Empty in Java (lines 109-111)
 	pass
 
@@ -241,8 +241,8 @@ func resize(width: int, height: int) -> void:
 ## Java: public void setHWCursorVisible(boolean visible) throws LWJGLException
 ## Sets hardware cursor visibility (LWJGL-specific)
 ## In Godot, uses Input.set_custom_mouse_cursor()
-## @param visible true to show cursor, false to hide
-func setHWCursorVisible(visible: bool) -> void:
+## @param cursor_visible true to show cursor, false to hide
+func setHWCursorVisible(cursor_visible: bool) -> void:
 	# Java: if (Gdx.app.getType() != ApplicationType.Desktop && Gdx.app instanceof LwjglApplication) return; (lines 114-115)
 	# In Godot, always runs
 
@@ -250,7 +250,7 @@ func setHWCursorVisible(visible: bool) -> void:
 	# Godot doesn't need empty cursor creation
 
 	# Java: if (Mouse.isInsideWindow()) Mouse.setNativeCursor(visible ? null : emptyCursor); (lines 125-126)
-	if visible:
+	if cursor_visible:
 		Input.set_custom_mouse_cursor(null)
 	else:
 		# Hide cursor by setting it to a transparent 1x1 image

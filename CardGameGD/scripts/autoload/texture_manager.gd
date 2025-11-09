@@ -159,14 +159,22 @@ func load_texture_atlas(atlas_path: String, image_path: String) -> Dictionary:
 
 func get_small_card_texture(card_name: String) -> Texture2D:
 	var key := card_name.to_lower()
+	# Check regular atlas first
 	if small_card_atlas.has(key):
 		return small_card_atlas[key]
+	# Fall back to TGA atlas (some cards like "inferno" are only in TGA)
+	if small_tga_card_atlas.has(key):
+		return small_tga_card_atlas[key]
 	return null
 
 func get_large_card_texture(card_name: String) -> Texture2D:
 	var key := card_name.to_lower()
+	# Check regular atlas first
 	if large_card_atlas.has(key):
 		return large_card_atlas[key]
+	# Fall back to TGA atlas
+	if large_tga_card_atlas.has(key):
+		return large_tga_card_atlas[key]
 	return null
 
 func get_face_texture(card_name: String) -> Texture2D:
