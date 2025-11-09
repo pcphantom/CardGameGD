@@ -41,15 +41,12 @@ const COLOR_DAMAGE: Color = Color(1.0, 0.5, 0.2)  # Orange
 const COLOR_HEAL: Color = Color(0.5, 1.0, 0.7)  # Light green
 const COLOR_BUFF: Color = Color(0.8, 0.6, 1.0)  # Purple
 
-# Size constants
-const PANEL_SIZE: Vector2 = Vector2(160, 580)
-const PANEL_POSITION: Vector2 = Vector2(850, 100)
+# Size constants - DO NOT SET HERE, set by Cards.gd to match Java coordinates
+# Java (Cards.java:242): logScrollPane.setBounds(24, 36, 451, 173);
+# Position and size are set externally by Cards.gd init() method
 
 func _ready() -> void:
-	custom_minimum_size = PANEL_SIZE
-	size = PANEL_SIZE
-	position = PANEL_POSITION
-
+	# Position and size set by Cards.gd, not here
 	_create_ui_elements()
 
 	# Connect to GameManager signals if available
@@ -57,21 +54,25 @@ func _ready() -> void:
 		GameManager.game_log_added.connect(_on_game_log_added)
 
 func _create_ui_elements() -> void:
+	# Get panel size (set by Cards.gd)
+	var panel_width: float = custom_minimum_size.x if custom_minimum_size.x > 0 else 451
+	var panel_height: float = custom_minimum_size.y if custom_minimum_size.y > 0 else 173
+
 	# Title label
 	title_label = Label.new()
 	title_label.text = "Game Log"
 	title_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	title_label.add_theme_font_size_override("font_size", 14)
+	title_label.add_theme_font_size_override("font_size", 12)
 	title_label.position = Vector2(5, 5)
-	title_label.size = Vector2(100, 25)
+	title_label.size = Vector2(panel_width - 80, 20)
 	add_child(title_label)
 
 	# Filter button
 	filter_button = Button.new()
 	filter_button.text = "⚙"
 	filter_button.tooltip_text = "Filter options"
-	filter_button.position = Vector2(110, 5)
-	filter_button.size = Vector2(25, 25)
+	filter_button.position = Vector2(panel_width - 70, 5)
+	filter_button.size = Vector2(20, 20)
 	filter_button.pressed.connect(_on_filter_button_pressed)
 	add_child(filter_button)
 
@@ -80,15 +81,15 @@ func _create_ui_elements() -> void:
 	auto_scroll_checkbox.text = ""
 	auto_scroll_checkbox.tooltip_text = "Auto-scroll"
 	auto_scroll_checkbox.button_pressed = true
-	auto_scroll_checkbox.position = Vector2(137, 5)
-	auto_scroll_checkbox.size = Vector2(20, 25)
+	auto_scroll_checkbox.position = Vector2(panel_width - 45, 5)
+	auto_scroll_checkbox.size = Vector2(20, 20)
 	auto_scroll_checkbox.toggled.connect(_on_auto_scroll_toggled)
 	add_child(auto_scroll_checkbox)
 
-	# Scroll container
+	# Scroll container - use relative sizing based on panel size
 	scroll_container = ScrollContainer.new()
-	scroll_container.position = Vector2(5, 35)
-	scroll_container.size = Vector2(150, 540)
+	scroll_container.position = Vector2(5, 30)
+	scroll_container.size = Vector2(panel_width - 10, panel_height - 35)
 	scroll_container.follow_focus = true
 	scroll_container.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	scroll_container.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO

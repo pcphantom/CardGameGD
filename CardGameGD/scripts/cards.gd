@@ -40,6 +40,7 @@ static var portraitramka: Texture2D = null
 static var ramkabig: Texture2D = null
 static var ramkabigspell: Texture2D = null
 static var slotTexture: Texture2D = null
+static var endTurnButtonTexture: Texture2D = null
 
 ## Java: public static BitmapFont defaultFont; etc.
 static var defaultFont: Font = null
@@ -73,7 +74,7 @@ var opptInfoLabel: Label = null
 
 ## Java: Button shuffleCardsButton; ImageButton skipTurnButton; Button showOpptCardsButton;
 var shuffleCardsButton: Button = null
-var skipTurnButton: Button = null
+var skipTurnButton: TextureButton = null
 var showOpptCardsButton: Button = null
 
 ## Java: public static LogScrollPane logScrollPane;
@@ -138,18 +139,19 @@ func init() -> void:
 	# Not needed in Godot
 
 	# Java: ramka = new Texture(...); (lines 125-130)
-	ramka = load("res://images/ramka.png")
-	spellramka = load("res://images/ramkaspell.png")
-	portraitramka = load("res://images/portraitramka.png")
-	ramkabig = load("res://images/ramkabig.png")
-	ramkabigspell = load("res://images/ramkabigspell.png")
-	slotTexture = load("res://images/slot.png")
+	ramka = load("res://assets/images/ramka.png")
+	spellramka = load("res://assets/images/ramkaspell.png")
+	portraitramka = load("res://assets/images/portraitramka.png")
+	ramkabig = load("res://assets/images/ramkabig.png")
+	ramkabigspell = load("res://assets/images/ramkabigspell.png")
+	slotTexture = load("res://assets/images/slot.png")
+	endTurnButtonTexture = load("res://assets/images/endturnbutton.png")
 
 	# Java: smallCardAtlas = new TextureAtlas(...); (lines 132-138)
 	# TODO: Load texture atlases - Godot uses different system
 
 	# Java: background = new Texture(...); (lines 140-142)
-	background = load("res://images/background.jpg")
+	background = load("res://assets/images/background.jpg")
 	# TODO: Create sprite from background
 
 	# Java: player = new PlayerImage(...); opponent = new PlayerImage(...); (lines 144-145)
@@ -185,10 +187,15 @@ func init() -> void:
 	stage.add_child(showOpptCardsButton)
 
 	# Java: skipTurnButton = new ImageButton(style); (lines 194-206)
-	skipTurnButton = Button.new()
+	# Java: style uses endturnbutton.png texture (line 163)
+	skipTurnButton = TextureButton.new()
+	if endTurnButtonTexture:
+		skipTurnButton.texture_normal = endTurnButtonTexture
 	skipTurnButton.pressed.connect(_on_skip_turn_pressed)
 	skipTurnButton.position = Vector2(10, ydown(110))
-	skipTurnButton.size = Vector2(50, 50)
+	skipTurnButton.custom_minimum_size = Vector2(50, 50)
+	skipTurnButton.ignore_texture_size = true
+	skipTurnButton.stretch_mode = TextureButton.STRETCH_KEEP_ASPECT_CENTERED
 	stage.add_child(skipTurnButton)
 
 	# Java: shuffleCardsButton = new Button(skin); (lines 208-220)
@@ -226,9 +233,10 @@ func init() -> void:
 	cdi.setFont(greenfont)
 
 	# Java: logScrollPane = new LogScrollPane(skin); (lines 241-242)
-	# logScrollPane = LogScrollPane.new()
-	# logScrollPane.position = Vector2(24, 36)
-	# logScrollPane.size = Vector2(451, 173)
+	# Java: logScrollPane.setBounds(24, 36, 451, 173);
+	logScrollPane = LogScrollPane.new()
+	logScrollPane.position = Vector2(24, 36)
+	logScrollPane.custom_minimum_size = Vector2(451, 173)
 
 	# Java: stage.addActor(player); etc. (lines 244-249)
 	stage.add_child(player)
@@ -236,7 +244,7 @@ func init() -> void:
 	stage.add_child(playerInfoLabel)
 	stage.add_child(opptInfoLabel)
 	stage.add_child(cdi)
-	# stage.add_child(logScrollPane)
+	stage.add_child(logScrollPane)
 
 	# Java: sl = new SlotListener(); li = new MouseOverCardListener(); sdl = new ShowDescriptionListener(); (lines 251-253)
 	# TODO: Create listener instances
