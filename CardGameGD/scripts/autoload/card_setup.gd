@@ -1,5 +1,6 @@
 extends Node
-class_name CardSetup
+# NOTE: No class_name declaration - this is an autoload singleton
+# Accessible globally as CardSetup via autoload settings in project.godot
 
 ## EXACT LITERAL TRANSLATION OF CardSetup.java
 ## Source: CardGameGDX/src/main/java/org/antinori/cards/CardSetup.java
