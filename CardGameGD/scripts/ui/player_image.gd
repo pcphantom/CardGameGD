@@ -85,6 +85,18 @@ func _init(sprite_img: Sprite2D = null, frame_tex: Texture2D = null, p_font: Fon
         slot_cards[i] = null
 
 # ============================================================================
+# GODOT LIFECYCLE METHODS
+# ============================================================================
+
+func _ready() -> void:
+    # Add the portrait sprite as a child if it exists
+    if img != null:
+        add_child(img)
+        img.position = Vector2.ZERO
+        # Set a reasonable size for the portrait
+        img.scale = Vector2(1.0, 1.0)
+
+# ============================================================================
 # PRIVATE METHODS
 # ============================================================================
 
@@ -179,7 +191,16 @@ func get_slot_cards() -> Array[CardImage]:
 
 ## Java: public void setImg(Sprite img)
 func set_img(sprite_img: Sprite2D) -> void:
+    # Remove old sprite if it exists
+    if self.img != null and self.img.get_parent() == self:
+        remove_child(self.img)
+
     self.img = sprite_img
+
+    # Add new sprite as child if we're in the scene tree
+    if sprite_img != null and is_inside_tree():
+        add_child(sprite_img)
+        sprite_img.position = Vector2.ZERO
 
 ## Java: public void setFrame(Texture frame)
 func set_frame(frame_tex: Texture2D) -> void:
