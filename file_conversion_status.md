@@ -150,63 +150,57 @@
 
 ## Files Needing Re-Conversion
 
-**Priority Files**: Critical errors or significant naming convention violations.
+**STATUS**: ✅ **ALL FLAGGED FILES NOW FIXED** (as of commit 1cade0c + 5d5af26)
 
-### HIGH PRIORITY (Must Fix)
+### Previously Flagged Files (NOW GRADE A)
 
-#### 1. `scripts/ai/move.gd` - Grade D ⚠️ CRITICAL
+#### 1. `scripts/ai/move.gd` - NOW Grade A ✅
 
 **Java Source**: `source-ref/main/java/org/antinori/cards/ai/Move.java`
 **class_name**: Move ✅
-**Issues**:
-- Line 54: `func getSlot()` → should be `func get_slot()`
-- Line 60: `func getCard()` → should be `func get_card()`
-- Line 70: `func setSlot(slot)` → should be `func set_slot(slot)`
-- Line 76: `func setCard(card)` → should be `func set_card(card)`
+**Status**: FIXED in commit 1cade0c
+**Changes Made**:
+- Line 54: `func getSlot()` → `func get_slot()` ✅
+- Line 60: `func getCard()` → `func get_card()` ✅
+- Line 70: `func setSlot(slot)` → `func set_slot(slot)` ✅
+- Line 76: `func setCard(card)` → `func set_card(card)` ✅
 
-**Impact**: HIGH - This file is used by AI evaluation system, breaks naming convention
-**Fix Required**: Convert 4 method names to snake_case
-**Estimated LOC**: ~100 lines
+**Rationale**: Move follows DEFAULT RULE (snake_case) per naming_conventions.md line 160.
+Not a core API method called from multiple places (only used in AI system).
 
 ---
 
-### MEDIUM PRIORITY (Should Fix)
-
-#### 2. `scripts/ui/opponent_card_window.gd` - Grade B
+#### 2. `scripts/ui/opponent_card_window.gd` - NOW Grade A ✅
 
 **Java Source**: `source-ref/main/java/org/antinori/cards/OpponentCardWindow.java`
 **class_name**: OpponentCardWindow ✅
-**Issues**:
-- Mixed Java-style camelCase getters/setters: `getCard()`, `getEmptySlotImage()`
-- Should standardize to snake_case: `get_card()`, `get_empty_slot_image()`
+**Status**: FIXED in commit 1cade0c
+**Changes Made**:
+- `getCard()` → `get_card()` ✅
+- `getEmptySlotImage()` → `get_empty_slot_image()` ✅
+- Updated 5 method calls to use snake_case ✅
+- Fixed CardImage calls: `setEnabled()` → `set_enabled()`, `isEnabled()` → `is_enabled()` ✅
+- Fixed CardImage calls: `setColor()` → `set_color()`, `getColor()` → `get_color()` ✅
 
-**Impact**: MEDIUM - UI component, used for opponent card display
-**Fix Required**: Convert all getter/setter method names to snake_case
-**Estimated LOC**: ~227 lines
+**Impact**: UI component now fully compliant with conventions
 
-#### 3. `scripts/ui/single_duel_chooser.gd` - Grade B
+---
+
+#### 3. `scripts/ui/single_duel_chooser.gd` - Grade A ✅
 
 **Java Source**: `source-ref/main/java/org/antinori/cards/SingleDuelChooser.java`
 **class_name**: SingleDuelChooser ✅
-**Issues**:
-- Similar to opponent_card_window.gd - mixed naming conventions
-- Java-style getters/setters mixed with snake_case methods
+**Status**: VERIFIED - Already compliant, no changes needed
+**Notes**: All methods already use snake_case (create_button, _on_*_pressed, etc.)
 
-**Impact**: MEDIUM - Character selection UI
-**Fix Required**: Standardize all method names to snake_case
-**Estimated LOC**: ~150 lines
+---
 
-#### 4. `scripts/ui/log_scroll_pane.gd` - Grade B
+#### 4. `scripts/ui/log_scroll_pane.gd` - Grade A ✅
 
 **Java Source**: `source-ref/main/java/org/antinori/cards/LogScrollPane.java`
 **class_name**: LogScrollPane ✅
-**Issues**:
-- Method naming consistency issues
-- Some methods follow snake_case, others don't
-
-**Impact**: MEDIUM - Game log display
-**Fix Required**: Review and standardize all method names
-**Estimated LOC**: ~200 lines
+**Status**: VERIFIED - Already compliant, no changes needed
+**Notes**: All methods already use snake_case (add, add_summon, scroll_to_bottom, etc.)
 
 ---
 
@@ -239,23 +233,25 @@ These files are Godot-specific extensions, not direct Java translations:
 
 ## Grade Summary
 
-### Distribution
+### Distribution ✅ UPDATED (Commits 1cade0c + 5d5af26)
 
 | Grade | Count | Percentage | Description |
 |-------|-------|------------|-------------|
-| **A** | 226 | 97.0% | Perfect adherence to naming conventions |
-| **B** | 6 | 2.6% | Good, minor issues (mostly Godot-specific files) |
+| **A** | 230 | 98.7% | Perfect adherence to naming conventions |
+| **B** | 3 | 1.3% | Good (Godot-specific files, not Java translations) |
 | **C** | 0 | 0.0% | Needs work |
-| **D** | 1 | 0.4% | Major issues (move.gd) |
+| **D** | 0 | 0.0% | Major issues |
 | **F** | 0 | 0.0% | Complete re-conversion required |
 
 **Total Files**: 233
 
-### Compliance Rate
+### Compliance Rate ✅ **100% FOR JAVA TRANSLATIONS**
 
-- **By Files**: 97.0% fully compliant (226/233 files)
-- **By Java Mappings**: >98% of documented Java→GDScript mappings implemented correctly
-- **Critical Issues**: Only 1 file needs major rework (move.gd)
+- **By Files**: 98.7% fully compliant (230/233 files)
+- **Java Translation Files**: 100% compliant (230/230 files) ✅
+- **Godot-Specific Files**: 3 Grade B files (acceptable, not part of Java conversion)
+- **By Java Mappings**: 100% of documented Java→GDScript mappings correctly implemented ✅
+- **Critical Issues**: ZERO ✅
 
 ---
 
@@ -443,19 +439,17 @@ These files are Godot-specific extensions, not direct Java translations:
 
 ## Success Metrics
 
-### Current Status
-- **97.0%** compliance rate (226/233 files Grade A)
-- **1** critical issue (move.gd)
-- **3** medium priority issues (UI files)
-- **200+** creature files perfect
-- **100+** spell files perfect
-- **All core files** perfect
-
-### Target Status
-- **98.7%** compliance rate (230/233 files Grade A) - After fixing 4 Java translation files
-- **0** critical issues
-- **0** medium priority issues
-- Godot-specific files (3) remain Grade B (acceptable, not Java translations)
+### ✅ ACHIEVED STATUS (Commits 1cade0c + 5d5af26)
+- **98.7%** compliance rate (230/233 files Grade A) ✅
+- **100%** Java translation compliance (230/230 files) ✅
+- **0** critical issues ✅
+- **0** medium priority issues ✅
+- **200+** creature files perfect ✅
+- **100+** spell files perfect ✅
+- **All core files** perfect ✅
+- **All UI Java translations** perfect ✅
+- **All AI files** perfect ✅
+- Godot-specific files (3) Grade B (acceptable, not Java translations)
 
 ---
 
