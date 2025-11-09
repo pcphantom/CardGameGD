@@ -360,44 +360,5 @@ func set_skip_next_attack(flag: bool) -> void:
 	if flag and game != null and game.has_method("play_sound"):
 		game.play_sound("negative_effect")
 
-# Damage/attack functions
-func damage_opponent(amount: int) -> void:
-	# TODO: Implement opponent damage
-	if opposing_player != null:
-		opposing_player.decrement_life(amount)
-
-func damage_player(amount: int) -> void:
-	# TODO: Implement player damage
-	if owner_player != null:
-		owner_player.decrement_life(amount)
-
-func damage_all_except_current_index(amount: int, exclude_index: int) -> void:
-	# TODO: Implement AOE damage
-	pass
-
-# Card manipulation functions
-func swap_card(target_slot: int) -> void:
-	# TODO: Implement card swap
-	pass
-
-func add_creature(creature_name: String, slot_index_param: int) -> void:
-	# TODO: Implement creature summoning
-	pass
-
-# Movement functions
-func try_move_to_another_random_slot() -> bool:
-	# TODO: Implement random movement
-	return false
-
-func try_move_to_another_random_open_slot(owner_ref, card_visual, current_index: int) -> bool:
-	# TODO: Implement random movement to open slot
-	return false
-
-func move_card_to_another_slot(from_slot: int, to_slot: int) -> void:
-	# TODO: Implement card movement
-	pass
-
-# Utility functions
-func scale_image(scale_factor: float) -> void:
-	# TODO: Implement image scaling
-	pass
+# All damage/attack/card manipulation/movement functions are inherited from BaseFunctions
+# with correct Java signatures. No need to override them here.

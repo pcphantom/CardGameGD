@@ -24,7 +24,7 @@ const CREATURE_PATH: String = "res://scripts/creatures/"
 
 static func get_creature_class(
 	creature_class_name: String,
-	game: GameController,
+	game,  # Cards (main game controller)
 	card: Card,
 	card_image: CardImage,
 	slot_index: int,

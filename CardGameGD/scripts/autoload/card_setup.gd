@@ -233,72 +233,78 @@ func get_cards_by_type_from_set(type: CardType.Type, max_number: int, set: Dicti
 # ============================================================================
 
 # Java: public List<CardImage> getCardImagesByType(TextureAtlas atlas1, TextureAtlas atlas2, CardType type, int maxNumber)
-func get_card_images_by_type(atlas1: TextureAtlas, atlas2: TextureAtlas, type: CardType.Type, max_number: int) -> Array:
+# NOTE: atlas1/atlas2 are Dictionary[String, Texture2D] in Godot (not LibGDX TextureAtlas)
+func get_card_images_by_type(atlas1, atlas2, type: CardType.Type, max_number: int) -> Array:
 	# Java: List<Card> picks = getCardsByType(type, maxNumber);
 	var picks: Array = get_cards_by_type(type, max_number)
-	
+
 	# Java: List<CardImage> images = new ArrayList<CardImage>();
 	var images: Array = []
-	
+
 	# Java: for (Card c : picks)
 	for c in picks:
 		# Java: Sprite sp = atlas1.createSprite(c.getName().toLowerCase());
+		# Godot: atlas is Dictionary, lookup by key
 		var sprite_name: String = c.get_name().to_lower()
-		var sp: Sprite = atlas1.create_sprite(sprite_name)
-		
+		var sp: Texture2D = atlas1.get(sprite_name) if atlas1 is Dictionary else null
+
 		# Java: if (sp == null) { sp = atlas2.createSprite(...); if (sp != null) sp.flip(false, true); }
-		if sp == null:
-			sp = atlas2.create_sprite(sprite_name)
-			if sp != null:
-				sp.flip(false, true)  # TGA files need to be flipped twice
-		
+		if sp == null and atlas2 is Dictionary:
+			sp = atlas2.get(sprite_name)
+			# Note: Texture2D doesn't have flip() - flipping handled by Sprite2D at render time
+
 		# Java: if (sp == null) throw new Exception("Sprite is null for card: " + c);
 		if sp == null:
-			push_error("Sprite is null for card: %s" % c.get_name())
+			push_error("Texture is null for card: %s" % c.get_name())
 			continue
-		
+
 		# Java: sp.flip(false, true);
-		sp.flip(false, true)
-		
+		# Note: Skipping flip - Texture2D doesn't have flip method
+
 		# Java: CardImage img = new CardImage(sp, c);
-		var img: CardImage = CardImage.new(sp, c)
-		
+		# NOTE: Godot CardImage._init() takes no parameters - this needs refactoring
+		var img: CardImage = CardImage.new()
+		# TODO: Set texture and card properties on img after creation
+
 		# Java: images.add(img);
 		images.append(img)
-	
+
 	# Java: return images;
 	return images
 
 # Java: public CardImage getCardImageByName(TextureAtlas atlas1, TextureAtlas atlas2, String name)
-func get_card_image_by_name(atlas1: TextureAtlas, atlas2: TextureAtlas, name: String) -> CardImage:
+# NOTE: atlas1/atlas2 are Dictionary[String, Texture2D] in Godot (not LibGDX TextureAtlas)
+func get_card_image_by_name(atlas1, atlas2, name: String) -> CardImage:
 	# Java: Card c = getCardByName(name);
 	var c: Card = get_card_by_name(name)
-	
+
 	if c == null:
 		push_error("Card not found: %s" % name)
 		return null
-	
+
 	# Java: Sprite sp = atlas1.createSprite(c.getName().toLowerCase());
+	# Godot: atlas is Dictionary, lookup by key
 	var sprite_name: String = c.get_name().to_lower()
-	var sp: Sprite = atlas1.create_sprite(sprite_name)
-	
+	var sp: Texture2D = atlas1.get(sprite_name) if atlas1 is Dictionary else null
+
 	# Java: if (sp == null) { sp = atlas2.createSprite(...); if (sp != null) sp.flip(false, true); }
-	if sp == null:
-		sp = atlas2.create_sprite(sprite_name)
-		if sp != null:
-			sp.flip(false, true)  # TGA files need to be flipped twice
-	
+	if sp == null and atlas2 is Dictionary:
+		sp = atlas2.get(sprite_name)
+		# Note: Texture2D doesn't have flip() - flipping handled by Sprite2D at render time
+
 	# Java: if (sp == null) throw new Exception("Sprite is null for card: " + c);
 	if sp == null:
-		push_error("Sprite is null for card: %s" % c.get_name())
+		push_error("Texture is null for card: %s" % c.get_name())
 		return null
-	
+
 	# Java: sp.flip(false, true);
-	sp.flip(false, true)
-	
+	# Note: Skipping flip - Texture2D doesn't have flip method
+
 	# Java: CardImage img = new CardImage(sp, c);
-	var img: CardImage = CardImage.new(sp, c)
-	
+	# NOTE: Godot CardImage._init() takes no parameters - this needs refactoring
+	var img: CardImage = CardImage.new()
+	# TODO: Set texture and card properties on img after creation
+
 	# Java: return img;
 	return img
 

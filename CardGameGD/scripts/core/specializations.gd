@@ -237,3 +237,12 @@ static func from_type(spec_type: Type) -> Specialization:
 static func get_all_specializations() -> Array[Specialization]:
 	_ensure_initialized()
 	return ALL_SPECIALIZATIONS.duplicate()
+
+# Java compatibility aliases (called by single_duel_chooser.gd)
+static func titles() -> Array:
+	"""Java: public static String[] titles()"""
+	return get_titles()
+
+static func from_title_string(title: String) -> Specialization:
+	"""Java: public static Specializations fromTitleString(String title)"""
+	return get_by_title(title)
