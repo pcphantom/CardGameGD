@@ -227,9 +227,11 @@ func init(game_ref) -> void:
 
 	# Java: stage.addActor(bgimg);
 	stage.add_child(bgimg)
+	print("  Added bgimg to stage. Visible:", bgimg.visible, " Z-index:", bgimg.z_index)
 
 	# Java: stage.addActor(cbgimg);
 	stage.add_child(cbgimg)
+	print("  Added cbgimg to stage. Pos:", cbgimg.position, " Visible:", cbgimg.visible)
 
 	# Java: stage.addActor(lbl);
 	stage.add_child(lbl)
@@ -238,7 +240,9 @@ func init(game_ref) -> void:
 	# Java: stage.addActor(pi);
 	# Java: stage.addActor(rpb);
 	stage.add_child(lpb)
+	print("  Added lpb (left player button). Pos:", lpb.position, " Size:", lpb.custom_minimum_size)
 	stage.add_child(pi)
+	print("  Added pi (player image). Pos:", pi.position, " Children:", pi.get_child_count())
 	stage.add_child(rpb)
 
 	# Java: stage.addActor(lob);
@@ -246,6 +250,7 @@ func init(game_ref) -> void:
 	# Java: stage.addActor(rob);
 	stage.add_child(lob)
 	stage.add_child(oi)
+	print("  Added oi (opponent image). Pos:", oi.position, " Children:", oi.get_child_count())
 	stage.add_child(rob)
 
 	# Java: stage.addActor(classesPlayer);
@@ -270,6 +275,12 @@ func init(game_ref) -> void:
 	stage.add_child(play)
 	stage.add_child(select_hosts_button)
 	stage.add_child(start_network_server)
+
+	print("SingleDuelChooser.init() COMPLETE")
+	print("  Stage (self) size:", size, " pos:", position, " visible:", visible)
+	print("  Total children:", stage.get_child_count())
+	print("  bgimg size:", bgimg.size if bgimg.texture else "NO TEXTURE", " expand:", bgimg.expand_mode if bgimg.texture else "N/A")
+	print("  cbgimg size:", cbgimg.texture.get_size() if cbgimg.texture else "NO TEXTURE")
 
 # ============================================================================
 # CREATE BUTTON METHOD (Java: private Button createButton(...))
@@ -389,13 +400,15 @@ func _on_start_pressed() -> void:
 
 	# Java: stage.clear();
 	# Java: stage.dispose();
-	stage.queue_free()
+	# GDScript: Don't free the chooser yet! Cards.initialize() needs to access pi and oi.
+	# Just hide the UI and set done=true. Cards will free us after copying the data.
+	visible = false
+	print("SingleDuelChooser: Start pressed, hiding UI, setting done=true")
 
 	# Java: done.set(true);
 	done = true
 
-	# Close this selection screen
-	queue_free()
+	# DON'T call queue_free() here - Cards.initialize() needs to access our pi/oi data first!
 
 # ============================================================================
 # CONNECT BUTTON (Java: selectHostsButton InputListener)
