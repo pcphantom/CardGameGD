@@ -159,7 +159,17 @@ func init() -> void:
 
 	# Java: background = new Texture(...); (lines 140-142)
 	background = load("res://assets/images/background.jpg")
-	# TODO: Create sprite from background
+	# Java: sprBg = new Sprite(background); (creates sprite from background texture)
+	# In Godot, use TextureRect to display background image
+	sprBg = TextureRect.new()
+	sprBg.texture = background
+	sprBg.position = Vector2.ZERO
+	sprBg.z_index = -10  # Behind everything
+	sprBg.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	sprBg.custom_minimum_size = Vector2(SCREEN_WIDTH, SCREEN_HEIGHT)
+	sprBg.size = Vector2(SCREEN_WIDTH, SCREEN_HEIGHT)
+	sprBg.stretch_mode = TextureRect.STRETCH_SCALE
+	stage.add_child(sprBg)
 
 	# Java: player = new PlayerImage(...); opponent = new PlayerImage(...); (lines 144-145)
 	player = PlayerImage.new(null, portraitramka, greenfont, Player.new(), 80, ydown(300))
@@ -334,7 +344,7 @@ func draw(_delta: float) -> void:
 			print("==============================\n")
 
 		# Java: batch.begin(); sprBg.draw(batch); (lines 286-287)
-		# TODO: Draw background sprite
+		# Background is now a TextureRect child node, drawn automatically by Godot
 
 		# Java: if (NET_GAME != null) { (line 288)
 		if NET_GAME != null:
@@ -459,6 +469,32 @@ func initialize() -> void:
 		opponent.get_player_info().enable_disable_cards(type)
 
 	print("Cards.initialize() COMPLETE - Battle should be ready")
+
+	# Debug: Print complete scene tree
+	debug_scene_tree()
+
+# ============================================================================
+# DEBUG SCENE TREE
+# ============================================================================
+
+func debug_scene_tree() -> void:
+	print("\n=== COMPLETE SCENE TREE ===")
+	for i in range(stage.get_child_count()):
+		var child = stage.get_child(i)
+		print("Child %d: %s" % [i, child.name if child.name else "<unnamed>"])
+		print("  Type: %s" % child.get_class())
+		if child is Node2D or child is Control:
+			print("  Position: %s" % str(child.position))
+		if child is CanvasItem:
+			print("  Z-Index: %s" % child.z_index)
+			print("  Visible: %s" % child.visible)
+		if child is Control:
+			print("  Size: %s" % str(child.size))
+		if child is TextureRect:
+			print("  Has Texture: %s" % (child.texture != null))
+			if child.texture:
+				print("  Texture Size: %s" % str(child.texture.get_size()))
+	print("=== END SCENE TREE ===\n")
 
 # ============================================================================
 # INITIALIZE PLAYER CARDS METHOD (Java: lines 391-416)
