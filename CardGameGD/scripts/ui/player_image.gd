@@ -190,6 +190,7 @@ func set_frame(frame_tex: Texture2D) -> void:
 func set_texture(tex: Texture2D) -> void:
     if img == null:
         img = Sprite2D.new()
+        add_child(img)  # CRITICAL: Add sprite to scene tree so it renders!
     img.texture = tex
 
 ## Java: public void setFont(BitmapFont font)
