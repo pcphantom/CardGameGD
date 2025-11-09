@@ -48,7 +48,7 @@ func on_attacked(attacker, damage: int) -> int:
 	# Java: if (opponent.getSlotCards()[slotIndex] != null && attacker.isSpell) { (line 18)
 	if opponent_cards[slot_index] != null and attacker.isSpell:
 		# Java: damageSlot(opponent.getSlotCards()[slotIndex], slotIndex, opponent, damage); (line 19)
-		damageSlot(opponent_cards[slot_index], slot_index, opponent, damage)
+		damage_slot(opponent_cards[slot_index], slot_index, opponent, damage)
 
 		# Java: return damage; (line 20)
 		return damage

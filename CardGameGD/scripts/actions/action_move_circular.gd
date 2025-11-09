@@ -168,6 +168,8 @@ func start(target: Node2D) -> void:
 	begin()
 
 	# Use Godot's built-in method_track to call update() over time
-	var tween := create_tween()
-	tween.set_trans(interpolation_type)
-	tween.tween_method(update, 0.0, 1.0, duration)
+	# Note: target must be a Node to create tweens
+	if target.has_method("create_tween"):
+		var tween := target.create_tween()
+		tween.set_trans(interpolation_type)
+		tween.tween_method(update, 0.0, 1.0, duration)

@@ -400,8 +400,8 @@ func add_creature(name: String, index: int, slot) -> void:
 
 	# Create the creature instance
 	var creature_instance = null
-	if CreatureFactory != null and CreatureFactory.has_method("get_creature_class"):
-		creature_instance = CreatureFactory.get_creature_class(name, game, cloned_card.get_card(), cloned_card, index, owner, opponent)
+	# CreatureFactory is a static class, just call the method directly
+	creature_instance = CreatureFactory.get_creature_class(name, game, cloned_card.get_card(), cloned_card, index, owner, opponent)
 
 	if creature_instance != null and cloned_card.has_method("set_creature"):
 		cloned_card.set_creature(creature_instance)
@@ -558,7 +558,7 @@ func move_card_to_another_slot(player, card_image, src_index: int, dest_index: i
 
 			# Animate card2 to src position
 			if card2 is Node2D:
-				var tween = create_tween() if has_method("create_tween") else null
+				var tween = card_image.create_tween() if card_image.has_method("create_tween") else null
 				if tween != null:
 					tween.tween_property(card2, "position", Vector2(slots[src_index].position.x + 5, slots[src_index].position.y + 26), 1.0)
 	else:
@@ -586,7 +586,7 @@ func move_card_to_another_slot(player, card_image, src_index: int, dest_index: i
 	# Animate card_image to dest position
 	if card_image is Node2D and dest_index < slots.size():
 		var dest_pos: Vector2 = Vector2(slots[dest_index].position.x + 5, slots[dest_index].position.y + 26)
-		var tween = create_tween() if has_method("create_tween") else null
+		var tween = card_image.create_tween() if card_image.has_method("create_tween") else null
 		if tween != null:
 			tween.tween_property(card_image, "position", dest_pos, 1.0)
 			await tween.finished
@@ -597,7 +597,7 @@ func scale_image(card_image) -> void:
 		return
 
 	# Create a visual effect of scaling up then down
-	var tween = create_tween() if has_method("create_tween") else null
+	var tween = card_image.create_tween() if card_image.has_method("create_tween") else null
 	if tween != null:
 		tween.tween_property(card_image, "scale", Vector2(1.05, 1.05), 0.3)
 		tween.tween_property(card_image, "scale", Vector2(1.0, 1.0), 0.3)
