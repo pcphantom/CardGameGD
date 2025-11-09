@@ -139,8 +139,17 @@ func parse_cards() -> void:
 			creature_cards[c] = null
 
 	print("CardSetup: Successfully loaded ", card_count, " cards from JSON")
+	print("  card_set size: ", card_set.size())
 	print("  Creature cards: ", creature_cards.size())
 	print("  Spell cards: ", spell_cards.size())
+
+	# DEBUG: Print first few cards in card_set
+	print("  First 3 cards in card_set:")
+	var debug_count = 0
+	for card in card_set.keys():
+		if debug_count < 3:
+			print("    - ", card.get_name(), " (type: ", card.get_type(), " = ", CardType.get_title(card.get_type()), ")")
+			debug_count += 1
 
 # ============================================================================
 # GET CARD BY NAME - EXACT TRANSLATION
