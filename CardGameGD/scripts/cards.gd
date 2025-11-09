@@ -167,11 +167,11 @@ func init() -> void:
 
 	# Java: playerInfoLabel = new Label(...); (lines 157-160)
 	playerInfoLabel = Label.new()
-	playerInfoLabel.text = Specializations.Cleric.getTitle()
+	playerInfoLabel.text = Specializations.CLERIC.get_title()
 	playerInfoLabel.position = Vector2(80 + 10 + 120, ydown(300))
 
 	opptInfoLabel = Label.new()
-	opptInfoLabel.text = Specializations.Cleric.getTitle()
+	opptInfoLabel.text = Specializations.CLERIC.get_title()
 	opptInfoLabel.position = Vector2(80 + 10 + 120, ydown(30))
 
 	# Java: ImageButtonStyle style = ... (lines 162-165)
@@ -442,7 +442,7 @@ func getPlayerDescription(pl: Player) -> String:
 ## Java: public String getPlayerStrength(Player pl, CardType type)
 func getPlayerStrength(pl: Player, type: CardType.Type) -> String:
 	var str_val: int = 0 if pl == null else pl.getStrength(type)
-	return CardType.getTitle(type) + ":  " + str(str_val)
+	return CardType.get_title(type) + ":  " + str(str_val)
 
 # ============================================================================
 # ADD VERTICAL GROUP CARDS METHOD (Java: lines 431-459)
@@ -451,7 +451,7 @@ func getPlayerStrength(pl: Player, type: CardType.Type) -> String:
 ## Java: public void addVerticalGroupCards(...)
 func addVerticalGroupCards(x: int, y: int, cards: Array, p_player: Player, type: CardType.Type, addToStage: bool) -> void:
 	# Java: CardImage.sort(cards); (line 433)
-	CardImage.sort(cards)
+	CardImage.sort_cards(cards)
 
 	# Java: float x1 = x; float y1 = y; int spacing = 6; (lines 435-437)
 	var x1: float = x
@@ -649,7 +649,7 @@ func moveCardActorOnBattle(ci: CardImage, pi: PlayerImage) -> void:
 
 	# Java: Sounds.play(Sound.ATTACK); (line 834)
 	if SoundManager:
-		SoundManager.play(Sound.ATTACK)
+		SoundManager.play(SoundTypes.Sound.ATTACK)
 
 	# Java: if (pi.getSlots()[0] == null) { return; } (lines 836-838)
 	if pi.getSlots()[0] == null:

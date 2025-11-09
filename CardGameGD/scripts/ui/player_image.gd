@@ -62,11 +62,24 @@ func _init_positioned(sprite_img: Sprite2D, frame_tex: Texture2D, p_font: Font, 
         slots[i] = null
         slot_cards[i] = null
 
-## Godot standard _init() - calls simple constructor by default
-func _init() -> void:
+## Godot _init() - supports both Java constructors via optional parameters
+## Java Constructor 1: PlayerImage(Sprite img, Texture frame, Player info) - first 3 params
+## Java Constructor 2: PlayerImage(Sprite img, Texture frame, BitmapFont font, Player info, float x, float y) - all 6 params
+func _init(sprite_img: Sprite2D = null, frame_tex: Texture2D = null, p_font: Font = null, info: Player = null, px: float = 0.0, py: float = 0.0) -> void:
+    self.img = sprite_img
+    self.frame = frame_tex
+    self.player_info = info
+    self.font = p_font
+
+    # Java: setX(x); setY(y); (only for 6-param constructor)
+    if px != 0.0 or py != 0.0:
+        position = Vector2(px, py)
+
+    # Initialize arrays to size 6 (matching Java's new SlotImage[6])
     slots.resize(6)
     slot_cards.resize(6)
-    
+
+    # Fill with nulls (GDScript arrays don't auto-null like Java)
     for i in range(6):
         slots[i] = null
         slot_cards[i] = null

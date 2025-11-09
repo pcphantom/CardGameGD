@@ -1,4 +1,5 @@
 extends Node
+class_name CardSetup
 
 ## EXACT LITERAL TRANSLATION OF CardSetup.java
 ## Source: CardGameGDX/src/main/java/org/antinori/cards/CardSetup.java
