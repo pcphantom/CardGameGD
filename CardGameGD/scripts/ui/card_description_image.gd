@@ -92,9 +92,9 @@ func _init(p_img: Texture2D = null, p_frame: Texture2D = null, p_font: Font = nu
 
 ## Java: public void draw(SpriteBatch batch, float parentAlpha)
 ## Draws the card description with portrait, frame, stats, name, and description
-## @param batch The sprite batch (not used in Godot - uses _draw() instead)
+## @param _batch The sprite batch (not used in Godot - uses _draw() instead)
 ## @param parentAlpha Parent alpha for transparency
-func draw(batch = null, parentAlpha: float = 1.0) -> void:
+func draw(_batch = null, parentAlpha: float = 1.0) -> void:
 	# Java: if (img == null || frame == null || card == null || font == null) { return; } (lines 38-40)
 	if img == null or frame == null or card == null or font == null:
 		return

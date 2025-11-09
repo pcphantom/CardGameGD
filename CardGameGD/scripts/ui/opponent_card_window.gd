@@ -62,8 +62,8 @@ var grid_container: GridContainer = null
 ## @param p_title Window title text
 ## @param p_opponent The opponent player whose cards to display
 ## @param p_game Reference to the main game controller
-## @param p_skin The UI skin (not used in Godot, kept for compatibility)
-func _init(p_title: String = "", p_opponent: Player = null, p_game = null, p_skin = null) -> void:
+## @param _p_skin The UI skin (not used in Godot, kept for compatibility)
+func _init(p_title: String = "", p_opponent: Player = null, p_game = null, _p_skin = null) -> void:
 	# Java: super(title, skin); (line 20)
 	title = p_title
 

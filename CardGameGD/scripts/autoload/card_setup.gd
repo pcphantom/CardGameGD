@@ -156,22 +156,22 @@ func parse_cards() -> void:
 # ============================================================================
 
 # Java: public Card getCardByName(String name)
-func get_card_by_name(name: String) -> Card:
-	return get_card_by_name_from_set(name, card_set)
+func get_card_by_name(card_name: String) -> Card:
+	return get_card_by_name_from_set(card_name, card_set)
 
 # Java: public Card getCardByName(String name, Set<Card> set)
-func get_card_by_name_from_set(name: String, set: Dictionary) -> Card:
+func get_card_by_name_from_set(card_name: String, from_set: Dictionary) -> Card:
 	# Java: Card result = (Card)CollectionUtils.find(set, new CardPredicate(name.toLowerCase()));
 	# Java: return result.clone();
-	
-	var name_lower: String = name.to_lower()
-	
+
+	var name_lower: String = card_name.to_lower()
+
 	# Search through the set (Dictionary keys)
-	for card in set.keys():
+	for card in from_set.keys():
 		if card.get_name().to_lower() == name_lower:
 			# Java: return result.clone();
 			return card.clone()
-	
+
 	return null
 
 # ============================================================================
@@ -183,23 +183,23 @@ func get_cards_by_type(type: CardType.Type, max_number: int) -> Array:
 	return get_cards_by_type_from_set(type, max_number, card_set)
 
 # Java: public List<Card> getCardsByType(CardType type, int maxNumber, Set<Card> set)
-func get_cards_by_type_from_set(type: CardType.Type, max_number: int, set: Dictionary) -> Array:
+func get_cards_by_type_from_set(type: CardType.Type, max_number: int, from_set: Dictionary) -> Array:
 	# Java: List<Card> result = (List<Card>) CollectionUtils.select(set, new CardPredicate(type));
 	var result: Array = []
 
 	# DEBUG: Print what we're looking for
 	print("    [DEBUG] get_cards_by_type_from_set: Looking for type ", type, " (", CardType.get_title(type), ")")
-	print("    [DEBUG] card_set has ", set.size(), " cards total")
+	print("    [DEBUG] card_set has ", from_set.size(), " cards total")
 
 	# DEBUG: Show first few card types
 	var count = 0
-	for card in set.keys():
+	for card in from_set.keys():
 		if count < 3:
 			print("      [DEBUG] Card '", card.get_name(), "' has type ", card.get_type(), " (", CardType.get_title(card.get_type()), ")")
 			count += 1
 
 	# Filter cards by type (CardPredicate functionality)
-	for card in set.keys():
+	for card in from_set.keys():
 		if card.get_type() == type:
 			result.append(card)
 
@@ -240,8 +240,8 @@ func get_cards_by_type_from_set(type: CardType.Type, max_number: int, set: Dicti
 # ============================================================================
 
 # Java: public List<CardImage> getCardImagesByType(TextureAtlas atlas1, TextureAtlas atlas2, CardType type, int maxNumber)
-# Godot: TextureManager handles atlases internally, CardImage loads its own textures
-func get_card_images_by_type(atlas1, atlas2, type: CardType.Type, max_number: int) -> Array:
+# Godot: TextureManager handles atlases internally - no atlas parameters needed
+func get_card_images_by_type(type: CardType.Type, max_number: int) -> Array:
 	# Java: List<Card> picks = getCardsByType(type, maxNumber);
 	var picks: Array = get_cards_by_type(type, max_number)
 
@@ -268,19 +268,21 @@ func get_card_images_by_type(atlas1, atlas2, type: CardType.Type, max_number: in
 	return images
 
 # Java: public CardImage getCardImageByName(TextureAtlas atlas1, TextureAtlas atlas2, String name)
-# Godot: TextureManager handles atlases internally, CardImage loads its own textures
-func get_card_image_by_name(atlas1, atlas2, name: String) -> CardImage:
+# Godot: TextureManager handles atlases internally - no atlas parameters needed
+func get_card_image_by_name(card_name: String) -> CardImage:
 	# Java: Card c = getCardByName(name);
-	var c: Card = get_card_by_name(name)
+	var c: Card = get_card_by_name(card_name)
 
 	if c == null:
-		push_error("Card not found: %s" % name)
+		push_error("Card not found: %s" % card_name)
 		return null
 
 	# Godot: CardImage.new() takes NO parameters
 	# setup_card() loads textures from TextureManager internally
 	var img: CardImage = CardImage.new()
 	img.setup_card(c, "small")  # Loads texture from TextureManager.get_small_card_texture()
+
+	print("[DEBUG] Created CardImage for card by name: ", c.get_name())
 
 	# Java: return img;
 	return img

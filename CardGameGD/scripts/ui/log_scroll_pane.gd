@@ -55,8 +55,8 @@ func _ready() -> void:
 
 func _create_ui_elements() -> void:
 	# Get panel size (set by Cards.gd)
-	var panel_width: float = custom_minimum_size.x if custom_minimum_size.x > 0 else 451
-	var panel_height: float = custom_minimum_size.y if custom_minimum_size.y > 0 else 173
+	var panel_width: float = custom_minimum_size.x if custom_minimum_size.x > 0 else 451.0
+	var panel_height: float = custom_minimum_size.y if custom_minimum_size.y > 0 else 173.0
 
 	# Title label
 	title_label = Label.new()

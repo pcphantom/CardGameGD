@@ -223,10 +223,10 @@ static func get_by_title(title: String) -> Specialization:
 
 static func get_titles() -> Array:
 	_ensure_initialized()
-	var titles: Array = []
+	var title_list: Array = []
 	for spec in ALL_SPECIALIZATIONS:
-		titles.append(spec.title)
-	return titles
+		title_list.append(spec.title)
+	return title_list
 
 static func from_type(spec_type: Type) -> Specialization:
 	_ensure_initialized()
