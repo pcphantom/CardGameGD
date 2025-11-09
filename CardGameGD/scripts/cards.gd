@@ -312,7 +312,27 @@ func draw(delta: float) -> void:
 
 	else:
 		# Battle rendering mode
-		# print("Cards.draw() - Battle mode rendering")
+		# Static flag to print debug once
+		if not has_node("_battle_debug_printed"):
+			var marker = Node.new()
+			marker.name = "_battle_debug_printed"
+			add_child(marker)
+			print("\n=== BATTLE MODE RENDERING ===")
+			print("  Player:")
+			print("    Visible:", player.visible, " Pos:", player.position, " Children:", player.get_child_count())
+			print("  Opponent:")
+			print("    Visible:", opponent.visible, " Pos:", opponent.position, " Children:", opponent.get_child_count())
+			print("  PlayerInfoLabel:")
+			print("    Visible:", playerInfoLabel.visible, " Pos:", playerInfoLabel.position, " Text:", playerInfoLabel.text)
+			print("  OpptInfoLabel:")
+			print("    Visible:", opptInfoLabel.visible, " Pos:", opptInfoLabel.position, " Text:", opptInfoLabel.text)
+			print("  LogScrollPane:")
+			print("    Visible:", logScrollPane.visible, " Pos:", logScrollPane.position)
+			print("  SkipTurnButton:")
+			print("    Visible:", skipTurnButton.visible, " Pos:", skipTurnButton.position)
+			print("  Total stage children:", stage.get_child_count())
+			print("==============================\n")
+
 		# Java: batch.begin(); sprBg.draw(batch); (lines 286-287)
 		# TODO: Draw background sprite
 
@@ -376,6 +396,7 @@ func initialize() -> void:
 	print("  chooser exists, proceeding with init")
 
 	# Java: for (int index = 0; index < 6; index++) { (line 341)
+	print("  Clearing slots...")
 	for index in range(6):
 		# Java: if (player.get_slot_cards()[index] != null) { player.get_slot_cards()[index].remove(); } (lines 342-344)
 		if player.get_slot_cards()[index] != null:
@@ -392,17 +413,23 @@ func initialize() -> void:
 		opponent.get_slots()[index].set_occupied(false)
 
 	# Java: player.set_img(chooser.pi.get_img()); (lines 355-357)
+	print("  Setting player images and info from chooser...")
+	print("    chooser.pi.img:", chooser.pi.img)
+	print("    chooser.oi.img:", chooser.oi.img)
 	player.set_img(chooser.pi.get_img())
 	player.set_player_info(chooser.pi.get_player_info())
 	player.get_player_info().init()
+	print("    Player class:", player.get_player_info().get_player_class().get_title())
 
 	# Java: opponent.set_img(chooser.oi.get_img()); (lines 359-361)
 	opponent.set_img(chooser.oi.get_img())
 	opponent.set_player_info(chooser.oi.get_player_info())
 	opponent.get_player_info().init()
+	print("    Opponent class:", opponent.get_player_info().get_player_class().get_title())
 
 	# Java: chooser = null; gameOver = false; Cards.logScrollPane.clear(); (lines 363-365)
 	# Free chooser after copying data from it
+	print("  Freeing chooser...")
 	var temp_chooser = chooser
 	chooser = null
 	if temp_chooser:
@@ -412,9 +439,12 @@ func initialize() -> void:
 	gameOver = false
 	if logScrollPane:
 		logScrollPane.clear()
+		print("    Game log cleared")
 
 	# Java: initializePlayerCards(player.get_player_info(), true); (lines 369-370)
+	print("  Initializing player cards (visible=true)...")
 	initializePlayerCards(player.get_player_info(), true)
+	print("  Initializing opponent cards (visible=false)...")
 	initializePlayerCards(opponent.get_player_info(), false)
 
 	# Java: if (NET_GAME != null) { (lines 372-381)
@@ -423,9 +453,12 @@ func initialize() -> void:
 		pass
 
 	# Java: for (CardType type : Player.TYPES) { (lines 384-387)
+	print("  Enabling/disabling cards by type...")
 	for type in Player.TYPES:
 		player.get_player_info().enable_disable_cards(type)
 		opponent.get_player_info().enable_disable_cards(type)
+
+	print("Cards.initialize() COMPLETE - Battle should be ready")
 
 # ============================================================================
 # INITIALIZE PLAYER CARDS METHOD (Java: lines 391-416)
@@ -433,12 +466,14 @@ func initialize() -> void:
 
 ## Java: public void initializePlayerCards(Player player, boolean visible) throws Exception
 func initializePlayerCards(p_player: Player, visible: bool) -> void:
+	print("    initializePlayerCards: visible=", visible)
 	# Java: selectedCard = null; (line 393)
 	selectedCard = null
 
 	# Java: int x = 405; int y = ydown(328); (lines 395-396)
 	var x: int = 405
 	var y: int = ydown(328)
+	print("      Starting position: x=", x, " y=", y)
 
 	# Java: CardType[] types = {...}; (line 398)
 	var types: Array = [CardType.Type.FIRE, CardType.Type.AIR, CardType.Type.WATER, CardType.Type.EARTH, p_player.get_player_class().get_type()]
@@ -453,11 +488,13 @@ func initializePlayerCards(p_player: Player, visible: bool) -> void:
 
 		# Java: List<CardImage> v1 = cs.getCardImagesByType(...); (line 408)
 		var v1: Array = cs.get_card_images_by_type(smallCardAtlas, smallTGACardAtlas, type, 4)
+		print("      Type ", CardType.get_title(type), ": created ", v1.size(), " cards")
 
 		# Java: x += 104; (line 409)
 		x += 104
 
 		# Java: addVerticalGroupCards(x, y, v1, player, type, visible); (line 410)
+		print("      Adding vertical group at x=", x, " y=", y, " visible=", visible)
 		addVerticalGroupCards(x, y, v1, p_player, type, visible)
 
 		# Java: player.set_cards(type, v1); (line 411)
