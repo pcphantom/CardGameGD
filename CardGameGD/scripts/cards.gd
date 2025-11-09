@@ -260,6 +260,7 @@ func init() -> void:
 	# Java: chooser = new SingleDuelChooser(); chooser.init(this); (lines 258-259)
 	chooser = SingleDuelChooser.new()
 	chooser.init(self)
+	add_child(chooser)
 
 	# Java: Sounds.startBackGroundMusic(); (line 261)
 	if SoundManager:
@@ -286,7 +287,7 @@ func draw(delta: float) -> void:
 		# Java: if (!chooser.done.get()) { (line 274)
 		if not chooser.done:
 			# Java: chooser.draw(delta); (line 275)
-			chooser.draw(delta)
+			# chooser renders automatically via _process()
 		else:
 			# Java: Thread t = new Thread(new InitializeGameThread()); t.start(); (lines 278-279)
 			_initialize_game_thread()
