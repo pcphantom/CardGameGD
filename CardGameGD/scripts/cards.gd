@@ -131,6 +131,8 @@ static var damageOffsetter: int = 0
 ## Java: @Override public void init()
 ## Initialize all game resources: textures, fonts, UI, player images
 func init() -> void:
+	print("Cards.init() START")
+
 	# Initialize Specializations static data before accessing any specializations
 	Specializations._ensure_initialized()
 
@@ -138,6 +140,7 @@ func init() -> void:
 	# CardSetup is an autoload singleton, access directly
 	cs = CardSetup
 	CardSetup.parse_cards()
+	print("Cards.init() - Parsed cards")
 
 	# Java: batch = new SpriteBatch(); (line 123)
 	# Not needed in Godot
@@ -261,10 +264,16 @@ func init() -> void:
 	chooser = SingleDuelChooser.new()
 	chooser.init(self)
 	stage.add_child(chooser)
+	print("Cards.init() - Created and added chooser to stage")
+	print("  stage children: ", stage.get_child_count())
+	print("  chooser position: ", chooser.position)
+	print("  chooser size: ", chooser.size)
 
 	# Java: Sounds.startBackGroundMusic(); (line 261)
 	if SoundManager:
 		SoundManager.start_background_music()
+
+	print("Cards.init() END - Battle UI created, chooser active")
 
 # ============================================================================
 # YDOWN METHOD (Java: public static int ydown, lines 265-267)
@@ -290,6 +299,7 @@ func draw(delta: float) -> void:
 			# chooser renders automatically via _process()
 			pass
 		else:
+			print("Cards.draw() - Chooser DONE, starting battle initialization")
 			# Hide chooser to show battle UI (initialize() will set chooser = null)
 			chooser.visible = false
 
@@ -300,6 +310,8 @@ func draw(delta: float) -> void:
 			# TODO: Set input processor
 
 	else:
+		# Battle rendering mode
+		# print("Cards.draw() - Battle mode rendering")
 		# Java: batch.begin(); sprBg.draw(batch); (lines 286-287)
 		# TODO: Draw background sprite
 
@@ -354,10 +366,13 @@ func _initialize_game_thread() -> void:
 ## Java: public void initialize() throws Exception
 ## Initialize game state for new game
 func initialize() -> void:
+	print("Cards.initialize() START")
 	# Java: synchronized (this) { (line 335)
 	# Java: if (chooser == null) { return; } (lines 337-339)
 	if chooser == null:
+		print("  ERROR: chooser is null, aborting")
 		return
+	print("  chooser exists, proceeding with init")
 
 	# Java: for (int index = 0; index < 6; index++) { (line 341)
 	for index in range(6):
