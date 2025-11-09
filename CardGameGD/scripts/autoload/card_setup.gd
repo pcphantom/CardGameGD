@@ -240,7 +240,7 @@ func get_cards_by_type_from_set(type: CardType.Type, max_number: int, set: Dicti
 # ============================================================================
 
 # Java: public List<CardImage> getCardImagesByType(TextureAtlas atlas1, TextureAtlas atlas2, CardType type, int maxNumber)
-# NOTE: atlas1/atlas2 are Dictionary[String, Texture2D] in Godot (not LibGDX TextureAtlas)
+# Godot: TextureManager handles atlases internally, CardImage loads its own textures
 func get_card_images_by_type(atlas1, atlas2, type: CardType.Type, max_number: int) -> Array:
 	# Java: List<Card> picks = getCardsByType(type, maxNumber);
 	var picks: Array = get_cards_by_type(type, max_number)
@@ -252,13 +252,10 @@ func get_card_images_by_type(atlas1, atlas2, type: CardType.Type, max_number: in
 
 	# Java: for (Card c : picks)
 	for c in picks:
-		# Java: CardImage img = new CardImage(sp, c);
-		# Godot: CardImage has setup_card() method that handles initialization
+		# Godot: CardImage.new() takes NO parameters
+		# setup_card() loads textures from TextureManager internally
 		var img: CardImage = CardImage.new()
-
-		# Call setup_card to properly initialize the CardImage with the card data
-		# This replaces the Java constructor CardImage(Sprite, Card)
-		img.setup_card(c, "small")
+		img.setup_card(c, "small")  # Loads texture from TextureManager.get_small_card_texture()
 
 		print("      [DEBUG] Created CardImage for card: ", c.get_name())
 
@@ -271,7 +268,7 @@ func get_card_images_by_type(atlas1, atlas2, type: CardType.Type, max_number: in
 	return images
 
 # Java: public CardImage getCardImageByName(TextureAtlas atlas1, TextureAtlas atlas2, String name)
-# NOTE: atlas1/atlas2 are Dictionary[String, Texture2D] in Godot (not LibGDX TextureAtlas)
+# Godot: TextureManager handles atlases internally, CardImage loads its own textures
 func get_card_image_by_name(atlas1, atlas2, name: String) -> CardImage:
 	# Java: Card c = getCardByName(name);
 	var c: Card = get_card_by_name(name)
@@ -280,13 +277,10 @@ func get_card_image_by_name(atlas1, atlas2, name: String) -> CardImage:
 		push_error("Card not found: %s" % name)
 		return null
 
-	# Java: CardImage img = new CardImage(sp, c);
-	# Godot: CardImage has setup_card() method that handles initialization
+	# Godot: CardImage.new() takes NO parameters
+	# setup_card() loads textures from TextureManager internally
 	var img: CardImage = CardImage.new()
-
-	# Call setup_card to properly initialize the CardImage with the card data
-	# This replaces the Java constructor CardImage(Sprite, Card)
-	img.setup_card(c, "small")
+	img.setup_card(c, "small")  # Loads texture from TextureManager.get_small_card_texture()
 
 	# Java: return img;
 	return img
