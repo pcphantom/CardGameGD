@@ -241,11 +241,13 @@ func _render_card(size_type: String) -> void:
 			# Attack (bottom-left corner)
 			# Java: (at > 9 ? x : x + 3), y + 5
 			# Single digit: x+3, Double digit: x+0
+			# LibGDX font.draw() positions text from BASELINE, Godot Label from TOP-LEFT
+			# Must subtract label height (font 16 ≈ 20px) to position correctly
 			var attack_x: float = 3.0 if at < 10 else 0.0
-			var attack_y: float = card_height - 5.0  # 5px from bottom in libGDX → 75px from top in Godot
+			var attack_y: float = card_height - 5.0 - 20  # FIXED: Subtract label height (20px)
 			if is_large:
 				attack_x = 5.0 if at < 10 else 2.0
-				attack_y = LARGE_CARD_HEIGHT - 5.0
+				attack_y = LARGE_CARD_HEIGHT - 5.0 - 24  # FIXED: Subtract label height for large (24px)
 			attack_label.position = Vector2(attack_x, attack_y)
 			attack_label.size = Vector2(15, 15) if not is_large else Vector2(18, 18)
 			attack_label.add_theme_font_size_override("font_size", 16 if not is_large else 20)  # Increased from 12/14 for better visibility
@@ -256,11 +258,13 @@ func _render_card(size_type: String) -> void:
 			# Cost (top-right corner, extends into frame area above card)
 			# Java: (co > 9 ? x + 66 : x + 69), y + 85
 			# Single digit: x+69, Double digit: x+66
+			# LibGDX font.draw() positions text from BASELINE, Godot Label from TOP-LEFT
+			# Must subtract label height (font 16 ≈ 20px) to position correctly
 			var cost_x: float = 69.0 if co < 10 else 66.0
-			var cost_y: float = card_height - 85.0  # 85px from bottom = 5px from top of 80px card
+			var cost_y: float = card_height - 85.0 - 20  # FIXED: Subtract label height (20px)
 			if is_large:
 				cost_x = 132.0 if co < 10 else 130.0
-				cost_y = LARGE_CARD_HEIGHT - 150.0  # Adjust for large card
+				cost_y = LARGE_CARD_HEIGHT - 150.0 - 24  # FIXED: Subtract label height for large (24px)
 			cost_label.position = Vector2(cost_x, cost_y)
 			cost_label.size = Vector2(15, 15) if not is_large else Vector2(18, 18)
 			cost_label.add_theme_font_size_override("font_size", 16 if not is_large else 20)  # Increased from 12/14 for better visibility
@@ -271,11 +275,13 @@ func _render_card(size_type: String) -> void:
 			# Life (bottom-right corner)
 			# Java: (li > 9 ? x + 66 : x + 69), y + 5
 			# Single digit: x+69, Double digit: x+66
+			# LibGDX font.draw() positions text from BASELINE, Godot Label from TOP-LEFT
+			# Must subtract label height (font 16 ≈ 20px) to position correctly
 			var life_x: float = 69.0 if li < 10 else 66.0
-			var life_y: float = card_height - 5.0  # 5px from bottom in libGDX → 75px from top in Godot
+			var life_y: float = card_height - 5.0 - 20  # FIXED: Subtract label height (20px)
 			if is_large:
 				life_x = 134.0 if li < 10 else 131.0
-				life_y = LARGE_CARD_HEIGHT - 5.0
+				life_y = LARGE_CARD_HEIGHT - 5.0 - 24  # FIXED: Subtract label height for large (24px)
 			life_label.position = Vector2(life_x, life_y)
 			life_label.size = Vector2(15, 15) if not is_large else Vector2(18, 18)
 			life_label.add_theme_font_size_override("font_size", 16 if not is_large else 20)  # Increased from 12/14 for better visibility
@@ -286,11 +292,13 @@ func _render_card(size_type: String) -> void:
 		# Spell card - only show cost
 		# Java: font.draw(batch, "" + co, (co > 9 ? x + 66 : x + 69), y + 77);
 		# Single digit: x+69, Double digit: x+66
+		# LibGDX font.draw() positions text from BASELINE, Godot Label from TOP-LEFT
+		# Must subtract label height (font 16 ≈ 20px) to position correctly
 		var cost_x: float = 69.0 if co < 10 else 66.0
-		var cost_y: float = card_height - 77.0  # 77px from bottom in libGDX → 3px from top in Godot
+		var cost_y: float = card_height - 77.0 - 20  # FIXED: Subtract label height (20px)
 		if is_large:
 			cost_x = 132.0 if co < 10 else 130.0
-			cost_y = LARGE_CARD_HEIGHT - 192.0  # Adjust for large spell cards
+			cost_y = LARGE_CARD_HEIGHT - 192.0 - 24  # FIXED: Subtract label height for large (24px)
 		cost_label.position = Vector2(cost_x, cost_y)
 		cost_label.size = Vector2(15, 15) if not is_large else Vector2(18, 18)
 		cost_label.add_theme_font_size_override("font_size", 16 if not is_large else 20)  # Increased from 12/14 for better visibility

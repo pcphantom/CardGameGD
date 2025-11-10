@@ -146,8 +146,9 @@ const PLAYER_SLOTS_Y: int = 170         # Player slots Y (converted +12 offset)
 # HAND_START_Y actually controls HORIZONTAL position (despite the name!)
 # This is swapped in initializePlayerCards() to correct it
 # Java: ydown(328) = 440 in LibGDX (bottom-left origin)
-# Godot: 768 - 440 - 100 + 12(Actor offset) = 240 (top-left origin)
-const HAND_START_X: int = 240           # Actually VERTICAL! (converted +12 offset)
+# Godot: 768 - 440 - 111 + 12(Actor offset) = 229 (top-left origin)
+# FIXED: Frame height is 111px, not 100px (was 240, corrected to 229)
+const HAND_START_X: int = 229           # Actually VERTICAL! (converted +12 offset, frame height corrected)
 const HAND_START_Y: int = 405           # Actually HORIZONTAL! (from Java x=405)
 const HAND_SPACING_X: int = 104         # Horizontal spacing between card columns (center-to-center)
 const HAND_CARD_GAP_Y: int = 6          # Vertical gap between cards (excluding card height)
@@ -335,19 +336,23 @@ func init() -> void:
 
 	# Java: playerInfoLabel = new Label(...); (lines 157-160)
 	# Java: playerInfoLabel.setPosition(80 + 10 + 120, ydown(300));
-	# For labels (widgets), use original Y value: ydown(300) input = 300
+	# LibGDX setPosition() sets BOTTOM-LEFT, Godot position sets TOP-LEFT
+	# ydown(300) = 468 is the BOTTOM of the label in LibGDX
+	# Godot Y = 768 - 468 - label_height = 768 - 468 - 28 = 272
 	playerInfoLabel = Label.new()
 	playerInfoLabel.text = Specializations.CLERIC.get_title()
-	playerInfoLabel.position = Vector2(210, 300)  # X = 80+10+120 = 210, Y = 300
+	playerInfoLabel.position = Vector2(210, 272)  # FIXED: Was 300, corrected for label height (28px)
 	playerInfoLabel.add_theme_font_size_override("font_size", 24)  # Increased from 14 for better visibility
 	playerInfoLabel.add_theme_color_override("font_color", Color.WHITE)
 	playerInfoLabel.custom_minimum_size = Vector2(150, 20)
 
 	# Java: opptInfoLabel.setPosition(80 + 10 + 120, ydown(30));
-	# For labels (widgets), use original Y value: ydown(30) input = 30
+	# LibGDX setPosition() sets BOTTOM-LEFT, Godot position sets TOP-LEFT
+	# ydown(30) = 738 is the BOTTOM of the label in LibGDX
+	# Godot Y = 768 - 738 - label_height = 768 - 738 - 28 = 2
 	opptInfoLabel = Label.new()
 	opptInfoLabel.text = Specializations.CLERIC.get_title()
-	opptInfoLabel.position = Vector2(210, 30)  # X = 80+10+120 = 210, Y = 30
+	opptInfoLabel.position = Vector2(210, 2)  # FIXED: Was 30, corrected for label height (28px)
 	opptInfoLabel.add_theme_font_size_override("font_size", 24)  # Increased from 14 for better visibility
 	opptInfoLabel.add_theme_color_override("font_color", Color.WHITE)
 	opptInfoLabel.custom_minimum_size = Vector2(150, 20)
@@ -389,8 +394,10 @@ func init() -> void:
 
 	# Java: int x = 420; int y = ydown(337); int incr = 103; (lines 222-228)
 	# Player strength labels (bottom)
+	# LibGDX setPosition() sets BOTTOM-LEFT, Godot position sets TOP-LEFT
+	# ydown(337) = 431, Godot Y = 768 - 431 - label_height = 768 - 431 - 22 = 315
 	var x: int = STATS_START_X
-	var y: int = PLAYER_STATS_Y
+	var y: int = PLAYER_STATS_Y - 22  # FIXED: Subtract label height (font 18 ≈ 22px)
 	for i in range(5):
 		var label := Label.new()
 		label.text = getPlayerStrength(player.get_player_info(), CardType.Type.OTHER)
@@ -405,8 +412,10 @@ func init() -> void:
 
 	# Java: x = 420; y = ydown(25); (lines 230-236)
 	# Opponent strength labels (top)
+	# LibGDX setPosition() sets BOTTOM-LEFT, Godot position sets TOP-LEFT
+	# ydown(25) = 743, Godot Y = 768 - 743 - label_height = 768 - 743 - 22 = 3
 	x = STATS_START_X
-	y = OPPONENT_STATS_Y
+	y = OPPONENT_STATS_Y - 22  # FIXED: Subtract label height (font 18 ≈ 22px)
 	for i in range(5):
 		var label := Label.new()
 		label.text = getPlayerStrength(opponent.get_player_info(), CardType.Type.OTHER)

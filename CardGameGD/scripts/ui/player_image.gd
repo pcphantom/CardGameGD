@@ -75,6 +75,12 @@ func _init(sprite_img: Sprite2D = null, frame_tex: Texture2D = null, p_font: Fon
     if px != 0.0 or py != 0.0:
         position = Vector2(px, py)
 
+    # FIXED: Godot Controls need explicit size for children to render
+    # Portrait frame is 132×132 pixels (from portraitramka.png)
+    # Without size, Control defaults to (0, 0) and Sprite2D children don't show
+    custom_minimum_size = Vector2(132, 132)
+    size = Vector2(132, 132)
+
     # Initialize arrays to size 6 (matching Java's new SlotImage[6])
     slots.resize(6)
     slot_cards.resize(6)
