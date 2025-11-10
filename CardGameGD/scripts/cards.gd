@@ -118,8 +118,8 @@ const OPPONENT_STATS_Y: int = 25        # Opponent's stats Y (Java: ydown(25) �
 # INDIVIDUAL SIZE: 132×132 pixels (portraitramka.png frame)
 # TOTAL FRAME SIZE: 132×132 pixels (single portrait)
 # SAFE RANGES: X: 0-892, Y: 0-636
-const PLAYER_PORTRAIT_X: int = 15       # Player portrait X (left edge)
-const PLAYER_PORTRAIT_Y: int = 100      # Player portrait Y (BOTTOM area)
+const PLAYER_PORTRAIT_X: int = 10       # Player portrait X (left edge) - matching opponent
+const PLAYER_PORTRAIT_Y: int = 300      # Player portrait Y (BOTTOM area) - Java pattern
 
 # Player play slots (6 card slots in a row - MIDDLE RIGHT)
 # INDIVIDUAL SIZE: 92×132 pixels per slot (slot.png)
