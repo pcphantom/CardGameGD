@@ -101,7 +101,10 @@ const PORTRAIT_FRAME_OFFSET_Y: int = -6      # Frame Y offset relative to sprite
 # INDIVIDUAL SIZE: 92×132 pixels per slot (slot.png)
 # TOTAL FRAME SIZE: ~570×132 pixels (6 slots × ~95px spacing = ~570px wide)
 # SAFE RANGES: X: 0-454, Y: 0-636
-const OPPONENT_SLOTS_Y: int = 170       # Opponent's slot row Y (Java: ydown(170) → use pre-converted value)
+# Java source: addSlotImages(opponent, 330, ydown(170), false) where ydown(170)=598
+# ADJUST THESE to move the opponent's play area slots:
+const OPPONENT_SLOTS_X: int = 330       # Opponent slots horizontal position (LEFT edge of first slot)
+const OPPONENT_SLOTS_Y: int = 170       # Opponent slots vertical position (TOP edge of slots)
 const SLOT_SPACING_X: int = 95          # Horizontal spacing between play slots
 
 # Opponent resource stats (Fire: X, Air: X, Water: X, Earth: X, Special: X - TOP)
@@ -125,7 +128,10 @@ const PLAYER_PORTRAIT_Y: int = 300      # Player portrait Y (BOTTOM area) - Java
 # INDIVIDUAL SIZE: 92×132 pixels per slot (slot.png)
 # TOTAL FRAME SIZE: ~570×132 pixels (6 slots × ~95px spacing = ~570px wide)
 # SAFE RANGES: X: 0-454, Y: 0-636
-const PLAYER_SLOTS_Y: int = 290         # Player's slot row Y (Java: ydown(290) → use pre-converted value)
+# Java source: addSlotImages(player, 330, ydown(290), true) where ydown(290)=478
+# ADJUST THESE to move the player's play area slots:
+const PLAYER_SLOTS_X: int = 330         # Player slots horizontal position (LEFT edge of first slot)
+const PLAYER_SLOTS_Y: int = 290         # Player slots vertical position (TOP edge of slots)
 
 # Player hand cards (5×4 grid of small cards - BOTTOM RIGHT)
 # INDIVIDUAL SIZE: 90×100 pixels per card (ramka.png frame)
@@ -155,8 +161,7 @@ const PLAYER_STATS_Y: int = 337         # Player's stats Y (Java: ydown(337) →
 # SHARED ELEMENTS (Used by both players)
 # ─────────────────────────────────────────────────────────────────────────────
 
-# Shared: Play slots horizontal positioning (both player and opponent use same X)
-const PLAY_SLOTS_X: int = 330           # Play slots start X (Java: x=330 for both rows)
+# Shared: Play slots z-index
 const SLOTS_Z_INDEX: int = 1
 
 # Shared: Portrait z-index (both player and opponent)
@@ -409,8 +414,8 @@ func init() -> void:
 
 	# Java: addSlotImages(opponent, 330, ydown(170), false); (lines 255-256)
 	# Java: addSlotImages(player, 330, ydown(290), true);
-	addSlotImages(opponent, PLAY_SLOTS_X, OPPONENT_SLOTS_Y, false)   # Opponent slots at top
-	addSlotImages(player, PLAY_SLOTS_X, PLAYER_SLOTS_Y, true)         # Player slots below opponent
+	addSlotImages(opponent, OPPONENT_SLOTS_X, OPPONENT_SLOTS_Y, false)   # Opponent slots at top
+	addSlotImages(player, PLAYER_SLOTS_X, PLAYER_SLOTS_Y, true)         # Player slots below opponent
 
 	# Java: chooser = new SingleDuelChooser(); chooser.init(this); (lines 258-259)
 	chooser = SingleDuelChooser.new()
