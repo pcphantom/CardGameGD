@@ -80,29 +80,29 @@ static func _init_static_textures() -> void:
 
 # Create visual child elements
 func _create_visual_elements() -> void:
-	# Frame (border) - rendered first, z_index 0
-	frame_rect = TextureRect.new()
-	frame_rect.z_index = 0
-	frame_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	add_child(frame_rect)
-	
-	# Portrait (card artwork) - z_index 1
+	# Portrait (card artwork) - z_index 1 (behind frame)
 	portrait = TextureRect.new()
 	portrait.z_index = 1
 	portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(portrait)
+
+	# Frame (border) - z_index 2 (on top of portrait)
+	frame_rect = TextureRect.new()
+	frame_rect.z_index = 2
+	frame_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(frame_rect)
 	
-	# Stunned indicator - z_index 2
+	# Stunned indicator - z_index 3 (on top of frame)
 	stunned_indicator = TextureRect.new()
-	stunned_indicator.z_index = 2
+	stunned_indicator.z_index = 3
 	stunned_indicator.visible = false
 	stunned_indicator.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(stunned_indicator)
-	
-	# Health bar - z_index 3
+
+	# Health bar - z_index 4 (on top of everything)
 	health_bar_display = ColorRect.new()
 	health_bar_display.color = Color("105410")
-	health_bar_display.z_index = 3
+	health_bar_display.z_index = 4
 	health_bar_display.visible = false
 	health_bar_display.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(health_bar_display)
@@ -232,35 +232,51 @@ func _render_card(size_type: String) -> void:
 	
 	# Java: font.draw(batch, "" + at, (at > 9 ? x : x + 3), y + 5);
 	# Render stats based on card type
+	# COORDINATE CONVERSION: libGDX uses bottom-origin (y=0 at bottom), Godot uses top-origin (y=0 at top)
+	# libGDX "y + 5" (5px from bottom) → Godot "card_height - 5" (5px from bottom)
+	# libGDX "y + 85" (85px from bottom, 5px from top of 80px card) → Godot "card_height - 85" (5px from top)
 	if not card.is_spell():
 		# Creature card - show attack, cost, life
 		if li > 0:
-			# Attack (bottom-left)
-			var attack_x: float = 5.0 if at < 10 else 3.0
-			attack_label.position = Vector2(attack_x, 15.0) if not is_large else Vector2(5.0 if at < 10 else 7.0, 15.0)
+			# Attack (bottom-left corner)
+			# Java: (at > 9 ? x : x + 3), y + 5
+			# Single digit: x+3, Double digit: x+0
+			var attack_x: float = 3.0 if at < 10 else 0.0
+			var attack_y: float = card_height - 5.0  # 5px from bottom in libGDX → 75px from top in Godot
+			if is_large:
+				attack_x = 5.0 if at < 10 else 2.0
+				attack_y = LARGE_CARD_HEIGHT - 5.0
+			attack_label.position = Vector2(attack_x, attack_y)
 			attack_label.size = Vector2(15, 15) if not is_large else Vector2(18, 18)
 			attack_label.add_theme_font_size_override("font_size", 12 if not is_large else 14)
 			attack_label.add_theme_color_override("font_color", Color(1.0, 0.0, 0.0))
 			attack_label.text = str(at)
 			attack_label.visible = true
-			
-			# Cost (top-right for small, special position for large creatures)
-			var cost_x: float = 66.0 if co < 10 else 69.0
-			var cost_y: float = 85.0 if not is_large else 150.0
+
+			# Cost (top-right corner, extends into frame area above card)
+			# Java: (co > 9 ? x + 66 : x + 69), y + 85
+			# Single digit: x+69, Double digit: x+66
+			var cost_x: float = 69.0 if co < 10 else 66.0
+			var cost_y: float = card_height - 85.0  # 85px from bottom = 5px from top of 80px card
 			if is_large:
 				cost_x = 132.0 if co < 10 else 130.0
+				cost_y = LARGE_CARD_HEIGHT - 150.0  # Adjust for large card
 			cost_label.position = Vector2(cost_x, cost_y)
 			cost_label.size = Vector2(15, 15) if not is_large else Vector2(18, 18)
 			cost_label.add_theme_font_size_override("font_size", 12 if not is_large else 14)
 			cost_label.add_theme_color_override("font_color", Color(1.0, 1.0, 0.0))
 			cost_label.text = str(co)
 			cost_label.visible = true
-			
-			# Life (bottom-right)
-			var life_x: float = 66.0 if li < 10 else 69.0
+
+			# Life (bottom-right corner)
+			# Java: (li > 9 ? x + 66 : x + 69), y + 5
+			# Single digit: x+69, Double digit: x+66
+			var life_x: float = 69.0 if li < 10 else 66.0
+			var life_y: float = card_height - 5.0  # 5px from bottom in libGDX → 75px from top in Godot
 			if is_large:
-				life_x = 131.0 if li < 10 else 134.0
-			life_label.position = Vector2(life_x, 15.0)
+				life_x = 134.0 if li < 10 else 131.0
+				life_y = LARGE_CARD_HEIGHT - 5.0
+			life_label.position = Vector2(life_x, life_y)
 			life_label.size = Vector2(15, 15) if not is_large else Vector2(18, 18)
 			life_label.add_theme_font_size_override("font_size", 12 if not is_large else 14)
 			life_label.add_theme_color_override("font_color", Color(0.0, 1.0, 0.0))
@@ -269,18 +285,19 @@ func _render_card(size_type: String) -> void:
 	else:
 		# Spell card - only show cost
 		# Java: font.draw(batch, "" + co, (co > 9 ? x + 66 : x + 69), y + 77);
-		var cost_x: float = 66.0 if co < 10 else 69.0
-		var cost_y: float = 77.0
+		# Single digit: x+69, Double digit: x+66
+		var cost_x: float = 69.0 if co < 10 else 66.0
+		var cost_y: float = card_height - 77.0  # 77px from bottom in libGDX → 3px from top in Godot
 		if is_large:
 			cost_x = 132.0 if co < 10 else 130.0
-			cost_y = 15.0
+			cost_y = LARGE_CARD_HEIGHT - 192.0  # Adjust for large spell cards
 		cost_label.position = Vector2(cost_x, cost_y)
 		cost_label.size = Vector2(15, 15) if not is_large else Vector2(18, 18)
 		cost_label.add_theme_font_size_override("font_size", 12 if not is_large else 14)
 		cost_label.add_theme_color_override("font_color", Color(1.0, 1.0, 0.0))
 		cost_label.text = str(co)
 		cost_label.visible = true
-		
+
 		attack_label.visible = false
 		life_label.visible = false
 	
