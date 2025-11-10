@@ -178,7 +178,10 @@ func _render_card(size_type: String) -> void:
 	
 	# Java: batch.draw(img, x, y)
 	# Position and set card artwork
-	portrait.position = Vector2(0, 0)
+	# Use configurable offset from Cards config (default 0,0)
+	var portrait_offset_x = Cards.HAND_CARD_PORTRAIT_OFFSET_X if Cards else 0
+	var portrait_offset_y = Cards.HAND_CARD_PORTRAIT_OFFSET_Y if Cards else 0
+	portrait.position = Vector2(portrait_offset_x, portrait_offset_y)
 	portrait.size = Vector2(card_width, card_height)
 	portrait.expand_mode = TextureRect.EXPAND_KEEP_SIZE
 	portrait.stretch_mode = TextureRect.STRETCH_KEEP
@@ -207,7 +210,10 @@ func _render_card(size_type: String) -> void:
 			stunned_indicator.size = Vector2(card_width, card_height)
 	
 	# Java: batch.draw(frame, x - 3, y - 12)
-	frame_rect.position = Vector2(-11, -12)  # Java offset: x-3, y-12 (adjusted for Godot)
+	# Use configurable offset from Cards config (default -3,-12 from Java)
+	var frame_offset_x = Cards.HAND_CARD_FRAME_OFFSET_X if Cards else -3
+	var frame_offset_y = Cards.HAND_CARD_FRAME_OFFSET_Y if Cards else -12
+	frame_rect.position = Vector2(frame_offset_x, frame_offset_y)
 	frame_rect.size = Vector2(frame_width, frame_height)
 	frame_rect.expand_mode = TextureRect.EXPAND_KEEP_SIZE
 	frame_rect.stretch_mode = TextureRect.STRETCH_KEEP
