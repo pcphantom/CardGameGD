@@ -90,8 +90,8 @@ static var SCREEN_HEIGHT: int = 768
 # INDIVIDUAL SIZE: 132×132 pixels (portraitramka.png frame)
 # TOTAL FRAME SIZE: 132×132 pixels (single portrait)
 # SAFE RANGES: X: 0-892, Y: 0-636
-const OPPONENT_PORTRAIT_X: int = 10     # Opponent portrait X (left edge)
-const OPPONENT_PORTRAIT_Y: int = 50     # Opponent portrait Y (TOP area)
+const OPPONENT_PORTRAIT_X: int = 10     # Opponent portrait X (left edge) - Java source value
+const OPPONENT_PORTRAIT_Y: int = 50     # Opponent portrait Y (TOP area) - Java source value
 const PORTRAIT_SPRITE_OFFSET_X: int = 0      # Sprite X offset inside portrait frame
 const PORTRAIT_SPRITE_OFFSET_Y: int = 0      # Sprite Y offset inside portrait frame
 const PORTRAIT_FRAME_OFFSET_X: int = -6      # Frame X offset relative to sprite
@@ -118,8 +118,8 @@ const OPPONENT_STATS_Y: int = 25        # Opponent's stats Y (Java: ydown(25) �
 # INDIVIDUAL SIZE: 132×132 pixels (portraitramka.png frame)
 # TOTAL FRAME SIZE: 132×132 pixels (single portrait)
 # SAFE RANGES: X: 0-892, Y: 0-636
-const PLAYER_PORTRAIT_X: int = 10       # Player portrait X (left edge)
-const PLAYER_PORTRAIT_Y: int = 300      # Player portrait Y (BOTTOM area)
+const PLAYER_PORTRAIT_X: int = 15       # Player portrait X (left edge)
+const PLAYER_PORTRAIT_Y: int = 100      # Player portrait Y (BOTTOM area)
 
 # Player play slots (6 card slots in a row - MIDDLE RIGHT)
 # INDIVIDUAL SIZE: 92×132 pixels per slot (slot.png)
