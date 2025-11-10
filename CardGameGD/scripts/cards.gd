@@ -173,7 +173,9 @@ func init() -> void:
 
 	# Java: player = new PlayerImage(...); opponent = new PlayerImage(...); (lines 144-145)
 	player = PlayerImage.new(null, portraitramka, greenfont, Player.new(), 80, ydown(300))
+	player.z_index = 2  # Above background and slots
 	opponent = PlayerImage.new(null, portraitramka, greenfont, Player.new(), 80, ydown(125))
+	opponent.z_index = 2  # Above background and slots
 
 	# Java: defaultFont = new BitmapFont(); (lines 147-151)
 	# TODO: Load fonts properly
@@ -248,6 +250,7 @@ func init() -> void:
 	# Java: cdi = new CardDescriptionImage(20, ydown(512)); (lines 238-239)
 	cdi = CardDescriptionImage.new(null, null, greenfont, null, 20, ydown(512))
 	cdi.setFont(greenfont)
+	cdi.z_index = 3  # Above portraits
 
 	# Java: logScrollPane = new LogScrollPane(skin); (lines 241-242)
 	# Java: logScrollPane.setBounds(24, 36, 451, 173);
@@ -255,6 +258,7 @@ func init() -> void:
 	logScrollPane = LogScrollPane.new()
 	logScrollPane.position = Vector2(24, ydown(36 + 173))
 	logScrollPane.custom_minimum_size = Vector2(451, 173)
+	logScrollPane.z_index = 4  # Above card description
 
 	# Java: stage.addActor(player); etc. (lines 244-249)
 	stage.add_child(player)
@@ -268,8 +272,13 @@ func init() -> void:
 	# TODO: Create listener instances
 
 	# Java: addSlotImages(opponent, 330, ydown(170), false); (lines 255-256)
-	addSlotImages(opponent, 330, ydown(170), false)
-	addSlotImages(player, 330, ydown(290), true)
+	# Java: addSlotImages(player, 330, ydown(290), true);
+	# NOTE: Java ydown() converts "pixels from top" to LibGDX bottom-up coordinates.
+	# In Godot we use top-down directly, so we need the inverse:
+	# Java ydown(170) = 768-170 = 598 (LibGDX y from bottom) = 170 from top in Godot
+	# Java ydown(290) = 768-290 = 478 (LibGDX y from bottom) = 290 from top in Godot
+	addSlotImages(opponent, 330, 80, false)   # Opponent slots at top
+	addSlotImages(player, 330, 200, true)     # Player slots below opponent
 
 	# Java: chooser = new SingleDuelChooser(); chooser.init(this); (lines 258-259)
 	chooser = SingleDuelChooser.new()
@@ -507,8 +516,11 @@ func initializePlayerCards(p_player: Player, show_cards: bool) -> void:
 	selectedCard = null
 
 	# Java: int x = 405; int y = ydown(328); (lines 395-396)
+	# Java ydown(328) = 768-328 = 440 (LibGDX y from bottom) = 328 from top
+	# But looking at battlescreen.png, hand should be lower (around y=400-420)
+	# Adjusting to match screenshot layout
 	var x: int = 405
-	var y: int = ydown(328)
+	var y: int = 380  # Hand cards start here (was 440, but that was too high)
 	print("      Starting position: x=", x, " y=", y)
 
 	# Java: CardType[] types = {...}; (line 398)
@@ -597,6 +609,7 @@ func addVerticalGroupCards(x: int, y: int, cards: Array, _p_player: Player, _typ
 		# Java: if (addToStage) { ci.addListener(li); stage.addActor(ci); } (lines 453-456)
 		if addToStage:
 			# TODO: Add listener
+			ci.z_index = 5  # Hand cards above most UI elements
 			stage.add_child(ci)
 
 # ============================================================================
@@ -617,6 +630,7 @@ func addSlotImages(pi: PlayerImage, x: int, y: int, bottom: bool) -> void:
 		# Java: s.setBounds(x1, y, s.texture.get_width(), s.texture.get_height()); (line 467)
 		s.position = Vector2(x1, y)
 		s.size = Vector2(s.texture.get_width(), s.texture.get_height())
+		s.z_index = 1  # Above background, below everything else
 
 		# Java: x1 += (spacing + s.texture.get_width()); (line 468)
 		x1 += (spacing + s.texture.get_width())
