@@ -90,9 +90,10 @@ static var SCREEN_HEIGHT: int = 768
 # INDIVIDUAL SIZE: 132×132 pixels (portraitramka.png frame)
 # TOTAL FRAME SIZE: 132×132 pixels (single portrait)
 # SAFE RANGES: X: 0-892, Y: 0-636
-# Java source: opponent = new PlayerImage(..., 80, ydown(125)) → Godot: X=80, Y=125
-const OPPONENT_PORTRAIT_X: int = 80     # Opponent portrait X (left edge)
-const OPPONENT_PORTRAIT_Y: int = 125    # Opponent portrait Y (from Cards.java:145)
+# Java: ydown(125) = 643 in LibGDX (bottom-left origin)
+# Godot: 768 - 643 - 132 = -7 ≈ 0-10 (top-left origin)
+const OPPONENT_PORTRAIT_X: int = 80     # Opponent portrait X
+const OPPONENT_PORTRAIT_Y: int = 10     # Opponent portrait Y (user verified)
 const PORTRAIT_SPRITE_OFFSET_X: int = 0      # Sprite X offset inside portrait frame
 const PORTRAIT_SPRITE_OFFSET_Y: int = 0      # Sprite Y offset inside portrait frame
 const PORTRAIT_FRAME_OFFSET_X: int = -6      # Frame X offset relative to sprite
@@ -102,9 +103,10 @@ const PORTRAIT_FRAME_OFFSET_Y: int = -6      # Frame Y offset relative to sprite
 # INDIVIDUAL SIZE: 92×132 pixels per slot (slot.png)
 # TOTAL FRAME SIZE: ~570×132 pixels (6 slots × ~95px spacing = ~570px wide)
 # SAFE RANGES: X: 0-454, Y: 0-636
-# Java source: addSlotImages(opponent, 330, ydown(170), false) → Godot: X=330, Y=170
-const OPPONENT_SLOTS_X: int = 330       # Opponent slots X (from Cards.java:255)
-const OPPONENT_SLOTS_Y: int = 170       # Opponent slots Y (from Cards.java:255)
+# Java: ydown(170) = 598 in LibGDX (bottom-left origin)
+# Godot: 768 - 598 - 132 + 12(Actor offset) = 50 (top-left origin)
+const OPPONENT_SLOTS_X: int = 330       # Opponent slots X
+const OPPONENT_SLOTS_Y: int = 50        # Opponent slots Y (converted +12 offset)
 const SLOT_SPACING_X: int = 95          # Horizontal spacing between play slots
 
 # Opponent resource stats (Fire: X, Air: X, Water: X, Earth: X, Special: X - TOP)
@@ -121,17 +123,19 @@ const OPPONENT_STATS_Y: int = 25        # Opponent's stats Y (Java: ydown(25) �
 # INDIVIDUAL SIZE: 132×132 pixels (portraitramka.png frame)
 # TOTAL FRAME SIZE: 132×132 pixels (single portrait)
 # SAFE RANGES: X: 0-892, Y: 0-636
-# Java source: player = new PlayerImage(..., 80, ydown(300)) → Godot: X=80, Y=300
-const PLAYER_PORTRAIT_X: int = 80       # Player portrait X (left edge)
-const PLAYER_PORTRAIT_Y: int = 300      # Player portrait Y (from Cards.java:144)
+# Java: ydown(300) = 468 in LibGDX (bottom-left origin)
+# Godot: 768 - 468 - 132 + 12(Actor offset) = 180 (top-left origin)
+const PLAYER_PORTRAIT_X: int = 80       # Player portrait X
+const PLAYER_PORTRAIT_Y: int = 180      # Player portrait Y (converted +12 offset)
 
 # Player play slots (6 card slots in a row - MIDDLE RIGHT)
 # INDIVIDUAL SIZE: 92×132 pixels per slot (slot.png)
 # TOTAL FRAME SIZE: ~570×132 pixels (6 slots × ~95px spacing = ~570px wide)
 # SAFE RANGES: X: 0-454, Y: 0-636
-# Java source: addSlotImages(player, 330, ydown(290), true) → Godot: X=330, Y=290
-const PLAYER_SLOTS_X: int = 330         # Player slots X (from Cards.java:256)
-const PLAYER_SLOTS_Y: int = 290         # Player slots Y (from Cards.java:256)
+# Java: ydown(290) = 478 in LibGDX (bottom-left origin)
+# Godot: 768 - 478 - 132 + 12(Actor offset) = 170 (top-left origin)
+const PLAYER_SLOTS_X: int = 330         # Player slots X
+const PLAYER_SLOTS_Y: int = 170         # Player slots Y (converted +12 offset)
 
 # Player hand cards (5×4 grid of small cards - BOTTOM RIGHT)
 # INDIVIDUAL SIZE: 90×100 pixels per card (ramka.png frame)
@@ -141,9 +145,10 @@ const PLAYER_SLOTS_Y: int = 290         # Player slots Y (from Cards.java:256)
 # HAND_START_X actually controls VERTICAL position (despite the name!)
 # HAND_START_Y actually controls HORIZONTAL position (despite the name!)
 # This is swapped in initializePlayerCards() to correct it
-# Java source: x=405, y=ydown(328) → Godot: X=405, Y=328
-const HAND_START_X: int = 328           # Actually VERTICAL! From Cards.java:396 ydown(328)
-const HAND_START_Y: int = 405           # Actually HORIZONTAL! From Cards.java:395
+# Java: ydown(328) = 440 in LibGDX (bottom-left origin)
+# Godot: 768 - 440 - 100 + 12(Actor offset) = 240 (top-left origin)
+const HAND_START_X: int = 240           # Actually VERTICAL! (converted +12 offset)
+const HAND_START_Y: int = 405           # Actually HORIZONTAL! (from Java x=405)
 const HAND_SPACING_X: int = 104         # Horizontal spacing between card columns (center-to-center)
 const HAND_CARD_GAP_Y: int = 6          # Vertical gap between cards (excluding card height)
 										# Note: Total Y movement per card = GAP_Y + card_height (~106px)
