@@ -56,6 +56,50 @@ static var greenStyle = null
 static var SCREEN_WIDTH: int = 1024
 static var SCREEN_HEIGHT: int = 768
 
+# ============================================================================
+# UI LAYOUT CONFIGURATION - Adjust these to fine-tune positioning
+# ============================================================================
+
+# Player portraits (large character faces on left side)
+const PLAYER_PORTRAIT_X: int = 10
+const PLAYER_PORTRAIT_Y: int = 300  # Player portrait (lower left)
+const OPPONENT_PORTRAIT_X: int = 10
+const OPPONENT_PORTRAIT_Y: int = 50  # Opponent portrait (upper left)
+const PORTRAIT_Z_INDEX: int = 2
+
+# Play area slots (6x2 grid where cards are played)
+const PLAY_SLOTS_X: int = 260
+const OPPONENT_SLOTS_Y: int = 50    # Opponent's slots (top row)
+const PLAYER_SLOTS_Y: int = 170     # Player's slots (below opponent)
+const SLOTS_Z_INDEX: int = 1
+
+# Player hand cards (5x4 grid of small cards)
+const HAND_START_X: int = 260
+const HAND_START_Y: int = 380       # Hand cards (bottom area)
+const HAND_SPACING: int = 104       # Horizontal spacing between card columns
+const HAND_Z_INDEX: int = 5
+
+# Resource stat labels (Fire: X, Air: X, etc.)
+const STATS_START_X: int = 260
+const OPPONENT_STATS_Y: int = 25    # Opponent's stats (top)
+const PLAYER_STATS_Y: int = 340     # Player's stats (bottom)
+const STATS_SPACING_X: int = 103    # Horizontal spacing between stat labels
+
+# Card description panel (large card detail on left)
+const CARD_DESC_X: int = 20
+const CARD_DESC_Y: int = 256
+const CARD_DESC_Z_INDEX: int = 3
+
+# Game log panel (text log on left bottom)
+const GAME_LOG_X: int = 24
+const GAME_LOG_Y: int = 559
+const GAME_LOG_WIDTH: int = 220
+const GAME_LOG_HEIGHT: int = 173
+const GAME_LOG_Z_INDEX: int = 4
+
+# Background
+const BACKGROUND_Z_INDEX: int = -10
+
 ## Java: static Texture background; Sprite sprBg;
 static var background: Texture2D = null
 static var sprBg = null
@@ -164,7 +208,7 @@ func init() -> void:
 	sprBg = TextureRect.new()
 	sprBg.texture = background
 	sprBg.position = Vector2.ZERO
-	sprBg.z_index = -10  # Behind everything
+	sprBg.z_index = BACKGROUND_Z_INDEX
 	sprBg.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	sprBg.custom_minimum_size = Vector2(SCREEN_WIDTH, SCREEN_HEIGHT)
 	sprBg.size = Vector2(SCREEN_WIDTH, SCREEN_HEIGHT)
@@ -172,10 +216,10 @@ func init() -> void:
 	stage.add_child(sprBg)
 
 	# Java: player = new PlayerImage(...); opponent = new PlayerImage(...); (lines 144-145)
-	player = PlayerImage.new(null, portraitramka, greenfont, Player.new(), 80, ydown(300))
-	player.z_index = 2  # Above background and slots
-	opponent = PlayerImage.new(null, portraitramka, greenfont, Player.new(), 80, ydown(125))
-	opponent.z_index = 2  # Above background and slots
+	player = PlayerImage.new(null, portraitramka, greenfont, Player.new(), PLAYER_PORTRAIT_X, PLAYER_PORTRAIT_Y)
+	player.z_index = PORTRAIT_Z_INDEX
+	opponent = PlayerImage.new(null, portraitramka, greenfont, Player.new(), OPPONENT_PORTRAIT_X, OPPONENT_PORTRAIT_Y)
+	opponent.z_index = PORTRAIT_Z_INDEX
 
 	# Java: defaultFont = new BitmapFont(); (lines 147-151)
 	# TODO: Load fonts properly
@@ -189,11 +233,11 @@ func init() -> void:
 	# Java: playerInfoLabel = new Label(...); (lines 157-160)
 	playerInfoLabel = Label.new()
 	playerInfoLabel.text = Specializations.CLERIC.get_title()
-	playerInfoLabel.position = Vector2(80 + 10 + 120, ydown(300))
+	playerInfoLabel.position = Vector2(PLAYER_PORTRAIT_X + 130, PLAYER_PORTRAIT_Y)
 
 	opptInfoLabel = Label.new()
 	opptInfoLabel.text = Specializations.CLERIC.get_title()
-	opptInfoLabel.position = Vector2(80 + 10 + 120, ydown(30))
+	opptInfoLabel.position = Vector2(OPPONENT_PORTRAIT_X + 130, SCREEN_HEIGHT - 30)
 
 	# Java: ImageButtonStyle style = ... (lines 162-165)
 	# TODO: Create button styles
@@ -225,40 +269,40 @@ func init() -> void:
 	stage.add_child(shuffleCardsButton)
 
 	# Java: int x = 420; int y = ydown(337); int incr = 103; (lines 222-228)
-	var x: int = 420
-	var y: int = ydown(337)
-	var incr: int = 103
+	# Player strength labels (bottom)
+	var x: int = STATS_START_X
+	var y: int = PLAYER_STATS_Y
 	for i in range(5):
 		var label := Label.new()
 		label.text = getPlayerStrength(player.get_player_info(), CardType.Type.OTHER)
-		x += incr
+		x += STATS_SPACING_X
 		label.position = Vector2(x, y)
 		stage.add_child(label)
 		bottomStrengthLabels.append(label)
 
 	# Java: x = 420; y = ydown(25); (lines 230-236)
-	x = 420
-	y = ydown(25)
+	# Opponent strength labels (top)
+	x = STATS_START_X
+	y = OPPONENT_STATS_Y
 	for i in range(5):
 		var label := Label.new()
 		label.text = getPlayerStrength(opponent.get_player_info(), CardType.Type.OTHER)
-		x += incr
+		x += STATS_SPACING_X
 		label.position = Vector2(x, y)
 		stage.add_child(label)
 		topStrengthLabels.append(label)
 
 	# Java: cdi = new CardDescriptionImage(20, ydown(512)); (lines 238-239)
-	cdi = CardDescriptionImage.new(null, null, greenfont, null, 20, ydown(512))
+	cdi = CardDescriptionImage.new(null, null, greenfont, null, CARD_DESC_X, CARD_DESC_Y)
 	cdi.setFont(greenfont)
-	cdi.z_index = 3  # Above portraits
+	cdi.z_index = CARD_DESC_Z_INDEX
 
 	# Java: logScrollPane = new LogScrollPane(skin); (lines 241-242)
-	# Java: logScrollPane.setBounds(24, 36, 451, 173);
-	# Java Y=36 is bottom of control, height=173, so top is at 36+173=209 from bottom
 	logScrollPane = LogScrollPane.new()
-	logScrollPane.position = Vector2(24, ydown(36 + 173))
-	logScrollPane.custom_minimum_size = Vector2(451, 173)
-	logScrollPane.z_index = 4  # Above card description
+	logScrollPane.position = Vector2(GAME_LOG_X, GAME_LOG_Y)
+	logScrollPane.custom_minimum_size = Vector2(GAME_LOG_WIDTH, GAME_LOG_HEIGHT)
+	logScrollPane.z_index = GAME_LOG_Z_INDEX
+	logScrollPane.visible = false  # Hide initially, show after chooser is done
 
 	# Java: stage.addActor(player); etc. (lines 244-249)
 	stage.add_child(player)
@@ -273,12 +317,8 @@ func init() -> void:
 
 	# Java: addSlotImages(opponent, 330, ydown(170), false); (lines 255-256)
 	# Java: addSlotImages(player, 330, ydown(290), true);
-	# NOTE: Java ydown() converts "pixels from top" to LibGDX bottom-up coordinates.
-	# In Godot we use top-down directly, so we need the inverse:
-	# Java ydown(170) = 768-170 = 598 (LibGDX y from bottom) = 170 from top in Godot
-	# Java ydown(290) = 768-290 = 478 (LibGDX y from bottom) = 290 from top in Godot
-	addSlotImages(opponent, 330, 80, false)   # Opponent slots at top
-	addSlotImages(player, 330, 200, true)     # Player slots below opponent
+	addSlotImages(opponent, PLAY_SLOTS_X, OPPONENT_SLOTS_Y, false)   # Opponent slots at top
+	addSlotImages(player, PLAY_SLOTS_X, PLAYER_SLOTS_Y, true)         # Player slots below opponent
 
 	# Java: chooser = new SingleDuelChooser(); chooser.init(this); (lines 258-259)
 	chooser = SingleDuelChooser.new()
@@ -458,7 +498,8 @@ func initialize() -> void:
 	gameOver = false
 	if logScrollPane:
 		logScrollPane.clear()
-		print("    Game log cleared")
+		logScrollPane.visible = true  # Show log panel now that we're in battle
+		print("    Game log cleared and shown")
 
 	# Java: initializePlayerCards(player.get_player_info(), true); (lines 369-370)
 	print("  Initializing player cards (visible=true)...")
@@ -516,11 +557,8 @@ func initializePlayerCards(p_player: Player, show_cards: bool) -> void:
 	selectedCard = null
 
 	# Java: int x = 405; int y = ydown(328); (lines 395-396)
-	# Java ydown(328) = 768-328 = 440 (LibGDX y from bottom) = 328 from top
-	# But looking at battlescreen.png, hand should be lower (around y=400-420)
-	# Adjusting to match screenshot layout
-	var x: int = 405
-	var y: int = 380  # Hand cards start here (was 440, but that was too high)
+	var x: int = HAND_START_X
+	var y: int = HAND_START_Y
 	print("      Starting position: x=", x, " y=", y)
 
 	# Java: CardType[] types = {...}; (line 398)
@@ -540,7 +578,7 @@ func initializePlayerCards(p_player: Player, show_cards: bool) -> void:
 		print("      Type ", CardType.get_title(type), ": created ", v1.size(), " cards")
 
 		# Java: x += 104; (line 409)
-		x += 104
+		x += HAND_SPACING
 
 		# Java: addVerticalGroupCards(x, y, v1, player, type, visible); (line 410)
 		print("      Adding vertical group at x=", x, " y=", y, " visible=", show_cards)
@@ -609,7 +647,7 @@ func addVerticalGroupCards(x: int, y: int, cards: Array, _p_player: Player, _typ
 		# Java: if (addToStage) { ci.addListener(li); stage.addActor(ci); } (lines 453-456)
 		if addToStage:
 			# TODO: Add listener
-			ci.z_index = 5  # Hand cards above most UI elements
+			ci.z_index = HAND_Z_INDEX  # Hand cards above most UI elements
 			stage.add_child(ci)
 
 # ============================================================================
@@ -630,7 +668,7 @@ func addSlotImages(pi: PlayerImage, x: int, y: int, bottom: bool) -> void:
 		# Java: s.setBounds(x1, y, s.texture.get_width(), s.texture.get_height()); (line 467)
 		s.position = Vector2(x1, y)
 		s.size = Vector2(s.texture.get_width(), s.texture.get_height())
-		s.z_index = 1  # Above background, below everything else
+		s.z_index = SLOTS_Z_INDEX  # Above background, below everything else
 
 		# Java: x1 += (spacing + s.texture.get_width()); (line 468)
 		x1 += (spacing + s.texture.get_width())
