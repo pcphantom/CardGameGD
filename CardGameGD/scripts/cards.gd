@@ -334,40 +334,56 @@ func init() -> void:
 	# TODO: Create label styles
 
 	# Java: playerInfoLabel = new Label(...); (lines 157-160)
+	# Java: playerInfoLabel.setPosition(80 + 10 + 120, ydown(300));
+	# For labels (widgets), use original Y value: ydown(300) input = 300
 	playerInfoLabel = Label.new()
 	playerInfoLabel.text = Specializations.CLERIC.get_title()
-	playerInfoLabel.position = Vector2(PLAYER_PORTRAIT_X + 130, PLAYER_PORTRAIT_Y)
+	playerInfoLabel.position = Vector2(210, 300)  # X = 80+10+120 = 210, Y = 300
+	playerInfoLabel.add_theme_font_size_override("font_size", 14)
+	playerInfoLabel.add_theme_color_override("font_color", Color.WHITE)
+	playerInfoLabel.custom_minimum_size = Vector2(150, 20)
 
+	# Java: opptInfoLabel.setPosition(80 + 10 + 120, ydown(30));
+	# For labels (widgets), use original Y value: ydown(30) input = 30
 	opptInfoLabel = Label.new()
 	opptInfoLabel.text = Specializations.CLERIC.get_title()
-	opptInfoLabel.position = Vector2(OPPONENT_PORTRAIT_X + 130, SCREEN_HEIGHT - 30)
+	opptInfoLabel.position = Vector2(210, 30)  # X = 80+10+120 = 210, Y = 30
+	opptInfoLabel.add_theme_font_size_override("font_size", 14)
+	opptInfoLabel.add_theme_color_override("font_color", Color.WHITE)
+	opptInfoLabel.custom_minimum_size = Vector2(150, 20)
 
 	# Java: ImageButtonStyle style = ... (lines 162-165)
 	# TODO: Create button styles
 
 	# Java: showOpptCardsButton = new Button(skin); (lines 167-192)
+	# Java: setBounds(10, ydown(50), 50, 50) where ydown(50) = 768-50 = 718
+	# For widgets, use the original Y value (50), not the ydown result
 	showOpptCardsButton = Button.new()
 	showOpptCardsButton.pressed.connect(_on_show_oppt_cards_pressed)
-	showOpptCardsButton.position = Vector2(10, ydown(50))
+	showOpptCardsButton.position = Vector2(10, 50)
 	showOpptCardsButton.size = Vector2(50, 50)
 	stage.add_child(showOpptCardsButton)
 
 	# Java: skipTurnButton = new ImageButton(style); (lines 194-206)
 	# Java: style uses endturnbutton.png texture (line 163)
+	# Java: setBounds(10, ydown(110), 50, 50) where ydown(110) = 768-110 = 658
+	# For widgets, use the original Y value (110), not the ydown result
 	skipTurnButton = TextureButton.new()
 	if endTurnButtonTexture:
 		skipTurnButton.texture_normal = endTurnButtonTexture
 	skipTurnButton.pressed.connect(_on_skip_turn_pressed)
-	skipTurnButton.position = Vector2(10, ydown(110))
+	skipTurnButton.position = Vector2(10, 110)
 	skipTurnButton.custom_minimum_size = Vector2(50, 50)
 	skipTurnButton.ignore_texture_size = true
 	skipTurnButton.stretch_mode = TextureButton.STRETCH_KEEP_ASPECT_CENTERED
 	stage.add_child(skipTurnButton)
 
 	# Java: shuffleCardsButton = new Button(skin); (lines 208-220)
+	# Java: setBounds(10, ydown(170), 50, 50) where ydown(170) = 768-170 = 598
+	# For widgets, use the original Y value (170), not the ydown result
 	shuffleCardsButton = Button.new()
 	shuffleCardsButton.pressed.connect(_on_shuffle_cards_pressed)
-	shuffleCardsButton.position = Vector2(10, ydown(170))
+	shuffleCardsButton.position = Vector2(10, 170)
 	shuffleCardsButton.size = Vector2(50, 50)
 	stage.add_child(shuffleCardsButton)
 
@@ -380,6 +396,10 @@ func init() -> void:
 		label.text = getPlayerStrength(player.get_player_info(), CardType.Type.OTHER)
 		x += STATS_SPACING_X
 		label.position = Vector2(x, y)
+		# Add styling to make labels visible
+		label.add_theme_font_size_override("font_size", 12)
+		label.add_theme_color_override("font_color", Color.WHITE)
+		label.custom_minimum_size = Vector2(90, 20)
 		stage.add_child(label)
 		bottomStrengthLabels.append(label)
 
@@ -392,6 +412,10 @@ func init() -> void:
 		label.text = getPlayerStrength(opponent.get_player_info(), CardType.Type.OTHER)
 		x += STATS_SPACING_X
 		label.position = Vector2(x, y)
+		# Add styling to make labels visible
+		label.add_theme_font_size_override("font_size", 12)
+		label.add_theme_color_override("font_color", Color.WHITE)
+		label.custom_minimum_size = Vector2(90, 20)
 		stage.add_child(label)
 		topStrengthLabels.append(label)
 
