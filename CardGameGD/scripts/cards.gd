@@ -82,50 +82,90 @@ static var SCREEN_HEIGHT: int = 768
 #
 # ============================================================================
 
-# Player portraits (large character faces on left side)
-# Estimated size: ~120×120 pixels each
-# SAFE RANGES: X: 0-900, Y: 0-648
-const PLAYER_PORTRAIT_X: int = 10       # Player portrait X (left edge)
-const PLAYER_PORTRAIT_Y: int = 300      # Player portrait Y (lower left area)
-const OPPONENT_PORTRAIT_X: int = 10     # Opponent portrait X (left edge)
-const OPPONENT_PORTRAIT_Y: int = 50     # Opponent portrait Y (upper left area)
-const PORTRAIT_Z_INDEX: int = 2
+# ─────────────────────────────────────────────────────────────────────────────
+# OPPONENT ELEMENTS (Top area of screen)
+# ─────────────────────────────────────────────────────────────────────────────
 
-# Play area slots (6×2 grid where cards are played)
-# Total width: ~570px (6 slots × ~95px each), Height: ~100px per row
-# SAFE RANGES: X: 0-454, Y: 0-668
-const PLAY_SLOTS_X: int = 260           # Play slots start X (right side)
-const OPPONENT_SLOTS_Y: int = 50        # Opponent's slots Y (top row)
-const PLAYER_SLOTS_Y: int = 170         # Player's slots Y (below opponent)
+# Opponent portrait (large character face - UPPER LEFT)
+# INDIVIDUAL SIZE: 132×132 pixels (portraitramka.png frame)
+# TOTAL FRAME SIZE: 132×132 pixels (single portrait)
+# SAFE RANGES: X: 0-892, Y: 0-636
+const OPPONENT_PORTRAIT_X: int = 10     # Opponent portrait X (left edge)
+const OPPONENT_PORTRAIT_Y: int = 50     # Opponent portrait Y (TOP area)
+
+# Opponent play slots (6 card slots in a row - TOP RIGHT)
+# INDIVIDUAL SIZE: 92×132 pixels per slot (slot.png)
+# TOTAL FRAME SIZE: ~570×132 pixels (6 slots × ~95px spacing = ~570px wide)
+# SAFE RANGES: X: 0-454, Y: 0-636
+const OPPONENT_SLOTS_Y: int = 50        # Opponent's slot row Y (TOP area)
+
+# Opponent resource stats (Fire: X, Air: X, Water: X, Earth: X, Special: X - TOP)
+# INDIVIDUAL SIZE: ~50×20 pixels per label
+# TOTAL FRAME SIZE: ~515×20 pixels (5 labels × 103px spacing = ~515px wide)
+# SAFE RANGES: X: 0-509, Y: 0-748
+const OPPONENT_STATS_Y: int = 25        # Opponent's stats Y (ABOVE play slots)
+
+# ─────────────────────────────────────────────────────────────────────────────
+# PLAYER ELEMENTS (Bottom area of screen)
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Player portrait (large character face - LOWER LEFT)
+# INDIVIDUAL SIZE: 132×132 pixels (portraitramka.png frame)
+# TOTAL FRAME SIZE: 132×132 pixels (single portrait)
+# SAFE RANGES: X: 0-892, Y: 0-636
+const PLAYER_PORTRAIT_X: int = 10       # Player portrait X (left edge)
+const PLAYER_PORTRAIT_Y: int = 300      # Player portrait Y (BOTTOM area)
+
+# Player play slots (6 card slots in a row - MIDDLE RIGHT)
+# INDIVIDUAL SIZE: 92×132 pixels per slot (slot.png)
+# TOTAL FRAME SIZE: ~570×132 pixels (6 slots × ~95px spacing = ~570px wide)
+# SAFE RANGES: X: 0-454, Y: 0-636
+const PLAYER_SLOTS_Y: int = 170         # Player's slot row Y (BELOW opponent)
+
+# Player hand cards (5×4 grid of small cards - BOTTOM RIGHT)
+# INDIVIDUAL SIZE: 90×100 pixels per card (ramka.png frame)
+# TOTAL FRAME SIZE: ~520×400 pixels (5 cols × 104px spacing = ~520px wide, 4 rows × 100px = 400px tall)
+# SAFE RANGES: X: 0-504, Y: 0-368
+# WARNING: Y > 368 will push bottom cards off-screen!
+const HAND_START_X: int = 260           # Hand cards start X (right side)
+const HAND_START_Y: int = 340           # Hand cards start Y (BOTTOM area)
+const HAND_SPACING: int = 104           # Horizontal spacing between card columns
+
+# Player resource stats (Fire: X, Air: X, Water: X, Earth: X, Special: X - BOTTOM)
+# INDIVIDUAL SIZE: ~50×20 pixels per label
+# TOTAL FRAME SIZE: ~515×20 pixels (5 labels × 103px spacing = ~515px wide)
+# SAFE RANGES: X: 0-509, Y: 0-748
+const PLAYER_STATS_Y: int = 340         # Player's stats Y (ABOVE player hand)
+
+# ─────────────────────────────────────────────────────────────────────────────
+# SHARED ELEMENTS (Used by both players)
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Shared: Play slots horizontal positioning (both player and opponent use same X)
+const PLAY_SLOTS_X: int = 260           # Play slots start X (right side, for both rows)
 const SLOTS_Z_INDEX: int = 1
 
-# Player hand cards (5×4 grid of small cards)
-# Card size: ~89×120 pixels, Grid total: ~520px wide × ~480px tall
-# SAFE RANGES: X: 0-504, Y: 0-288 (must fit 4 rows!)
-# WARNING: Y values > 288 will push bottom cards off-screen!
-const HAND_START_X: int = 260           # Hand cards start X (right side)
-const HAND_START_Y: int = 340           # Hand cards start Y (ADJUSTED to fit on screen)
-const HAND_SPACING: int = 104           # Horizontal spacing between card columns
-const HAND_Z_INDEX: int = 5
+# Shared: Portrait z-index (both player and opponent)
+const PORTRAIT_Z_INDEX: int = 2
 
-# Resource stat labels (Fire: X, Air: X, Water: X, Earth: X, Special: X)
-# Label size: ~50×20 pixels each, 5 labels across
-# Total width: ~515px (5 labels × 103px spacing)
-# SAFE RANGES: X: 0-509, Y: 0-748
-const STATS_START_X: int = 260          # Stat labels start X (right side)
-const OPPONENT_STATS_Y: int = 25        # Opponent's stats Y (top)
-const PLAYER_STATS_Y: int = 340         # Player's stats Y (above hand)
+# Shared: Resource stats horizontal positioning (both player and opponent use same X)
+const STATS_START_X: int = 260          # Stat labels start X (right side, for both rows)
 const STATS_SPACING_X: int = 103        # Horizontal spacing between stat labels
 
-# Card description panel (large card detail display on left)
-# Estimated size: ~200×250 pixels
+# Shared: Player hand z-index
+const HAND_Z_INDEX: int = 5
+
+# Shared: Card description panel (large card detail display - LEFT CENTER)
+# INDIVIDUAL SIZE: ~200×250 pixels (estimated)
+# TOTAL FRAME SIZE: ~200×250 pixels (single panel)
 # SAFE RANGES: X: 0-824, Y: 0-518
 const CARD_DESC_X: int = 20             # Card description X (left side)
 const CARD_DESC_Y: int = 256            # Card description Y (middle-left)
 const CARD_DESC_Z_INDEX: int = 3
 
-# Game log panel (scrolling text log on left bottom)
-# Fixed size: 220×173 pixels
+# Shared: Game log panel (scrolling text log - LEFT BOTTOM)
+# INDIVIDUAL SIZE: 220×173 pixels (fixed size)
+# TOTAL FRAME SIZE: 220×173 pixels (single panel)
 # SAFE RANGES: X: 0-804, Y: 0-595
 const GAME_LOG_X: int = 24              # Game log X (left side)
 const GAME_LOG_Y: int = 559             # Game log Y (bottom area)
