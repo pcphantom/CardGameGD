@@ -101,7 +101,7 @@ const PORTRAIT_FRAME_OFFSET_Y: int = -6      # Frame Y offset relative to sprite
 # INDIVIDUAL SIZE: 92×132 pixels per slot (slot.png)
 # TOTAL FRAME SIZE: ~570×132 pixels (6 slots × ~95px spacing = ~570px wide)
 # SAFE RANGES: X: 0-454, Y: 0-636
-const OPPONENT_SLOTS_Y: int = 50        # Opponent's slot row Y (TOP area)
+const OPPONENT_SLOTS_Y: int = 170       # Opponent's slot row Y (Java: ydown(170) → use pre-converted value)
 const SLOT_SPACING_X: int = 95          # Horizontal spacing between play slots
 
 # Opponent resource stats (Fire: X, Air: X, Water: X, Earth: X, Special: X - TOP)
@@ -125,15 +125,15 @@ const PLAYER_PORTRAIT_Y: int = 300      # Player portrait Y (BOTTOM area)
 # INDIVIDUAL SIZE: 92×132 pixels per slot (slot.png)
 # TOTAL FRAME SIZE: ~570×132 pixels (6 slots × ~95px spacing = ~570px wide)
 # SAFE RANGES: X: 0-454, Y: 0-636
-const PLAYER_SLOTS_Y: int = 170         # Player's slot row Y (BELOW opponent)
+const PLAYER_SLOTS_Y: int = 290         # Player's slot row Y (Java: ydown(290) → use pre-converted value)
 
 # Player hand cards (5×4 grid of small cards - BOTTOM RIGHT)
 # INDIVIDUAL SIZE: 90×100 pixels per card (ramka.png frame)
 # TOTAL FRAME SIZE: ~520×400 pixels (5 cols × 104px spacing = ~520px wide, 4 rows × 100px = 400px tall)
 # SAFE RANGES: X: 0-504, Y: 0-368
 # WARNING: Y > 368 will push bottom cards off-screen!
-const HAND_START_X: int = 260           # Hand cards start X (right side)
-const HAND_START_Y: int = 340           # Hand cards start Y (BOTTOM area)
+const HAND_START_X: int = 405           # Hand cards start X (Java: x=405)
+const HAND_START_Y: int = 328           # Hand cards start Y (Java: ydown(328) → use pre-converted value 328)
 const HAND_SPACING_X: int = 104         # Horizontal spacing between card columns (center-to-center)
 const HAND_CARD_GAP_Y: int = 6          # Vertical gap between cards (excluding card height)
                                         # Note: Total Y movement per card = GAP_Y + card_height (~106px)
@@ -153,14 +153,14 @@ const PLAYER_STATS_Y: int = 340         # Player's stats Y (ABOVE player hand)
 # ─────────────────────────────────────────────────────────────────────────────
 
 # Shared: Play slots horizontal positioning (both player and opponent use same X)
-const PLAY_SLOTS_X: int = 260           # Play slots start X (right side, for both rows)
+const PLAY_SLOTS_X: int = 330           # Play slots start X (Java: x=330 for both rows)
 const SLOTS_Z_INDEX: int = 1
 
 # Shared: Portrait z-index (both player and opponent)
 const PORTRAIT_Z_INDEX: int = 2
 
 # Shared: Resource stats horizontal positioning (both player and opponent use same X)
-const STATS_START_X: int = 260          # Stat labels start X (right side, for both rows)
+const STATS_START_X: int = 330          # Stat labels start X (aligned with play slots)
 const STATS_SPACING_X: int = 103        # Horizontal spacing between stat labels
 
 # Shared: Player hand z-index
@@ -743,8 +743,9 @@ func addVerticalGroupCards(x: int, y: int, cards: Array, _p_player: Player, _typ
 		# TODO: Add listeners
 
 		# Java: y1 -= (spacing + ci.get_frame().getHeight()); (line 450)
-		# Total Y movement per card = gap + frame height
-		y1 -= (spacing + ci.get_frame().get_height())
+		# CRITICAL FIX: Java LibGDX had Y=0 at BOTTOM, so subtracting moved UP
+		# Godot has Y=0 at TOP, so we ADD to move DOWN (stack cards downward)
+		y1 += (spacing + ci.get_frame().get_height())
 
 		# Java: ci.setBounds(x1, y1, ci.get_frame().getWidth(), ci.get_frame().getHeight()); (line 451)
 		ci.position = Vector2(x1, y1)
