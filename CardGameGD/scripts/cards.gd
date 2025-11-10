@@ -57,48 +57,84 @@ static var SCREEN_WIDTH: int = 1024
 static var SCREEN_HEIGHT: int = 768
 
 # ============================================================================
-# UI LAYOUT CONFIGURATION - Adjust these to fine-tune positioning
+# UI LAYOUT CONFIGURATION - Adjust these constants to fine-tune positioning
+# ============================================================================
+#
+# COORDINATE SYSTEM:
+#   - Origin (0, 0) is TOP-LEFT corner of screen
+#   - X increases RIGHT, Y increases DOWN
+#   - Screen size: 1024×768 (SCREEN_WIDTH × SCREEN_HEIGHT)
+#   - position property sets the TOP-LEFT CORNER of each element
+#
+# HOW TO ADJUST:
+#   1. Find the element you want to move below
+#   2. Change its X or Y constant value
+#   3. Test in-game to verify positioning
+#   4. Refer to SAFE RANGES to avoid elements going off-screen
+#
+# Z-INDEX LAYERING (higher = in front):
+#   -10 = Background
+#     1 = Play slots
+#     2 = Player portraits
+#     3 = Card description panel
+#     4 = Game log
+#     5 = Hand cards (topmost, interactive)
+#
 # ============================================================================
 
 # Player portraits (large character faces on left side)
-const PLAYER_PORTRAIT_X: int = 10
-const PLAYER_PORTRAIT_Y: int = 300  # Player portrait (lower left)
-const OPPONENT_PORTRAIT_X: int = 10
-const OPPONENT_PORTRAIT_Y: int = 50  # Opponent portrait (upper left)
+# Estimated size: ~120×120 pixels each
+# SAFE RANGES: X: 0-900, Y: 0-648
+const PLAYER_PORTRAIT_X: int = 10       # Player portrait X (left edge)
+const PLAYER_PORTRAIT_Y: int = 300      # Player portrait Y (lower left area)
+const OPPONENT_PORTRAIT_X: int = 10     # Opponent portrait X (left edge)
+const OPPONENT_PORTRAIT_Y: int = 50     # Opponent portrait Y (upper left area)
 const PORTRAIT_Z_INDEX: int = 2
 
-# Play area slots (6x2 grid where cards are played)
-const PLAY_SLOTS_X: int = 260
-const OPPONENT_SLOTS_Y: int = 50    # Opponent's slots (top row)
-const PLAYER_SLOTS_Y: int = 170     # Player's slots (below opponent)
+# Play area slots (6×2 grid where cards are played)
+# Total width: ~570px (6 slots × ~95px each), Height: ~100px per row
+# SAFE RANGES: X: 0-454, Y: 0-668
+const PLAY_SLOTS_X: int = 260           # Play slots start X (right side)
+const OPPONENT_SLOTS_Y: int = 50        # Opponent's slots Y (top row)
+const PLAYER_SLOTS_Y: int = 170         # Player's slots Y (below opponent)
 const SLOTS_Z_INDEX: int = 1
 
-# Player hand cards (5x4 grid of small cards)
-const HAND_START_X: int = 260
-const HAND_START_Y: int = 380       # Hand cards (bottom area)
-const HAND_SPACING: int = 104       # Horizontal spacing between card columns
+# Player hand cards (5×4 grid of small cards)
+# Card size: ~89×120 pixels, Grid total: ~520px wide × ~480px tall
+# SAFE RANGES: X: 0-504, Y: 0-288 (must fit 4 rows!)
+# WARNING: Y values > 288 will push bottom cards off-screen!
+const HAND_START_X: int = 260           # Hand cards start X (right side)
+const HAND_START_Y: int = 340           # Hand cards start Y (ADJUSTED to fit on screen)
+const HAND_SPACING: int = 104           # Horizontal spacing between card columns
 const HAND_Z_INDEX: int = 5
 
-# Resource stat labels (Fire: X, Air: X, etc.)
-const STATS_START_X: int = 260
-const OPPONENT_STATS_Y: int = 25    # Opponent's stats (top)
-const PLAYER_STATS_Y: int = 340     # Player's stats (bottom)
-const STATS_SPACING_X: int = 103    # Horizontal spacing between stat labels
+# Resource stat labels (Fire: X, Air: X, Water: X, Earth: X, Special: X)
+# Label size: ~50×20 pixels each, 5 labels across
+# Total width: ~515px (5 labels × 103px spacing)
+# SAFE RANGES: X: 0-509, Y: 0-748
+const STATS_START_X: int = 260          # Stat labels start X (right side)
+const OPPONENT_STATS_Y: int = 25        # Opponent's stats Y (top)
+const PLAYER_STATS_Y: int = 340         # Player's stats Y (above hand)
+const STATS_SPACING_X: int = 103        # Horizontal spacing between stat labels
 
-# Card description panel (large card detail on left)
-const CARD_DESC_X: int = 20
-const CARD_DESC_Y: int = 256
+# Card description panel (large card detail display on left)
+# Estimated size: ~200×250 pixels
+# SAFE RANGES: X: 0-824, Y: 0-518
+const CARD_DESC_X: int = 20             # Card description X (left side)
+const CARD_DESC_Y: int = 256            # Card description Y (middle-left)
 const CARD_DESC_Z_INDEX: int = 3
 
-# Game log panel (text log on left bottom)
-const GAME_LOG_X: int = 24
-const GAME_LOG_Y: int = 559
-const GAME_LOG_WIDTH: int = 220
-const GAME_LOG_HEIGHT: int = 173
+# Game log panel (scrolling text log on left bottom)
+# Fixed size: 220×173 pixels
+# SAFE RANGES: X: 0-804, Y: 0-595
+const GAME_LOG_X: int = 24              # Game log X (left side)
+const GAME_LOG_Y: int = 559             # Game log Y (bottom area)
+const GAME_LOG_WIDTH: int = 220         # Game log width
+const GAME_LOG_HEIGHT: int = 173        # Game log height
 const GAME_LOG_Z_INDEX: int = 4
 
-# Background
-const BACKGROUND_Z_INDEX: int = -10
+# Background (full-screen battlefield image)
+const BACKGROUND_Z_INDEX: int = -10     # Behind everything else
 
 ## Java: static Texture background; Sprite sprBg;
 static var background: Texture2D = null
