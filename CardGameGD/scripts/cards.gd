@@ -90,8 +90,8 @@ static var SCREEN_HEIGHT: int = 768
 # INDIVIDUAL SIZE: 132×132 pixels (portraitramka.png frame)
 # TOTAL FRAME SIZE: 132×132 pixels (single portrait)
 # SAFE RANGES: X: 0-892, Y: 0-636
-const OPPONENT_PORTRAIT_X: int = 10     # Opponent portrait X (left edge) - Java source value
-const OPPONENT_PORTRAIT_Y: int = 50     # Opponent portrait Y (TOP area) - Java source value
+const OPPONENT_PORTRAIT_X: int = 80     # Opponent portrait X (left edge) - Java source value
+const OPPONENT_PORTRAIT_Y: int = 10     # Opponent portrait Y (TOP area) - Java source value
 const PORTRAIT_SPRITE_OFFSET_X: int = 0      # Sprite X offset inside portrait frame
 const PORTRAIT_SPRITE_OFFSET_Y: int = 0      # Sprite Y offset inside portrait frame
 const PORTRAIT_FRAME_OFFSET_X: int = -6      # Frame X offset relative to sprite
@@ -121,8 +121,8 @@ const OPPONENT_STATS_Y: int = 25        # Opponent's stats Y (Java: ydown(25) �
 # INDIVIDUAL SIZE: 132×132 pixels (portraitramka.png frame)
 # TOTAL FRAME SIZE: 132×132 pixels (single portrait)
 # SAFE RANGES: X: 0-892, Y: 0-636
-const PLAYER_PORTRAIT_X: int = 10       # Player portrait X (left edge) - matching opponent
-const PLAYER_PORTRAIT_Y: int = 300      # Player portrait Y (BOTTOM area) - Java pattern
+const PLAYER_PORTRAIT_X: int = 80       # Player portrait X (left edge) - matching opponent
+const PLAYER_PORTRAIT_Y: int = 180      # Player portrait Y (BOTTOM area) - Java pattern
 
 # Player play slots (6 card slots in a row - MIDDLE RIGHT)
 # INDIVIDUAL SIZE: 92×132 pixels per slot (slot.png)
@@ -145,7 +145,7 @@ const HAND_START_X: int = 328           # Actually VERTICAL! (Java: ydown(328) =
 const HAND_START_Y: int = 405           # Actually HORIZONTAL! (Java: x=405)
 const HAND_SPACING_X: int = 104         # Horizontal spacing between card columns (center-to-center)
 const HAND_CARD_GAP_Y: int = 6          # Vertical gap between cards (excluding card height)
-                                        # Note: Total Y movement per card = GAP_Y + card_height (~106px)
+										# Note: Total Y movement per card = GAP_Y + card_height (~106px)
 const HAND_CARD_PORTRAIT_OFFSET_X: int = 0   # Portrait X offset inside card frame
 const HAND_CARD_PORTRAIT_OFFSET_Y: int = 0   # Portrait Y offset inside card frame
 const HAND_CARD_FRAME_OFFSET_X: int = -3     # Frame X offset relative to portrait
