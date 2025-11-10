@@ -101,10 +101,10 @@ const PORTRAIT_FRAME_OFFSET_Y: int = -6      # Frame Y offset relative to sprite
 # INDIVIDUAL SIZE: 92×132 pixels per slot (slot.png)
 # TOTAL FRAME SIZE: ~570×132 pixels (6 slots × ~95px spacing = ~570px wide)
 # SAFE RANGES: X: 0-454, Y: 0-636
-# Java source: addSlotImages(opponent, 330, ydown(170), false) where ydown(170)=598
-# ADJUST THESE to move the opponent's play area slots:
-const OPPONENT_SLOTS_X: int = 330       # Opponent slots horizontal position (LEFT edge of first slot)
-const OPPONENT_SLOTS_Y: int = 170       # Opponent slots vertical position (TOP edge of slots)
+# Java source: addSlotImages(opponent, 330, ydown(170), false) where ydown(170)=598, Godot=170
+# Applied ~115px correction based on portrait pattern
+const OPPONENT_SLOTS_X: int = 330       # Java source: x=330
+const OPPONENT_SLOTS_Y: int = 55        # Java 170 - 115 correction = 55
 const SLOT_SPACING_X: int = 95          # Horizontal spacing between play slots
 
 # Opponent resource stats (Fire: X, Air: X, Water: X, Earth: X, Special: X - TOP)
@@ -128,10 +128,10 @@ const PLAYER_PORTRAIT_Y: int = 180      # Player portrait Y (BOTTOM area) - Java
 # INDIVIDUAL SIZE: 92×132 pixels per slot (slot.png)
 # TOTAL FRAME SIZE: ~570×132 pixels (6 slots × ~95px spacing = ~570px wide)
 # SAFE RANGES: X: 0-454, Y: 0-636
-# Java source: addSlotImages(player, 330, ydown(290), true) where ydown(290)=478
-# ADJUST THESE to move the player's play area slots:
-const PLAYER_SLOTS_X: int = 330         # Player slots horizontal position (LEFT edge of first slot)
-const PLAYER_SLOTS_Y: int = 290         # Player slots vertical position (TOP edge of slots)
+# Java source: addSlotImages(player, 330, ydown(290), true) where ydown(290)=478, Godot=290
+# Applied ~115px correction based on portrait pattern
+const PLAYER_SLOTS_X: int = 330         # Java source: x=330
+const PLAYER_SLOTS_Y: int = 175         # Java 290 - 115 correction = 175
 
 # Player hand cards (5×4 grid of small cards - BOTTOM RIGHT)
 # INDIVIDUAL SIZE: 90×100 pixels per card (ramka.png frame)
@@ -141,8 +141,9 @@ const PLAYER_SLOTS_Y: int = 290         # Player slots vertical position (TOP ed
 # HAND_START_X actually controls VERTICAL position (despite the name!)
 # HAND_START_Y actually controls HORIZONTAL position (despite the name!)
 # This is swapped in initializePlayerCards() to correct it
-const HAND_START_X: int = 328           # Actually VERTICAL! (Java: ydown(328) = pre-converted 328)
-const HAND_START_Y: int = 405           # Actually HORIZONTAL! (Java: x=405)
+# Java source: x=405, y=ydown(328) → Godot y=328, applied -115 correction = 213
+const HAND_START_X: int = 213           # Actually VERTICAL! Java 328 - 115 correction = 213
+const HAND_START_Y: int = 405           # Actually HORIZONTAL! Java source: x=405
 const HAND_SPACING_X: int = 104         # Horizontal spacing between card columns (center-to-center)
 const HAND_CARD_GAP_Y: int = 6          # Vertical gap between cards (excluding card height)
 										# Note: Total Y movement per card = GAP_Y + card_height (~106px)
