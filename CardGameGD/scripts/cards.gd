@@ -108,7 +108,7 @@ const SLOT_SPACING_X: int = 95          # Horizontal spacing between play slots
 # INDIVIDUAL SIZE: ~50×20 pixels per label
 # TOTAL FRAME SIZE: ~515×20 pixels (5 labels × 103px spacing = ~515px wide)
 # SAFE RANGES: X: 0-509, Y: 0-748
-const OPPONENT_STATS_Y: int = 25        # Opponent's stats Y (ABOVE play slots)
+const OPPONENT_STATS_Y: int = 25        # Opponent's stats Y (Java: ydown(25) → use 25, top area)
 
 # ─────────────────────────────────────────────────────────────────────────────
 # PLAYER ELEMENTS (Bottom area of screen)
@@ -149,7 +149,7 @@ const HAND_CARD_FRAME_OFFSET_Y: int = -12    # Frame Y offset relative to portra
 # INDIVIDUAL SIZE: ~50×20 pixels per label
 # TOTAL FRAME SIZE: ~515×20 pixels (5 labels × 103px spacing = ~515px wide)
 # SAFE RANGES: X: 0-509, Y: 0-748
-const PLAYER_STATS_Y: int = 340         # Player's stats Y (ABOVE player hand)
+const PLAYER_STATS_Y: int = 337         # Player's stats Y (Java: ydown(337) → use 337, above hand)
 
 # ─────────────────────────────────────────────────────────────────────────────
 # SHARED ELEMENTS (Used by both players)
@@ -163,8 +163,8 @@ const SLOTS_Z_INDEX: int = 1
 const PORTRAIT_Z_INDEX: int = 2
 
 # Shared: Resource stats horizontal positioning (both player and opponent use same X)
-const STATS_START_X: int = 330          # Stat labels start X (aligned with play slots)
-const STATS_SPACING_X: int = 103        # Horizontal spacing between stat labels
+const STATS_START_X: int = 420          # Stat labels start X (Java: x=420, offset right from slots)
+const STATS_SPACING_X: int = 103        # Horizontal spacing between stat labels (Java: incr=103)
 
 # Shared: Player hand z-index
 const HAND_Z_INDEX: int = 5
