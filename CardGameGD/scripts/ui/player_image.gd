@@ -92,8 +92,11 @@ func _ready() -> void:
     # Add the portrait sprite as a child if it exists
     if img != null:
         add_child(img)
-        img.position = Vector2.ZERO
-        # Set a reasonable size for the portrait
+        # Use configurable offset from Cards config
+        var sprite_offset_x = Cards.PORTRAIT_SPRITE_OFFSET_X if Cards else 0
+        var sprite_offset_y = Cards.PORTRAIT_SPRITE_OFFSET_Y if Cards else 0
+        img.position = Vector2(sprite_offset_x, sprite_offset_y)
+        img.z_index = 1  # Sprite renders in front
         img.scale = Vector2(1.0, 1.0)
 
 # ============================================================================
@@ -118,26 +121,20 @@ func _draw() -> void:
     # Java: if (stunned == null) { initTextures(); }
     if stunned_texture == null:
         init_textures()
-    
-    # Java: Color color = getColor();
-    # Java: batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
-    # Godot: modulate handles color/alpha automatically
-    
-    # Java: float x = getX(); float y = getY();
-    var x: float = position.x
-    var y: float = position.y
-    
-    # Java: batch.draw(img, x, y);
-    if img != null and img.texture != null:
-        draw_texture(img.texture, Vector2(x, y))
-    
+
+    # NOTE: The sprite img is added as a child node and renders automatically
+    # We only need to draw the frame border and stunned indicator here
+
+    # Java: batch.draw(frame, x - 6, y - 6);
+    # Draw the frame (border) texture with configurable offset
+    if frame != null:
+        var frame_offset_x = Cards.PORTRAIT_FRAME_OFFSET_X if Cards else -6
+        var frame_offset_y = Cards.PORTRAIT_FRAME_OFFSET_Y if Cards else -6
+        draw_texture(frame, Vector2(frame_offset_x, frame_offset_y))
+
     # Java: if (this.mustSkipNexAttack) { batch.draw(stunned, x + 10, y - 10); }
     if must_skip_next_attack and stunned_texture != null:
-        draw_texture(stunned_texture, Vector2(x + 10, y - 10))
-    
-    # Java: batch.draw(frame, x - 6, y - 6);
-    if frame != null:
-        draw_texture(frame, Vector2(x - 6, y - 6))
+        draw_texture(stunned_texture, Vector2(10, -10))
 
 ## Java: public void decrementLife(int value, Cards game)
 func decrement_life(value: int, game) -> void:  # game is Cards.gd (game controller)
@@ -200,7 +197,12 @@ func set_img(sprite_img: Sprite2D) -> void:
     # Add new sprite as child if we're in the scene tree
     if sprite_img != null and is_inside_tree():
         add_child(sprite_img)
-        sprite_img.position = Vector2.ZERO
+        # Use configurable offset from Cards config
+        var sprite_offset_x = Cards.PORTRAIT_SPRITE_OFFSET_X if Cards else 0
+        var sprite_offset_y = Cards.PORTRAIT_SPRITE_OFFSET_Y if Cards else 0
+        sprite_img.position = Vector2(sprite_offset_x, sprite_offset_y)
+        sprite_img.z_index = 1  # Sprite renders in front
+        queue_redraw()  # Redraw to show the frame around new sprite
 
 ## Java: public void setFrame(Texture frame)
 func set_frame(frame_tex: Texture2D) -> void:
@@ -211,8 +213,14 @@ func set_frame(frame_tex: Texture2D) -> void:
 func set_texture(tex: Texture2D) -> void:
     if img == null:
         img = Sprite2D.new()
+        # Use configurable offset from Cards config
+        var sprite_offset_x = Cards.PORTRAIT_SPRITE_OFFSET_X if Cards else 0
+        var sprite_offset_y = Cards.PORTRAIT_SPRITE_OFFSET_Y if Cards else 0
+        img.position = Vector2(sprite_offset_x, sprite_offset_y)
+        img.z_index = 1  # Sprite renders in front
         add_child(img)  # CRITICAL: Add sprite to scene tree so it renders!
     img.texture = tex
+    queue_redraw()  # Redraw to show the frame around texture
 
 ## Java: public void setFont(BitmapFont font)
 func set_font(p_font: Font) -> void:

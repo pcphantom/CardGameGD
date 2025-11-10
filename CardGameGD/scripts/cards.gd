@@ -90,20 +90,25 @@ static var SCREEN_HEIGHT: int = 768
 # INDIVIDUAL SIZE: 132×132 pixels (portraitramka.png frame)
 # TOTAL FRAME SIZE: 132×132 pixels (single portrait)
 # SAFE RANGES: X: 0-892, Y: 0-636
-const OPPONENT_PORTRAIT_X: int = 15     # Opponent portrait X (left edge)
-const OPPONENT_PORTRAIT_Y: int = 3     # Opponent portrait Y (TOP area)
+const OPPONENT_PORTRAIT_X: int = 10     # Opponent portrait X (left edge) - Java source value
+const OPPONENT_PORTRAIT_Y: int = 50     # Opponent portrait Y (TOP area) - Java source value
+const PORTRAIT_SPRITE_OFFSET_X: int = 0      # Sprite X offset inside portrait frame
+const PORTRAIT_SPRITE_OFFSET_Y: int = 0      # Sprite Y offset inside portrait frame
+const PORTRAIT_FRAME_OFFSET_X: int = -6      # Frame X offset relative to sprite
+const PORTRAIT_FRAME_OFFSET_Y: int = -6      # Frame Y offset relative to sprite
 
 # Opponent play slots (6 card slots in a row - TOP RIGHT)
 # INDIVIDUAL SIZE: 92×132 pixels per slot (slot.png)
 # TOTAL FRAME SIZE: ~570×132 pixels (6 slots × ~95px spacing = ~570px wide)
 # SAFE RANGES: X: 0-454, Y: 0-636
-const OPPONENT_SLOTS_Y: int = 50        # Opponent's slot row Y (TOP area)
+const OPPONENT_SLOTS_Y: int = 170       # Opponent's slot row Y (Java: ydown(170) → use pre-converted value)
+const SLOT_SPACING_X: int = 95          # Horizontal spacing between play slots
 
 # Opponent resource stats (Fire: X, Air: X, Water: X, Earth: X, Special: X - TOP)
 # INDIVIDUAL SIZE: ~50×20 pixels per label
 # TOTAL FRAME SIZE: ~515×20 pixels (5 labels × 103px spacing = ~515px wide)
 # SAFE RANGES: X: 0-509, Y: 0-748
-const OPPONENT_STATS_Y: int = 25        # Opponent's stats Y (ABOVE play slots)
+const OPPONENT_STATS_Y: int = 25        # Opponent's stats Y (Java: ydown(25) → use 25, top area)
 
 # ─────────────────────────────────────────────────────────────────────────────
 # PLAYER ELEMENTS (Bottom area of screen)
@@ -120,37 +125,46 @@ const PLAYER_PORTRAIT_Y: int = 100      # Player portrait Y (BOTTOM area)
 # INDIVIDUAL SIZE: 92×132 pixels per slot (slot.png)
 # TOTAL FRAME SIZE: ~570×132 pixels (6 slots × ~95px spacing = ~570px wide)
 # SAFE RANGES: X: 0-454, Y: 0-636
-const PLAYER_SLOTS_Y: int = 170         # Player's slot row Y (BELOW opponent)
+const PLAYER_SLOTS_Y: int = 290         # Player's slot row Y (Java: ydown(290) → use pre-converted value)
 
 # Player hand cards (5×4 grid of small cards - BOTTOM RIGHT)
 # INDIVIDUAL SIZE: 90×100 pixels per card (ramka.png frame)
 # TOTAL FRAME SIZE: ~520×400 pixels (5 cols × 104px spacing = ~520px wide, 4 rows × 100px = 400px tall)
 # SAFE RANGES: X: 0-504, Y: 0-368
-# WARNING: Y > 368 will push bottom cards off-screen!
-const HAND_START_X: int = 400           # Hand cards start X (right side) was 260
-const HAND_START_Y: int = 790           # Hand cards start Y (BOTTOM area) was 340
-const HAND_SPACING: int = 104           # Horizontal spacing between card columns
+# WARNING: Constants are NAMED backwards due to coordinate bug!
+# HAND_START_X actually controls VERTICAL position (despite the name!)
+# HAND_START_Y actually controls HORIZONTAL position (despite the name!)
+# This is swapped in initializePlayerCards() to correct it
+const HAND_START_X: int = 328           # Actually VERTICAL! (Java: ydown(328) = pre-converted 328)
+const HAND_START_Y: int = 405           # Actually HORIZONTAL! (Java: x=405)
+const HAND_SPACING_X: int = 104         # Horizontal spacing between card columns (center-to-center)
+const HAND_CARD_GAP_Y: int = 6          # Vertical gap between cards (excluding card height)
+                                        # Note: Total Y movement per card = GAP_Y + card_height (~106px)
+const HAND_CARD_PORTRAIT_OFFSET_X: int = 0   # Portrait X offset inside card frame
+const HAND_CARD_PORTRAIT_OFFSET_Y: int = 0   # Portrait Y offset inside card frame
+const HAND_CARD_FRAME_OFFSET_X: int = -3     # Frame X offset relative to portrait
+const HAND_CARD_FRAME_OFFSET_Y: int = -12    # Frame Y offset relative to portrait
 
 # Player resource stats (Fire: X, Air: X, Water: X, Earth: X, Special: X - BOTTOM)
 # INDIVIDUAL SIZE: ~50×20 pixels per label
 # TOTAL FRAME SIZE: ~515×20 pixels (5 labels × 103px spacing = ~515px wide)
 # SAFE RANGES: X: 0-509, Y: 0-748
-const PLAYER_STATS_Y: int = 340         # Player's stats Y (ABOVE player hand)
+const PLAYER_STATS_Y: int = 337         # Player's stats Y (Java: ydown(337) → use 337, above hand)
 
 # ─────────────────────────────────────────────────────────────────────────────
 # SHARED ELEMENTS (Used by both players)
 # ─────────────────────────────────────────────────────────────────────────────
 
 # Shared: Play slots horizontal positioning (both player and opponent use same X)
-const PLAY_SLOTS_X: int = 340           # Play slots start X (right side, for both rows) was 260
+const PLAY_SLOTS_X: int = 330           # Play slots start X (Java: x=330 for both rows)
 const SLOTS_Z_INDEX: int = 1
 
 # Shared: Portrait z-index (both player and opponent)
 const PORTRAIT_Z_INDEX: int = 2
 
 # Shared: Resource stats horizontal positioning (both player and opponent use same X)
-const STATS_START_X: int = 260          # Stat labels start X (right side, for both rows)
-const STATS_SPACING_X: int = 103        # Horizontal spacing between stat labels
+const STATS_START_X: int = 420          # Stat labels start X (Java: x=420, offset right from slots)
+const STATS_SPACING_X: int = 103        # Horizontal spacing between stat labels (Java: incr=103)
 
 # Shared: Player hand z-index
 const HAND_Z_INDEX: int = 5
@@ -164,12 +178,12 @@ const CARD_DESC_Y: int = 256            # Card description Y (middle-left)
 const CARD_DESC_Z_INDEX: int = 3
 
 # Shared: Game log panel (scrolling text log - LEFT BOTTOM)
-# INDIVIDUAL SIZE: 220×173 pixels (fixed size)
-# TOTAL FRAME SIZE: 220×173 pixels (single panel)
-# SAFE RANGES: X: 0-804, Y: 0-595
+# INDIVIDUAL SIZE: 451×173 pixels (fixed size)
+# TOTAL FRAME SIZE: 451×173 pixels (single panel)
+# SAFE RANGES: X: 0-573, Y: 0-595
 const GAME_LOG_X: int = 24              # Game log X (left side)
 const GAME_LOG_Y: int = 559             # Game log Y (bottom area)
-const GAME_LOG_WIDTH: int = 220         # Game log width
+const GAME_LOG_WIDTH: int = 451         # Game log width (RESTORED from 220 - was incorrectly shortened)
 const GAME_LOG_HEIGHT: int = 173        # Game log height
 const GAME_LOG_Z_INDEX: int = 4
 
@@ -294,8 +308,10 @@ func init() -> void:
 	# Java: player = new PlayerImage(...); opponent = new PlayerImage(...); (lines 144-145)
 	player = PlayerImage.new(null, portraitramka, greenfont, Player.new(), PLAYER_PORTRAIT_X, PLAYER_PORTRAIT_Y)
 	player.z_index = PORTRAIT_Z_INDEX
+	player.visible = false  # Hide until battle starts (prevent showing in class select)
 	opponent = PlayerImage.new(null, portraitramka, greenfont, Player.new(), OPPONENT_PORTRAIT_X, OPPONENT_PORTRAIT_Y)
 	opponent.z_index = PORTRAIT_Z_INDEX
+	opponent.visible = false  # Hide until battle starts (prevent showing in class select)
 
 	# Java: defaultFont = new BitmapFont(); (lines 147-151)
 	# TODO: Load fonts properly
@@ -577,6 +593,20 @@ func initialize() -> void:
 		logScrollPane.visible = true  # Show log panel now that we're in battle
 		print("    Game log cleared and shown")
 
+	# Show portraits now that battle has started (were hidden during class select)
+	if player:
+		player.visible = true
+	if opponent:
+		opponent.visible = true
+
+	# Show play slots now that battle has started (were hidden during class select)
+	for i in range(6):
+		if player and player.get_slots()[i]:
+			player.get_slots()[i].visible = true
+		if opponent and opponent.get_slots()[i]:
+			opponent.get_slots()[i].visible = true
+	print("    Portraits and slots are now visible")
+
 	# Java: initializePlayerCards(player.get_player_info(), true); (lines 369-370)
 	print("  Initializing player cards (visible=true)...")
 	initializePlayerCards(player.get_player_info(), true)
@@ -633,8 +663,12 @@ func initializePlayerCards(p_player: Player, show_cards: bool) -> void:
 	selectedCard = null
 
 	# Java: int x = 405; int y = ydown(328); (lines 395-396)
-	var x: int = HAND_START_X
-	var y: int = HAND_START_Y
+	# CRITICAL FIX: Based on user testing, the variable assignments are SWAPPED!
+	# User set HAND_START_X=400 (expecting horizontal) but it controlled VERTICAL
+	# User set HAND_START_Y=790 (expecting vertical) but it controlled HORIZONTAL
+	# This means the constant NAMES don't match their actual usage!
+	var x: int = HAND_START_Y  # SWAPPED: x should be horizontal, comes from _Y constant!
+	var y: int = HAND_START_X  # SWAPPED: y should be vertical, comes from _X constant!
 	print("      Starting position: x=", x, " y=", y)
 
 	# Java: CardType[] types = {...}; (line 398)
@@ -654,7 +688,8 @@ func initializePlayerCards(p_player: Player, show_cards: bool) -> void:
 		print("      Type ", CardType.get_title(type), ": created ", v1.size(), " cards")
 
 		# Java: x += 104; (line 409)
-		x += HAND_SPACING
+		# Use configurable horizontal spacing from constants
+		x += HAND_SPACING_X
 
 		# Java: addVerticalGroupCards(x, y, v1, player, type, visible); (line 410)
 		print("      Adding vertical group at x=", x, " y=", y, " visible=", show_cards)
@@ -695,7 +730,8 @@ func addVerticalGroupCards(x: int, y: int, cards: Array, _p_player: Player, _typ
 	# Java: float x1 = x; float y1 = y; int spacing = 6; (lines 435-437)
 	var x1: float = x
 	var y1: float = y
-	var spacing: int = 6
+	# Use configurable vertical gap from constants
+	var spacing: int = HAND_CARD_GAP_Y
 
 	# Java: for (CardImage ci : cards) { (line 439)
 	for ci in cards:
@@ -714,9 +750,13 @@ func addVerticalGroupCards(x: int, y: int, cards: Array, _p_player: Player, _typ
 		# TODO: Add listeners
 
 		# Java: y1 -= (spacing + ci.get_frame().getHeight()); (line 450)
-		y1 -= (spacing + ci.get_frame().get_height())
+		# CRITICAL FIX: Java LibGDX had Y=0 at BOTTOM, so subtracting moved UP
+		# Godot has Y=0 at TOP, so we ADD to move DOWN (stack cards downward)
+		y1 += (spacing + ci.get_frame().get_height())
 
 		# Java: ci.setBounds(x1, y1, ci.get_frame().getWidth(), ci.get_frame().getHeight()); (line 451)
+		# Vector2(x, y) where x=horizontal, y=vertical (standard Godot)
+		# The swap is done earlier in initializePlayerCards() variable assignment
 		ci.position = Vector2(x1, y1)
 		ci.size = Vector2(ci.get_frame().get_width(), ci.get_frame().get_height())
 
@@ -734,7 +774,8 @@ func addVerticalGroupCards(x: int, y: int, cards: Array, _p_player: Player, _typ
 func addSlotImages(pi: PlayerImage, x: int, y: int, bottom: bool) -> void:
 	# Java: float x1 = x; int spacing = 5; (lines 462-463)
 	var x1: float = x
-	var spacing: int = 5
+	# NOTE: SLOT_SPACING_X is the center-to-center distance (~95px)
+	# Java used spacing=5 + texture width, we calculate from SLOT_SPACING_X
 
 	# Java: for (int i = 0; i < 6; i++) { (line 464)
 	for i in range(6):
@@ -745,9 +786,11 @@ func addSlotImages(pi: PlayerImage, x: int, y: int, bottom: bool) -> void:
 		s.position = Vector2(x1, y)
 		s.size = Vector2(s.texture.get_width(), s.texture.get_height())
 		s.z_index = SLOTS_Z_INDEX  # Above background, below everything else
+		s.visible = false  # Hide until battle starts (prevent showing in class select)
 
 		# Java: x1 += (spacing + s.texture.get_width()); (line 468)
-		x1 += (spacing + s.texture.get_width())
+		# Use configurable spacing from constants
+		x1 += SLOT_SPACING_X
 
 		# Java: s.addListener(sl); (line 469)
 		# TODO: Add listener
