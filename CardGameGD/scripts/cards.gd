@@ -90,8 +90,9 @@ static var SCREEN_HEIGHT: int = 768
 # INDIVIDUAL SIZE: 132×132 pixels (portraitramka.png frame)
 # TOTAL FRAME SIZE: 132×132 pixels (single portrait)
 # SAFE RANGES: X: 0-892, Y: 0-636
-const OPPONENT_PORTRAIT_X: int = 80     # Opponent portrait X (left edge) - Java source value
-const OPPONENT_PORTRAIT_Y: int = 10     # Opponent portrait Y (TOP area) - Java source value
+# Java source: opponent = new PlayerImage(..., 80, ydown(125)) → Godot: X=80, Y=125
+const OPPONENT_PORTRAIT_X: int = 80     # Opponent portrait X (left edge)
+const OPPONENT_PORTRAIT_Y: int = 125    # Opponent portrait Y (from Cards.java:145)
 const PORTRAIT_SPRITE_OFFSET_X: int = 0      # Sprite X offset inside portrait frame
 const PORTRAIT_SPRITE_OFFSET_Y: int = 0      # Sprite Y offset inside portrait frame
 const PORTRAIT_FRAME_OFFSET_X: int = -6      # Frame X offset relative to sprite
@@ -101,10 +102,9 @@ const PORTRAIT_FRAME_OFFSET_Y: int = -6      # Frame Y offset relative to sprite
 # INDIVIDUAL SIZE: 92×132 pixels per slot (slot.png)
 # TOTAL FRAME SIZE: ~570×132 pixels (6 slots × ~95px spacing = ~570px wide)
 # SAFE RANGES: X: 0-454, Y: 0-636
-# Java source: addSlotImages(opponent, 330, ydown(170), false) where ydown(170)=598
-# ADJUST THESE to move the opponent's play area slots:
-const OPPONENT_SLOTS_X: int = 330       # Opponent slots horizontal position (LEFT edge of first slot)
-const OPPONENT_SLOTS_Y: int = 170       # Opponent slots vertical position (TOP edge of slots)
+# Java source: addSlotImages(opponent, 330, ydown(170), false) → Godot: X=330, Y=170
+const OPPONENT_SLOTS_X: int = 330       # Opponent slots X (from Cards.java:255)
+const OPPONENT_SLOTS_Y: int = 170       # Opponent slots Y (from Cards.java:255)
 const SLOT_SPACING_X: int = 95          # Horizontal spacing between play slots
 
 # Opponent resource stats (Fire: X, Air: X, Water: X, Earth: X, Special: X - TOP)
@@ -121,17 +121,17 @@ const OPPONENT_STATS_Y: int = 25        # Opponent's stats Y (Java: ydown(25) �
 # INDIVIDUAL SIZE: 132×132 pixels (portraitramka.png frame)
 # TOTAL FRAME SIZE: 132×132 pixels (single portrait)
 # SAFE RANGES: X: 0-892, Y: 0-636
-const PLAYER_PORTRAIT_X: int = 80       # Player portrait X (left edge) - matching opponent
-const PLAYER_PORTRAIT_Y: int = 180      # Player portrait Y (BOTTOM area) - Java pattern
+# Java source: player = new PlayerImage(..., 80, ydown(300)) → Godot: X=80, Y=300
+const PLAYER_PORTRAIT_X: int = 80       # Player portrait X (left edge)
+const PLAYER_PORTRAIT_Y: int = 300      # Player portrait Y (from Cards.java:144)
 
 # Player play slots (6 card slots in a row - MIDDLE RIGHT)
 # INDIVIDUAL SIZE: 92×132 pixels per slot (slot.png)
 # TOTAL FRAME SIZE: ~570×132 pixels (6 slots × ~95px spacing = ~570px wide)
 # SAFE RANGES: X: 0-454, Y: 0-636
-# Java source: addSlotImages(player, 330, ydown(290), true) where ydown(290)=478
-# ADJUST THESE to move the player's play area slots:
-const PLAYER_SLOTS_X: int = 330         # Player slots horizontal position (LEFT edge of first slot)
-const PLAYER_SLOTS_Y: int = 290         # Player slots vertical position (TOP edge of slots)
+# Java source: addSlotImages(player, 330, ydown(290), true) → Godot: X=330, Y=290
+const PLAYER_SLOTS_X: int = 330         # Player slots X (from Cards.java:256)
+const PLAYER_SLOTS_Y: int = 290         # Player slots Y (from Cards.java:256)
 
 # Player hand cards (5×4 grid of small cards - BOTTOM RIGHT)
 # INDIVIDUAL SIZE: 90×100 pixels per card (ramka.png frame)
@@ -141,8 +141,9 @@ const PLAYER_SLOTS_Y: int = 290         # Player slots vertical position (TOP ed
 # HAND_START_X actually controls VERTICAL position (despite the name!)
 # HAND_START_Y actually controls HORIZONTAL position (despite the name!)
 # This is swapped in initializePlayerCards() to correct it
-const HAND_START_X: int = 328           # Actually VERTICAL! (Java: ydown(328) = pre-converted 328)
-const HAND_START_Y: int = 405           # Actually HORIZONTAL! (Java: x=405)
+# Java source: x=405, y=ydown(328) → Godot: X=405, Y=328
+const HAND_START_X: int = 328           # Actually VERTICAL! From Cards.java:396 ydown(328)
+const HAND_START_Y: int = 405           # Actually HORIZONTAL! From Cards.java:395
 const HAND_SPACING_X: int = 104         # Horizontal spacing between card columns (center-to-center)
 const HAND_CARD_GAP_Y: int = 6          # Vertical gap between cards (excluding card height)
 										# Note: Total Y movement per card = GAP_Y + card_height (~106px)
