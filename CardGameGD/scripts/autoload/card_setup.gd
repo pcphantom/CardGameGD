@@ -223,7 +223,14 @@ func get_cards_by_type_from_set(type: CardType.Type, max_number: int, from_set: 
 			var c: Card = result[rand].clone()
 			
 			# Java: if (picks.contains(c)) continue;
-			if picks.has(c):
+			# BUG FIX: picks.has(c) checks object identity, but c is a clone.
+			# Need to check by card name to prevent duplicates.
+			var already_picked: bool = false
+			for picked_card in picks:
+				if picked_card.get_name() == c.get_name():
+					already_picked = true
+					break
+			if already_picked:
 				continue
 			
 			# Java: picks.add(c);
