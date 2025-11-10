@@ -220,6 +220,10 @@ func set_texture(tex: Texture2D) -> void:
         img.z_index = 1  # Sprite renders in front
         add_child(img)  # CRITICAL: Add sprite to scene tree so it renders!
     img.texture = tex
+    # Debug logging for portrait texture loading
+    print("PlayerImage: Texture set - Valid: ", tex != null, " Visible: ", img.visible, " Z-index: ", img.z_index)
+    if tex:
+        print("  Texture size: ", tex.get_size())
     queue_redraw()  # Redraw to show the frame around texture
 
 ## Java: public void setFont(BitmapFont font)

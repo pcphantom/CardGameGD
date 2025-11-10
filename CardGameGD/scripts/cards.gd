@@ -339,7 +339,7 @@ func init() -> void:
 	playerInfoLabel = Label.new()
 	playerInfoLabel.text = Specializations.CLERIC.get_title()
 	playerInfoLabel.position = Vector2(210, 300)  # X = 80+10+120 = 210, Y = 300
-	playerInfoLabel.add_theme_font_size_override("font_size", 14)
+	playerInfoLabel.add_theme_font_size_override("font_size", 24)  # Increased from 14 for better visibility
 	playerInfoLabel.add_theme_color_override("font_color", Color.WHITE)
 	playerInfoLabel.custom_minimum_size = Vector2(150, 20)
 
@@ -348,7 +348,7 @@ func init() -> void:
 	opptInfoLabel = Label.new()
 	opptInfoLabel.text = Specializations.CLERIC.get_title()
 	opptInfoLabel.position = Vector2(210, 30)  # X = 80+10+120 = 210, Y = 30
-	opptInfoLabel.add_theme_font_size_override("font_size", 14)
+	opptInfoLabel.add_theme_font_size_override("font_size", 24)  # Increased from 14 for better visibility
 	opptInfoLabel.add_theme_color_override("font_color", Color.WHITE)
 	opptInfoLabel.custom_minimum_size = Vector2(150, 20)
 
@@ -397,7 +397,7 @@ func init() -> void:
 		x += STATS_SPACING_X
 		label.position = Vector2(x, y)
 		# Add styling to make labels visible
-		label.add_theme_font_size_override("font_size", 12)
+		label.add_theme_font_size_override("font_size", 18)  # Increased from 12 for better visibility
 		label.add_theme_color_override("font_color", Color.WHITE)
 		label.custom_minimum_size = Vector2(90, 20)
 		stage.add_child(label)
@@ -413,7 +413,7 @@ func init() -> void:
 		x += STATS_SPACING_X
 		label.position = Vector2(x, y)
 		# Add styling to make labels visible
-		label.add_theme_font_size_override("font_size", 12)
+		label.add_theme_font_size_override("font_size", 18)  # Increased from 12 for better visibility
 		label.add_theme_color_override("font_color", Color.WHITE)
 		label.custom_minimum_size = Vector2(90, 20)
 		stage.add_child(label)
