@@ -131,9 +131,12 @@ const PLAYER_SLOTS_Y: int = 290         # Player's slot row Y (Java: ydown(290) 
 # INDIVIDUAL SIZE: 90×100 pixels per card (ramka.png frame)
 # TOTAL FRAME SIZE: ~520×400 pixels (5 cols × 104px spacing = ~520px wide, 4 rows × 100px = 400px tall)
 # SAFE RANGES: X: 0-504, Y: 0-368
-# WARNING: Y > 368 will push bottom cards off-screen!
-const HAND_START_X: int = 405           # Hand cards start X (Java: x=405)
-const HAND_START_Y: int = 328           # Hand cards start Y (Java: ydown(328) → use pre-converted value 328)
+# WARNING: Constants are NAMED backwards due to coordinate bug!
+# HAND_START_X actually controls VERTICAL position (despite the name!)
+# HAND_START_Y actually controls HORIZONTAL position (despite the name!)
+# This is swapped in initializePlayerCards() to correct it
+const HAND_START_X: int = 328           # Actually VERTICAL! (Java: ydown(328) = pre-converted 328)
+const HAND_START_Y: int = 405           # Actually HORIZONTAL! (Java: x=405)
 const HAND_SPACING_X: int = 104         # Horizontal spacing between card columns (center-to-center)
 const HAND_CARD_GAP_Y: int = 6          # Vertical gap between cards (excluding card height)
                                         # Note: Total Y movement per card = GAP_Y + card_height (~106px)
@@ -660,8 +663,12 @@ func initializePlayerCards(p_player: Player, show_cards: bool) -> void:
 	selectedCard = null
 
 	# Java: int x = 405; int y = ydown(328); (lines 395-396)
-	var x: int = HAND_START_X
-	var y: int = HAND_START_Y
+	# CRITICAL FIX: Based on user testing, the variable assignments are SWAPPED!
+	# User set HAND_START_X=400 (expecting horizontal) but it controlled VERTICAL
+	# User set HAND_START_Y=790 (expecting vertical) but it controlled HORIZONTAL
+	# This means the constant NAMES don't match their actual usage!
+	var x: int = HAND_START_Y  # SWAPPED: x should be horizontal, comes from _Y constant!
+	var y: int = HAND_START_X  # SWAPPED: y should be vertical, comes from _X constant!
 	print("      Starting position: x=", x, " y=", y)
 
 	# Java: CardType[] types = {...}; (line 398)
@@ -748,6 +755,8 @@ func addVerticalGroupCards(x: int, y: int, cards: Array, _p_player: Player, _typ
 		y1 += (spacing + ci.get_frame().get_height())
 
 		# Java: ci.setBounds(x1, y1, ci.get_frame().getWidth(), ci.get_frame().getHeight()); (line 451)
+		# Vector2(x, y) where x=horizontal, y=vertical (standard Godot)
+		# The swap is done earlier in initializePlayerCards() variable assignment
 		ci.position = Vector2(x1, y1)
 		ci.size = Vector2(ci.get_frame().get_width(), ci.get_frame().get_height())
 
