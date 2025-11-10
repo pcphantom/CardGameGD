@@ -90,8 +90,8 @@ static var SCREEN_HEIGHT: int = 768
 # INDIVIDUAL SIZE: 132×132 pixels (portraitramka.png frame)
 # TOTAL FRAME SIZE: 132×132 pixels (single portrait)
 # SAFE RANGES: X: 0-892, Y: 0-636
-const OPPONENT_PORTRAIT_X: int = 10     # Opponent portrait X (left edge)
-const OPPONENT_PORTRAIT_Y: int = 50     # Opponent portrait Y (TOP area)
+const OPPONENT_PORTRAIT_X: int = 15     # Opponent portrait X (left edge)
+const OPPONENT_PORTRAIT_Y: int = 3     # Opponent portrait Y (TOP area)
 
 # Opponent play slots (6 card slots in a row - TOP RIGHT)
 # INDIVIDUAL SIZE: 92×132 pixels per slot (slot.png)
@@ -113,8 +113,8 @@ const OPPONENT_STATS_Y: int = 25        # Opponent's stats Y (ABOVE play slots)
 # INDIVIDUAL SIZE: 132×132 pixels (portraitramka.png frame)
 # TOTAL FRAME SIZE: 132×132 pixels (single portrait)
 # SAFE RANGES: X: 0-892, Y: 0-636
-const PLAYER_PORTRAIT_X: int = 10       # Player portrait X (left edge)
-const PLAYER_PORTRAIT_Y: int = 300      # Player portrait Y (BOTTOM area)
+const PLAYER_PORTRAIT_X: int = 15       # Player portrait X (left edge)
+const PLAYER_PORTRAIT_Y: int = 100      # Player portrait Y (BOTTOM area)
 
 # Player play slots (6 card slots in a row - MIDDLE RIGHT)
 # INDIVIDUAL SIZE: 92×132 pixels per slot (slot.png)
@@ -127,8 +127,8 @@ const PLAYER_SLOTS_Y: int = 170         # Player's slot row Y (BELOW opponent)
 # TOTAL FRAME SIZE: ~520×400 pixels (5 cols × 104px spacing = ~520px wide, 4 rows × 100px = 400px tall)
 # SAFE RANGES: X: 0-504, Y: 0-368
 # WARNING: Y > 368 will push bottom cards off-screen!
-const HAND_START_X: int = 260           # Hand cards start X (right side)
-const HAND_START_Y: int = 340           # Hand cards start Y (BOTTOM area)
+const HAND_START_X: int = 400           # Hand cards start X (right side) was 260
+const HAND_START_Y: int = 790           # Hand cards start Y (BOTTOM area) was 340
 const HAND_SPACING: int = 104           # Horizontal spacing between card columns
 
 # Player resource stats (Fire: X, Air: X, Water: X, Earth: X, Special: X - BOTTOM)
@@ -142,7 +142,7 @@ const PLAYER_STATS_Y: int = 340         # Player's stats Y (ABOVE player hand)
 # ─────────────────────────────────────────────────────────────────────────────
 
 # Shared: Play slots horizontal positioning (both player and opponent use same X)
-const PLAY_SLOTS_X: int = 260           # Play slots start X (right side, for both rows)
+const PLAY_SLOTS_X: int = 340           # Play slots start X (right side, for both rows) was 260
 const SLOTS_Z_INDEX: int = 1
 
 # Shared: Portrait z-index (both player and opponent)
