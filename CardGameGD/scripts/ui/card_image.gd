@@ -248,7 +248,7 @@ func _render_card(size_type: String) -> void:
 				attack_y = LARGE_CARD_HEIGHT - 5.0
 			attack_label.position = Vector2(attack_x, attack_y)
 			attack_label.size = Vector2(15, 15) if not is_large else Vector2(18, 18)
-			attack_label.add_theme_font_size_override("font_size", 12 if not is_large else 14)
+			attack_label.add_theme_font_size_override("font_size", 16 if not is_large else 20)  # Increased from 12/14 for better visibility
 			attack_label.add_theme_color_override("font_color", Color(1.0, 0.0, 0.0))
 			attack_label.text = str(at)
 			attack_label.visible = true
@@ -263,7 +263,7 @@ func _render_card(size_type: String) -> void:
 				cost_y = LARGE_CARD_HEIGHT - 150.0  # Adjust for large card
 			cost_label.position = Vector2(cost_x, cost_y)
 			cost_label.size = Vector2(15, 15) if not is_large else Vector2(18, 18)
-			cost_label.add_theme_font_size_override("font_size", 12 if not is_large else 14)
+			cost_label.add_theme_font_size_override("font_size", 16 if not is_large else 20)  # Increased from 12/14 for better visibility
 			cost_label.add_theme_color_override("font_color", Color(1.0, 1.0, 0.0))
 			cost_label.text = str(co)
 			cost_label.visible = true
@@ -278,7 +278,7 @@ func _render_card(size_type: String) -> void:
 				life_y = LARGE_CARD_HEIGHT - 5.0
 			life_label.position = Vector2(life_x, life_y)
 			life_label.size = Vector2(15, 15) if not is_large else Vector2(18, 18)
-			life_label.add_theme_font_size_override("font_size", 12 if not is_large else 14)
+			life_label.add_theme_font_size_override("font_size", 16 if not is_large else 20)  # Increased from 12/14 for better visibility
 			life_label.add_theme_color_override("font_color", Color(0.0, 1.0, 0.0))
 			life_label.text = str(li)
 			life_label.visible = true
@@ -293,7 +293,7 @@ func _render_card(size_type: String) -> void:
 			cost_y = LARGE_CARD_HEIGHT - 192.0  # Adjust for large spell cards
 		cost_label.position = Vector2(cost_x, cost_y)
 		cost_label.size = Vector2(15, 15) if not is_large else Vector2(18, 18)
-		cost_label.add_theme_font_size_override("font_size", 12 if not is_large else 14)
+		cost_label.add_theme_font_size_override("font_size", 16 if not is_large else 20)  # Increased from 12/14 for better visibility
 		cost_label.add_theme_color_override("font_color", Color(1.0, 1.0, 0.0))
 		cost_label.text = str(co)
 		cost_label.visible = true
