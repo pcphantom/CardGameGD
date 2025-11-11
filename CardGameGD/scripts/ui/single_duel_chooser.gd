@@ -135,6 +135,7 @@ func init(game_ref) -> void:
 	var sp_p_texture = TextureManager.get_face_texture(game.player.get_player_info().get_img_name())
 	pi = PlayerImage.new()
 	pi.set_texture(sp_p_texture)
+	pi.set_frame(Cards.portraitramka)  # CRITICAL FIX: Set frame so it renders in chooser scene
 	pi.set_player_info(game.player.get_player_info())
 
 	# Java: Sprite spO = Cards.faceCardAtlas.createSprite(game.opponent.getPlayerInfo().getImgName());
@@ -143,6 +144,7 @@ func init(game_ref) -> void:
 	var sp_o_texture = TextureManager.get_face_texture(game.opponent.get_player_info().get_img_name())
 	oi = PlayerImage.new()
 	oi.set_texture(sp_o_texture)
+	oi.set_frame(Cards.portraitramka)  # CRITICAL FIX: Set frame so it renders in chooser scene
 	oi.set_player_info(game.opponent.get_player_info())
 
 	# Java: TextButton play = new TextButton("Start", game.skin);
