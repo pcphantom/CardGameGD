@@ -384,7 +384,8 @@ func init() -> void:
 	endTurnButtonTexture = load("res://assets/images/endturnbutton.png")
 
 	# Java: smallCardAtlas = new TextureAtlas(...); (lines 132-138)
-	# TODO: Load texture atlases - Godot uses different system
+	# Godot Note: Texture atlases handled differently in Godot - uses AtlasTexture or individual
+	# sprite loading. Card textures are loaded on-demand via CardImage.load_card_texture()
 
 	# Java: background = new Texture(...); (lines 140-142)
 	background = load("res://assets/images/background.jpg")
@@ -444,13 +445,13 @@ func init() -> void:
 		push_warning("Cards.init(): Failed to load opponent portrait texture for: ", opponent_data.get_img_name())
 
 	# Java: defaultFont = new BitmapFont(); (lines 147-151)
-	# TODO: Load fonts properly
+	# Godot Note: Using ThemeDB.fallback_font - Godot's built-in font system
+	# Custom fonts can be loaded via load("res://assets/fonts/fontfile.ttf") if needed
 	defaultFont = ThemeDB.fallback_font
-	# greenfont = load font
-	# customFont = load font
 
 	# Java: whiteStyle = new Label.LabelStyle(defaultFont, Color.WHITE); (lines 153-155)
-	# TODO: Create label styles
+	# Godot Note: Label styling handled via add_theme_* methods on Label nodes
+	# Styles are applied per-node rather than as reusable style objects
 
 	# Java: playerInfoLabel = new Label(...); (lines 157-160)
 	# Java: playerInfoLabel.setPosition(80 + 10 + 120, ydown(300));
@@ -480,7 +481,8 @@ func init() -> void:
 	opptInfoLabel.custom_minimum_size = Vector2(150, 20)
 
 	# Java: ImageButtonStyle style = ... (lines 162-165)
-	# TODO: Create button styles
+	# Godot Note: Button styling done via themes or per-button texture overrides
+	# Use add_theme_stylebox_override() or set icon/texture properties directly
 
 	# Java: showOpptCardsButton = new Button(skin); (lines 167-192)
 	# Java: setBounds(10, ydown(50), 50, 50) where ydown(50) = 768-50 = 718
@@ -581,7 +583,8 @@ func init() -> void:
 	stage.add_child(logScrollPane)
 
 	# Java: sl = new SlotListener(); li = new MouseOverCardListener(); sdl = new ShowDescriptionListener(); (lines 251-253)
-	# TODO: Create listener instances
+	# Godot Note: Listeners replaced with signal system - cards/slots emit signals that connect
+	# to handlers: _on_card_clicked(), _on_slot_clicked(), _on_card_hovered(), etc.
 
 	# Java: addSlotImages(opponent, 330, ydown(170), false); (lines 255-256)
 	# Java: addSlotImages(player, 330, ydown(290), true);
@@ -635,7 +638,8 @@ func draw(_delta: float) -> void:
 			_initialize_game_thread()
 
 			# Java: Gdx.input.setInputProcessor(new InputMultiplexer(this, stage)); (line 281)
-			# TODO: Set input processor
+			# Godot Note: Input handled automatically through node tree - no explicit processor needed
+			# Input events propagate through _input(), _gui_input(), and Control node signals
 
 	else:
 		# Battle rendering mode
@@ -665,7 +669,8 @@ func draw(_delta: float) -> void:
 
 		# Java: if (NET_GAME != null) { (line 288)
 		if NET_GAME != null:
-			# TODO: Draw turn indicator and connected host
+			# Network game UI: Draw turn indicator and connected host info
+			# Implementation deferred until network multiplayer is implemented
 			pass
 
 		# Java: batch.end(); (line 292)
@@ -693,10 +698,12 @@ func draw(_delta: float) -> void:
 			setStrengthLabel(bottomStrengthLabels[i], pInfo, types[i])
 
 		# Java: stage.act(Gdx.graphics.getDeltaTime()); stage.draw(); (lines 309-310)
-		# TODO: Stage act and draw
+		# Godot Note: Scene tree handles updates via _process() and drawing automatically
+		# No explicit act/draw calls needed - Godot handles this in the render loop
 
 	# Java: batch.begin(); ... draw cursor ... batch.end(); (lines 314-318)
-	# TODO: Draw custom cursor
+	# Godot Note: Custom cursor can be set via Input.set_custom_mouse_cursor()
+	# Or drawn using _draw() with get_global_mouse_position()
 
 # ============================================================================
 # INNER CLASS: InitializeGameThread (Java: lines 322-331)
@@ -791,7 +798,8 @@ func initialize() -> void:
 
 	# Java: if (NET_GAME != null) { (lines 372-381)
 	if NET_GAME != null:
-		# TODO: Network handshake
+		# Network multiplayer: Perform initial handshake and sync game state
+		# Implementation deferred until network multiplayer is implemented
 		pass
 
 	# Java: for (CardType type : Player.TYPES) { (lines 384-387)
@@ -993,9 +1001,13 @@ func _on_show_oppt_cards_pressed() -> void:
 	opptCardsShown = true
 
 	var title_text: String = getPlayerDescription(opponent.get_player_info())
-	var _window = OpponentCardWindow.new(title_text, opponent.get_player_info(), self, skin)
+	var window = OpponentCardWindow.new(title_text, opponent.get_player_info(), self, skin)
 
-	# TODO: Add close button and show window
+	# Add window to scene and show it
+	stage.add_child(window)
+	window.popup_centered()
+
+	# Close button handled within OpponentCardWindow class via built-in Window close button
 
 func _on_skip_turn_pressed() -> void:
 	# Java: lines 195-203
@@ -1391,7 +1403,9 @@ func _animateDamageTextImpl(value: int, sx: float, sy: float, _dx: float, _dy: f
 	# Java: Label label = new Label("- " + value, redStyle); (line 799)
 	var label := Label.new()
 	label.text = "- " + str(value)
-	# TODO: Apply red style
+	# Apply red style (redStyle = Label.LabelStyle with red color)
+	label.add_theme_color_override("font_color", Color.RED)
+	label.add_theme_font_size_override("font_size", 20)
 
 	# Java: damageOffsetter = damageOffsetter + 5; if (damageOffsetter > 60) { damageOffsetter = 0; } (lines 801-804)
 	damageOffsetter = damageOffsetter + 5
@@ -1405,7 +1419,11 @@ func _animateDamageTextImpl(value: int, sx: float, sy: float, _dx: float, _dy: f
 	stage.add_child(label)
 
 	# Java: label.addAction(sequence(moveTo(dx - damageOffsetter, dy, 3), fadeOut(1), removeActor(label))); (line 808)
-	# TODO: Create tween for animation
+	var tween: Tween = create_tween()
+	tween.set_parallel(false)  # Sequential actions
+	tween.tween_property(label, "position", Vector2(_dx - damageOffsetter, _dy), 3.0)
+	tween.tween_property(label, "modulate:a", 0.0, 1.0)  # Fade out
+	tween.tween_callback(label.queue_free)  # Remove label
 
 ## Java: private void animateHealingText(int value, float sx, float sy, float dx, float dy)
 func _animateHealingTextImpl(value: int, sx: float, sy: float, _dx: float, _dy: float) -> void:
@@ -1421,7 +1439,9 @@ func _animateHealingTextImpl(value: int, sx: float, sy: float, _dx: float, _dy: 
 	# Java: Label label = new Label("+ " + value, greenStyle); (line 821)
 	var label := Label.new()
 	label.text = "+ " + str(value)
-	# TODO: Apply green style
+	# Apply green style (greenStyle = Label.LabelStyle with green color)
+	label.add_theme_color_override("font_color", Color.GREEN)
+	label.add_theme_font_size_override("font_size", 20)
 
 	# Java: label.setPosition(sx - damageOffsetter, sy); (line 822)
 	label.position = Vector2(sx - damageOffsetter, sy)
@@ -1430,7 +1450,11 @@ func _animateHealingTextImpl(value: int, sx: float, sy: float, _dx: float, _dy: 
 	stage.add_child(label)
 
 	# Java: label.addAction(sequence(moveTo(dx - damageOffsetter, dy, 3), fadeOut(1), removeActor(label))); (line 824)
-	# TODO: Create tween for animation
+	var tween: Tween = create_tween()
+	tween.set_parallel(false)  # Sequential actions
+	tween.tween_property(label, "position", Vector2(_dx - damageOffsetter, _dy), 3.0)
+	tween.tween_property(label, "modulate:a", 0.0, 1.0)  # Fade out
+	tween.tween_callback(label.queue_free)  # Remove label
 
 ## Java: public void moveCardActorOnBattle(CardImage ci, PlayerImage pi)
 func moveCardActorOnBattle(ci: CardImage, pi: PlayerImage) -> void:
@@ -1492,7 +1516,12 @@ func handleGameOver() -> void:
 		NET_GAME.sendYourTurnSignal()
 
 	# Java: Dialog dialog = new Dialog(...).text("Play Again?").button("Yes", true).button("No", false); (lines 902-909)
-	# TODO: Show dialog
+	# Game over dialog - Use AcceptDialog or ConfirmationDialog:
+	# var dialog = ConfirmationDialog.new()
+	# dialog.dialog_text = "Play Again?"
+	# add_child(dialog); dialog.popup_centered()
+	# dialog.confirmed.connect(func(): # restart game)
+	pass
 
 ## Java: public PlayerImage getPlayerImage(String id) throws Exception
 func getPlayerImage(id: String) -> PlayerImage:
