@@ -1244,16 +1244,16 @@ func _on_slot_clicked(slot: SlotImage) -> void:
 		stage.add_child(clone)
 		clone.z_index = CREATURE_Z_INDEX  # Creatures on battlefield
 
+		# Java: CardImage[] imgs = player.getSlotCards(); imgs[si.getIndex()] = clone; (lines 680-681)
+		var slot_index: int = slot.get_slot_index()
+
 		# Java: clone.addListener(new TargetedCardListener(player.getPlayerInfo().getId(), si.getIndex())); (line 677)
-		# TODO: Add TargetedCardListener equivalent
+		clone.card_clicked.connect(func(card_vis: CardImage): _on_battlefield_card_clicked(card_vis, player.get_player_info().get_id(), slot_index))
 
 		# Java: clone.addListener(sdl); (line 678)
 		# Connect hover signals for the cloned card
 		clone.card_hovered.connect(_on_card_hovered)
 		clone.card_unhovered.connect(_on_card_unhovered)
-
-		# Java: CardImage[] imgs = player.getSlotCards(); imgs[si.getIndex()] = clone; (lines 680-681)
-		var slot_index: int = slot.get_slot_index()
 		player.get_slot_cards()[slot_index] = clone
 
 		# Java: SlotImage[] slots = player.getSlots(); slots[si.getIndex()].setOccupied(true); (lines 683-684)
@@ -1346,6 +1346,25 @@ func clearHighlights() -> void:
 		si.set_highlighted(false)
 		si.clear_actions()
 		si.modulate = Color.WHITE
+
+## Handles clicking on battlefield cards for spell targeting
+## Java: TargetedCardListener.touchDown() (Cards.java inner class)
+func _on_battlefield_card_clicked(card_visual: CardImage, owner_id: String, slot_index: int) -> void:
+	if gameOver or not canStartMyTurn():
+		return
+
+	if selectedCard == null or not selectedCard.get_card().is_spell():
+		return
+
+	if not card_visual.is_highlighted():
+		return
+
+	# Cast the spell targeting this card
+	startTurn()
+	clearHighlights()
+
+	var battle_thread := BattleRoundThread.new(self, player, opponent, selectedCard, card_visual, owner_id)
+	battle_thread.execute()
 
 ## Java: public void animateDamageText(int value, CardImage ci)
 func animateDamageText(value: int, target) -> void:

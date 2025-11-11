@@ -146,10 +146,14 @@ func execute() -> void:
 				oppt_summons.card_unhovered.connect(game._on_card_unhovered)
 
 				# Java: CardImage[] imgs = opponent.getSlotCards(); imgs[si.getIndex()] = opptSummons; (lines 180-181)
-				opponent.get_slot_cards()[si.get_slot_index()] = oppt_summons
+				var oppt_slot_index: int = si.get_slot_index()
+				opponent.get_slot_cards()[oppt_slot_index] = oppt_summons
+
+				# Connect battlefield card click listener for spell targeting
+				oppt_summons.card_clicked.connect(func(card_vis: CardImage): game._on_battlefield_card_clicked(card_vis, opponent.get_player_info().get_id(), oppt_slot_index))
 
 				# Java: SlotImage[] slots = opponent.getSlots(); slots[si.getIndex()].setOccupied(true); (lines 183-184)
-				opponent.get_slots()[si.get_slot_index()].set_occupied(true)
+				opponent.get_slots()[oppt_slot_index].set_occupied(true)
 
 				# Java: Creature summonedCreature = CreatureFactory.getCreatureClass(...); (line 186)
 				var summoned_creature = CreatureFactory.get_creature_class(
