@@ -203,8 +203,12 @@ func init(game_ref) -> void:
 	var lpb = create_button(x, y, pi, true)
 
 	# Java: pi.setPosition(x += (buttonWidth + 7), y);
+	# Java setPosition() sets BOTTOM-LEFT at y (from bottom)
+	# Godot position sets TOP-LEFT (from top)
+	# For 120-tall sprite: bottom at y means top at y+120 from bottom = ydown(y+120) from top
+	# But y is already ydown(253), so we need: ydown(253+120) = ydown(253) - 120 = y - 120
 	x += (BUTTON_WIDTH + 7)
-	pi.position = Vector2(x, y)
+	pi.position = Vector2(x, y - IMG_WIDTH)  # IMG_WIDTH=120, the sprite height
 
 	# Java: Button rpb = createButton(x += imgWidth + 10, y, pi, playerIndex, false);
 	x += IMG_WIDTH + 10
@@ -215,8 +219,9 @@ func init(game_ref) -> void:
 	var lob = create_button(x, y, oi, true)
 
 	# Java: oi.setPosition(x += (buttonWidth + 7), y);
+	# Same Y conversion as player portrait: Java bottom-left to Godot top-left
 	x += (BUTTON_WIDTH + 7)
-	oi.position = Vector2(x, y)
+	oi.position = Vector2(x, y - IMG_WIDTH)  # IMG_WIDTH=120, the sprite height
 
 	# Java: Button rob = createButton(x += imgWidth + 10, y, oi, opponentIndex, false);
 	x += IMG_WIDTH + 10
