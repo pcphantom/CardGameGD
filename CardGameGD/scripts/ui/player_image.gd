@@ -97,7 +97,15 @@ func _init(sprite_img: Sprite2D = null, frame_tex: Texture2D = null, p_font: Fon
 func _ready() -> void:
     # Add the portrait sprite as a child if it exists
     if img != null:
-        add_child(img)
+        # CRITICAL FIX: Remove from old parent before adding as child
+        var old_parent = img.get_parent()
+        if old_parent != null and old_parent != self:
+            old_parent.remove_child(img)
+
+        # Only add if not already a child
+        if img.get_parent() != self:
+            add_child(img)
+
         # Use configurable offset from Cards config
         var sprite_offset_x = Cards.PORTRAIT_SPRITE_OFFSET_X if Cards else 0
         var sprite_offset_y = Cards.PORTRAIT_SPRITE_OFFSET_Y if Cards else 0
@@ -200,15 +208,22 @@ func set_img(sprite_img: Sprite2D) -> void:
 
     self.img = sprite_img
 
-    # Add new sprite as child if we're in the scene tree
-    if sprite_img != null and is_inside_tree():
-        add_child(sprite_img)
-        # Use configurable offset from Cards config
-        var sprite_offset_x = Cards.PORTRAIT_SPRITE_OFFSET_X if Cards else 0
-        var sprite_offset_y = Cards.PORTRAIT_SPRITE_OFFSET_Y if Cards else 0
-        sprite_img.position = Vector2(sprite_offset_x, sprite_offset_y)
-        sprite_img.z_index = 1  # Sprite renders in front
-        queue_redraw()  # Redraw to show the frame around new sprite
+    # CRITICAL FIX: Remove sprite from its old parent before adding as child
+    if sprite_img != null:
+        # Remove from old parent if it has one
+        var old_parent = sprite_img.get_parent()
+        if old_parent != null:
+            old_parent.remove_child(sprite_img)
+
+        # Add new sprite as child if we're in the scene tree
+        if is_inside_tree():
+            add_child(sprite_img)
+            # Use configurable offset from Cards config
+            var sprite_offset_x = Cards.PORTRAIT_SPRITE_OFFSET_X if Cards else 0
+            var sprite_offset_y = Cards.PORTRAIT_SPRITE_OFFSET_Y if Cards else 0
+            sprite_img.position = Vector2(sprite_offset_x, sprite_offset_y)
+            sprite_img.z_index = 1  # Sprite renders in front
+            queue_redraw()  # Redraw to show the frame around new sprite
 
 ## Java: public void setFrame(Texture frame)
 func set_frame(frame_tex: Texture2D) -> void:
