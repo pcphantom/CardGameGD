@@ -174,7 +174,7 @@ func execute() -> void:
 				# Java: opptSummons.addAction(sequence(moveTo(si.getX() + 5, si.getY() + 26, 1.0f), ...)); (line 195)
 				# Animate to slot
 				oppt_summons.position = oppt_pick.position
-				var tween := game.create_tween()
+				var tween: Tween = game.create_tween()
 				tween.set_meta("bound_node", oppt_summons)
 				tween.tween_property(
 					oppt_summons,
