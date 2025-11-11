@@ -298,3 +298,36 @@ func _to_string() -> String:
 		get_strength_earth(),
 		get_strength_special()
 	]
+
+## Java: public void incrementStrengthAll(int incr) (Player.java line 141)
+func incrementStrengthAll(incr: int) -> void:
+	strength[CardType.Type.FIRE] += incr
+	strength[CardType.Type.AIR] += incr
+	strength[CardType.Type.EARTH] += incr
+	strength[CardType.Type.WATER] += incr
+	strength[CardType.Type.OTHER] += incr
+
+## Java: public void enableDisableCards(CardType type) (Player.java line 169)
+func enableDisableCards(type) -> void:
+	var pstr: int = get_strength(type)
+	var cards: Array = get_cards(type)
+	for card in cards:
+		if card.get_card().getCost() <= pstr:
+			card.set_enabled(true)
+			card.set_color(Color.WHITE)
+		else:
+			card.set_enabled(false)
+			card.set_color(Color.DARK_GRAY)
+
+## Java: public CardImage pickRandomEnabledCard() (Player.java line 235)
+func pickRandomEnabledCard() -> CardImage:
+	# Try each type until we find an enabled card
+	var types_to_try: Array = TYPES.duplicate()
+	types_to_try.shuffle()
+
+	for type in types_to_try:
+		var card: CardImage = pick_enabled_card_by_type(type)
+		if card != null:
+			return card
+
+	return null

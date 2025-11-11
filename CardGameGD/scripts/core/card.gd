@@ -358,6 +358,63 @@ func equals(other: Variant) -> bool:
 	
 	return true
 
+## ============================================================================
+## CAMELCASE WRAPPERS FOR JAVA API COMPATIBILITY
+## ============================================================================
+## These methods wrap the snake_case implementations to match Java API calls
+## Per naming_conventions.md: "Card.getName() → Card.getName() ✅ KEEP JAVA NAME (core API)"
+
+func getName() -> String:
+	return get_name()
+
+func getCost() -> int:
+	return get_cost()
+
+func getType() -> CardType.Type:
+	return get_type()
+
+func getCardname() -> String:
+	return get_cardname()
+
+func getAttack() -> int:
+	return get_attack()
+
+func getLife() -> int:
+	return get_life()
+
+func getDesc() -> String:
+	return get_desc()
+
+func getOriginalLife() -> int:
+	return get_original_life()
+
+func getOriginalAttack() -> int:
+	return get_original_attack()
+
+func getSelfInflictingDamage() -> int:
+	return get_self_inflicting_damage()
+
+func getMustBeSummonedOnCard() -> String:
+	return get_must_be_summoned_on_card()
+
+func getTargetType() -> TargetType:
+	return get_target_type()
+
+func isSpell() -> bool:
+	return is_spell()
+
+func isTargetable() -> bool:
+	return is_targetable()
+
+func isWall() -> bool:
+	return is_wall()
+
+func isTargetableOnEmptySlotOnly() -> bool:
+	return is_targetable_on_empty_slot_only()
+
+func isCreature() -> bool:
+	return is_creature()
+
 # ============================================================================
 # END OF CARD CLASS - EXACT TRANSLATION COMPLETE
 # ============================================================================
