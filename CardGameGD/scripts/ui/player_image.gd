@@ -95,16 +95,25 @@ func _init(sprite_img: Sprite2D = null, frame_tex: Texture2D = null, p_font: Fon
 # ============================================================================
 
 func _ready() -> void:
+    print("PlayerImage._ready() called")
+    print("  - img is null: ", img == null)
+
     # Add the portrait sprite as a child if it exists
     if img != null:
+        print("  - img has texture: ", img.texture != null)
+        if img.texture:
+            print("  - texture size: ", img.texture.get_size())
+
         # CRITICAL FIX: Remove from old parent before adding as child
         var old_parent = img.get_parent()
         if old_parent != null and old_parent != self:
+            print("  - Sprite had old parent in _ready(), removing from: ", old_parent.name if old_parent.has_method("get_name") else str(old_parent))
             old_parent.remove_child(img)
 
         # Only add if not already a child
         if img.get_parent() != self:
             add_child(img)
+            print("  - Added sprite as child in _ready()")
 
         # Use configurable offset from Cards config
         var sprite_offset_x = Cards.PORTRAIT_SPRITE_OFFSET_X if Cards else 0
@@ -112,6 +121,8 @@ func _ready() -> void:
         img.position = Vector2(sprite_offset_x, sprite_offset_y)
         img.z_index = 1  # Sprite renders in front
         img.scale = Vector2(1.0, 1.0)
+        img.visible = true  # Force visible
+        print("  - Sprite configured: pos=", img.position, " z_index=", img.z_index, " visible=", img.visible)
 
 # ============================================================================
 # PRIVATE METHODS
@@ -202,9 +213,17 @@ func get_slot_cards() -> Array[CardImage]:
 
 ## Java: public void setImg(Sprite img)
 func set_img(sprite_img: Sprite2D) -> void:
+    print("PlayerImage.set_img() called:")
+    print("  - sprite_img is null: ", sprite_img == null)
+    if sprite_img != null:
+        print("  - sprite_img has texture: ", sprite_img.texture != null)
+        if sprite_img.texture:
+            print("  - texture size: ", sprite_img.texture.get_size())
+
     # Remove old sprite if it exists
     if self.img != null and self.img.get_parent() == self:
         remove_child(self.img)
+        print("  - Removed old sprite from self")
 
     self.img = sprite_img
 
@@ -213,17 +232,23 @@ func set_img(sprite_img: Sprite2D) -> void:
         # Remove from old parent if it has one
         var old_parent = sprite_img.get_parent()
         if old_parent != null:
+            print("  - Sprite had old parent, removing from: ", old_parent.name if old_parent.has_method("get_name") else str(old_parent))
             old_parent.remove_child(sprite_img)
 
         # Add new sprite as child if we're in the scene tree
         if is_inside_tree():
             add_child(sprite_img)
+            print("  - Added sprite as child of PlayerImage")
             # Use configurable offset from Cards config
             var sprite_offset_x = Cards.PORTRAIT_SPRITE_OFFSET_X if Cards else 0
             var sprite_offset_y = Cards.PORTRAIT_SPRITE_OFFSET_Y if Cards else 0
             sprite_img.position = Vector2(sprite_offset_x, sprite_offset_y)
             sprite_img.z_index = 1  # Sprite renders in front
+            sprite_img.visible = true  # Force visible
+            print("  - Sprite position: ", sprite_img.position, " z_index: ", sprite_img.z_index, " visible: ", sprite_img.visible)
             queue_redraw()  # Redraw to show the frame around new sprite
+        else:
+            print("  - WARNING: PlayerImage not in tree yet, sprite will be added in _ready()")
 
 ## Java: public void setFrame(Texture frame)
 func set_frame(frame_tex: Texture2D) -> void:
