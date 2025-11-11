@@ -920,7 +920,9 @@ func addVerticalGroupCards(x: int, y: int, cards: Array, _p_player: Player, _typ
 		ci.set_frame(spellramka if ci.get_card().is_spell() else ramka)
 
 		# Java: ci.addListener(sdl); (line 448)
-		# TODO: Add listeners
+		# Connect hover signals for card description (ShowDescriptionListener equivalent)
+		ci.card_hovered.connect(_on_card_hovered)
+		ci.card_unhovered.connect(_on_card_unhovered)
 
 		# Java: y1 -= (spacing + ci.get_frame().getHeight()); (line 450)
 		# CRITICAL FIX: Java LibGDX had Y=0 at BOTTOM, so subtracting moved UP
@@ -935,7 +937,8 @@ func addVerticalGroupCards(x: int, y: int, cards: Array, _p_player: Player, _typ
 
 		# Java: if (addToStage) { ci.addListener(li); stage.addActor(ci); } (lines 453-456)
 		if addToStage:
-			# TODO: Add listener
+			# Connect click signal for card interaction (MouseOverCardListener equivalent)
+			ci.card_clicked.connect(_on_card_clicked)
 			ci.z_index = HAND_Z_INDEX  # Hand cards above most UI elements
 			stage.add_child(ci)
 
@@ -966,7 +969,8 @@ func addSlotImages(pi: PlayerImage, x: int, y: int, bottom: bool) -> void:
 		x1 += SLOT_SPACING_X
 
 		# Java: s.addListener(sl); (line 469)
-		# TODO: Add listener
+		# Connect slot click signal (SlotListener equivalent)
+		s.slot_clicked.connect(_on_slot_clicked)
 
 		# Java: stage.addActor(s); (line 471)
 		stage.add_child(s)
@@ -992,14 +996,345 @@ func _on_show_oppt_cards_pressed() -> void:
 
 func _on_skip_turn_pressed() -> void:
 	# Java: lines 195-203
+	# Java: if (gameOver) { return true; } (lines 197-199)
+	print("=== SKIP TURN PRESSED ===")
 	if gameOver:
+		print("  -> Game is over, cannot skip turn")
 		return
 
-	# TODO: Start BattleRoundThread
+	# Java: BattleRoundThread t = new BattleRoundThread(Cards.this, player, opponent); (line 200)
+	# Java: t.start(); (line 201)
+	print("  -> Starting battle round (opponent's turn)")
+
+	# Clear any selections
+	selectedCard = null
+	clearHighlights()
+
+	# TODO: Implement full BattleRoundThread equivalent
+	# This should:
+	# 1. Process player's end-of-turn effects
+	# 2. Start opponent's turn
+	# 3. Opponent AI makes decisions
+	# 4. Process opponent's actions
+	# 5. Start player's turn again
+	print("  -> TODO: Implement complete battle round logic")
+	print("=== SKIP TURN COMPLETE ===")
 
 func _on_shuffle_cards_pressed() -> void:
 	# Java: lines 209-217
 	initializePlayerCards(player.get_player_info(), true)
+
+# ============================================================================
+# CARD/SLOT SIGNAL HANDLERS (Converted from Java InputListeners)
+# ============================================================================
+
+## Card click handler - MouseOverCardListener.touchDown() equivalent
+## Java source: Cards.java lines 480-577 (MouseOverCardListener.touchDown)
+## Handles clicking cards in the player's hand
+func _on_card_clicked(card_visual: CardImage) -> void:
+	print("=== CARD CLICKED ===")
+	print("Card: ", card_visual.get_card().name if card_visual.get_card() else "null")
+	print("Game over: ", gameOver, " Can start turn: ", canStartMyTurn())
+
+	# Java: if (gameOver || !canStartMyTurn()) { return true; } (lines 482-484)
+	if gameOver or not canStartMyTurn():
+		print("  -> Cannot interact: gameOver or not my turn")
+		return
+
+	# Java: selectedCard = (CardImage) actor; (line 489)
+	selectedCard = card_visual
+	print("  -> Selected card set to: ", selectedCard.get_card().name if selectedCard.get_card() else "null")
+
+	# Java: clearHighlights(); (line 491)
+	clearHighlights()
+
+	# Java: if (canStartMyTurn() && selectedCard.isEnabled()) { (line 493)
+	if not canStartMyTurn() or not selectedCard.is_enabled():
+		print("  -> Card not enabled or can't start turn")
+		return
+
+	var card_data: Card = selectedCard.get_card()
+
+	# Java: if (selectedCard.getCard().isSpell()) { (line 495)
+	if card_data.is_spell():
+		print("  -> Card is a SPELL")
+
+		# Java: if (selectedCard.getCard().isTargetable()) { (line 497)
+		if card_data.is_targetable():
+			print("    -> Spell is TARGETABLE")
+			var target_type := card_data.get_target_type()
+			print("    -> Target type: ", target_type)
+
+			# Java: switch (selectedCard.getCard().getTargetType()) { (line 500)
+			match target_type:
+				Card.TargetType.OWNER:
+					# Java: case OWNER: (lines 501-509)
+					print("      -> Highlighting OWNER (player) cards")
+					var cards: Array[CardImage] = player.get_slot_cards()
+					for ci in cards:
+						if ci != null:
+							ci.set_highlighted(true)
+							# Java: ci.addAction(forever(sequence(color(Color.GREEN, .75f), color(Color.WHITE, .75f)))); (line 506)
+							# TODO: Add color pulse animation
+							ci.modulate = Color.GREEN
+
+				Card.TargetType.OPPONENT:
+					# Java: case OPPONENT: (lines 510-518)
+					print("      -> Highlighting OPPONENT cards")
+					var cards: Array[CardImage] = opponent.get_slot_cards()
+					for ci in cards:
+						if ci != null:
+							ci.set_highlighted(true)
+							# Java: ci.addAction(forever(sequence(color(Color.GREEN, .75f), color(Color.WHITE, .75f)))); (line 515)
+							# TODO: Add color pulse animation
+							ci.modulate = Color.GREEN
+
+				Card.TargetType.ANY:
+					# Java: case ANY: (lines 519-534)
+					print("      -> Highlighting ANY (both player and opponent) cards")
+					# Highlight player's creatures
+					var player_cards: Array[CardImage] = player.get_slot_cards()
+					for ci in player_cards:
+						if ci != null:
+							ci.set_highlighted(true)
+							# TODO: Add color pulse animation
+							ci.modulate = Color.GREEN
+					# Highlight opponent's creatures
+					var opponent_cards: Array[CardImage] = opponent.get_slot_cards()
+					for ci in opponent_cards:
+						if ci != null:
+							ci.set_highlighted(true)
+							# TODO: Add color pulse animation
+							ci.modulate = Color.GREEN
+
+		# Java: else if (selectedCard.getCard().isTargetableOnEmptySlotOnly()) { (line 537)
+		elif card_data.is_targetable_on_empty_slot_only():
+			print("    -> Spell targetable on EMPTY SLOT only")
+			# Java: for (SlotImage si : player.getSlots()) { (line 540)
+			for si in player.get_slots():
+				if not si.is_occupied():
+					si.set_highlighted(true)
+					# Java: si.addAction(forever(sequence(color(Color.GREEN, .75f), color(Color.WHITE, .75f)))); (line 543)
+					# TODO: Add color pulse animation
+					si.modulate = Color.GREEN
+
+		# Java: else { //cast the spell (line 547)
+		else:
+			print("    -> Spell is NON-TARGETABLE, casting immediately")
+			# Java: BattleRoundThread t = new BattleRoundThread(Cards.this, player, opponent, selectedCard); (line 549)
+			# Java: t.start(); (line 550)
+			# TODO: Start BattleRoundThread equivalent
+			print("    -> TODO: Cast spell immediately via BattleRoundThread")
+
+	# Java: else if (selectedCard.getCard().getMustBeSummoneOnCard() != null) { (line 553)
+	elif card_data.get_must_be_summoned_on_card() != null and card_data.get_must_be_summoned_on_card() != "":
+		print("  -> Card must be summoned on specific card")
+		# Java: String requiredTarget = selectedCard.getCard().getMustBeSummoneOnCard(); (line 556)
+		var required_target: String = card_data.get_must_be_summoned_on_card()
+		print("    -> Required target: ", required_target)
+
+		# Java: for (CardImage ci : player.getSlotCards()) { (line 559)
+		for ci in player.get_slot_cards():
+			if ci != null:
+				var target_name: String = ci.get_card().name if ci.get_card() else ""
+				# Java: if (ci != null && (ci.getCard().getName().equalsIgnoreCase(requiredTarget) || requiredTarget.equals("any"))) { (line 560)
+				if target_name.to_lower() == required_target.to_lower() or required_target.to_lower() == "any":
+					print("      -> Highlighting valid target: ", target_name)
+					ci.set_highlighted(true)
+					# Java: ci.addAction(forever(sequence(color(Color.GREEN, .75f), color(Color.WHITE, .75f)))); (line 562)
+					# TODO: Add color pulse animation
+					ci.modulate = Color.GREEN
+
+	# Regular creature - highlight available slots
+	else:
+		print("  -> Regular CREATURE card, highlighting player slots")
+		# Highlight player's slots for summoning
+		for si in player.get_slots():
+			if not si.is_occupied():
+				si.set_highlighted(true)
+				# TODO: Add color pulse animation
+				si.modulate = Color.GREEN
+
+	print("=== CARD CLICKED COMPLETE ===")
+
+## Card hover handler - ShowDescriptionListener.enter() equivalent
+## Java source: Cards.java lines 715-744 (ShowDescriptionListener.enter)
+## Shows large card preview when hovering
+func _on_card_hovered(card_visual: CardImage) -> void:
+	print("Card hovered: ", card_visual.get_card().name if card_visual.get_card() else "null")
+
+	# Java: if (actor == null) { return; } (lines 718-720)
+	if card_visual == null or card_visual.get_card() == null:
+		return
+
+	var card_data: Card = card_visual.get_card()
+
+	# Java: Sprite sp = largeCardAtlas.createSprite(card.getName().toLowerCase()); (line 726)
+	var sprite_name: String = card_data.name.to_lower()
+	var sp = null
+
+	# Try regular atlas first
+	if largeCardAtlas:
+		sp = TextureManager.get_large_card_sprite(sprite_name)
+
+	# Java: if (sp == null) { sp = largeTGACardAtlas.createSprite(card.getName().toLowerCase()); (lines 727-732)
+	if sp == null and largeTGACardAtlas:
+		sp = TextureManager.get_large_tga_card_sprite(sprite_name)
+		# Java: if (sp != null) { sp.flip(false, true); //tga files need to be flipped twice (lines 729-731)
+		if sp != null:
+			sp.flip_v = not sp.flip_v
+
+	# Java: if (sp == null) { cdi.setImg(null); return; } (lines 733-736)
+	if sp == null:
+		print("  -> No sprite found for: ", sprite_name)
+		cardDescriptionImage.set_img(null)
+		return
+
+	# Java: sp.flip(false, true); (line 738)
+	sp.flip_v = not sp.flip_v
+
+	# Java: cdi.setImg(sp); (line 740)
+	cardDescriptionImage.set_img(sp)
+
+	# Java: cdi.setFrame(ci.getCard().isSpell() ? ramkabigspell : ramkabig); (line 741)
+	var frame_texture: Texture2D = ramkabigspell if card_data.is_spell() else ramkabig
+	cardDescriptionImage.set_frame(frame_texture)
+
+	# Java: cdi.setCard(card); (line 742)
+	cardDescriptionImage.set_card(card_data)
+
+## Card unhover handler - ShowDescriptionListener.exit() equivalent
+## Java source: Cards.java lines 746-748 (ShowDescriptionListener.exit)
+## Hides large card preview when mouse leaves
+func _on_card_unhovered(card_visual: CardImage) -> void:
+	print("Card unhovered: ", card_visual.get_card().name if card_visual.get_card() else "null")
+	# Java: cdi.setImg(null); (line 747)
+	cardDescriptionImage.set_img(null)
+
+## Slot click handler - SlotListener.touchDown() equivalent
+## Java source: Cards.java lines 658-711 (SlotListener.touchDown)
+## Handles clicking slots to place cards or cast spells
+func _on_slot_clicked(slot: SlotImage) -> void:
+	print("=== SLOT CLICKED ===")
+	print("Slot index: ", slot.get_slot_index(), " Bottom: ", slot.is_bottom_slots(), " Occupied: ", slot.is_occupied())
+	print("Game over: ", gameOver, " Can start turn: ", canStartMyTurn())
+	print("Selected card: ", selectedCard.get_card().name if selectedCard and selectedCard.get_card() else "null")
+
+	# Java: if (gameOver) { return true; } (lines 660-662)
+	if gameOver:
+		print("  -> Game is over, ignoring click")
+		return
+
+	# Java: if (canStartMyTurn() && selectedCard != null && selectedCard.isEnabled() && si.isBottomSlots()) { (line 669)
+	if not canStartMyTurn() or selectedCard == null or not selectedCard.is_enabled():
+		print("  -> Cannot act: can't start turn, no card selected, or card not enabled")
+		return
+
+	if not slot.is_bottom_slots():
+		print("  -> Cannot click opponent's slots")
+		return
+
+	var card_data: Card = selectedCard.get_card()
+
+	# Java: if (!selectedCard.getCard().isSpell() && selectedCard.getCard().getMustBeSummoneOnCard() == null) { (line 671)
+	if not card_data.is_spell() and (card_data.get_must_be_summoned_on_card() == null or card_data.get_must_be_summoned_on_card() == ""):
+		print("  -> Summoning REGULAR CREATURE to slot ", slot.get_slot_index())
+
+		# Java: startTurn(); (line 672)
+		startTurn()
+
+		# Java: final CardImage clone = selectedCard.clone(); (line 674)
+		var clone: CardImage = selectedCard.clone_card()
+		print("    -> Cloned card: ", clone.get_card().name if clone.get_card() else "null")
+
+		# Java: stage.addActor(clone); (line 676)
+		stage.add_child(clone)
+		clone.z_index = CREATURE_Z_INDEX  # Creatures on battlefield
+
+		# Java: clone.addListener(new TargetedCardListener(player.getPlayerInfo().getId(), si.getIndex())); (line 677)
+		# TODO: Add TargetedCardListener equivalent
+
+		# Java: clone.addListener(sdl); (line 678)
+		# Connect hover signals for the cloned card
+		clone.card_hovered.connect(_on_card_hovered)
+		clone.card_unhovered.connect(_on_card_unhovered)
+
+		# Java: CardImage[] imgs = player.getSlotCards(); imgs[si.getIndex()] = clone; (lines 680-681)
+		var slot_index: int = slot.get_slot_index()
+		player.get_slot_cards()[slot_index] = clone
+
+		# Java: SlotImage[] slots = player.getSlots(); slots[si.getIndex()].setOccupied(true); (lines 683-684)
+		player.get_slots()[slot_index].set_occupied(true)
+
+		# Java: Creature summonedCreature = CreatureFactory.getCreatureClass(...); (line 686)
+		var summoned_creature = CreatureFactory.get_creature_class(
+			clone.get_card().name,
+			self,  # Cards reference
+			clone.get_card(),
+			clone,
+			slot_index,
+			player,
+			opponent
+		)
+		print("    -> Created creature instance: ", summoned_creature)
+		clone.set_creature(summoned_creature)
+
+		# Java: Sounds.play(Sound.SUMMONED); (line 689)
+		if SoundManager:
+			SoundManager.play(SoundTypes.Sound.SUMMONED)
+
+		# Java: clone.addAction(sequence(moveTo(si.getX() + 5, si.getY() + 26, 1.0f), new Action() {...})); (lines 691-697)
+		# Animate card from hand to slot
+		clone.position = selectedCard.position
+		print("    -> Starting animation from ", clone.position, " to ", Vector2(slot.position.x + 5, slot.position.y + 26))
+
+		var tween := create_tween()
+		tween.set_meta("bound_node", clone)  # Tag tween with the node it's animating
+		tween.tween_property(
+			clone,
+			"position",
+			Vector2(slot.position.x + 5, slot.position.y + 26),
+			1.0
+		)
+		tween.tween_callback(func():
+			print("    -> Animation complete, starting battle round")
+			# Java: BattleRoundThread t = new BattleRoundThread(Cards.this, player, opponent, clone, si.getIndex()); (line 693)
+			# Java: t.start(); (line 694)
+			# TODO: Start BattleRoundThread equivalent
+			print("    -> TODO: Start BattleRoundThread for summoned creature")
+		)
+
+		# Remove card from hand
+		print("    -> Removing card from hand")
+		selectedCard.queue_free()
+		# TODO: Also remove from player's hand array if needed
+
+		clearHighlights()
+
+	# Java: else if (selectedCard.getCard().isSpell() && si.isHighlighted()) { (line 699)
+	elif card_data.is_spell() and slot.is_highlighted_slot():
+		print("  -> Casting SPELL on empty slot ", slot.get_slot_index())
+
+		# Java: startTurn(); (line 700)
+		startTurn()
+
+		# Java: clearHighlights(); (line 701)
+		clearHighlights()
+
+		# Java: BattleRoundThread t = new BattleRoundThread(...); (line 704)
+		# Java: t.start(); (line 705)
+		# TODO: Start BattleRoundThread for spell cast
+		print("    -> TODO: Cast spell on empty slot via BattleRoundThread")
+
+		# Remove card from hand
+		print("    -> Removing spell card from hand")
+		selectedCard.queue_free()
+		# TODO: Also remove from player's hand array if needed
+
+	else:
+		print("  -> No action taken (conditions not met)")
+
+	print("=== SLOT CLICKED COMPLETE ===")
 
 # ============================================================================
 # HELPER METHODS CONTINUED (Java: lines 751-968)

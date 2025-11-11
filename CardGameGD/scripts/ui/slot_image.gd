@@ -8,14 +8,20 @@ extends TextureRect
 ## It does NOT handle:
 ## - Rendering (texture handled by TextureRect)
 ## - Positioning (done by cards.gd)
-## - Click events (done by cards.gd)
 ## - Card management (done by cards.gd)
 ##
-## It ONLY stores:
+## It DOES handle:
 ## - Slot index (0-5)
 ## - Occupied state (true/false)
-## - Highlighted state (true/false)  
+## - Highlighted state (true/false)
 ## - Bottom/top player flag (true/false)
+## - Click events (emits slot_clicked signal)
+
+# ============================================================================
+# SIGNALS
+# ============================================================================
+
+signal slot_clicked(slot: SlotImage)
 
 # ============================================================================
 # FIELDS (Exact translation from Java)
@@ -43,16 +49,19 @@ var bottom_slots: bool = false
 func _init(slot_texture: Texture2D, slot_index: int, is_bottom: bool) -> void:
 	# Java: super(texture);
 	texture = slot_texture
-	
+
 	# Java: this.bottomSlots = isBottom;
 	self.bottom_slots = is_bottom
-	
+
 	# Java: this.index = index;
 	self.index = slot_index
-	
+
 	# Set up TextureRect properties to match LibGDX Image behavior
 	expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+
+	# Enable input handling for click events
+	mouse_filter = Control.MOUSE_FILTER_STOP
 
 # ============================================================================
 # GETTERS (Exact translation from Java)
@@ -92,6 +101,31 @@ func set_highlighted(value: bool) -> void:
 	self.is_highlighted = value
 
 # ============================================================================
+# INPUT HANDLING (Godot-specific for signal emission)
+# ============================================================================
+
+## Handles mouse input and emits slot_clicked signal
+## Equivalent to Java's InputListener added in Cards.java line 469
+func _gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+			print("SlotImage clicked: index=", index, " bottom=", bottom_slots, " occupied=", occupied)
+			slot_clicked.emit(self)
+			accept_event()
+
+## Clears any active animations/actions on this slot
+## Called from cards.gd clearHighlights() method
+func clear_actions() -> void:
+	# Stop any tweens running on this slot
+	var tweens = get_tree().get_processed_tweens()
+	for tween in tweens:
+		if tween and is_instance_valid(tween):
+			# Check if this tween is animating this node
+			var bound_node = tween.get_meta("bound_node", null)
+			if bound_node == self:
+				tween.kill()
+
+# ============================================================================
 # TRANSLATION NOTES
 # ============================================================================
 #
@@ -123,13 +157,18 @@ func set_highlighted(value: bool) -> void:
 # What This Class Does NOT Contain:
 # ----------------------------------
 # ❌ No draw() method (texture rendering handled by TextureRect)
-# ❌ No mouse event handling (done in cards.gd)
 # ❌ No positioning logic (done in cards.gd)
 # ❌ No card reference (CardImage stored separately in cards.gd)
 # ❌ No visual effects (highlighting done in cards.gd)
-# ❌ No signals (event handling done in cards.gd)
 #
-# This matches the Java source EXACTLY - it's a pure data holder.
+# What This Class DOES Contain (Godot additions):
+# ------------------------------------------------
+# ✅ Mouse event handling (_gui_input emits slot_clicked signal)
+# ✅ Signal: slot_clicked(slot: SlotImage)
+# ✅ clear_actions() to stop animations
+#
+# This matches the Java source functionality - in Java the listener was added
+# externally in Cards.java line 469, in Godot we emit a signal instead.
 #
 # Line count: Java ~50 lines, GDScript ~150 lines (with extensive comments)
 #             Without comments: both ~30 lines of actual code
