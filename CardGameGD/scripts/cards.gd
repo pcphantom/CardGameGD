@@ -1013,14 +1013,13 @@ func _on_skip_turn_pressed() -> void:
 	selectedCard = null
 	clearHighlights()
 
-	# TODO: Implement full BattleRoundThread equivalent
-	# This should:
-	# 1. Process player's end-of-turn effects
-	# 2. Start opponent's turn
-	# 3. Opponent AI makes decisions
-	# 4. Process opponent's actions
-	# 5. Start player's turn again
-	print("  -> TODO: Implement complete battle round logic")
+	# Java: BattleRoundThread t = new BattleRoundThread(Cards.this, player, opponent); (line 200)
+	# Java: t.start(); (line 201)
+	# This constructor variant means no creature summoned and no spell cast
+	# Just process attacks and AI turn
+	var battle_thread := BattleRoundThread.new(self, player, opponent)
+	battle_thread.execute()
+
 	print("=== SKIP TURN COMPLETE ===")
 
 func _on_shuffle_cards_pressed() -> void:
@@ -1294,8 +1293,8 @@ func _on_slot_clicked(slot: SlotImage) -> void:
 			print("    -> Animation complete, starting battle round")
 			# Java: BattleRoundThread t = new BattleRoundThread(Cards.this, player, opponent, clone, si.getIndex()); (line 693)
 			# Java: t.start(); (line 694)
-			# TODO: Start BattleRoundThread equivalent
-			print("    -> TODO: Start BattleRoundThread for summoned creature")
+			var battle_thread := BattleRoundThread.new(self, player, opponent, clone, slot_index)
+			battle_thread.execute()
 		)
 
 		clearHighlights()
@@ -1310,15 +1309,10 @@ func _on_slot_clicked(slot: SlotImage) -> void:
 		# Java: clearHighlights(); (line 701)
 		clearHighlights()
 
-		# Java: BattleRoundThread t = new BattleRoundThread(...); (line 704)
+		# Java: BattleRoundThread t = new BattleRoundThread(Cards.this, player, opponent, selectedCard, null, player.getPlayerInfo().getId(), si.getIndex()); (line 704)
 		# Java: t.start(); (line 705)
-		# TODO: Start BattleRoundThread for spell cast
-		print("    -> TODO: Cast spell on empty slot via BattleRoundThread")
-
-		# Remove card from hand
-		print("    -> Removing spell card from hand")
-		selectedCard.queue_free()
-		# TODO: Also remove from player's hand array if needed
+		var battle_thread := BattleRoundThread.new(self, player, opponent, selectedCard, slot.get_slot_index(), player.get_player_info().getId())
+		battle_thread.execute()
 
 	else:
 		print("  -> No action taken (conditions not met)")

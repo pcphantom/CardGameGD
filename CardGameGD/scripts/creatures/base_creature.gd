@@ -362,3 +362,24 @@ func set_skip_next_attack(flag: bool) -> void:
 
 # All damage/attack/card manipulation/movement functions are inherited from BaseFunctions
 # with correct Java signatures. No need to override them here.
+
+## ============================================================================
+## CAMELCASE WRAPPERS FOR JAVA API COMPATIBILITY
+## ============================================================================
+## These methods wrap the snake_case implementations to match Java API calls
+## from BattleRoundThread and other systems that expect Java naming
+
+func onSummoned() -> void:
+	on_summoned()
+
+func onAttack() -> void:
+	on_attack()
+
+func startOfTurnCheck() -> void:
+	start_of_turn_check()
+
+func endOfTurnCheck() -> void:
+	end_of_turn_check()
+
+func onAttacked(attacker, damage: int) -> int:
+	return on_attacked(attacker, damage)
