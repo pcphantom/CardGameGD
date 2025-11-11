@@ -1297,8 +1297,6 @@ func _on_slot_clicked(slot: SlotImage) -> void:
 			battle_thread.execute()
 		)
 
-		clearHighlights()
-
 	# Java: else if (selectedCard.getCard().isSpell() && si.isHighlighted()) { (line 699)
 	elif card_data.is_spell() and slot.is_highlighted_slot():
 		print("  -> Casting SPELL on empty slot ", slot.get_slot_index())
