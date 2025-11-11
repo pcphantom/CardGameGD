@@ -125,10 +125,11 @@ func _ready() -> void:
         var sprite_offset_x = (Cards.PORTRAIT_SPRITE_OFFSET_X if Cards else 6) + sprite_adjust_x
         var sprite_offset_y = (Cards.PORTRAIT_SPRITE_OFFSET_Y if Cards else 6) + sprite_adjust_y
         img.position = Vector2(sprite_offset_x, sprite_offset_y)
+        img.centered = false  # CRITICAL: Position is top-left corner, not center!
         img.z_index = 1  # Sprite renders in front
         img.scale = Vector2(1.0, 1.0)
         img.visible = true  # Force visible
-        print("  - Sprite configured: pos=", img.position, " z_index=", img.z_index, " visible=", img.visible)
+        print("  - Sprite configured: pos=", img.position, " centered=", img.centered, " z_index=", img.z_index, " visible=", img.visible)
 
 # ============================================================================
 # PRIVATE METHODS
@@ -250,9 +251,10 @@ func set_img(sprite_img: Sprite2D) -> void:
             var sprite_offset_x = Cards.PORTRAIT_SPRITE_OFFSET_X if Cards else 0
             var sprite_offset_y = Cards.PORTRAIT_SPRITE_OFFSET_Y if Cards else 0
             sprite_img.position = Vector2(sprite_offset_x, sprite_offset_y)
+            sprite_img.centered = false  # CRITICAL: Position is top-left corner, not center!
             sprite_img.z_index = 1  # Sprite renders in front
             sprite_img.visible = true  # Force visible
-            print("  - Sprite position: ", sprite_img.position, " z_index: ", sprite_img.z_index, " visible: ", sprite_img.visible)
+            print("  - Sprite position: ", sprite_img.position, " centered: ", sprite_img.centered, " z_index: ", sprite_img.z_index, " visible: ", sprite_img.visible)
             queue_redraw()  # Redraw to show the frame around new sprite
         else:
             print("  - WARNING: PlayerImage not in tree yet, sprite will be added in _ready()")
@@ -270,11 +272,12 @@ func set_texture(tex: Texture2D) -> void:
         var sprite_offset_x = (Cards.PORTRAIT_SPRITE_OFFSET_X if Cards else 6) + sprite_adjust_x
         var sprite_offset_y = (Cards.PORTRAIT_SPRITE_OFFSET_Y if Cards else 6) + sprite_adjust_y
         img.position = Vector2(sprite_offset_x, sprite_offset_y)
+        img.centered = false  # CRITICAL: Position is top-left corner, not center!
         img.z_index = 1  # Sprite renders in front
         add_child(img)  # CRITICAL: Add sprite to scene tree so it renders!
     img.texture = tex
     # Debug logging for portrait texture loading
-    print("PlayerImage: Texture set - Valid: ", tex != null, " Visible: ", img.visible, " Z-index: ", img.z_index)
+    print("PlayerImage: Texture set - Valid: ", tex != null, " Visible: ", img.visible, " Centered: ", img.centered, " Z-index: ", img.z_index)
     if tex:
         print("  Texture size: ", tex.get_size())
     queue_redraw()  # Redraw to show the frame around texture
