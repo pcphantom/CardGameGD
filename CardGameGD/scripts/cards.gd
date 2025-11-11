@@ -287,8 +287,6 @@ const CARD_STATS_FONT_SIZE_LARGE: int = 20   # Font size for stats on large card
 
 # ═════════════════════════════════════════════════════════════════════════════
 
-const GAME_LOG_Z_INDEX: int = 4
-
 # Background (full-screen battlefield image)
 const BACKGROUND_Z_INDEX: int = -10     # Behind everything else
 
