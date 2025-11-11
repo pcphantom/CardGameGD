@@ -94,8 +94,8 @@ static var SCREEN_HEIGHT: int = 768
 # Godot: 768 - 643 - 132 = -7 ≈ 0-10 (top-left origin)
 const OPPONENT_PORTRAIT_X: int = 80     # Opponent portrait X
 const OPPONENT_PORTRAIT_Y: int = 10     # Opponent portrait Y (user verified)
-const PORTRAIT_SPRITE_OFFSET_X: int = 0      # Sprite X offset inside portrait frame
-const PORTRAIT_SPRITE_OFFSET_Y: int = 0      # Sprite Y offset inside portrait frame
+const PORTRAIT_SPRITE_OFFSET_X: int = 6      # Sprite X offset inside portrait frame (frame extends 6px beyond sprite)
+const PORTRAIT_SPRITE_OFFSET_Y: int = 6      # Sprite Y offset inside portrait frame (frame extends 6px beyond sprite)
 const PORTRAIT_FRAME_OFFSET_X: int = -6      # Frame X offset relative to sprite
 const PORTRAIT_FRAME_OFFSET_Y: int = -6      # Frame Y offset relative to sprite
 
@@ -245,6 +245,14 @@ const PLAYER_PORTRAIT_ADJUST_Y: int = 0      # POSITIVE MOVES DOWN, NEGATIVE MOV
 # OPPONENT'S PORTRAIT - MOVES THE OPPONENT'S PORTRAIT IMAGE
 const OPPONENT_PORTRAIT_ADJUST_X: int = 0    # POSITIVE MOVES RIGHT, NEGATIVE MOVES LEFT
 const OPPONENT_PORTRAIT_ADJUST_Y: int = 0    # POSITIVE MOVES DOWN, NEGATIVE MOVES UP
+
+# PORTRAIT SPRITE INSIDE FRAME - ADJUSTS WHERE THE PORTRAIT IMAGE SITS INSIDE ITS FRAME
+const PORTRAIT_SPRITE_ADJUST_X: int = 0      # POSITIVE MOVES RIGHT, NEGATIVE MOVES LEFT (ADDED TO BASE OFFSET OF 6)
+const PORTRAIT_SPRITE_ADJUST_Y: int = 0      # POSITIVE MOVES DOWN, NEGATIVE MOVES UP (ADDED TO BASE OFFSET OF 6)
+
+# PORTRAIT FRAME AROUND SPRITE - ADJUSTS WHERE THE FRAME BORDER IS DRAWN AROUND PORTRAIT
+const PORTRAIT_FRAME_ADJUST_X: int = 0       # POSITIVE MOVES RIGHT, NEGATIVE MOVES LEFT (ADDED TO BASE OFFSET OF -6)
+const PORTRAIT_FRAME_ADJUST_Y: int = 0       # POSITIVE MOVES DOWN, NEGATIVE MOVES UP (ADDED TO BASE OFFSET OF -6)
 
 # PLAYER'S CLASS & HP LABEL - MOVES THE "CLERIC LIFE: 60" TEXT
 const PLAYER_INFO_LABEL_ADJUST_X: int = 0    # POSITIVE MOVES RIGHT, NEGATIVE MOVES LEFT

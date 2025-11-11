@@ -115,9 +115,9 @@ func _ready() -> void:
             add_child(img)
             print("  - Added sprite as child in _ready()")
 
-        # Use configurable offset from Cards config
-        var sprite_offset_x = Cards.PORTRAIT_SPRITE_OFFSET_X if Cards else 0
-        var sprite_offset_y = Cards.PORTRAIT_SPRITE_OFFSET_Y if Cards else 0
+        # Use configurable offset from Cards config (base offset + adjustment)
+        var sprite_offset_x = (Cards.PORTRAIT_SPRITE_OFFSET_X if Cards else 6) + (Cards.PORTRAIT_SPRITE_ADJUST_X if Cards else 0)
+        var sprite_offset_y = (Cards.PORTRAIT_SPRITE_OFFSET_Y if Cards else 6) + (Cards.PORTRAIT_SPRITE_ADJUST_Y if Cards else 0)
         img.position = Vector2(sprite_offset_x, sprite_offset_y)
         img.z_index = 1  # Sprite renders in front
         img.scale = Vector2(1.0, 1.0)
@@ -151,10 +151,10 @@ func _draw() -> void:
     # We only need to draw the frame border and stunned indicator here
 
     # Java: batch.draw(frame, x - 6, y - 6);
-    # Draw the frame (border) texture with configurable offset
+    # Draw the frame (border) texture with configurable offset (base offset + adjustment)
     if frame != null:
-        var frame_offset_x = Cards.PORTRAIT_FRAME_OFFSET_X if Cards else -6
-        var frame_offset_y = Cards.PORTRAIT_FRAME_OFFSET_Y if Cards else -6
+        var frame_offset_x = (Cards.PORTRAIT_FRAME_OFFSET_X if Cards else -6) + (Cards.PORTRAIT_FRAME_ADJUST_X if Cards else 0)
+        var frame_offset_y = (Cards.PORTRAIT_FRAME_OFFSET_Y if Cards else -6) + (Cards.PORTRAIT_FRAME_ADJUST_Y if Cards else 0)
         draw_texture(frame, Vector2(frame_offset_x, frame_offset_y))
 
     # Java: if (this.mustSkipNexAttack) { batch.draw(stunned, x + 10, y - 10); }
@@ -259,9 +259,9 @@ func set_frame(frame_tex: Texture2D) -> void:
 func set_texture(tex: Texture2D) -> void:
     if img == null:
         img = Sprite2D.new()
-        # Use configurable offset from Cards config
-        var sprite_offset_x = Cards.PORTRAIT_SPRITE_OFFSET_X if Cards else 0
-        var sprite_offset_y = Cards.PORTRAIT_SPRITE_OFFSET_Y if Cards else 0
+        # Use configurable offset from Cards config (base offset + adjustment)
+        var sprite_offset_x = (Cards.PORTRAIT_SPRITE_OFFSET_X if Cards else 6) + (Cards.PORTRAIT_SPRITE_ADJUST_X if Cards else 0)
+        var sprite_offset_y = (Cards.PORTRAIT_SPRITE_OFFSET_Y if Cards else 6) + (Cards.PORTRAIT_SPRITE_ADJUST_Y if Cards else 0)
         img.position = Vector2(sprite_offset_x, sprite_offset_y)
         img.z_index = 1  # Sprite renders in front
         add_child(img)  # CRITICAL: Add sprite to scene tree so it renders!
