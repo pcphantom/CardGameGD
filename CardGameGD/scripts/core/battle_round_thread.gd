@@ -281,13 +281,13 @@ func start_of_turn_check(player_img: PlayerImage) -> void:
 			continue
 
 		# Java: if (player.getPlayerInfo().getPlayerClass() == Specializations.VampireLord) { (line 293)
-		if player_img.get_player_info().getPlayerClass() == Specializations.VAMPIRE_LORD:
-			player_img.incrementLife(1, game)
-			var died: bool = ci.decrementLife(bc, 1, game)
+		if player_img.get_player_info().get_player_class() == Specializations.VAMPIRE_LORD:
+			player_img.increment_life(1, game)
+			var died: bool = ci.decrement_life(bc, 1, game)
 			if Cards.logScrollPane:
 				Cards.logScrollPane.add("Vampire Lord drains 1 life from " + ci.get_card().getName())
 			if died:
-				bc.disposeCardImage(player_img, index)
+				bc.dispose_card_image(player_img, index)
 
 		# Java: for (int index2 = 0; index2 < 6; index2++) { (line 302)
 		for index2 in range(6):
