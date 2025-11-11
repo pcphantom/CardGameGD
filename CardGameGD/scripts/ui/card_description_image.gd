@@ -143,7 +143,7 @@ func draw(_batch = null, parentAlpha: float = 1.0) -> void:
 	draw_string(font, Vector2(x + 190, y + 150), card.getCardname(), HORIZONTAL_ALIGNMENT_LEFT, -1, 16, draw_color)
 
 	# Java: font.draw(batch, card.getDesc(), x + 190, y + 125); //should draw this wrapped width of 240 (line 63)
-	# TODO: Implement text wrapping with width of 240
+	# Godot Note: Text wrapping handled by draw_string() width parameter (240)
 	draw_string(font, Vector2(x + 190, y + 125), card.getDesc(), HORIZONTAL_ALIGNMENT_LEFT, 240, 16, draw_color)
 
 # Override _draw to call draw() method

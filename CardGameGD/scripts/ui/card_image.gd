@@ -511,7 +511,6 @@ func _mouse_exited() -> void:
 ## Called from cards.gd clearHighlights() method
 ## Equivalent to Java's Actor.clearActions() called in Cards.java line 754
 func clear_actions() -> void:
-	print("CardImage.clear_actions() called for card: ", card.name if card else "null")
 	# Stop any tweens running on this card
 	var tweens = get_tree().get_processed_tweens()
 	for tween in tweens:
@@ -519,7 +518,6 @@ func clear_actions() -> void:
 			# Check if this tween is animating this node
 			var bound_node = tween.get_meta("bound_node", null)
 			if bound_node == self:
-				print("  - Killing tween for card: ", card.name if card else "null")
 				tween.kill()
 
 # =============================================================================

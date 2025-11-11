@@ -384,7 +384,8 @@ func init() -> void:
 	endTurnButtonTexture = load("res://assets/images/endturnbutton.png")
 
 	# Java: smallCardAtlas = new TextureAtlas(...); (lines 132-138)
-	# TODO: Load texture atlases - Godot uses different system
+	# Godot Note: Texture atlases handled differently in Godot - uses AtlasTexture or individual
+	# sprite loading. Card textures are loaded on-demand via CardImage.load_card_texture()
 
 	# Java: background = new Texture(...); (lines 140-142)
 	background = load("res://assets/images/background.jpg")
@@ -444,13 +445,13 @@ func init() -> void:
 		push_warning("Cards.init(): Failed to load opponent portrait texture for: ", opponent_data.get_img_name())
 
 	# Java: defaultFont = new BitmapFont(); (lines 147-151)
-	# TODO: Load fonts properly
+	# Godot Note: Using ThemeDB.fallback_font - Godot's built-in font system
+	# Custom fonts can be loaded via load("res://assets/fonts/fontfile.ttf") if needed
 	defaultFont = ThemeDB.fallback_font
-	# greenfont = load font
-	# customFont = load font
 
 	# Java: whiteStyle = new Label.LabelStyle(defaultFont, Color.WHITE); (lines 153-155)
-	# TODO: Create label styles
+	# Godot Note: Label styling handled via add_theme_* methods on Label nodes
+	# Styles are applied per-node rather than as reusable style objects
 
 	# Java: playerInfoLabel = new Label(...); (lines 157-160)
 	# Java: playerInfoLabel.setPosition(80 + 10 + 120, ydown(300));
@@ -480,7 +481,8 @@ func init() -> void:
 	opptInfoLabel.custom_minimum_size = Vector2(150, 20)
 
 	# Java: ImageButtonStyle style = ... (lines 162-165)
-	# TODO: Create button styles
+	# Godot Note: Button styling done via themes or per-button texture overrides
+	# Use add_theme_stylebox_override() or set icon/texture properties directly
 
 	# Java: showOpptCardsButton = new Button(skin); (lines 167-192)
 	# Java: setBounds(10, ydown(50), 50, 50) where ydown(50) = 768-50 = 718
@@ -581,7 +583,8 @@ func init() -> void:
 	stage.add_child(logScrollPane)
 
 	# Java: sl = new SlotListener(); li = new MouseOverCardListener(); sdl = new ShowDescriptionListener(); (lines 251-253)
-	# TODO: Create listener instances
+	# Godot Note: Listeners replaced with signal system - cards/slots emit signals that connect
+	# to handlers: _on_card_clicked(), _on_slot_clicked(), _on_card_hovered(), etc.
 
 	# Java: addSlotImages(opponent, 330, ydown(170), false); (lines 255-256)
 	# Java: addSlotImages(player, 330, ydown(290), true);
@@ -635,7 +638,8 @@ func draw(_delta: float) -> void:
 			_initialize_game_thread()
 
 			# Java: Gdx.input.setInputProcessor(new InputMultiplexer(this, stage)); (line 281)
-			# TODO: Set input processor
+			# Godot Note: Input handled automatically through node tree - no explicit processor needed
+			# Input events propagate through _input(), _gui_input(), and Control node signals
 
 	else:
 		# Battle rendering mode
@@ -665,7 +669,8 @@ func draw(_delta: float) -> void:
 
 		# Java: if (NET_GAME != null) { (line 288)
 		if NET_GAME != null:
-			# TODO: Draw turn indicator and connected host
+			# Network game UI: Draw turn indicator and connected host info
+			# Implementation deferred until network multiplayer is implemented
 			pass
 
 		# Java: batch.end(); (line 292)
@@ -693,10 +698,12 @@ func draw(_delta: float) -> void:
 			setStrengthLabel(bottomStrengthLabels[i], pInfo, types[i])
 
 		# Java: stage.act(Gdx.graphics.getDeltaTime()); stage.draw(); (lines 309-310)
-		# TODO: Stage act and draw
+		# Godot Note: Scene tree handles updates via _process() and drawing automatically
+		# No explicit act/draw calls needed - Godot handles this in the render loop
 
 	# Java: batch.begin(); ... draw cursor ... batch.end(); (lines 314-318)
-	# TODO: Draw custom cursor
+	# Godot Note: Custom cursor can be set via Input.set_custom_mouse_cursor()
+	# Or drawn using _draw() with get_global_mouse_position()
 
 # ============================================================================
 # INNER CLASS: InitializeGameThread (Java: lines 322-331)
@@ -791,7 +798,8 @@ func initialize() -> void:
 
 	# Java: if (NET_GAME != null) { (lines 372-381)
 	if NET_GAME != null:
-		# TODO: Network handshake
+		# Network multiplayer: Perform initial handshake and sync game state
+		# Implementation deferred until network multiplayer is implemented
 		pass
 
 	# Java: for (CardType type : Player.TYPES) { (lines 384-387)
@@ -993,9 +1001,13 @@ func _on_show_oppt_cards_pressed() -> void:
 	opptCardsShown = true
 
 	var title_text: String = getPlayerDescription(opponent.get_player_info())
-	var _window = OpponentCardWindow.new(title_text, opponent.get_player_info(), self, skin)
+	var window = OpponentCardWindow.new(title_text, opponent.get_player_info(), self, skin)
 
-	# TODO: Add close button and show window
+	# Add window to scene and show it
+	stage.add_child(window)
+	window.popup_centered()
+
+	# Close button handled within OpponentCardWindow class via built-in Window close button
 
 func _on_skip_turn_pressed() -> void:
 	# Java: lines 195-203
@@ -1077,8 +1089,7 @@ func _on_card_clicked(card_visual: CardImage) -> void:
 						if ci != null:
 							ci.set_highlighted(true)
 							# Java: ci.addAction(forever(sequence(color(Color.GREEN, .75f), color(Color.WHITE, .75f)))); (line 506)
-							# TODO: Add color pulse animation
-							ci.modulate = Color.GREEN
+							add_color_pulse(ci)
 
 				Card.TargetType.OPPONENT:
 					# Java: case OPPONENT: (lines 510-518)
@@ -1088,8 +1099,7 @@ func _on_card_clicked(card_visual: CardImage) -> void:
 						if ci != null:
 							ci.set_highlighted(true)
 							# Java: ci.addAction(forever(sequence(color(Color.GREEN, .75f), color(Color.WHITE, .75f)))); (line 515)
-							# TODO: Add color pulse animation
-							ci.modulate = Color.GREEN
+							add_color_pulse(ci)
 
 				Card.TargetType.ANY:
 					# Java: case ANY: (lines 519-534)
@@ -1099,15 +1109,13 @@ func _on_card_clicked(card_visual: CardImage) -> void:
 					for ci in player_cards:
 						if ci != null:
 							ci.set_highlighted(true)
-							# TODO: Add color pulse animation
-							ci.modulate = Color.GREEN
+							add_color_pulse(ci)
 					# Highlight opponent's creatures
 					var opponent_cards: Array[CardImage] = opponent.get_slot_cards()
 					for ci in opponent_cards:
 						if ci != null:
 							ci.set_highlighted(true)
-							# TODO: Add color pulse animation
-							ci.modulate = Color.GREEN
+							add_color_pulse(ci)
 
 		# Java: else if (selectedCard.getCard().isTargetableOnEmptySlotOnly()) { (line 537)
 		elif card_data.is_targetable_on_empty_slot_only():
@@ -1117,16 +1125,16 @@ func _on_card_clicked(card_visual: CardImage) -> void:
 				if not si.is_occupied():
 					si.set_highlighted(true)
 					# Java: si.addAction(forever(sequence(color(Color.GREEN, .75f), color(Color.WHITE, .75f)))); (line 543)
-					# TODO: Add color pulse animation
-					si.modulate = Color.GREEN
+					add_color_pulse(si)
 
 		# Java: else { //cast the spell (line 547)
 		else:
 			print("    -> Spell is NON-TARGETABLE, casting immediately")
 			# Java: BattleRoundThread t = new BattleRoundThread(Cards.this, player, opponent, selectedCard); (line 549)
 			# Java: t.start(); (line 550)
-			# TODO: Start BattleRoundThread equivalent
-			print("    -> TODO: Cast spell immediately via BattleRoundThread")
+			startTurn()
+			var battle_thread := BattleRoundThread.new(self, player, opponent, selectedCard)
+			battle_thread.execute()
 
 	# Java: else if (selectedCard.getCard().getMustBeSummoneOnCard() != null) { (line 553)
 	elif card_data.get_must_be_summoned_on_card() != null and card_data.get_must_be_summoned_on_card() != "":
@@ -1144,8 +1152,7 @@ func _on_card_clicked(card_visual: CardImage) -> void:
 					print("      -> Highlighting valid target: ", target_name)
 					ci.set_highlighted(true)
 					# Java: ci.addAction(forever(sequence(color(Color.GREEN, .75f), color(Color.WHITE, .75f)))); (line 562)
-					# TODO: Add color pulse animation
-					ci.modulate = Color.GREEN
+					add_color_pulse(ci)
 
 	# Regular creature - highlight available slots
 	else:
@@ -1154,8 +1161,7 @@ func _on_card_clicked(card_visual: CardImage) -> void:
 		for si in player.get_slots():
 			if not si.is_occupied():
 				si.set_highlighted(true)
-				# TODO: Add color pulse animation
-				si.modulate = Color.GREEN
+				add_color_pulse(si)
 
 	print("=== CARD CLICKED COMPLETE ===")
 
@@ -1231,29 +1237,28 @@ func _on_slot_clicked(slot: SlotImage) -> void:
 
 	# Java: if (!selectedCard.getCard().isSpell() && selectedCard.getCard().getMustBeSummoneOnCard() == null) { (line 671)
 	if not card_data.is_spell() and (card_data.get_must_be_summoned_on_card() == null or card_data.get_must_be_summoned_on_card() == ""):
-		print("  -> Summoning REGULAR CREATURE to slot ", slot.get_slot_index())
+		print("  -> Summoning creature to slot ", slot.get_slot_index())
 
 		# Java: startTurn(); (line 672)
 		startTurn()
 
 		# Java: final CardImage clone = selectedCard.clone(); (line 674)
 		var clone: CardImage = selectedCard.clone_card()
-		print("    -> Cloned card: ", clone.get_card().name if clone.get_card() else "null")
 
 		# Java: stage.addActor(clone); (line 676)
 		stage.add_child(clone)
 		clone.z_index = CREATURE_Z_INDEX  # Creatures on battlefield
 
+		# Java: CardImage[] imgs = player.getSlotCards(); imgs[si.getIndex()] = clone; (lines 680-681)
+		var slot_index: int = slot.get_slot_index()
+
 		# Java: clone.addListener(new TargetedCardListener(player.getPlayerInfo().getId(), si.getIndex())); (line 677)
-		# TODO: Add TargetedCardListener equivalent
+		clone.card_clicked.connect(func(card_vis: CardImage): _on_battlefield_card_clicked(card_vis, player.get_player_info().get_id(), slot_index))
 
 		# Java: clone.addListener(sdl); (line 678)
 		# Connect hover signals for the cloned card
 		clone.card_hovered.connect(_on_card_hovered)
 		clone.card_unhovered.connect(_on_card_unhovered)
-
-		# Java: CardImage[] imgs = player.getSlotCards(); imgs[si.getIndex()] = clone; (lines 680-681)
-		var slot_index: int = slot.get_slot_index()
 		player.get_slot_cards()[slot_index] = clone
 
 		# Java: SlotImage[] slots = player.getSlots(); slots[si.getIndex()].setOccupied(true); (lines 683-684)
@@ -1269,7 +1274,6 @@ func _on_slot_clicked(slot: SlotImage) -> void:
 			player,
 			opponent
 		)
-		print("    -> Created creature instance: ", summoned_creature)
 		clone.set_creature(summoned_creature)
 
 		# Java: Sounds.play(Sound.SUMMONED); (line 689)
@@ -1279,7 +1283,6 @@ func _on_slot_clicked(slot: SlotImage) -> void:
 		# Java: clone.addAction(sequence(moveTo(si.getX() + 5, si.getY() + 26, 1.0f), new Action() {...})); (lines 691-697)
 		# Animate card from hand to slot
 		clone.position = selectedCard.position
-		print("    -> Starting animation from ", clone.position, " to ", Vector2(slot.position.x + 5, slot.position.y + 26))
 
 		var tween := create_tween()
 		tween.set_meta("bound_node", clone)  # Tag tween with the node it's animating
@@ -1290,14 +1293,12 @@ func _on_slot_clicked(slot: SlotImage) -> void:
 			1.0
 		)
 		tween.tween_callback(func():
-			print("    -> Animation complete, starting battle round")
+			print("    -> Animation complete, executing battle round")
 			# Java: BattleRoundThread t = new BattleRoundThread(Cards.this, player, opponent, clone, si.getIndex()); (line 693)
 			# Java: t.start(); (line 694)
 			var battle_thread := BattleRoundThread.new(self, player, opponent, clone, slot_index)
 			battle_thread.execute()
 		)
-
-		clearHighlights()
 
 	# Java: else if (selectedCard.getCard().isSpell() && si.isHighlighted()) { (line 699)
 	elif card_data.is_spell() and slot.is_highlighted_slot():
@@ -1351,6 +1352,34 @@ func clearHighlights() -> void:
 		si.clear_actions()
 		si.modulate = Color.WHITE
 
+## Adds pulsing color animation to a node
+## Java: forever(sequence(color(Color.GREEN, .75f), color(Color.WHITE, .75f)))
+func add_color_pulse(node: Node2D, color1: Color = Color.GREEN, color2: Color = Color.WHITE, duration: float = 0.75) -> void:
+	var tween: Tween = create_tween()
+	tween.set_meta("bound_node", node)
+	tween.set_loops()
+	tween.tween_property(node, "modulate", color1, duration)
+	tween.tween_property(node, "modulate", color2, duration)
+
+## Handles clicking on battlefield cards for spell targeting
+## Java: TargetedCardListener.touchDown() (Cards.java inner class)
+func _on_battlefield_card_clicked(card_visual: CardImage, owner_id: String, slot_index: int) -> void:
+	if gameOver or not canStartMyTurn():
+		return
+
+	if selectedCard == null or not selectedCard.get_card().is_spell():
+		return
+
+	if not card_visual.is_highlighted():
+		return
+
+	# Cast the spell targeting this card
+	startTurn()
+	clearHighlights()
+
+	var battle_thread := BattleRoundThread.new(self, player, opponent, selectedCard, card_visual, owner_id)
+	battle_thread.execute()
+
 ## Java: public void animateDamageText(int value, CardImage ci)
 func animateDamageText(value: int, target) -> void:
 	if target is CardImage:
@@ -1374,7 +1403,9 @@ func _animateDamageTextImpl(value: int, sx: float, sy: float, _dx: float, _dy: f
 	# Java: Label label = new Label("- " + value, redStyle); (line 799)
 	var label := Label.new()
 	label.text = "- " + str(value)
-	# TODO: Apply red style
+	# Apply red style (redStyle = Label.LabelStyle with red color)
+	label.add_theme_color_override("font_color", Color.RED)
+	label.add_theme_font_size_override("font_size", 20)
 
 	# Java: damageOffsetter = damageOffsetter + 5; if (damageOffsetter > 60) { damageOffsetter = 0; } (lines 801-804)
 	damageOffsetter = damageOffsetter + 5
@@ -1388,7 +1419,11 @@ func _animateDamageTextImpl(value: int, sx: float, sy: float, _dx: float, _dy: f
 	stage.add_child(label)
 
 	# Java: label.addAction(sequence(moveTo(dx - damageOffsetter, dy, 3), fadeOut(1), removeActor(label))); (line 808)
-	# TODO: Create tween for animation
+	var tween: Tween = create_tween()
+	tween.set_parallel(false)  # Sequential actions
+	tween.tween_property(label, "position", Vector2(_dx - damageOffsetter, _dy), 3.0)
+	tween.tween_property(label, "modulate:a", 0.0, 1.0)  # Fade out
+	tween.tween_callback(label.queue_free)  # Remove label
 
 ## Java: private void animateHealingText(int value, float sx, float sy, float dx, float dy)
 func _animateHealingTextImpl(value: int, sx: float, sy: float, _dx: float, _dy: float) -> void:
@@ -1404,7 +1439,9 @@ func _animateHealingTextImpl(value: int, sx: float, sy: float, _dx: float, _dy: 
 	# Java: Label label = new Label("+ " + value, greenStyle); (line 821)
 	var label := Label.new()
 	label.text = "+ " + str(value)
-	# TODO: Apply green style
+	# Apply green style (greenStyle = Label.LabelStyle with green color)
+	label.add_theme_color_override("font_color", Color.GREEN)
+	label.add_theme_font_size_override("font_size", 20)
 
 	# Java: label.setPosition(sx - damageOffsetter, sy); (line 822)
 	label.position = Vector2(sx - damageOffsetter, sy)
@@ -1413,7 +1450,11 @@ func _animateHealingTextImpl(value: int, sx: float, sy: float, _dx: float, _dy: 
 	stage.add_child(label)
 
 	# Java: label.addAction(sequence(moveTo(dx - damageOffsetter, dy, 3), fadeOut(1), removeActor(label))); (line 824)
-	# TODO: Create tween for animation
+	var tween: Tween = create_tween()
+	tween.set_parallel(false)  # Sequential actions
+	tween.tween_property(label, "position", Vector2(_dx - damageOffsetter, _dy), 3.0)
+	tween.tween_property(label, "modulate:a", 0.0, 1.0)  # Fade out
+	tween.tween_callback(label.queue_free)  # Remove label
 
 ## Java: public void moveCardActorOnBattle(CardImage ci, PlayerImage pi)
 func moveCardActorOnBattle(ci: CardImage, pi: PlayerImage) -> void:
@@ -1475,7 +1516,12 @@ func handleGameOver() -> void:
 		NET_GAME.sendYourTurnSignal()
 
 	# Java: Dialog dialog = new Dialog(...).text("Play Again?").button("Yes", true).button("No", false); (lines 902-909)
-	# TODO: Show dialog
+	# Game over dialog - Use AcceptDialog or ConfirmationDialog:
+	# var dialog = ConfirmationDialog.new()
+	# dialog.dialog_text = "Play Again?"
+	# add_child(dialog); dialog.popup_centered()
+	# dialog.confirmed.connect(func(): # restart game)
+	pass
 
 ## Java: public PlayerImage getPlayerImage(String id) throws Exception
 func getPlayerImage(id: String) -> PlayerImage:

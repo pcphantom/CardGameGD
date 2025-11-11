@@ -447,10 +447,11 @@ func _on_connect_pressed() -> void:
 	select_hosts_shown = true
 
 	# Java: final SelectHostsDialog window = new SelectHostsDialog(...);
-	# TODO: Implement SelectHostsDialog when that class is converted
-	push_warning("SingleDuelChooser: SelectHostsDialog not yet implemented")
+	# Network multiplayer feature: Dialog for selecting/discovering hosts on LAN
+	# Implementation deferred until network multiplayer is fully implemented
+	push_warning("SingleDuelChooser: SelectHostsDialog not yet implemented - network multiplayer feature")
 
-	# For now, just reset the flag
+	# Reset flag for now
 	select_hosts_shown = false
 
 # ============================================================================
@@ -467,8 +468,13 @@ func _on_listen_pressed() -> void:
 		return
 
 	# Java: Dialog dialog = new Dialog("Start Server", temp.skin, "dialog") {...}
-	# TODO: Show confirmation dialog
-	# For now, directly start server
+	# Network server confirmation dialog:
+	# var dialog = ConfirmationDialog.new()
+	# dialog.dialog_text = "Start Server?"
+	# add_child(dialog); dialog.popup_centered()
+	# dialog.confirmed.connect(func(): # start server)
+	# For now, directly start server without confirmation
+	pass
 
 	# Java: Cards.NET_GAME = new NetworkGame(SingleDuelChooser.this.game, true);
 	NetworkManager.start_server(game)
