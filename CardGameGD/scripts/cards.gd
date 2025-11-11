@@ -94,10 +94,10 @@ static var SCREEN_HEIGHT: int = 768
 # Godot: 768 - 643 - 132 = -7 ≈ 0-10 (top-left origin)
 const OPPONENT_PORTRAIT_X: int = 80     # Opponent portrait X
 const OPPONENT_PORTRAIT_Y: int = 10     # Opponent portrait Y (user verified)
-const PORTRAIT_SPRITE_OFFSET_X: int = 6      # Sprite X offset inside portrait frame (frame extends 6px beyond sprite)
-const PORTRAIT_SPRITE_OFFSET_Y: int = 6      # Sprite Y offset inside portrait frame (frame extends 6px beyond sprite)
-const PORTRAIT_FRAME_OFFSET_X: int = -6      # Frame X offset relative to sprite
-const PORTRAIT_FRAME_OFFSET_Y: int = -6      # Frame Y offset relative to sprite
+const PORTRAIT_SPRITE_OFFSET_X: int = 6      # Sprite X offset inside portrait frame (centers 120×120 sprite in 132×132 frame)
+const PORTRAIT_SPRITE_OFFSET_Y: int = 6      # Sprite Y offset inside portrait frame (centers 120×120 sprite in 132×132 frame)
+const PORTRAIT_FRAME_OFFSET_X: int = 0       # Frame X offset (frame fills 132×132 Control at position 0, 0)
+const PORTRAIT_FRAME_OFFSET_Y: int = 0       # Frame Y offset (frame fills 132×132 Control at position 0, 0)
 
 # Opponent play slots (6 card slots in a row - TOP RIGHT)
 # INDIVIDUAL SIZE: 92×132 pixels per slot (slot.png)
@@ -246,13 +246,21 @@ const PLAYER_PORTRAIT_FRAME_ADJUST_Y: int = 0      # POSITIVE MOVES DOWN, NEGATI
 const OPPONENT_PORTRAIT_FRAME_ADJUST_X: int = 0    # POSITIVE MOVES RIGHT, NEGATIVE MOVES LEFT
 const OPPONENT_PORTRAIT_FRAME_ADJUST_Y: int = 0    # POSITIVE MOVES DOWN, NEGATIVE MOVES UP
 
-# PORTRAIT SPRITE INSIDE FRAME - FINE-TUNES WHERE PORTRAIT IMAGE SITS INSIDE ITS FRAME (BOTH SCENES)
-const PORTRAIT_SPRITE_ADJUST_X: int = 0      # POSITIVE MOVES RIGHT, NEGATIVE MOVES LEFT (ADDS TO BASE 6)
-const PORTRAIT_SPRITE_ADJUST_Y: int = 0      # POSITIVE MOVES DOWN, NEGATIVE MOVES UP (ADDS TO BASE 6)
+# PLAYER PORTRAIT SPRITE INSIDE FRAME - FINE-TUNES WHERE PLAYER PORTRAIT IMAGE SITS INSIDE ITS FRAME
+const PLAYER_PORTRAIT_SPRITE_ADJUST_X: int = 0      # POSITIVE MOVES RIGHT, NEGATIVE MOVES LEFT (ADDS TO BASE 6)
+const PLAYER_PORTRAIT_SPRITE_ADJUST_Y: int = 0      # POSITIVE MOVES DOWN, NEGATIVE MOVES UP (ADDS TO BASE 6)
 
-# PORTRAIT FRAME BORDER - FINE-TUNES WHERE FRAME BORDER DRAWS AROUND PORTRAIT (BOTH SCENES)
-const PORTRAIT_FRAME_BORDER_ADJUST_X: int = 0       # POSITIVE MOVES RIGHT, NEGATIVE MOVES LEFT (ADDS TO BASE -6)
-const PORTRAIT_FRAME_BORDER_ADJUST_Y: int = 0       # POSITIVE MOVES DOWN, NEGATIVE MOVES UP (ADDS TO BASE -6)
+# OPPONENT PORTRAIT SPRITE INSIDE FRAME - FINE-TUNES WHERE OPPONENT PORTRAIT IMAGE SITS INSIDE ITS FRAME
+const OPPONENT_PORTRAIT_SPRITE_ADJUST_X: int = 0    # POSITIVE MOVES RIGHT, NEGATIVE MOVES LEFT (ADDS TO BASE 6)
+const OPPONENT_PORTRAIT_SPRITE_ADJUST_Y: int = 0    # POSITIVE MOVES DOWN, NEGATIVE MOVES UP (ADDS TO BASE 6)
+
+# PLAYER PORTRAIT FRAME BORDER - FINE-TUNES WHERE PLAYER FRAME BORDER DRAWS AROUND PORTRAIT
+const PLAYER_PORTRAIT_FRAME_BORDER_ADJUST_X: int = 0       # POSITIVE MOVES RIGHT, NEGATIVE MOVES LEFT (ADDS TO BASE 0)
+const PLAYER_PORTRAIT_FRAME_BORDER_ADJUST_Y: int = 0       # POSITIVE MOVES DOWN, NEGATIVE MOVES UP (ADDS TO BASE 0)
+
+# OPPONENT PORTRAIT FRAME BORDER - FINE-TUNES WHERE OPPONENT FRAME BORDER DRAWS AROUND PORTRAIT
+const OPPONENT_PORTRAIT_FRAME_BORDER_ADJUST_X: int = 0     # POSITIVE MOVES RIGHT, NEGATIVE MOVES LEFT (ADDS TO BASE 0)
+const OPPONENT_PORTRAIT_FRAME_BORDER_ADJUST_Y: int = 0     # POSITIVE MOVES DOWN, NEGATIVE MOVES UP (ADDS TO BASE 0)
 
 # PLAYER'S CLASS & HP LABEL - MOVES THE "CLERIC LIFE: 60" TEXT
 const PLAYER_INFO_LABEL_ADJUST_X: int = 0    # POSITIVE MOVES RIGHT, NEGATIVE MOVES LEFT
@@ -399,6 +407,11 @@ func init() -> void:
 		PLAYER_PORTRAIT_Y + PLAYER_PORTRAIT_FRAME_ADJUST_Y)
 	player.z_index = PORTRAIT_Z_INDEX
 	player.visible = false  # Hide until battle starts (prevent showing in class select)
+	# Set per-instance portrait adjustments (player portraits offset differently than opponent)
+	player.sprite_adjust_x = PLAYER_PORTRAIT_SPRITE_ADJUST_X
+	player.sprite_adjust_y = PLAYER_PORTRAIT_SPRITE_ADJUST_Y
+	player.frame_border_adjust_x = PLAYER_PORTRAIT_FRAME_BORDER_ADJUST_X
+	player.frame_border_adjust_y = PLAYER_PORTRAIT_FRAME_BORDER_ADJUST_Y
 
 	# Load and set player portrait texture from imgName
 	var player_portrait_texture = TextureManager.get_face_texture(player_data.get_img_name())
@@ -413,6 +426,11 @@ func init() -> void:
 		OPPONENT_PORTRAIT_Y + OPPONENT_PORTRAIT_FRAME_ADJUST_Y)
 	opponent.z_index = PORTRAIT_Z_INDEX
 	opponent.visible = false  # Hide until battle starts (prevent showing in class select)
+	# Set per-instance portrait adjustments (opponent portraits offset differently than player)
+	opponent.sprite_adjust_x = OPPONENT_PORTRAIT_SPRITE_ADJUST_X
+	opponent.sprite_adjust_y = OPPONENT_PORTRAIT_SPRITE_ADJUST_Y
+	opponent.frame_border_adjust_x = OPPONENT_PORTRAIT_FRAME_BORDER_ADJUST_X
+	opponent.frame_border_adjust_y = OPPONENT_PORTRAIT_FRAME_BORDER_ADJUST_Y
 
 	# Load and set opponent portrait texture from imgName
 	var opponent_portrait_texture = TextureManager.get_face_texture(opponent_data.get_img_name())
