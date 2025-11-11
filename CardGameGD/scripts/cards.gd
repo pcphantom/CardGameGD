@@ -199,6 +199,96 @@ const GAME_LOG_WIDTH: int = 451         # Game log width (RESTORED from 220 - wa
 const GAME_LOG_HEIGHT: int = 173        # Game log height
 const GAME_LOG_Z_INDEX: int = 4
 
+# ═════════════════════════════════════════════════════════════════════════════
+# UI FINE-TUNING CONTROLS - Adjust these to fine-tune element positioning
+# ═════════════════════════════════════════════════════════════════════════════
+#
+# These controls allow precise adjustments to UI element positions and sizes
+# without modifying the core positioning logic. Use these to compensate for
+# rendering differences between LibGDX and Godot.
+#
+# ═════════════════════════════════════════════════════════════════════════════
+
+# ─────────────────────────────────────────────────────────────────────────────
+# PORTRAIT POSITIONING ADJUSTMENTS
+# ─────────────────────────────────────────────────────────────────────────────
+# These adjust the final position of portrait images
+const PLAYER_PORTRAIT_ADJUST_X: int = 0      # Add to player portrait X position
+const PLAYER_PORTRAIT_ADJUST_Y: int = 0      # Add to player portrait Y position
+const OPPONENT_PORTRAIT_ADJUST_X: int = 0    # Add to opponent portrait X position
+const OPPONENT_PORTRAIT_ADJUST_Y: int = 0    # Add to opponent portrait Y position
+
+# ─────────────────────────────────────────────────────────────────────────────
+# LABEL POSITIONING ADJUSTMENTS
+# ─────────────────────────────────────────────────────────────────────────────
+# These adjust labels to compensate for LibGDX baseline vs Godot top-left positioning
+
+# Player/Opponent Class & Life Labels (e.g., "Cleric Life: 60")
+const PLAYER_INFO_LABEL_ADJUST_X: int = 0    # Add to player info label X position
+const PLAYER_INFO_LABEL_ADJUST_Y: int = 0    # Add to player info label Y position (currently -28 for font 24)
+const OPPONENT_INFO_LABEL_ADJUST_X: int = 0  # Add to opponent info label X position
+const OPPONENT_INFO_LABEL_ADJUST_Y: int = 0  # Add to opponent info label Y position (currently -28 for font 24)
+
+# Player/Opponent Elemental Powers Labels (Fire, Air, Water, Earth, Other)
+const PLAYER_POWERS_ADJUST_X: int = 0        # Add to all player power labels X position
+const PLAYER_POWERS_ADJUST_Y: int = 0        # Add to all player power labels Y position (currently -22 for font 18)
+const OPPONENT_POWERS_ADJUST_X: int = 0      # Add to all opponent power labels X position
+const OPPONENT_POWERS_ADJUST_Y: int = 0      # Add to all opponent power labels Y position (currently -22 for font 18)
+
+# ─────────────────────────────────────────────────────────────────────────────
+# CARD POSITIONING ADJUSTMENTS
+# ─────────────────────────────────────────────────────────────────────────────
+# These adjust the position of cards in the player's hand
+
+# Hand Card Images (the card artwork itself)
+const HAND_CARD_IMAGE_ADJUST_X: int = 0      # Add to all hand card images X position
+const HAND_CARD_IMAGE_ADJUST_Y: int = 0      # Add to all hand card images Y position
+
+# Hand Card Frames (the decorative border around cards)
+const HAND_CARD_FRAME_ADJUST_X: int = 0      # Add to all hand card frames X position
+const HAND_CARD_FRAME_ADJUST_Y: int = 0      # Add to all hand card frames Y position
+
+# Hand Card Stats (attack/cost/life numbers on cards)
+const HAND_CARD_STATS_ADJUST_Y: int = 0      # Add to all card stat labels Y position (currently -20 for font 16)
+
+# ─────────────────────────────────────────────────────────────────────────────
+# PLAY AREA ADJUSTMENTS
+# ─────────────────────────────────────────────────────────────────────────────
+# These move both player and opponent play slots together
+
+const PLAY_SLOTS_ADJUST_X: int = 0           # Add to both player & opponent slots X position
+const PLAY_SLOTS_ADJUST_Y: int = 0           # Add to both player & opponent slots Y position
+
+# ─────────────────────────────────────────────────────────────────────────────
+# BUTTON POSITIONING ADJUSTMENTS
+# ─────────────────────────────────────────────────────────────────────────────
+# Skip Turn Button
+const SKIP_TURN_BUTTON_ADJUST_X: int = 0     # Add to skip turn button X position
+const SKIP_TURN_BUTTON_ADJUST_Y: int = 0     # Add to skip turn button Y position
+
+# Other Buttons (Show Cards, Shuffle Cards)
+const SIDE_BUTTONS_ADJUST_X: int = 0         # Add to all side buttons X position
+const SIDE_BUTTONS_ADJUST_Y: int = 0         # Add to all side buttons Y position
+
+# ─────────────────────────────────────────────────────────────────────────────
+# FONT SIZE CONTROLS
+# ─────────────────────────────────────────────────────────────────────────────
+# Adjust these to make text larger or smaller
+
+# Player/Opponent Info Labels (Class & Life, e.g., "Cleric Life: 60")
+const INFO_LABEL_FONT_SIZE: int = 24         # Font size for player/opponent class and life labels
+
+# Elemental Powers Labels (Fire, Air, Water, Earth, Other)
+const POWERS_LABEL_FONT_SIZE: int = 18       # Font size for elemental power labels
+
+# Card Stats (attack/cost/life numbers on small cards)
+const CARD_STATS_FONT_SIZE_SMALL: int = 16   # Font size for stats on small cards
+const CARD_STATS_FONT_SIZE_LARGE: int = 20   # Font size for stats on large cards
+
+# ═════════════════════════════════════════════════════════════════════════════
+
+const GAME_LOG_Z_INDEX: int = 4
+
 # Background (full-screen battlefield image)
 const BACKGROUND_Z_INDEX: int = -10     # Behind everything else
 
@@ -318,10 +408,14 @@ func init() -> void:
 	stage.add_child(sprBg)
 
 	# Java: player = new PlayerImage(...); opponent = new PlayerImage(...); (lines 144-145)
-	player = PlayerImage.new(null, portraitramka, greenfont, Player.new(), PLAYER_PORTRAIT_X, PLAYER_PORTRAIT_Y)
+	player = PlayerImage.new(null, portraitramka, greenfont, Player.new(),
+		PLAYER_PORTRAIT_X + PLAYER_PORTRAIT_ADJUST_X,
+		PLAYER_PORTRAIT_Y + PLAYER_PORTRAIT_ADJUST_Y)
 	player.z_index = PORTRAIT_Z_INDEX
 	player.visible = false  # Hide until battle starts (prevent showing in class select)
-	opponent = PlayerImage.new(null, portraitramka, greenfont, Player.new(), OPPONENT_PORTRAIT_X, OPPONENT_PORTRAIT_Y)
+	opponent = PlayerImage.new(null, portraitramka, greenfont, Player.new(),
+		OPPONENT_PORTRAIT_X + OPPONENT_PORTRAIT_ADJUST_X,
+		OPPONENT_PORTRAIT_Y + OPPONENT_PORTRAIT_ADJUST_Y)
 	opponent.z_index = PORTRAIT_Z_INDEX
 	opponent.visible = false  # Hide until battle starts (prevent showing in class select)
 
@@ -341,8 +435,10 @@ func init() -> void:
 	# Godot Y = 768 - 468 - label_height = 768 - 468 - 28 = 272
 	playerInfoLabel = Label.new()
 	playerInfoLabel.text = Specializations.CLERIC.get_title()
-	playerInfoLabel.position = Vector2(210, 272)  # FIXED: Was 300, corrected for label height (28px)
-	playerInfoLabel.add_theme_font_size_override("font_size", 24)  # Increased from 14 for better visibility
+	playerInfoLabel.position = Vector2(
+		210 + PLAYER_INFO_LABEL_ADJUST_X,
+		272 + PLAYER_INFO_LABEL_ADJUST_Y)
+	playerInfoLabel.add_theme_font_size_override("font_size", INFO_LABEL_FONT_SIZE)
 	playerInfoLabel.add_theme_color_override("font_color", Color.WHITE)
 	playerInfoLabel.custom_minimum_size = Vector2(150, 20)
 
@@ -352,8 +448,10 @@ func init() -> void:
 	# Godot Y = 768 - 738 - label_height = 768 - 738 - 28 = 2
 	opptInfoLabel = Label.new()
 	opptInfoLabel.text = Specializations.CLERIC.get_title()
-	opptInfoLabel.position = Vector2(210, 2)  # FIXED: Was 30, corrected for label height (28px)
-	opptInfoLabel.add_theme_font_size_override("font_size", 24)  # Increased from 14 for better visibility
+	opptInfoLabel.position = Vector2(
+		210 + OPPONENT_INFO_LABEL_ADJUST_X,
+		2 + OPPONENT_INFO_LABEL_ADJUST_Y)
+	opptInfoLabel.add_theme_font_size_override("font_size", INFO_LABEL_FONT_SIZE)
 	opptInfoLabel.add_theme_color_override("font_color", Color.WHITE)
 	opptInfoLabel.custom_minimum_size = Vector2(150, 20)
 
@@ -365,7 +463,9 @@ func init() -> void:
 	# For widgets, use the original Y value (50), not the ydown result
 	showOpptCardsButton = Button.new()
 	showOpptCardsButton.pressed.connect(_on_show_oppt_cards_pressed)
-	showOpptCardsButton.position = Vector2(10, 50)
+	showOpptCardsButton.position = Vector2(
+		10 + SIDE_BUTTONS_ADJUST_X,
+		50 + SIDE_BUTTONS_ADJUST_Y)
 	showOpptCardsButton.size = Vector2(50, 50)
 	stage.add_child(showOpptCardsButton)
 
@@ -377,7 +477,9 @@ func init() -> void:
 	if endTurnButtonTexture:
 		skipTurnButton.texture_normal = endTurnButtonTexture
 	skipTurnButton.pressed.connect(_on_skip_turn_pressed)
-	skipTurnButton.position = Vector2(10, 110)
+	skipTurnButton.position = Vector2(
+		10 + SKIP_TURN_BUTTON_ADJUST_X,
+		110 + SKIP_TURN_BUTTON_ADJUST_Y)
 	skipTurnButton.custom_minimum_size = Vector2(50, 50)
 	skipTurnButton.ignore_texture_size = true
 	skipTurnButton.stretch_mode = TextureButton.STRETCH_KEEP_ASPECT_CENTERED
@@ -388,7 +490,9 @@ func init() -> void:
 	# For widgets, use the original Y value (170), not the ydown result
 	shuffleCardsButton = Button.new()
 	shuffleCardsButton.pressed.connect(_on_shuffle_cards_pressed)
-	shuffleCardsButton.position = Vector2(10, 170)
+	shuffleCardsButton.position = Vector2(
+		10 + SIDE_BUTTONS_ADJUST_X,
+		170 + SIDE_BUTTONS_ADJUST_Y)
 	shuffleCardsButton.size = Vector2(50, 50)
 	stage.add_child(shuffleCardsButton)
 
@@ -402,9 +506,11 @@ func init() -> void:
 		var label := Label.new()
 		label.text = getPlayerStrength(player.get_player_info(), CardType.Type.OTHER)
 		x += STATS_SPACING_X
-		label.position = Vector2(x, y)
+		label.position = Vector2(
+			x + PLAYER_POWERS_ADJUST_X,
+			y + PLAYER_POWERS_ADJUST_Y)
 		# Add styling to make labels visible
-		label.add_theme_font_size_override("font_size", 18)  # Increased from 12 for better visibility
+		label.add_theme_font_size_override("font_size", POWERS_LABEL_FONT_SIZE)
 		label.add_theme_color_override("font_color", Color.WHITE)
 		label.custom_minimum_size = Vector2(90, 20)
 		stage.add_child(label)
@@ -420,9 +526,11 @@ func init() -> void:
 		var label := Label.new()
 		label.text = getPlayerStrength(opponent.get_player_info(), CardType.Type.OTHER)
 		x += STATS_SPACING_X
-		label.position = Vector2(x, y)
+		label.position = Vector2(
+			x + OPPONENT_POWERS_ADJUST_X,
+			y + OPPONENT_POWERS_ADJUST_Y)
 		# Add styling to make labels visible
-		label.add_theme_font_size_override("font_size", 18)  # Increased from 12 for better visibility
+		label.add_theme_font_size_override("font_size", POWERS_LABEL_FONT_SIZE)
 		label.add_theme_color_override("font_color", Color.WHITE)
 		label.custom_minimum_size = Vector2(90, 20)
 		stage.add_child(label)

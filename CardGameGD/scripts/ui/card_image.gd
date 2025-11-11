@@ -179,8 +179,8 @@ func _render_card(size_type: String) -> void:
 	# Java: batch.draw(img, x, y)
 	# Position and set card artwork
 	# Use configurable offset from Cards config (default 0,0)
-	var portrait_offset_x = Cards.HAND_CARD_PORTRAIT_OFFSET_X if Cards else 0
-	var portrait_offset_y = Cards.HAND_CARD_PORTRAIT_OFFSET_Y if Cards else 0
+	var portrait_offset_x = (Cards.HAND_CARD_PORTRAIT_OFFSET_X if Cards else 0) + (Cards.HAND_CARD_IMAGE_ADJUST_X if Cards else 0)
+	var portrait_offset_y = (Cards.HAND_CARD_PORTRAIT_OFFSET_Y if Cards else 0) + (Cards.HAND_CARD_IMAGE_ADJUST_Y if Cards else 0)
 	portrait.position = Vector2(portrait_offset_x, portrait_offset_y)
 	portrait.size = Vector2(card_width, card_height)
 	portrait.expand_mode = TextureRect.EXPAND_KEEP_SIZE
@@ -211,8 +211,8 @@ func _render_card(size_type: String) -> void:
 	
 	# Java: batch.draw(frame, x - 3, y - 12)
 	# Use configurable offset from Cards config (default -3,-12 from Java)
-	var frame_offset_x = Cards.HAND_CARD_FRAME_OFFSET_X if Cards else -3
-	var frame_offset_y = Cards.HAND_CARD_FRAME_OFFSET_Y if Cards else -12
+	var frame_offset_x = (Cards.HAND_CARD_FRAME_OFFSET_X if Cards else -3) + (Cards.HAND_CARD_FRAME_ADJUST_X if Cards else 0)
+	var frame_offset_y = (Cards.HAND_CARD_FRAME_OFFSET_Y if Cards else -12) + (Cards.HAND_CARD_FRAME_ADJUST_Y if Cards else 0)
 	frame_rect.position = Vector2(frame_offset_x, frame_offset_y)
 	frame_rect.size = Vector2(frame_width, frame_height)
 	frame_rect.expand_mode = TextureRect.EXPAND_KEEP_SIZE
@@ -248,9 +248,11 @@ func _render_card(size_type: String) -> void:
 			if is_large:
 				attack_x = 5.0 if at < 10 else 2.0
 				attack_y = LARGE_CARD_HEIGHT - 5.0 - 24  # FIXED: Subtract label height for large (24px)
-			attack_label.position = Vector2(attack_x, attack_y)
+			var stats_adjust_y = Cards.HAND_CARD_STATS_ADJUST_Y if Cards else 0
+			attack_label.position = Vector2(attack_x, attack_y + stats_adjust_y)
 			attack_label.size = Vector2(15, 15) if not is_large else Vector2(18, 18)
-			attack_label.add_theme_font_size_override("font_size", 16 if not is_large else 20)  # Increased from 12/14 for better visibility
+			var attack_font_size = Cards.CARD_STATS_FONT_SIZE_LARGE if is_large else Cards.CARD_STATS_FONT_SIZE_SMALL
+			attack_label.add_theme_font_size_override("font_size", attack_font_size)
 			attack_label.add_theme_color_override("font_color", Color(1.0, 0.0, 0.0))
 			attack_label.text = str(at)
 			attack_label.visible = true
@@ -265,9 +267,10 @@ func _render_card(size_type: String) -> void:
 			if is_large:
 				cost_x = 132.0 if co < 10 else 130.0
 				cost_y = LARGE_CARD_HEIGHT - 150.0 - 24  # FIXED: Subtract label height for large (24px)
-			cost_label.position = Vector2(cost_x, cost_y)
+			cost_label.position = Vector2(cost_x, cost_y + stats_adjust_y)
 			cost_label.size = Vector2(15, 15) if not is_large else Vector2(18, 18)
-			cost_label.add_theme_font_size_override("font_size", 16 if not is_large else 20)  # Increased from 12/14 for better visibility
+			var cost_font_size = Cards.CARD_STATS_FONT_SIZE_LARGE if is_large else Cards.CARD_STATS_FONT_SIZE_SMALL
+			cost_label.add_theme_font_size_override("font_size", cost_font_size)
 			cost_label.add_theme_color_override("font_color", Color(1.0, 1.0, 0.0))
 			cost_label.text = str(co)
 			cost_label.visible = true
@@ -282,9 +285,10 @@ func _render_card(size_type: String) -> void:
 			if is_large:
 				life_x = 134.0 if li < 10 else 131.0
 				life_y = LARGE_CARD_HEIGHT - 5.0 - 24  # FIXED: Subtract label height for large (24px)
-			life_label.position = Vector2(life_x, life_y)
+			life_label.position = Vector2(life_x, life_y + stats_adjust_y)
 			life_label.size = Vector2(15, 15) if not is_large else Vector2(18, 18)
-			life_label.add_theme_font_size_override("font_size", 16 if not is_large else 20)  # Increased from 12/14 for better visibility
+			var life_font_size = Cards.CARD_STATS_FONT_SIZE_LARGE if is_large else Cards.CARD_STATS_FONT_SIZE_SMALL
+			life_label.add_theme_font_size_override("font_size", life_font_size)
 			life_label.add_theme_color_override("font_color", Color(0.0, 1.0, 0.0))
 			life_label.text = str(li)
 			life_label.visible = true
@@ -299,9 +303,11 @@ func _render_card(size_type: String) -> void:
 		if is_large:
 			cost_x = 132.0 if co < 10 else 130.0
 			cost_y = LARGE_CARD_HEIGHT - 192.0 - 24  # FIXED: Subtract label height for large (24px)
-		cost_label.position = Vector2(cost_x, cost_y)
+		var spell_stats_adjust_y = Cards.HAND_CARD_STATS_ADJUST_Y if Cards else 0
+		cost_label.position = Vector2(cost_x, cost_y + spell_stats_adjust_y)
 		cost_label.size = Vector2(15, 15) if not is_large else Vector2(18, 18)
-		cost_label.add_theme_font_size_override("font_size", 16 if not is_large else 20)  # Increased from 12/14 for better visibility
+		var spell_cost_font_size = Cards.CARD_STATS_FONT_SIZE_LARGE if is_large else Cards.CARD_STATS_FONT_SIZE_SMALL
+		cost_label.add_theme_font_size_override("font_size", spell_cost_font_size)
 		cost_label.add_theme_color_override("font_color", Color(1.0, 1.0, 0.0))
 		cost_label.text = str(co)
 		cost_label.visible = true
