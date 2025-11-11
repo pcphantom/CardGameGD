@@ -1,5 +1,5 @@
 63f7b34db8d8cdea90c76aacccf841ec
-::res://::1762840609
+::res://::1762841976
 ASSETS.md::TextFile/TextFile::-1::1762465666::0::1::::<><><>0<>0<><>::
 CHANGELOG.md::TextFile/TextFile::-1::1762465754::0::1::::<><><>0<>0<><>::
 icon.svg::CompressedTexture2D/CompressedTexture2D::800388081587134645::1762465708::1762484095::1::::<><><>0<>0<>e3023517990ca3483305f473abe5ab5b<>res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex::
@@ -102,8 +102,8 @@ main_menu.tscn::PackedScene::9217475211852450457::1762623804::0::1::::<><><>0<>0
 multiplayer_menu.tscn::PackedScene/PackedScene::3895437788422108859::1762460937::0::1::::<><><>0<>0<><>::res://scripts/ui/multiplayer_menu.gd
 settings_menu.tscn::PackedScene/PackedScene::7138271846213266015::1762462378::0::1::::<><><>0<>0<><>::res://scripts/ui/settings_menu.gd
 tutorial.tscn::PackedScene/PackedScene::6341604153067692958::1762465127::0::1::::<><><>0<>0<><>::res://scripts/ui/tutorial.gd
-::res://scripts/::1762839874
-cards.gd::GDScript::1224895267452411491::1762839874::0::1::::Cards<>SimpleGame<><>0<>0<><>::
+::res://scripts/::1762841452
+cards.gd::GDScript::1224895267452411491::1762841452::0::1::::Cards<>SimpleGame<><>0<>0<><>::
 simple_game.gd::GDScript::9100279177332714756::1762728880::0::1::::SimpleGame<>Node2D<><>0<>0<><>::
 ::res://scripts/actions/::1762675934
 action_move_circular.gd::GDScript::1933632861283189352::1762675934::0::1::::ActionMoveCircular<>Tween<><>0<>0<><>::
@@ -332,9 +332,9 @@ tornado.gd::GDScript/GDScript::3187286306766293233::1762452254::0::1::::Tornado<
 trumpet.gd::GDScript/GDScript::171969602185673242::1762453703::0::1::::Trumpet<>BaseSpell<><>0<>0<><>::
 weakness.gd::GDScript::6177052516694989845::1762641042::0::1::::Weakness<>BaseSpell<><>0<>0<><>::
 wrath_of_god.gd::GDScript/GDScript::8266746821893266236::1762452254::0::1::::WrathOfGod<>BaseSpell<><>0<>0<><>::
-::res://scripts/ui/::1762838469
+::res://scripts/ui/::1762841452
 card_description_image.gd::GDScript::2950691928780507541::1762727573::0::1::::CardDescriptionImage<>Control<><>0<>0<><>::
-card_image.gd::GDScript::7592023349099855668::1762838469::0::1::::CardImage<>Control<><>0<>0<><>::
+card_image.gd::GDScript::7592023349099855668::1762841452::0::1::::CardImage<>Control<><>0<>0<><>::
 log_scroll_pane.gd::GDScript::5759868264687123071::1762727573::0::1::::LogScrollPane<>Panel<><>0<>0<><>::
 main_menu.gd::GDScript::9113522143468546571::1762499093::0::1::::MainMenu<>Control<><>0<>0<><>::
 multiplayer_menu.gd::GDScript/GDScript::3180879668786921110::1762486889::0::1::::MultiplayerMenu<>Control<><>0<>0<><>::
