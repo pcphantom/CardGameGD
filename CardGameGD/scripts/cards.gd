@@ -229,11 +229,13 @@ const OPPONENT_POWERS_ADJUST_X: int = 0      # POSITIVE MOVES RIGHT, NEGATIVE MO
 const OPPONENT_POWERS_ADJUST_Y: int = 0      # POSITIVE MOVES DOWN, NEGATIVE MOVES UP
 
 # VALUES FOR PLAYER'S CARD STATS - MOVES ALL CARD NUMBERS (ATTACK/COST/LIFE)
-const HAND_CARD_STATS_ADJUST_X: int = -2      # POSITIVE MOVES RIGHT, NEGATIVE MOVES LEFT
+const HAND_CARD_STATS_ADJUST_X: int = -2     # POSITIVE MOVES RIGHT, NEGATIVE MOVES LEFT
 const HAND_CARD_STATS_ADJUST_Y: int = 25     # POSITIVE MOVES DOWN, NEGATIVE MOVES UP
 const CARD_STATS_FONT_SIZE_SMALL: int = 16   # FONT SIZE FOR CARD STATS ON SMALL CARDS
 const CARD_STATS_FONT_SIZE_LARGE: int = 20   # FONT SIZE FOR CARD STATS ON LARGE CARDS
-const CARD_STATS_FONT_COLOR: Color = Color(0.0, 0.0, 0.0, 1.0)  # FONT COLOR FOR CARD STATS (R, G, B, A) - DEFAULT WHITE
+const CARD_STATS_ATTACK_COLOR: Color = Color(1.0, 0.0, 0.0, 1.0)  # FONT COLOR FOR ATTACK (R, G, B, A) - DEFAULT RED
+const CARD_STATS_COST_COLOR: Color = Color(1.0, 1.0, 0.0, 1.0)    # FONT COLOR FOR COST (R, G, B, A) - DEFAULT YELLOW
+const CARD_STATS_LIFE_COLOR: Color = Color(0.0, 1.0, 0.0, 1.0)    # FONT COLOR FOR LIFE (R, G, B, A) - DEFAULT GREEN
 const CARD_STATS_BOLD: bool = false          # MAKE CARD STATS BOLD (true) OR NORMAL (false)
 
 # PLAYER'S PORTRAIT - MOVES THE PLAYER'S PORTRAIT IMAGE
@@ -380,16 +382,37 @@ func init() -> void:
 	stage.add_child(sprBg)
 
 	# Java: player = new PlayerImage(...); opponent = new PlayerImage(...); (lines 144-145)
-	player = PlayerImage.new(null, portraitramka, greenfont, Player.new(),
+	# CRITICAL FIX: Load portrait textures from faceCardAtlas and set them on PlayerImage objects
+	var player_data = Player.new()
+	var opponent_data = Player.new()
+
+	player = PlayerImage.new(null, portraitramka, greenfont, player_data,
 		PLAYER_PORTRAIT_X + PLAYER_PORTRAIT_ADJUST_X,
 		PLAYER_PORTRAIT_Y + PLAYER_PORTRAIT_ADJUST_Y)
 	player.z_index = PORTRAIT_Z_INDEX
 	player.visible = false  # Hide until battle starts (prevent showing in class select)
-	opponent = PlayerImage.new(null, portraitramka, greenfont, Player.new(),
+
+	# Load and set player portrait texture from imgName
+	var player_portrait_texture = TextureManager.get_face_texture(player_data.get_img_name())
+	if player_portrait_texture:
+		player.set_texture(player_portrait_texture)
+		print("Cards.init(): Set player portrait texture from imgName: ", player_data.get_img_name())
+	else:
+		push_warning("Cards.init(): Failed to load player portrait texture for: ", player_data.get_img_name())
+
+	opponent = PlayerImage.new(null, portraitramka, greenfont, opponent_data,
 		OPPONENT_PORTRAIT_X + OPPONENT_PORTRAIT_ADJUST_X,
 		OPPONENT_PORTRAIT_Y + OPPONENT_PORTRAIT_ADJUST_Y)
 	opponent.z_index = PORTRAIT_Z_INDEX
 	opponent.visible = false  # Hide until battle starts (prevent showing in class select)
+
+	# Load and set opponent portrait texture from imgName
+	var opponent_portrait_texture = TextureManager.get_face_texture(opponent_data.get_img_name())
+	if opponent_portrait_texture:
+		opponent.set_texture(opponent_portrait_texture)
+		print("Cards.init(): Set opponent portrait texture from imgName: ", opponent_data.get_img_name())
+	else:
+		push_warning("Cards.init(): Failed to load opponent portrait texture for: ", opponent_data.get_img_name())
 
 	# Java: defaultFont = new BitmapFont(); (lines 147-151)
 	# TODO: Load fonts properly
