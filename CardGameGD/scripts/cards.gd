@@ -1125,8 +1125,9 @@ func _on_card_clicked(card_visual: CardImage) -> void:
 			print("    -> Spell is NON-TARGETABLE, casting immediately")
 			# Java: BattleRoundThread t = new BattleRoundThread(Cards.this, player, opponent, selectedCard); (line 549)
 			# Java: t.start(); (line 550)
-			# TODO: Start BattleRoundThread equivalent
-			print("    -> TODO: Cast spell immediately via BattleRoundThread")
+			startTurn()
+			var battle_thread := BattleRoundThread.new(self, player, opponent, selectedCard)
+			battle_thread.execute()
 
 	# Java: else if (selectedCard.getCard().getMustBeSummoneOnCard() != null) { (line 553)
 	elif card_data.get_must_be_summoned_on_card() != null and card_data.get_must_be_summoned_on_card() != "":
@@ -1231,14 +1232,13 @@ func _on_slot_clicked(slot: SlotImage) -> void:
 
 	# Java: if (!selectedCard.getCard().isSpell() && selectedCard.getCard().getMustBeSummoneOnCard() == null) { (line 671)
 	if not card_data.is_spell() and (card_data.get_must_be_summoned_on_card() == null or card_data.get_must_be_summoned_on_card() == ""):
-		print("  -> Summoning REGULAR CREATURE to slot ", slot.get_slot_index())
+		print("  -> Summoning creature to slot ", slot.get_slot_index())
 
 		# Java: startTurn(); (line 672)
 		startTurn()
 
 		# Java: final CardImage clone = selectedCard.clone(); (line 674)
 		var clone: CardImage = selectedCard.clone_card()
-		print("    -> Cloned card: ", clone.get_card().name if clone.get_card() else "null")
 
 		# Java: stage.addActor(clone); (line 676)
 		stage.add_child(clone)
@@ -1269,7 +1269,6 @@ func _on_slot_clicked(slot: SlotImage) -> void:
 			player,
 			opponent
 		)
-		print("    -> Created creature instance: ", summoned_creature)
 		clone.set_creature(summoned_creature)
 
 		# Java: Sounds.play(Sound.SUMMONED); (line 689)
@@ -1279,7 +1278,6 @@ func _on_slot_clicked(slot: SlotImage) -> void:
 		# Java: clone.addAction(sequence(moveTo(si.getX() + 5, si.getY() + 26, 1.0f), new Action() {...})); (lines 691-697)
 		# Animate card from hand to slot
 		clone.position = selectedCard.position
-		print("    -> Starting animation from ", clone.position, " to ", Vector2(slot.position.x + 5, slot.position.y + 26))
 
 		var tween := create_tween()
 		tween.set_meta("bound_node", clone)  # Tag tween with the node it's animating
@@ -1290,7 +1288,7 @@ func _on_slot_clicked(slot: SlotImage) -> void:
 			1.0
 		)
 		tween.tween_callback(func():
-			print("    -> Animation complete, starting battle round")
+			print("    -> Animation complete, executing battle round")
 			# Java: BattleRoundThread t = new BattleRoundThread(Cards.this, player, opponent, clone, si.getIndex()); (line 693)
 			# Java: t.start(); (line 694)
 			var battle_thread := BattleRoundThread.new(self, player, opponent, clone, slot_index)

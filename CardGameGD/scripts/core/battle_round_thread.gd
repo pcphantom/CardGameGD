@@ -58,7 +58,7 @@ func _init(game_ref, player_ref: PlayerImage, opponent_ref: PlayerImage, summone
 ## Main battle round execution
 ## Java: public void run() (line 65)
 func execute() -> void:
-	print("[BattleRoundThread] Starting battle round")
+	print("[BattleRound] START")
 
 	# Java: game.startTurn(); (line 68)
 	game.startTurn()
@@ -80,15 +80,12 @@ func execute() -> void:
 
 	# Java: if (summonedCardImage != null) { (line 81)
 	if summoned_card_image != null:
-		print("[BattleRoundThread] Processing summoned creature")
-
 		# Java: summonedCardImage.getCreature().onSummoned(); (line 84)
 		if summoned_card_image.get_creature():
 			summoned_card_image.get_creature().onSummoned()
 
 	# Java: else if (spellCardImage != null) { (line 94)
 	elif spell_card_image != null:
-		print("[BattleRoundThread] Processing spell cast")
 
 		# Java: Spell spell = SpellFactory.getSpellClass(...); spell.onCast(); (lines 97-100)
 		var spell = SpellFactory.get_spell_class(
@@ -131,7 +128,6 @@ func execute() -> void:
 	var si: SlotImage = get_opponent_slot()
 
 	if si != null:
-		print("[BattleRoundThread] AI picking card to play")
 
 		# Java: opptPick = oi.pickRandomEnabledCard(); (line 167)
 		var oppt_pick: CardImage = oi.pickRandomEnabledCard()
@@ -191,7 +187,6 @@ func execute() -> void:
 
 			else:
 				# Java: Spell opptSpell = SpellFactory.getSpellClass(...); opptSpell.onCast(); (lines 213-214)
-				print("[BattleRoundThread] AI casting spell")
 				var oppt_spell = SpellFactory.get_spell_class(
 					oppt_pick.get_card().getName(),
 					game,
@@ -201,9 +196,6 @@ func execute() -> void:
 					player
 				)
 				oppt_spell.onCast()
-
-	else:
-		print("[BattleRoundThread] No open slots for AI to summon")
 
 	# Java: for (CardImage attacker : opponent.getSlotCards()) { (line 226)
 	# AI creatures attack
@@ -224,7 +216,6 @@ func execute() -> void:
 
 	# Java: oi.incrementStrengthAll(1); pi.incrementStrengthAll(1); (lines 236-237)
 	# GROWTH RATE: Both players gain +1 to all elemental strengths
-	print("[BattleRoundThread] Applying growth rate (+1 to all strengths)")
 	oi.incrementStrengthAll(1)
 	pi.incrementStrengthAll(1)
 
@@ -232,7 +223,6 @@ func execute() -> void:
 	end_of_turn_check(opponent)
 
 	# Java: for (CardType type : Player.TYPES) { pi.enableDisableCards(type); oi.enableDisableCards(type); } (lines 245-248)
-	print("[BattleRoundThread] Enabling/disabling cards based on available power")
 	for type in Player.TYPES:
 		pi.enableDisableCards(type)
 		oi.enableDisableCards(type)
@@ -243,7 +233,7 @@ func execute() -> void:
 	# Java: game.finishTurn(); (line 257)
 	game.finishTurn()
 
-	print("[BattleRoundThread] Battle round complete")
+	print("[BattleRound] COMPLETE")
 
 ## Java: private boolean isTriplicateSummon(CardImage summoned, CardImage attacker) (line 263)
 func is_triplicate_summon(summoned: CardImage, attacker: CardImage) -> bool:
