@@ -73,12 +73,12 @@ func on_summoned() -> void:
 				if card != null:
 					card.increment_attack(1)
 
-	var opponent_cards: Array = []
+	var opponent_slot_cards: Array = []
 	if opponent != null and opponent.has_method("get_slot_cards"):
-		opponent_cards = opponent.get_slot_cards()
+		opponent_slot_cards = opponent.get_slot_cards()
 
-	if slot_index < opponent_cards.size() and opponent_cards[slot_index] != null:
-		var opp_card = opponent_cards[slot_index]
+	if slot_index < opponent_slot_cards.size() and opponent_slot_cards[slot_index] != null:
+		var opp_card = opponent_slot_cards[slot_index]
 		if opp_card.has_method("get_card"):
 			if opp_card.get_card().get_name().to_lower() == "oblinhero":
 				if opp_card.has_method("get_creature"):
@@ -167,14 +167,14 @@ func on_attack() -> void:
 	if game != null and game.has_method("move_card_actor_on_battle"):
 		game.move_card_actor_on_battle(card_image, owner)
 
-	var owner_cards: Array = []
+	var owner_slot_cards: Array = []
 	if owner != null and owner.has_method("get_slot_cards"):
-		owner_cards = owner.get_slot_cards()
+		owner_slot_cards = owner.get_slot_cards()
 
 	for index in range(6):
-		if index >= owner_cards.size():
+		if index >= owner_slot_cards.size():
 			continue
-		var ci = owner_cards[index]
+		var ci = owner_slot_cards[index]
 		if ci == null:
 			continue
 		if ci.has_method("get_card"):

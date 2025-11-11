@@ -1173,38 +1173,29 @@ func _on_card_hovered(card_visual: CardImage) -> void:
 	var card_data: Card = card_visual.get_card()
 
 	# Java: Sprite sp = largeCardAtlas.createSprite(card.getName().toLowerCase()); (line 726)
-	var sprite_name: String = card_data.name.to_lower()
-	var sp = null
+	# Godot: TextureManager returns Texture2D directly, not Sprite2D
+	var card_name_lower: String = card_data.name.to_lower()
+	var card_texture: Texture2D = null
 
-	# Try regular atlas first
-	if largeCardAtlas:
-		sp = TextureManager.get_large_card_sprite(sprite_name)
-
-	# Java: if (sp == null) { sp = largeTGACardAtlas.createSprite(card.getName().toLowerCase()); (lines 727-732)
-	if sp == null and largeTGACardAtlas:
-		sp = TextureManager.get_large_tga_card_sprite(sprite_name)
-		# Java: if (sp != null) { sp.flip(false, true); //tga files need to be flipped twice (lines 729-731)
-		if sp != null:
-			sp.flip_v = not sp.flip_v
+	# Try to get large card texture from TextureManager
+	card_texture = TextureManager.get_large_card_texture(card_name_lower)
 
 	# Java: if (sp == null) { cdi.setImg(null); return; } (lines 733-736)
-	if sp == null:
-		print("  -> No sprite found for: ", sprite_name)
-		cdi.set_img(null)
+	if card_texture == null:
+		print("  -> No texture found for: ", card_name_lower)
+		cdi.setImg(null)
 		return
 
-	# Java: sp.flip(false, true); (line 738)
-	sp.flip_v = not sp.flip_v
-
 	# Java: cdi.setImg(sp); (line 740)
-	cdi.set_img(sp)
+	# Godot: setImg() expects Texture2D (no sprite flipping needed)
+	cdi.setImg(card_texture)
 
 	# Java: cdi.setFrame(ci.getCard().isSpell() ? ramkabigspell : ramkabig); (line 741)
 	var frame_texture: Texture2D = ramkabigspell if card_data.is_spell() else ramkabig
-	cdi.set_frame(frame_texture)
+	cdi.setFrame(frame_texture)
 
 	# Java: cdi.setCard(card); (line 742)
-	cdi.set_card(card_data)
+	cdi.setCard(card_data)
 
 ## Card unhover handler - ShowDescriptionListener.exit() equivalent
 ## Java source: Cards.java lines 746-748 (ShowDescriptionListener.exit)
@@ -1212,7 +1203,7 @@ func _on_card_hovered(card_visual: CardImage) -> void:
 func _on_card_unhovered(card_visual: CardImage) -> void:
 	print("Card unhovered: ", card_visual.get_card().name if card_visual.get_card() else "null")
 	# Java: cdi.setImg(null); (line 747)
-	cdi.set_img(null)
+	cdi.setImg(null)
 
 ## Slot click handler - SlotListener.touchDown() equivalent
 ## Java source: Cards.java lines 658-711 (SlotListener.touchDown)
@@ -1284,7 +1275,7 @@ func _on_slot_clicked(slot: SlotImage) -> void:
 
 		# Java: Sounds.play(Sound.SUMMONED); (line 689)
 		if SoundManager:
-			SoundManager.play(SoundTypes.Sound.SUMMONED)
+			SoundManager.play_sound(SoundTypes.Sound.SUMMONED)
 
 		# Java: clone.addAction(sequence(moveTo(si.getX() + 5, si.getY() + 26, 1.0f), new Action() {...})); (lines 691-697)
 		# Animate card from hand to slot
@@ -1444,7 +1435,7 @@ func moveCardActorOnBattle(ci: CardImage, pi: PlayerImage) -> void:
 
 	# Java: Sounds.play(Sound.ATTACK); (line 834)
 	if SoundManager:
-		SoundManager.play(SoundTypes.Sound.ATTACK)
+		SoundManager.play_sound(SoundTypes.Sound.ATTACK)
 
 	# Java: if (pi.get_slots()[0] == null) { return; } (lines 836-838)
 	if pi.get_slots()[0] == null:
