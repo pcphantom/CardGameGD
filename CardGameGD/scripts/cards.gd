@@ -200,94 +200,63 @@ const GAME_LOG_HEIGHT: int = 173        # Game log height
 const GAME_LOG_Z_INDEX: int = 4
 
 # ═════════════════════════════════════════════════════════════════════════════
-# UI FINE-TUNING CONTROLS - Adjust these to fine-tune element positioning
-# ═════════════════════════════════════════════════════════════════════════════
-#
-# These controls allow precise adjustments to UI element positions and sizes
-# without modifying the core positioning logic. Use these to compensate for
-# rendering differences between LibGDX and Godot.
-#
+# UI FINE-TUNING CONTROLS - ADJUST THESE TO FINE-TUNE THE UI
 # ═════════════════════════════════════════════════════════════════════════════
 
-# ─────────────────────────────────────────────────────────────────────────────
-# PORTRAIT POSITIONING ADJUSTMENTS
-# ─────────────────────────────────────────────────────────────────────────────
-# These adjust the final position of portrait images
-const PLAYER_PORTRAIT_ADJUST_X: int = 0      # Add to player portrait X position
-const PLAYER_PORTRAIT_ADJUST_Y: int = 0      # Add to player portrait Y position
-const OPPONENT_PORTRAIT_ADJUST_X: int = 0    # Add to opponent portrait X position
-const OPPONENT_PORTRAIT_ADJUST_Y: int = 0    # Add to opponent portrait Y position
+# ALL PLAYER HAND CARD IMAGES - MOVES ALL THE CARD ARTWORK IN YOUR HAND
+const HAND_CARD_IMAGE_ADJUST_X: int = 0      # POSITIVE MOVES RIGHT, NEGATIVE MOVES LEFT
+const HAND_CARD_IMAGE_ADJUST_Y: int = 0      # POSITIVE MOVES DOWN, NEGATIVE MOVES UP
 
-# ─────────────────────────────────────────────────────────────────────────────
-# LABEL POSITIONING ADJUSTMENTS
-# ─────────────────────────────────────────────────────────────────────────────
-# These adjust labels to compensate for LibGDX baseline vs Godot top-left positioning
+# ALL PLAYER HAND CARD FRAMES - MOVES ALL THE FRAMES AROUND CARDS IN YOUR HAND
+const HAND_CARD_FRAME_ADJUST_X: int = 0      # POSITIVE MOVES RIGHT, NEGATIVE MOVES LEFT
+const HAND_CARD_FRAME_ADJUST_Y: int = 0      # POSITIVE MOVES DOWN, NEGATIVE MOVES UP
 
-# Player/Opponent Class & Life Labels (e.g., "Cleric Life: 60")
-const PLAYER_INFO_LABEL_ADJUST_X: int = 0    # Add to player info label X position
-const PLAYER_INFO_LABEL_ADJUST_Y: int = 0    # Add to player info label Y position (currently -28 for font 24)
-const OPPONENT_INFO_LABEL_ADJUST_X: int = 0  # Add to opponent info label X position
-const OPPONENT_INFO_LABEL_ADJUST_Y: int = 0  # Add to opponent info label Y position (currently -28 for font 24)
+# BOTH HANDS FOR PLAY AREA - MOVES BOTH PLAYER AND OPPONENT PLAY SLOTS TOGETHER
+const PLAY_SLOTS_ADJUST_X: int = 0           # POSITIVE MOVES RIGHT, NEGATIVE MOVES LEFT
+const PLAY_SLOTS_ADJUST_Y: int = 0           # POSITIVE MOVES DOWN, NEGATIVE MOVES UP
 
-# Player/Opponent Elemental Powers Labels (Fire, Air, Water, Earth, Other)
-const PLAYER_POWERS_ADJUST_X: int = 0        # Add to all player power labels X position
-const PLAYER_POWERS_ADJUST_Y: int = 0        # Add to all player power labels Y position (currently -22 for font 18)
-const OPPONENT_POWERS_ADJUST_X: int = 0      # Add to all opponent power labels X position
-const OPPONENT_POWERS_ADJUST_Y: int = 0      # Add to all opponent power labels Y position (currently -22 for font 18)
+# SKIP TURN BUTTON - MOVES THE SKIP TURN BUTTON AND ITS FRAME
+const SKIP_TURN_BUTTON_ADJUST_X: int = 0     # POSITIVE MOVES RIGHT, NEGATIVE MOVES LEFT
+const SKIP_TURN_BUTTON_ADJUST_Y: int = 0     # POSITIVE MOVES DOWN, NEGATIVE MOVES UP
 
-# ─────────────────────────────────────────────────────────────────────────────
-# CARD POSITIONING ADJUSTMENTS
-# ─────────────────────────────────────────────────────────────────────────────
-# These adjust the position of cards in the player's hand
+# PLAYER'S ELEMENTAL POWERS TEXT - MOVES ALL PLAYER POWER LABELS (FIRE, AIR, WATER, EARTH, OTHER)
+const PLAYER_POWERS_ADJUST_X: int = 0        # POSITIVE MOVES RIGHT, NEGATIVE MOVES LEFT
+const PLAYER_POWERS_ADJUST_Y: int = 0        # POSITIVE MOVES DOWN, NEGATIVE MOVES UP
+const POWERS_LABEL_FONT_SIZE: int = 18       # FONT SIZE FOR PLAYER'S ELEMENTAL POWERS TEXT
 
-# Hand Card Images (the card artwork itself)
-const HAND_CARD_IMAGE_ADJUST_X: int = 0      # Add to all hand card images X position
-const HAND_CARD_IMAGE_ADJUST_Y: int = 0      # Add to all hand card images Y position
+# OPPONENT'S ELEMENTAL POWERS TEXT - MOVES ALL OPPONENT POWER LABELS
+const OPPONENT_POWERS_ADJUST_X: int = 0      # POSITIVE MOVES RIGHT, NEGATIVE MOVES LEFT
+const OPPONENT_POWERS_ADJUST_Y: int = 0      # POSITIVE MOVES DOWN, NEGATIVE MOVES UP
 
-# Hand Card Frames (the decorative border around cards)
-const HAND_CARD_FRAME_ADJUST_X: int = 0      # Add to all hand card frames X position
-const HAND_CARD_FRAME_ADJUST_Y: int = 0      # Add to all hand card frames Y position
+# VALUES FOR PLAYER'S CARD STATS - MOVES ALL CARD NUMBERS (ATTACK/COST/LIFE)
+const HAND_CARD_STATS_ADJUST_Y: int = 0      # POSITIVE MOVES DOWN, NEGATIVE MOVES UP
+const CARD_STATS_FONT_SIZE_SMALL: int = 16   # FONT SIZE FOR CARD STATS ON SMALL CARDS
+const CARD_STATS_FONT_SIZE_LARGE: int = 20   # FONT SIZE FOR CARD STATS ON LARGE CARDS
 
-# Hand Card Stats (attack/cost/life numbers on cards)
-const HAND_CARD_STATS_ADJUST_Y: int = 0      # Add to all card stat labels Y position (currently -20 for font 16)
+# PLAYER'S PORTRAIT - MOVES THE PLAYER'S PORTRAIT IMAGE
+const PLAYER_PORTRAIT_ADJUST_X: int = 0      # POSITIVE MOVES RIGHT, NEGATIVE MOVES LEFT
+const PLAYER_PORTRAIT_ADJUST_Y: int = 0      # POSITIVE MOVES DOWN, NEGATIVE MOVES UP
 
-# ─────────────────────────────────────────────────────────────────────────────
-# PLAY AREA ADJUSTMENTS
-# ─────────────────────────────────────────────────────────────────────────────
-# These move both player and opponent play slots together
+# OPPONENT'S PORTRAIT - MOVES THE OPPONENT'S PORTRAIT IMAGE
+const OPPONENT_PORTRAIT_ADJUST_X: int = 0    # POSITIVE MOVES RIGHT, NEGATIVE MOVES LEFT
+const OPPONENT_PORTRAIT_ADJUST_Y: int = 0    # POSITIVE MOVES DOWN, NEGATIVE MOVES UP
 
-const PLAY_SLOTS_ADJUST_X: int = 0           # Add to both player & opponent slots X position
-const PLAY_SLOTS_ADJUST_Y: int = 0           # Add to both player & opponent slots Y position
+# PLAYER'S CLASS & HP LABEL - MOVES THE "CLERIC LIFE: 60" TEXT
+const PLAYER_INFO_LABEL_ADJUST_X: int = 0    # POSITIVE MOVES RIGHT, NEGATIVE MOVES LEFT
+const PLAYER_INFO_LABEL_ADJUST_Y: int = 0    # POSITIVE MOVES DOWN, NEGATIVE MOVES UP
 
-# ─────────────────────────────────────────────────────────────────────────────
-# BUTTON POSITIONING ADJUSTMENTS
-# ─────────────────────────────────────────────────────────────────────────────
-# Skip Turn Button
-const SKIP_TURN_BUTTON_ADJUST_X: int = 0     # Add to skip turn button X position
-const SKIP_TURN_BUTTON_ADJUST_Y: int = 0     # Add to skip turn button Y position
+# OPPONENT'S CLASS & HP LABEL - MOVES THE OPPONENT'S CLASS AND LIFE TEXT
+const OPPONENT_INFO_LABEL_ADJUST_X: int = 0  # POSITIVE MOVES RIGHT, NEGATIVE MOVES LEFT
+const OPPONENT_INFO_LABEL_ADJUST_Y: int = 0  # POSITIVE MOVES DOWN, NEGATIVE MOVES UP
 
-# Other Buttons (Show Cards, Shuffle Cards)
-const SIDE_BUTTONS_ADJUST_X: int = 0         # Add to all side buttons X position
-const SIDE_BUTTONS_ADJUST_Y: int = 0         # Add to all side buttons Y position
+# FONT SIZE FOR CLASS & HP LABELS - CONTROLS THE SIZE OF "CLERIC LIFE: 60" TEXT
+const INFO_LABEL_FONT_SIZE: int = 24
 
-# ─────────────────────────────────────────────────────────────────────────────
-# FONT SIZE CONTROLS
-# ─────────────────────────────────────────────────────────────────────────────
-# Adjust these to make text larger or smaller
-
-# Player/Opponent Info Labels (Class & Life, e.g., "Cleric Life: 60")
-const INFO_LABEL_FONT_SIZE: int = 24         # Font size for player/opponent class and life labels
-
-# Elemental Powers Labels (Fire, Air, Water, Earth, Other)
-const POWERS_LABEL_FONT_SIZE: int = 18       # Font size for elemental power labels
-
-# Card Stats (attack/cost/life numbers on small cards)
-const CARD_STATS_FONT_SIZE_SMALL: int = 16   # Font size for stats on small cards
-const CARD_STATS_FONT_SIZE_LARGE: int = 20   # Font size for stats on large cards
+# OTHER BUTTONS - MOVES SHOW CARDS AND SHUFFLE CARDS BUTTONS
+const SIDE_BUTTONS_ADJUST_X: int = 0         # POSITIVE MOVES RIGHT, NEGATIVE MOVES LEFT
+const SIDE_BUTTONS_ADJUST_Y: int = 0         # POSITIVE MOVES DOWN, NEGATIVE MOVES UP
 
 # ═════════════════════════════════════════════════════════════════════════════
-
-const GAME_LOG_Z_INDEX: int = 4
 
 # Background (full-screen battlefield image)
 const BACKGROUND_Z_INDEX: int = -10     # Behind everything else
