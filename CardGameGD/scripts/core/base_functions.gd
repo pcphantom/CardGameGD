@@ -74,7 +74,7 @@ func inflict_damage_to_player(target_player, damage_value: int) -> void:
 					opposing_cards[index].get_card().increment_attack(2)
 
 				if opposing_card_name == "iceguard":
-					value = value // 2  # Integer division
+					value = int(value / 2.0)
 
 			if index < owned_cards.size() and owned_cards[index] != null:
 				var owned_card_name: String = owned_cards[index].get_card().get_name().to_lower()
