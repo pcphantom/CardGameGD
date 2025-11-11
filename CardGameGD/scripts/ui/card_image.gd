@@ -254,12 +254,12 @@ func _render_card(size_type: String) -> void:
 			attack_label.size = Vector2(15, 15) if not is_large else Vector2(18, 18)
 			var attack_font_size = Cards.CARD_STATS_FONT_SIZE_LARGE if is_large else Cards.CARD_STATS_FONT_SIZE_SMALL
 			attack_label.add_theme_font_size_override("font_size", attack_font_size)
-			var card_stats_color = Cards.CARD_STATS_FONT_COLOR if Cards else Color(1.0, 1.0, 1.0)
-			attack_label.add_theme_color_override("font_color", card_stats_color)
+			var attack_color = Cards.CARD_STATS_ATTACK_COLOR if Cards else Color(1.0, 0.0, 0.0)
+			attack_label.add_theme_color_override("font_color", attack_color)
 			var card_stats_bold = Cards.CARD_STATS_BOLD if Cards else false
 			if card_stats_bold:
 				attack_label.add_theme_constant_override("outline_size", 1)
-				attack_label.add_theme_color_override("font_outline_color", card_stats_color)
+				attack_label.add_theme_color_override("font_outline_color", attack_color)
 			else:
 				attack_label.add_theme_constant_override("outline_size", 0)
 			attack_label.text = str(at)
@@ -279,10 +279,11 @@ func _render_card(size_type: String) -> void:
 			cost_label.size = Vector2(15, 15) if not is_large else Vector2(18, 18)
 			var cost_font_size = Cards.CARD_STATS_FONT_SIZE_LARGE if is_large else Cards.CARD_STATS_FONT_SIZE_SMALL
 			cost_label.add_theme_font_size_override("font_size", cost_font_size)
-			cost_label.add_theme_color_override("font_color", card_stats_color)
+			var cost_color = Cards.CARD_STATS_COST_COLOR if Cards else Color(1.0, 1.0, 0.0)
+			cost_label.add_theme_color_override("font_color", cost_color)
 			if card_stats_bold:
 				cost_label.add_theme_constant_override("outline_size", 1)
-				cost_label.add_theme_color_override("font_outline_color", card_stats_color)
+				cost_label.add_theme_color_override("font_outline_color", cost_color)
 			else:
 				cost_label.add_theme_constant_override("outline_size", 0)
 			cost_label.text = str(co)
@@ -302,10 +303,11 @@ func _render_card(size_type: String) -> void:
 			life_label.size = Vector2(15, 15) if not is_large else Vector2(18, 18)
 			var life_font_size = Cards.CARD_STATS_FONT_SIZE_LARGE if is_large else Cards.CARD_STATS_FONT_SIZE_SMALL
 			life_label.add_theme_font_size_override("font_size", life_font_size)
-			life_label.add_theme_color_override("font_color", card_stats_color)
+			var life_color = Cards.CARD_STATS_LIFE_COLOR if Cards else Color(0.0, 1.0, 0.0)
+			life_label.add_theme_color_override("font_color", life_color)
 			if card_stats_bold:
 				life_label.add_theme_constant_override("outline_size", 1)
-				life_label.add_theme_color_override("font_outline_color", card_stats_color)
+				life_label.add_theme_color_override("font_outline_color", life_color)
 			else:
 				life_label.add_theme_constant_override("outline_size", 0)
 			life_label.text = str(li)
@@ -327,12 +329,12 @@ func _render_card(size_type: String) -> void:
 		cost_label.size = Vector2(15, 15) if not is_large else Vector2(18, 18)
 		var spell_cost_font_size = Cards.CARD_STATS_FONT_SIZE_LARGE if is_large else Cards.CARD_STATS_FONT_SIZE_SMALL
 		cost_label.add_theme_font_size_override("font_size", spell_cost_font_size)
-		var spell_card_stats_color = Cards.CARD_STATS_FONT_COLOR if Cards else Color(1.0, 1.0, 1.0)
-		cost_label.add_theme_color_override("font_color", spell_card_stats_color)
+		var spell_cost_color = Cards.CARD_STATS_COST_COLOR if Cards else Color(1.0, 1.0, 0.0)
+		cost_label.add_theme_color_override("font_color", spell_cost_color)
 		var spell_card_stats_bold = Cards.CARD_STATS_BOLD if Cards else false
 		if spell_card_stats_bold:
 			cost_label.add_theme_constant_override("outline_size", 1)
-			cost_label.add_theme_color_override("font_outline_color", spell_card_stats_color)
+			cost_label.add_theme_color_override("font_outline_color", spell_cost_color)
 		else:
 			cost_label.add_theme_constant_override("outline_size", 0)
 		cost_label.text = str(co)
