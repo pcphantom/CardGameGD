@@ -174,6 +174,9 @@ const SLOTS_Z_INDEX: int = 1
 # Shared: Portrait z-index (both player and opponent)
 const PORTRAIT_Z_INDEX: int = 2
 
+# Shared: Creature z-index (summoned creatures on battlefield)
+const CREATURE_Z_INDEX: int = 2
+
 # Shared: Resource stats horizontal positioning (both player and opponent use same X)
 const STATS_START_X: int = 420          # Stat labels start X (Java: x=420, offset right from slots)
 const STATS_SPACING_X: int = 103        # Horizontal spacing between stat labels (Java: incr=103)
@@ -1187,21 +1190,21 @@ func _on_card_hovered(card_visual: CardImage) -> void:
 	# Java: if (sp == null) { cdi.setImg(null); return; } (lines 733-736)
 	if sp == null:
 		print("  -> No sprite found for: ", sprite_name)
-		cardDescriptionImage.set_img(null)
+		cdi.set_img(null)
 		return
 
 	# Java: sp.flip(false, true); (line 738)
 	sp.flip_v = not sp.flip_v
 
 	# Java: cdi.setImg(sp); (line 740)
-	cardDescriptionImage.set_img(sp)
+	cdi.set_img(sp)
 
 	# Java: cdi.setFrame(ci.getCard().isSpell() ? ramkabigspell : ramkabig); (line 741)
 	var frame_texture: Texture2D = ramkabigspell if card_data.is_spell() else ramkabig
-	cardDescriptionImage.set_frame(frame_texture)
+	cdi.set_frame(frame_texture)
 
 	# Java: cdi.setCard(card); (line 742)
-	cardDescriptionImage.set_card(card_data)
+	cdi.set_card(card_data)
 
 ## Card unhover handler - ShowDescriptionListener.exit() equivalent
 ## Java source: Cards.java lines 746-748 (ShowDescriptionListener.exit)
@@ -1209,7 +1212,7 @@ func _on_card_hovered(card_visual: CardImage) -> void:
 func _on_card_unhovered(card_visual: CardImage) -> void:
 	print("Card unhovered: ", card_visual.get_card().name if card_visual.get_card() else "null")
 	# Java: cdi.setImg(null); (line 747)
-	cardDescriptionImage.set_img(null)
+	cdi.set_img(null)
 
 ## Slot click handler - SlotListener.touchDown() equivalent
 ## Java source: Cards.java lines 658-711 (SlotListener.touchDown)
