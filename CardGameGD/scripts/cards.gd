@@ -1298,11 +1298,6 @@ func _on_slot_clicked(slot: SlotImage) -> void:
 			print("    -> TODO: Start BattleRoundThread for summoned creature")
 		)
 
-		# Remove card from hand
-		print("    -> Removing card from hand")
-		selectedCard.queue_free()
-		# TODO: Also remove from player's hand array if needed
-
 		clearHighlights()
 
 	# Java: else if (selectedCard.getCard().isSpell() && si.isHighlighted()) { (line 699)
