@@ -248,12 +248,20 @@ func _render_card(size_type: String) -> void:
 			if is_large:
 				attack_x = 5.0 if at < 10 else 2.0
 				attack_y = LARGE_CARD_HEIGHT - 5.0 - 24  # FIXED: Subtract label height for large (24px)
+			var stats_adjust_x = Cards.HAND_CARD_STATS_ADJUST_X if Cards else 0
 			var stats_adjust_y = Cards.HAND_CARD_STATS_ADJUST_Y if Cards else 0
-			attack_label.position = Vector2(attack_x, attack_y + stats_adjust_y)
+			attack_label.position = Vector2(attack_x + stats_adjust_x, attack_y + stats_adjust_y)
 			attack_label.size = Vector2(15, 15) if not is_large else Vector2(18, 18)
 			var attack_font_size = Cards.CARD_STATS_FONT_SIZE_LARGE if is_large else Cards.CARD_STATS_FONT_SIZE_SMALL
 			attack_label.add_theme_font_size_override("font_size", attack_font_size)
-			attack_label.add_theme_color_override("font_color", Color(1.0, 0.0, 0.0))
+			var card_stats_color = Cards.CARD_STATS_FONT_COLOR if Cards else Color(1.0, 1.0, 1.0)
+			attack_label.add_theme_color_override("font_color", card_stats_color)
+			var card_stats_bold = Cards.CARD_STATS_BOLD if Cards else false
+			if card_stats_bold:
+				attack_label.add_theme_constant_override("outline_size", 1)
+				attack_label.add_theme_color_override("font_outline_color", card_stats_color)
+			else:
+				attack_label.add_theme_constant_override("outline_size", 0)
 			attack_label.text = str(at)
 			attack_label.visible = true
 
@@ -267,11 +275,16 @@ func _render_card(size_type: String) -> void:
 			if is_large:
 				cost_x = 132.0 if co < 10 else 130.0
 				cost_y = LARGE_CARD_HEIGHT - 150.0 - 24  # FIXED: Subtract label height for large (24px)
-			cost_label.position = Vector2(cost_x, cost_y + stats_adjust_y)
+			cost_label.position = Vector2(cost_x + stats_adjust_x, cost_y + stats_adjust_y)
 			cost_label.size = Vector2(15, 15) if not is_large else Vector2(18, 18)
 			var cost_font_size = Cards.CARD_STATS_FONT_SIZE_LARGE if is_large else Cards.CARD_STATS_FONT_SIZE_SMALL
 			cost_label.add_theme_font_size_override("font_size", cost_font_size)
-			cost_label.add_theme_color_override("font_color", Color(1.0, 1.0, 0.0))
+			cost_label.add_theme_color_override("font_color", card_stats_color)
+			if card_stats_bold:
+				cost_label.add_theme_constant_override("outline_size", 1)
+				cost_label.add_theme_color_override("font_outline_color", card_stats_color)
+			else:
+				cost_label.add_theme_constant_override("outline_size", 0)
 			cost_label.text = str(co)
 			cost_label.visible = true
 
@@ -285,11 +298,16 @@ func _render_card(size_type: String) -> void:
 			if is_large:
 				life_x = 134.0 if li < 10 else 131.0
 				life_y = LARGE_CARD_HEIGHT - 5.0 - 24  # FIXED: Subtract label height for large (24px)
-			life_label.position = Vector2(life_x, life_y + stats_adjust_y)
+			life_label.position = Vector2(life_x + stats_adjust_x, life_y + stats_adjust_y)
 			life_label.size = Vector2(15, 15) if not is_large else Vector2(18, 18)
 			var life_font_size = Cards.CARD_STATS_FONT_SIZE_LARGE if is_large else Cards.CARD_STATS_FONT_SIZE_SMALL
 			life_label.add_theme_font_size_override("font_size", life_font_size)
-			life_label.add_theme_color_override("font_color", Color(0.0, 1.0, 0.0))
+			life_label.add_theme_color_override("font_color", card_stats_color)
+			if card_stats_bold:
+				life_label.add_theme_constant_override("outline_size", 1)
+				life_label.add_theme_color_override("font_outline_color", card_stats_color)
+			else:
+				life_label.add_theme_constant_override("outline_size", 0)
 			life_label.text = str(li)
 			life_label.visible = true
 	else:
@@ -303,12 +321,20 @@ func _render_card(size_type: String) -> void:
 		if is_large:
 			cost_x = 132.0 if co < 10 else 130.0
 			cost_y = LARGE_CARD_HEIGHT - 192.0 - 24  # FIXED: Subtract label height for large (24px)
+		var spell_stats_adjust_x = Cards.HAND_CARD_STATS_ADJUST_X if Cards else 0
 		var spell_stats_adjust_y = Cards.HAND_CARD_STATS_ADJUST_Y if Cards else 0
-		cost_label.position = Vector2(cost_x, cost_y + spell_stats_adjust_y)
+		cost_label.position = Vector2(cost_x + spell_stats_adjust_x, cost_y + spell_stats_adjust_y)
 		cost_label.size = Vector2(15, 15) if not is_large else Vector2(18, 18)
 		var spell_cost_font_size = Cards.CARD_STATS_FONT_SIZE_LARGE if is_large else Cards.CARD_STATS_FONT_SIZE_SMALL
 		cost_label.add_theme_font_size_override("font_size", spell_cost_font_size)
-		cost_label.add_theme_color_override("font_color", Color(1.0, 1.0, 0.0))
+		var spell_card_stats_color = Cards.CARD_STATS_FONT_COLOR if Cards else Color(1.0, 1.0, 1.0)
+		cost_label.add_theme_color_override("font_color", spell_card_stats_color)
+		var spell_card_stats_bold = Cards.CARD_STATS_BOLD if Cards else false
+		if spell_card_stats_bold:
+			cost_label.add_theme_constant_override("outline_size", 1)
+			cost_label.add_theme_color_override("font_outline_color", spell_card_stats_color)
+		else:
+			cost_label.add_theme_constant_override("outline_size", 0)
 		cost_label.text = str(co)
 		cost_label.visible = true
 
