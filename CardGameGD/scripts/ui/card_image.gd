@@ -362,14 +362,23 @@ func _render_card(size_type: String) -> void:
 # Java: public CardImage clone()
 func clone_card() -> CardImage:
 	var ci := CardImage.new()
-	ci.set_name(card.get_name())
-	ci.set_card(card.clone() if card else null)
-	ci.set_img(img)
-	ci.set_font(font)
-	ci.set_frame(frame)
+
+	# CRITICAL FIX: Must call setup_card() to create visual elements and render
+	# Without this, the clone has no portrait/frame/label children and is invisible!
+	# Java's clone() works because LibGDX's Image copies the drawable automatically
+	# In Godot, we must explicitly set up all the TextureRect/Label child nodes
+	if card != null:
+		ci.setup_card(card.clone(), "small")  # Creates visual elements and renders
+
+	# Copy remaining properties (setup_card already sets card, img, frame, font internally via _render_card)
 	ci.set_enabled(true)
 	ci.position = position
 	ci.size = size
+
+	# Copy creature reference if exists
+	if creature != null:
+		ci.set_creature(creature)
+
 	return ci
 
 # =============================================================================
