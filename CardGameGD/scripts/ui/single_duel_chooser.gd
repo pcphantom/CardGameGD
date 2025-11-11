@@ -134,6 +134,11 @@ func init(game_ref) -> void:
 	# Java: pi = new PlayerImage(spP, Cards.portraitramka, game.player.getPlayerInfo());
 	var sp_p_texture = TextureManager.get_face_texture(game.player.get_player_info().get_img_name())
 	pi = PlayerImage.new()
+	# Set per-instance portrait adjustments (player portraits offset differently than opponent)
+	pi.sprite_adjust_x = Cards.PLAYER_PORTRAIT_SPRITE_ADJUST_X
+	pi.sprite_adjust_y = Cards.PLAYER_PORTRAIT_SPRITE_ADJUST_Y
+	pi.frame_border_adjust_x = Cards.PLAYER_PORTRAIT_FRAME_BORDER_ADJUST_X
+	pi.frame_border_adjust_y = Cards.PLAYER_PORTRAIT_FRAME_BORDER_ADJUST_Y
 	pi.set_texture(sp_p_texture)
 	pi.set_frame(Cards.portraitramka)  # CRITICAL FIX: Set frame so it renders in chooser scene
 	pi.set_player_info(game.player.get_player_info())
@@ -143,6 +148,11 @@ func init(game_ref) -> void:
 	# Java: oi = new PlayerImage(spO, Cards.portraitramka, game.opponent.getPlayerInfo());
 	var sp_o_texture = TextureManager.get_face_texture(game.opponent.get_player_info().get_img_name())
 	oi = PlayerImage.new()
+	# Set per-instance portrait adjustments (opponent portraits offset differently than player)
+	oi.sprite_adjust_x = Cards.OPPONENT_PORTRAIT_SPRITE_ADJUST_X
+	oi.sprite_adjust_y = Cards.OPPONENT_PORTRAIT_SPRITE_ADJUST_Y
+	oi.frame_border_adjust_x = Cards.OPPONENT_PORTRAIT_FRAME_BORDER_ADJUST_X
+	oi.frame_border_adjust_y = Cards.OPPONENT_PORTRAIT_FRAME_BORDER_ADJUST_Y
 	oi.set_texture(sp_o_texture)
 	oi.set_frame(Cards.portraitramka)  # CRITICAL FIX: Set frame so it renders in chooser scene
 	oi.set_player_info(game.opponent.get_player_info())
