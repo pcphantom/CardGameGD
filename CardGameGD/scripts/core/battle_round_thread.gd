@@ -297,7 +297,7 @@ func start_of_turn_check(player_img: PlayerImage) -> void:
 			if ci2.get_card().getName().to_lower() == "monumenttorage":
 				# Card gets an extra attack this round
 				# Java: Utils.attackWithNetworkEvent(ci.getCreature(), player.getPlayerInfo(), index); (line 307)
-				Utils.attackWithNetworkEvent(ci.get_creature(), player_img.get_player_info(), index)
+				Utils.attack_with_network_event(ci.get_creature(), player_img.get_player_info(), index)
 
 		# Java: ci.getCreature().startOfTurnCheck(); (line 313)
 		ci.get_creature().startOfTurnCheck()
