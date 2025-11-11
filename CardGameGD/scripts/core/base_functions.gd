@@ -74,7 +74,7 @@ func inflict_damage_to_player(target_player, damage_value: int) -> void:
 					opposing_cards[index].get_card().increment_attack(2)
 
 				if opposing_card_name == "iceguard":
-					value = int(value / 2)
+					value = value // 2  # Integer division
 
 			if index < owned_cards.size() and owned_cards[index] != null:
 				var owned_card_name: String = owned_cards[index].get_card().get_name().to_lower()
@@ -201,10 +201,10 @@ func count_owner_creatures() -> int:
 	if owner == null or not owner.has_method("get_slot_cards"):
 		return 0
 
-	var owner_cards: Array = owner.get_slot_cards()
+	var owner_slot_cards: Array = owner.get_slot_cards()
 	var count: int = 0
 
-	for card_img in owner_cards:
+	for card_img in owner_slot_cards:
 		if card_img != null:
 			count += 1
 
@@ -214,10 +214,10 @@ func count_opponent_creatures() -> int:
 	if opponent == null or not opponent.has_method("get_slot_cards"):
 		return 0
 
-	var opponent_cards: Array = opponent.get_slot_cards()
+	var opponent_slot_cards: Array = opponent.get_slot_cards()
 	var count: int = 0
 
-	for card_img in opponent_cards:
+	for card_img in opponent_slot_cards:
 		if card_img != null:
 			count += 1
 
@@ -227,8 +227,8 @@ func heal_all(value: int) -> void:
 	if owner == null or not owner.has_method("get_slot_cards"):
 		return
 
-	var owner_cards: Array = owner.get_slot_cards()
-	for card_img in owner_cards:
+	var owner_slot_cards: Array = owner.get_slot_cards()
+	for card_img in owner_slot_cards:
 		if card_img != null:
 			heal_card(card_img, value)
 
@@ -486,11 +486,11 @@ func swap_card(new_card_name: String, card_type, old_card_name: String, player_i
 				game.add_child(new_card)
 
 ## Java: protected void tryMoveToAnotherRandomOpenSlot(PlayerImage player, CardImage ci, int currentSlot)
-func try_move_to_another_random_open_slot(player, card_image, current_slot: int) -> void:
-	try_move_to_another_random_slot(player, card_image, current_slot, true)
+func try_move_to_another_random_open_slot(player, ci, current_slot: int) -> void:
+	try_move_to_another_random_slot(player, ci, current_slot, true)
 
 ## Java: protected void tryMoveToAnotherRandomSlot(PlayerImage player, CardImage ci, int currentSlot, boolean mustBeOpenSlot)
-func try_move_to_another_random_slot(player, card_image, current_slot: int, must_be_open_slot: bool) -> void:
+func try_move_to_another_random_slot(player, ci, current_slot: int, must_be_open_slot: bool) -> void:
 	if player == null or not player.has_method("get_slots"):
 		return
 
@@ -522,10 +522,10 @@ func try_move_to_another_random_slot(player, card_image, current_slot: int, must
 		var dice: Dice = Dice.new(1, valid_slots.size())
 		target_slot = valid_slots[dice.roll() - 1]
 
-	move_card_to_another_slot(player, card_image, current_slot, target_slot)
+	move_card_to_another_slot(player, ci, current_slot, target_slot)
 
 ## Java: protected void moveCardToAnotherSlot(PlayerImage player, CardImage ci, int srcIndex, int destIndex)
-func move_card_to_another_slot(player, card_image, src_index: int, dest_index: int) -> void:
+func move_card_to_another_slot(player, ci, src_index: int, dest_index: int) -> void:
 	if player == null or not player.has_method("get_slot_cards") or not player.has_method("get_slots"):
 		return
 
@@ -558,7 +558,7 @@ func move_card_to_another_slot(player, card_image, src_index: int, dest_index: i
 
 			# Animate card2 to src position
 			if card2 is Node2D:
-				var tween = card_image.create_tween() if card_image.has_method("create_tween") else null
+				var tween = ci.create_tween() if ci.has_method("create_tween") else null
 				if tween != null:
 					tween.tween_property(card2, "position", Vector2(slots[src_index].position.x + 5, slots[src_index].position.y + 26), 1.0)
 	else:
