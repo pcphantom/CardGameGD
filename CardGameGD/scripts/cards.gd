@@ -1077,8 +1077,7 @@ func _on_card_clicked(card_visual: CardImage) -> void:
 						if ci != null:
 							ci.set_highlighted(true)
 							# Java: ci.addAction(forever(sequence(color(Color.GREEN, .75f), color(Color.WHITE, .75f)))); (line 506)
-							# TODO: Add color pulse animation
-							ci.modulate = Color.GREEN
+							add_color_pulse(ci)
 
 				Card.TargetType.OPPONENT:
 					# Java: case OPPONENT: (lines 510-518)
@@ -1088,8 +1087,7 @@ func _on_card_clicked(card_visual: CardImage) -> void:
 						if ci != null:
 							ci.set_highlighted(true)
 							# Java: ci.addAction(forever(sequence(color(Color.GREEN, .75f), color(Color.WHITE, .75f)))); (line 515)
-							# TODO: Add color pulse animation
-							ci.modulate = Color.GREEN
+							add_color_pulse(ci)
 
 				Card.TargetType.ANY:
 					# Java: case ANY: (lines 519-534)
@@ -1099,15 +1097,13 @@ func _on_card_clicked(card_visual: CardImage) -> void:
 					for ci in player_cards:
 						if ci != null:
 							ci.set_highlighted(true)
-							# TODO: Add color pulse animation
-							ci.modulate = Color.GREEN
+							add_color_pulse(ci)
 					# Highlight opponent's creatures
 					var opponent_cards: Array[CardImage] = opponent.get_slot_cards()
 					for ci in opponent_cards:
 						if ci != null:
 							ci.set_highlighted(true)
-							# TODO: Add color pulse animation
-							ci.modulate = Color.GREEN
+							add_color_pulse(ci)
 
 		# Java: else if (selectedCard.getCard().isTargetableOnEmptySlotOnly()) { (line 537)
 		elif card_data.is_targetable_on_empty_slot_only():
@@ -1117,8 +1113,7 @@ func _on_card_clicked(card_visual: CardImage) -> void:
 				if not si.is_occupied():
 					si.set_highlighted(true)
 					# Java: si.addAction(forever(sequence(color(Color.GREEN, .75f), color(Color.WHITE, .75f)))); (line 543)
-					# TODO: Add color pulse animation
-					si.modulate = Color.GREEN
+					add_color_pulse(si)
 
 		# Java: else { //cast the spell (line 547)
 		else:
@@ -1145,8 +1140,7 @@ func _on_card_clicked(card_visual: CardImage) -> void:
 					print("      -> Highlighting valid target: ", target_name)
 					ci.set_highlighted(true)
 					# Java: ci.addAction(forever(sequence(color(Color.GREEN, .75f), color(Color.WHITE, .75f)))); (line 562)
-					# TODO: Add color pulse animation
-					ci.modulate = Color.GREEN
+					add_color_pulse(ci)
 
 	# Regular creature - highlight available slots
 	else:
@@ -1155,8 +1149,7 @@ func _on_card_clicked(card_visual: CardImage) -> void:
 		for si in player.get_slots():
 			if not si.is_occupied():
 				si.set_highlighted(true)
-				# TODO: Add color pulse animation
-				si.modulate = Color.GREEN
+				add_color_pulse(si)
 
 	print("=== CARD CLICKED COMPLETE ===")
 
@@ -1346,6 +1339,15 @@ func clearHighlights() -> void:
 		si.set_highlighted(false)
 		si.clear_actions()
 		si.modulate = Color.WHITE
+
+## Adds pulsing color animation to a node
+## Java: forever(sequence(color(Color.GREEN, .75f), color(Color.WHITE, .75f)))
+func add_color_pulse(node: Node2D, color1: Color = Color.GREEN, color2: Color = Color.WHITE, duration: float = 0.75) -> void:
+	var tween: Tween = create_tween()
+	tween.set_meta("bound_node", node)
+	tween.set_loops()
+	tween.tween_property(node, "modulate", color1, duration)
+	tween.tween_property(node, "modulate", color2, duration)
 
 ## Handles clicking on battlefield cards for spell targeting
 ## Java: TargetedCardListener.touchDown() (Cards.java inner class)
