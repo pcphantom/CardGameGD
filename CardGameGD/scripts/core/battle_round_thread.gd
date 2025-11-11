@@ -92,7 +92,7 @@ func execute() -> void:
 
 		# Java: Spell spell = SpellFactory.getSpellClass(...); spell.onCast(); (lines 97-100)
 		var spell = SpellFactory.get_spell_class(
-			spell_card_image.get_card().name,
+			spell_card_image.get_card().getName(),
 			game,
 			spell_card_image.get_card(),
 			spell_card_image,
@@ -157,7 +157,7 @@ func execute() -> void:
 
 				# Java: Creature summonedCreature = CreatureFactory.getCreatureClass(...); (line 186)
 				var summoned_creature = CreatureFactory.get_creature_class(
-					oppt_summons.get_card().name,
+					oppt_summons.get_card().getName(),
 					game,
 					oppt_summons.get_card(),
 					oppt_summons,
@@ -193,7 +193,7 @@ func execute() -> void:
 				# Java: Spell opptSpell = SpellFactory.getSpellClass(...); opptSpell.onCast(); (lines 213-214)
 				print("[BattleRoundThread] AI casting spell")
 				var oppt_spell = SpellFactory.get_spell_class(
-					oppt_pick.get_card().name,
+					oppt_pick.get_card().getName(),
 					game,
 					oppt_pick.get_card(),
 					oppt_pick,
@@ -250,8 +250,8 @@ func is_triplicate_summon(summoned: CardImage, attacker: CardImage) -> bool:
 	if summoned == null or attacker == null:
 		return false
 
-	var summoned_name: String = summoned.get_card().name.to_lower()
-	var attacker_name: String = attacker.get_card().name.to_lower()
+	var summoned_name: String = summoned.get_card().getName().to_lower()
+	var attacker_name: String = attacker.get_card().getName().to_lower()
 
 	# Java: lines 267-274
 	if summoned_name == "giantspider" and attacker_name == "forestspider":
@@ -285,7 +285,7 @@ func start_of_turn_check(player_img: PlayerImage) -> void:
 			player_img.increment_life(1, game)
 			var died: bool = ci.decrement_life(bc, 1, game)
 			if Cards.logScrollPane:
-				Cards.logScrollPane.add("Vampire Lord drains 1 life from " + ci.get_card().name)
+				Cards.logScrollPane.add("Vampire Lord drains 1 life from " + ci.get_card().getName())
 			if died:
 				bc.dispose_card_image(player_img, index)
 
@@ -294,7 +294,7 @@ func start_of_turn_check(player_img: PlayerImage) -> void:
 			var ci2: CardImage = player_img.get_slot_cards()[index2]
 			if ci2 == null:
 				continue
-			if ci2.get_card().name.to_lower() == "monumenttorage":
+			if ci2.get_card().getName().to_lower() == "monumenttorage":
 				# Card gets an extra attack this round
 				# Java: Utils.attackWithNetworkEvent(ci.getCreature(), player.getPlayerInfo(), index); (line 307)
 				Utils.attack_with_network_event(ci.get_creature(), player_img.get_player_info(), index)
