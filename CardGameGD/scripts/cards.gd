@@ -1354,7 +1354,7 @@ func clearHighlights() -> void:
 
 ## Adds pulsing color animation to a node
 ## Java: forever(sequence(color(Color.GREEN, .75f), color(Color.WHITE, .75f)))
-func add_color_pulse(node: Node2D, color1: Color = Color.GREEN, color2: Color = Color.WHITE, duration: float = 0.75) -> void:
+func add_color_pulse(node: CanvasItem, color1: Color = Color.GREEN, color2: Color = Color.WHITE, duration: float = 0.75) -> void:
 	var tween: Tween = create_tween()
 	tween.set_meta("bound_node", node)
 	tween.set_loops()
@@ -1370,7 +1370,7 @@ func _on_battlefield_card_clicked(card_visual: CardImage, owner_id: String, slot
 	if selectedCard == null or not selectedCard.get_card().is_spell():
 		return
 
-	if not card_visual.is_highlighted():
+	if not card_visual.is_highlighted:
 		return
 
 	# Cast the spell targeting this card
