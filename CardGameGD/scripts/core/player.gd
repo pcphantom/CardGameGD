@@ -326,7 +326,7 @@ func pickRandomEnabledCard() -> CardImage:
 	types_to_try.shuffle()
 
 	for type in types_to_try:
-		var card: CardImage = pick_enabled_card_by_type(type)
+		var card: CardImage = pick_random_enabled_card_of_type(type)
 		if card != null:
 			return card
 
