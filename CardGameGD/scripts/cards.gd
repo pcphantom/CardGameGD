@@ -94,10 +94,10 @@ static var SCREEN_HEIGHT: int = 768
 # Godot: 768 - 643 - 132 = -7 ≈ 0-10 (top-left origin)
 const OPPONENT_PORTRAIT_X: int = 80     # Opponent portrait X
 const OPPONENT_PORTRAIT_Y: int = 10     # Opponent portrait Y (user verified)
-const PORTRAIT_SPRITE_OFFSET_X: int = 6      # Sprite X offset inside portrait frame (frame extends 6px beyond sprite)
-const PORTRAIT_SPRITE_OFFSET_Y: int = 6      # Sprite Y offset inside portrait frame (frame extends 6px beyond sprite)
-const PORTRAIT_FRAME_OFFSET_X: int = -6      # Frame X offset relative to sprite
-const PORTRAIT_FRAME_OFFSET_Y: int = -6      # Frame Y offset relative to sprite
+const PORTRAIT_SPRITE_OFFSET_X: int = 6      # Sprite X offset inside portrait frame (centers 120×120 sprite in 132×132 frame)
+const PORTRAIT_SPRITE_OFFSET_Y: int = 6      # Sprite Y offset inside portrait frame (centers 120×120 sprite in 132×132 frame)
+const PORTRAIT_FRAME_OFFSET_X: int = 0       # Frame X offset (frame fills 132×132 Control at position 0, 0)
+const PORTRAIT_FRAME_OFFSET_Y: int = 0       # Frame Y offset (frame fills 132×132 Control at position 0, 0)
 
 # Opponent play slots (6 card slots in a row - TOP RIGHT)
 # INDIVIDUAL SIZE: 92×132 pixels per slot (slot.png)

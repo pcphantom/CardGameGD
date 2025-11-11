@@ -151,10 +151,11 @@ func _draw() -> void:
     # We only need to draw the frame border and stunned indicator here
 
     # Java: batch.draw(frame, x - 6, y - 6);
+    # In Godot: Control is 132×132 (frame size), frame texture fills Control at (0, 0)
     # Draw the frame (border) texture with configurable offset (base offset + adjustment)
     if frame != null:
-        var frame_offset_x = (Cards.PORTRAIT_FRAME_OFFSET_X if Cards else -6) + (Cards.PORTRAIT_FRAME_BORDER_ADJUST_X if Cards else 0)
-        var frame_offset_y = (Cards.PORTRAIT_FRAME_OFFSET_Y if Cards else -6) + (Cards.PORTRAIT_FRAME_BORDER_ADJUST_Y if Cards else 0)
+        var frame_offset_x = (Cards.PORTRAIT_FRAME_OFFSET_X if Cards else 0) + (Cards.PORTRAIT_FRAME_BORDER_ADJUST_X if Cards else 0)
+        var frame_offset_y = (Cards.PORTRAIT_FRAME_OFFSET_Y if Cards else 0) + (Cards.PORTRAIT_FRAME_BORDER_ADJUST_Y if Cards else 0)
         draw_texture(frame, Vector2(frame_offset_x, frame_offset_y))
 
     # Java: if (this.mustSkipNexAttack) { batch.draw(stunned, x + 10, y - 10); }
