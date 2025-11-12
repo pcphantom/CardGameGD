@@ -324,6 +324,10 @@ var cs = null  # CardSetup instance
 ## Java: CardDescriptionImage cdi;
 var cdi = null
 
+## Opponent spell popup - shows what the opponent cast
+var opponent_spell_popup = null
+var opponent_spell_label = null
+
 ## Java: SpriteBatch batch;
 var batch = null  # Not needed in Godot, but kept for reference
 
@@ -1558,6 +1562,53 @@ func handleGameOver() -> void:
 	# add_child(dialog); dialog.popup_centered()
 	# dialog.confirmed.connect(func(): # restart game)
 	pass
+
+## Show opponent spell popup - displays what spell the opponent cast
+func show_opponent_spell_popup(opponent_name: String, spell_card: Card) -> void:
+	if opponent_spell_popup == null:
+		# Create the popup (CardDescriptionImage)
+		opponent_spell_popup = CardDescriptionImage.new(null, null, greenfont, null, 200, 250)
+		opponent_spell_popup.setFont(greenfont)
+		opponent_spell_popup.z_index = 1000  # On top of everything
+		opponent_spell_popup.custom_minimum_size = Vector2(580, 207)
+		opponent_spell_popup.size = Vector2(580, 207)
+		stage.add_child(opponent_spell_popup)
+
+		# Create label for "[Opponent] casts [Spell]"
+		opponent_spell_label = Label.new()
+		opponent_spell_label.add_theme_font_override("font", greenfont)
+		opponent_spell_label.add_theme_font_size_override("font_size", 20)
+		opponent_spell_label.add_theme_color_override("font_color", Color.WHITE)
+		opponent_spell_label.position = Vector2(200, 220)
+		opponent_spell_label.z_index = 1001
+		stage.add_child(opponent_spell_label)
+
+	# Set the card to display
+	if spell_card != null:
+		var card_name: String = spell_card.get_name().to_lower()
+		var card_texture: Texture2D = TextureManager.get_large_card_texture(card_name)
+
+		opponent_spell_popup.setImg(card_texture)
+		opponent_spell_popup.setFrame(ramkabigspell if spell_card.is_spell() else ramkabig)
+		opponent_spell_popup.setCard(spell_card)
+
+		# Set the label text
+		if opponent_spell_label != null:
+			opponent_spell_label.text = "%s casts %s" % [opponent_name, spell_card.get_cardname()]
+
+	# Show the popup
+	if opponent_spell_popup != null:
+		opponent_spell_popup.visible = true
+	if opponent_spell_label != null:
+		opponent_spell_label.visible = true
+
+## Hide opponent spell popup
+func hide_opponent_spell_popup() -> void:
+	if opponent_spell_popup != null:
+		opponent_spell_popup.visible = false
+		opponent_spell_popup.setImg(null)
+	if opponent_spell_label != null:
+		opponent_spell_label.visible = false
 
 ## Java: public PlayerImage getPlayerImage(String id) throws Exception
 func getPlayerImage(id: String) -> PlayerImage:

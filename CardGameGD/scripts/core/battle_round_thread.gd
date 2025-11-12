@@ -199,24 +199,22 @@ func execute() -> void:
 				summoned_creature.onSummoned()
 
 			else:
-				# Opponent is casting a spell - show the spell card briefly so player knows what was cast
-				# Clone the card to display it temporarily
-				var spell_display = oppt_pick.clone_card()
-				if spell_display != null and game != null:
-					# Position the spell card in the center of the screen for visibility
-					spell_display.position = Vector2(400, 350)
-					game.add_child(spell_display)
+				# Opponent is casting a spell - show card description popup
+				# Create a CardDescriptionImage to show what the opponent cast
+				if game != null and game.has_method("show_opponent_spell_popup"):
+					var opponent_title: String = ""
+					if oi != null and oi.has_method("get_player_info"):
+						var opp_info = oi.get_player_info()
+						if opp_info != null and opp_info.has_method("get_player_class"):
+							var opp_class = opp_info.get_player_class()
+							if opp_class != null:
+								opponent_title = opp_class.get_title()
 
-					# Fade in, wait, then fade out
-					var display_tween = game.create_tween()
-					display_tween.tween_property(spell_display, "modulate:a", 0.0, 0.0)
-					display_tween.tween_property(spell_display, "modulate:a", 1.0, 0.3)
-					display_tween.tween_interval(1.5)  # Show for 1.5 seconds
-					display_tween.tween_property(spell_display, "modulate:a", 0.0, 0.3)
-					display_tween.tween_callback(spell_display.queue_free)
+					# Show the popup with opponent name and spell card
+					game.show_opponent_spell_popup(opponent_title, oppt_pick.get_card())
 
-					# Wait for fade in to complete before casting spell
-					await game.get_tree().create_timer(0.3).timeout
+					# Wait for popup to display
+					await game.get_tree().create_timer(2.0).timeout
 
 				# Java: Spell opptSpell = SpellFactory.getSpellClass(...); opptSpell.onCast(); (lines 213-214)
 				var oppt_spell = SpellFactory.get_spell_class(
@@ -229,9 +227,9 @@ func execute() -> void:
 				)
 				oppt_spell.onCast()
 
-				# Wait for spell card to finish displaying
-				if spell_display != null:
-					await game.get_tree().create_timer(1.8).timeout  # Wait for fade out
+				# Hide the popup
+				if game != null and game.has_method("hide_opponent_spell_popup"):
+					game.hide_opponent_spell_popup()
 
 	# Java: for (CardImage attacker : opponent.getSlotCards()) { (line 226)
 	# AI creatures attack sequentially (left to right)
