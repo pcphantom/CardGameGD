@@ -199,6 +199,23 @@ func execute() -> void:
 				summoned_creature.onSummoned()
 
 			else:
+				# Opponent is casting a spell - show card description popup
+				# Create a CardDescriptionImage to show what the opponent cast
+				if game != null and game.has_method("show_opponent_spell_popup"):
+					var opponent_title: String = ""
+					if oi != null and oi.has_method("get_player_info"):
+						var opp_info = oi.get_player_info()
+						if opp_info != null and opp_info.has_method("get_player_class"):
+							var opp_class = opp_info.get_player_class()
+							if opp_class != null:
+								opponent_title = opp_class.get_title()
+
+					# Show the popup with opponent name and spell card
+					game.show_opponent_spell_popup(opponent_title, oppt_pick.get_card())
+
+					# Wait for popup to display
+					await game.get_tree().create_timer(2.0).timeout
+
 				# Java: Spell opptSpell = SpellFactory.getSpellClass(...); opptSpell.onCast(); (lines 213-214)
 				var oppt_spell = SpellFactory.get_spell_class(
 					oppt_pick.get_card().getName(),
@@ -209,6 +226,10 @@ func execute() -> void:
 					player
 				)
 				oppt_spell.onCast()
+
+				# Hide the popup
+				if game != null and game.has_method("hide_opponent_spell_popup"):
+					game.hide_opponent_spell_popup()
 
 	# Java: for (CardImage attacker : opponent.getSlotCards()) { (line 226)
 	# AI creatures attack sequentially (left to right)
