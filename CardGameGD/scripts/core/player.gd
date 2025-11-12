@@ -129,21 +129,15 @@ func increment_strength_all(incr: int) -> void:
 
 ## Apply growth rates to strengths - called each turn
 func apply_growth_rates() -> void:
-	print("[GROWTH RATE] Player %s applying growth rates:" % name)
 	for type in TYPES:
 		var rate: int = growth_rate[type]
 		if rate != 0:
-			var type_name := CardType.get_title(type)
-			var old_str := get_strength(type)
 			increment_strength(type, rate)
-			var new_str := get_strength(type)
-			print("  %s: %d (rate: %+d) -> %d" % [type_name, old_str, rate, new_str])
 
 ## Modify growth rate for a type - cards call this when summoned/dying
 func increment_growth_rate(type: CardType.Type, amount: int) -> void:
 	if growth_rate.has(type):
 		growth_rate[type] += amount
-		print("[GROWTH RATE] Player %s %s growth rate: %+d (now %+d/turn)" % [name, CardType.get_title(type), amount, growth_rate[type]])
 
 func decrement_growth_rate(type: CardType.Type, amount: int) -> void:
 	increment_growth_rate(type, -amount)

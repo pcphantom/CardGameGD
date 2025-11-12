@@ -34,23 +34,16 @@ static func get_creature_class(
 	var snake_case_name := _to_snake_case(creature_class_name)
 	var creature_script_path: String = CREATURE_PATH + snake_case_name + ".gd"
 
-	print("[CREATURE FACTORY] Loading creature: %s" % creature_class_name)
-	print("[CREATURE FACTORY]   Snake case: %s" % snake_case_name)
-	print("[CREATURE FACTORY]   Path: %s" % creature_script_path)
-	print("[CREATURE FACTORY]   Exists: %s" % ResourceLoader.exists(creature_script_path))
-
 	# Attempt to load specific creature class
 	if ResourceLoader.exists(creature_script_path):
 		var CreatureClass = load(creature_script_path)
 		if CreatureClass != null:
 			# Java: creature = (Creature) constructor.newInstance(game, card, cardImage, slotIndex, owner, opponent);
 			creature = CreatureClass.new(game, card, card_image, slot_index, owner, opponent)
-			print("[CREATURE FACTORY]   SUCCESS: Loaded %s" % creature.get_class())
 			return creature
 
 	# Java: catch (Exception e) { constructor = Class.forName(packageName + "BaseCreature").getConstructor(...); }
 	# Fallback to BaseCreature if specific class not found
-	print("[CREATURE FACTORY]   FALLBACK: Using BaseCreature")
 	creature = BaseCreature.new(game, card, card_image, slot_index, owner, opponent)
 
 	return creature
