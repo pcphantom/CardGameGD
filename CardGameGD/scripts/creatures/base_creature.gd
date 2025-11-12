@@ -138,14 +138,14 @@ func on_attack() -> void:
 	if SoundManager:
 		SoundManager.play_sound(SoundTypes.Sound.ATTACK)
 
-	var opponent_cards: Array = []
+	var opp_slot_cards: Array = []
 	if opponent != null and opponent.has_method("get_slot_cards"):
-		opponent_cards = opponent.get_slot_cards()
+		opp_slot_cards = opponent.get_slot_cards()
 
 	for index in range(6):
-		if index >= opponent_cards.size():
+		if index >= opp_slot_cards.size():
 			continue
-		var ci = opponent_cards[index]
+		var ci = opp_slot_cards[index]
 		if ci == null:
 			continue
 		if ci.has_method("get_card"):

@@ -9,28 +9,28 @@ func on_summoned() -> void:
 	super.on_summoned()
 
 	# Archangel fully heals all other friendly creatures
-	var owner_cards: Array = []
+	var friendly_cards: Array = []
 	if owner != null and owner.has_method("get_slot_cards"):
-		owner_cards = owner.get_slot_cards()
+		friendly_cards = owner.get_slot_cards()
 
 	for index in range(6):
-		if index >= owner_cards.size():
+		if index >= friendly_cards.size():
 			continue
 
 		# Skip self
 		if index == slot_index:
 			continue
 
-		var ci = owner_cards[index]
+		var ci = friendly_cards[index]
 		if ci == null:
 			continue
 
 		if ci.has_method("get_card"):
-			var creature_card = ci.get_card()
-			if creature_card != null:
+			var target_card = ci.get_card()
+			if target_card != null:
 				# Calculate how much HP to heal (original HP - current HP)
-				var original_hp: int = creature_card.get_original_life()
-				var current_hp: int = creature_card.get_life()
+				var original_hp: int = target_card.get_original_life()
+				var current_hp: int = target_card.get_life()
 				var heal_amount: int = original_hp - current_hp
 
 				# Heal the creature

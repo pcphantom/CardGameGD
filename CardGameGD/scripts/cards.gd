@@ -1237,8 +1237,7 @@ func _on_card_hovered(card_visual: CardImage) -> void:
 ## Card unhover handler - ShowDescriptionListener.exit() equivalent
 ## Java source: Cards.java lines 746-748 (ShowDescriptionListener.exit)
 ## Hides large card preview when mouse leaves
-func _on_card_unhovered(card_visual: CardImage) -> void:
-	# DEBUG: print("Card unhovered: ", card_visual.get_card().name if card_visual.get_card() else "null")
+func _on_card_unhovered(_card_visual: CardImage) -> void:
 	# Java: cdi.setImg(null); (line 747)
 	cdi.setImg(null)
 
@@ -1402,7 +1401,7 @@ func add_color_pulse(node: CanvasItem, color1: Color = Color.GREEN, color2: Colo
 
 ## Handles clicking on battlefield cards for spell targeting
 ## Java: TargetedCardListener.touchDown() (Cards.java inner class)
-func _on_battlefield_card_clicked(card_visual: CardImage, owner_id: String, slot_index: int) -> void:
+func _on_battlefield_card_clicked(card_visual: CardImage, owner_id: String, _slot_index: int) -> void:
 	if gameOver or not canStartMyTurn():
 		return
 
@@ -1710,12 +1709,16 @@ func move_card_actor_on_battle(ci: CardImage, pi: PlayerImage) -> Tween:
 	#   - Opponent (top): +20 Y = move DOWN toward player
 	var move_offset: float = -20.0 if is_bottom else 20.0
 
+	# CRITICAL: Store original position BEFORE tweening
+	# Otherwise the second tween uses the CHANGED position from the first tween
+	var original_y: float = ci.position.y
+
 	var tween := create_tween()
 	tween.set_trans(Tween.TRANS_LINEAR)
 	# Move toward target for 0.5s
-	tween.tween_property(ci, "position:y", ci.position.y + move_offset, 0.5)
+	tween.tween_property(ci, "position:y", original_y + move_offset, 0.5)
 	# Move back to original position for 0.5s
-	tween.tween_property(ci, "position:y", ci.position.y, 0.5)
+	tween.tween_property(ci, "position:y", original_y, 0.5)
 
 	return tween
 

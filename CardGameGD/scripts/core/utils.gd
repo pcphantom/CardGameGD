@@ -11,9 +11,6 @@ static func attack_with_network_event(creature, player: Player, index: int) -> v
 		push_error("Utils.attack_with_network_event(): Null creature or player")
 		return
 
-	var game_over_occurred: bool = false
-	var game_over_player_id: String = ""
-
 	if not creature.has_method("on_attack"):
 		push_warning("Utils.attack_with_network_event(): Creature has no on_attack method")
 		send_attack_network_event(player, index)

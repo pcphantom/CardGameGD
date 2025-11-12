@@ -84,8 +84,7 @@ func update_stats_display() -> void:
 	var co: int = card.get_cost()
 	var li: int = card.get_life()
 
-	# Java draws stats every frame if li > 0
-	# We update labels every frame to match, regardless of visibility state
+	# Update labels if they exist
 	if attack_label:
 		attack_label.text = str(at)
 
@@ -111,6 +110,10 @@ static func _init_static_textures() -> void:
 
 # Create visual child elements
 func _create_visual_elements() -> void:
+	# Don't create elements if they already exist (prevents duplicates from setup_card + _ready)
+	if portrait != null:
+		return
+
 	# Portrait (card artwork) - z_index 1 (behind frame)
 	portrait = TextureRect.new()
 	portrait.z_index = 1
@@ -122,7 +125,7 @@ func _create_visual_elements() -> void:
 	frame_rect.z_index = 2
 	frame_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(frame_rect)
-	
+
 	# Stunned indicator - z_index 3 (on top of frame)
 	stunned_indicator = TextureRect.new()
 	stunned_indicator.z_index = 3
@@ -137,7 +140,7 @@ func _create_visual_elements() -> void:
 	health_bar_display.visible = false
 	health_bar_display.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(health_bar_display)
-	
+
 	# Stat labels - z_index 10 (always on top)
 	cost_label = Label.new()
 	cost_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -145,7 +148,7 @@ func _create_visual_elements() -> void:
 	cost_label.z_index = 10
 	cost_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(cost_label)
-	
+
 	attack_label = Label.new()
 	attack_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	attack_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
@@ -153,7 +156,7 @@ func _create_visual_elements() -> void:
 	attack_label.visible = false
 	attack_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(attack_label)
-	
+
 	life_label = Label.new()
 	life_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	life_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
@@ -424,7 +427,7 @@ func clone_card() -> CardImage:
 # =============================================================================
 
 # Java: public boolean decrementLife(BaseFunctions attacker, int value, Cards game)
-func decrement_life(attacker, value: int, game_ref) -> bool:
+func decrement_life(attacker, value: int, _game_ref) -> bool:
 	# Java: creature.onAttacked(attacker, value); (line 147)
 	if creature and creature.has_method("on_attacked"):
 		creature.on_attacked(attacker, value)

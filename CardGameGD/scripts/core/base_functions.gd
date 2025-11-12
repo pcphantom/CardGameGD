@@ -597,12 +597,12 @@ func move_card_to_another_slot(player, ci, src_index: int, dest_index: int) -> v
 			await tween.finished
 
 ## Java: protected void scaleImage(CardImage ci)
-func scale_image(card_image) -> void:
-	if card_image == null or not card_image is Node2D:
+func scale_image(ci) -> void:
+	if ci == null or not ci is Node2D:
 		return
 
 	# Create a visual effect of scaling up then down
-	var tween = card_image.create_tween() if card_image.has_method("create_tween") else null
+	var tween = ci.create_tween() if ci.has_method("create_tween") else null
 	if tween != null:
-		tween.tween_property(card_image, "scale", Vector2(1.05, 1.05), 0.3)
-		tween.tween_property(card_image, "scale", Vector2(1.0, 1.0), 0.3)
+		tween.tween_property(ci, "scale", Vector2(1.05, 1.05), 0.3)
+		tween.tween_property(ci, "scale", Vector2(1.0, 1.0), 0.3)
