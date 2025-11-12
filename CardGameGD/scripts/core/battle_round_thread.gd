@@ -176,13 +176,16 @@ func execute() -> void:
 
 				# Java: opptSummons.addAction(sequence(moveTo(si.getX() + 5, si.getY() + 26, 1.0f), ...)); (line 195)
 				# Animate to slot
+				# COORDINATE CONVERSION: Java Y=0 at bottom, Godot Y=0 at top
+				# Java: card bottom at slot.getY() + 26 (26px above slot bottom in screen space)
+				# Godot: slot.y + slot_height - 26 - card_height = slot.y + 132 - 26 - 100 = slot.y + 6
 				oppt_summons.position = oppt_pick.position
 				var tween: Tween = game.create_tween()
 				tween.set_meta("bound_node", oppt_summons)
 				tween.tween_property(
 					oppt_summons,
 					"position",
-					Vector2(si.position.x + 5, si.position.y + 26),
+					Vector2(si.position.x + 5, si.position.y + 6),
 					1.0
 				)
 

@@ -421,7 +421,8 @@ func add_creature(name: String, index: int, slot) -> void:
 	if slot != null and cloned_card.has_method("set_position"):
 		var slot_x: float = slot.position.x if slot is Node2D else 0
 		var slot_y: float = slot.position.y if slot is Node2D else 0
-		cloned_card.position = Vector2(slot_x + 5, slot_y + 26)
+		# COORDINATE CONVERSION: Godot Y offset = slot.y + 6 (see battle_round_thread.gd for explanation)
+		cloned_card.position = Vector2(slot_x + 5, slot_y + 6)
 
 	# Play summon sound
 	if SoundManager:
@@ -561,7 +562,8 @@ func move_card_to_another_slot(player, ci, src_index: int, dest_index: int) -> v
 			if card2 is Node2D:
 				var tween = ci.create_tween() if ci.has_method("create_tween") else null
 				if tween != null:
-					tween.tween_property(card2, "position", Vector2(slots[src_index].position.x + 5, slots[src_index].position.y + 26), 1.0)
+					# COORDINATE CONVERSION: Godot Y offset = slot.y + 6 (see battle_round_thread.gd for explanation)
+					tween.tween_property(card2, "position", Vector2(slots[src_index].position.x + 5, slots[src_index].position.y + 6), 1.0)
 	else:
 		# Move card
 		cards[src_index] = null
@@ -586,7 +588,8 @@ func move_card_to_another_slot(player, ci, src_index: int, dest_index: int) -> v
 
 	# Animate card_image to dest position
 	if card_image is Node2D and dest_index < slots.size():
-		var dest_pos: Vector2 = Vector2(slots[dest_index].position.x + 5, slots[dest_index].position.y + 26)
+		# COORDINATE CONVERSION: Godot Y offset = slot.y + 6 (see battle_round_thread.gd for explanation)
+		var dest_pos: Vector2 = Vector2(slots[dest_index].position.x + 5, slots[dest_index].position.y + 6)
 		var tween = card_image.create_tween() if card_image.has_method("create_tween") else null
 		if tween != null:
 			tween.tween_property(card_image, "position", dest_pos, 1.0)

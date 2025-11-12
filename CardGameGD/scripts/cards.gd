@@ -1293,10 +1293,13 @@ func _on_slot_clicked(slot: SlotImage) -> void:
 
 		var tween := create_tween()
 		tween.set_meta("bound_node", clone)  # Tag tween with the node it's animating
+		# COORDINATE CONVERSION: Java Y=0 at bottom, Godot Y=0 at top
+		# Java: card bottom at slot.getY() + 26 (26px above slot bottom in screen space)
+		# Godot: slot.y + slot_height - 26 - card_height = slot.y + 132 - 26 - 100 = slot.y + 6
 		tween.tween_property(
 			clone,
 			"position",
-			Vector2(slot.position.x + 5, slot.position.y + 26),
+			Vector2(slot.position.x + 5, slot.position.y + 6),
 			1.0
 		)
 		tween.tween_callback(func():
