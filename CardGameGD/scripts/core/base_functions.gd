@@ -89,8 +89,9 @@ func inflict_damage_to_player(target_player, damage_value: int) -> void:
 	if card != null and card.get_name().to_lower() == "goblinsaboteur":
 		remove_random_cheapest_card(opposing_player)
 
+	# Java: targetPlayer.decrementLife(value, game)
 	if target_player.has_method("decrement_life"):
-		target_player.decrement_life(value)
+		target_player.decrement_life(value, game)
 
 	if game != null and game.has_method("log_message"):
 		game.log_message("%s dealt %d damage to player" % [
