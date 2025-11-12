@@ -846,7 +846,7 @@ func initialize() -> void:
 # ============================================================================
 
 func debug_scene_tree() -> void:
-	print("\n# DEBUG: print("=== BATTLE|=== COMPLETE|=== END SCENE TREE ===")
+	# DEBUG: print("\n=== BATTLE|=== COMPLETE|=== END SCENE TREE ===")
 	for i in range(stage.get_child_count()):
 		var child = stage.get_child(i)
 		print("Child %d: %s" % [i, child.name if child.name else "<unnamed>"])
@@ -1351,6 +1351,7 @@ func _on_slot_clicked(slot: SlotImage) -> void:
 
 	else:
 		# DEBUG: print("  -> No action taken (conditions not met)")
+		pass
 
 	# DEBUG: print("=== SLOT CLICKED COMPLETE ===")
 
@@ -1458,6 +1459,7 @@ func _animateDamageTextImpl(value: int, sx: float, sy: float, _dx: float, _dy: f
 
 	# Java: stage.addActor(label); (line 807)
 	stage.add_child(label)
+	print("[DAMAGE] Created damage number: -%d at position (%.1f, %.1f)" % [value, sx, sy])
 
 	# Java: label.addAction(sequence(moveTo(dx - damageOffsetter, dy, 3), fadeOut(1), removeActor(label))); (line 808)
 	var tween: Tween = create_tween()
@@ -1489,6 +1491,7 @@ func _animateHealingTextImpl(value: int, sx: float, sy: float, _dx: float, _dy: 
 
 	# Java: stage.addActor(label); (line 823)
 	stage.add_child(label)
+	print("[HEALING] Created healing number: +%d at position (%.1f, %.1f)" % [value, sx, sy])
 
 	# Java: label.addAction(sequence(moveTo(dx - damageOffsetter, dy, 3), fadeOut(1), removeActor(label))); (line 824)
 	var tween: Tween = create_tween()
