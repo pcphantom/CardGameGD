@@ -71,7 +71,13 @@ func _ready() -> void:
 ## Java: CardImage.draw() reads card stats every frame (lines 81-93)
 ## In Godot, we need to update labels when card stats change
 ## This matches Java's behavior where draw() continuously updates display
+var _process_frame_count: int = 0
 func _process(_delta: float) -> void:
+	_process_frame_count += 1
+	if _process_frame_count == 60:  # Debug print once per second at 60 FPS
+		if card:
+			print("[CARD %s] _process() is running (frame %d)" % [card.get_name(), _process_frame_count])
+		_process_frame_count = 0
 	update_stats_display()
 
 ## Update card stats labels to match current card values
