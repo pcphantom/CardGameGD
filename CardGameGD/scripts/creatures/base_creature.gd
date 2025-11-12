@@ -45,7 +45,8 @@ func on_summoned() -> void:
 				self_damage
 			])
 		if owner != null and owner.has_method("decrement_life"):
-			owner.decrement_life(self_damage)
+			# Java: owner.decrementLife(value, game) - needs game parameter
+			owner.decrement_life(self_damage, game)
 
 	var nl: int = slot_index - 1
 	var nr: int = slot_index + 1
