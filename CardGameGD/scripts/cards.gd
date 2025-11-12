@@ -853,16 +853,20 @@ func debug_scene_tree() -> void:
 		# DEBUG: print("  Type: %s" % child.get_class())
 		if child is Node2D or child is Control:
 			# DEBUG: print("  Position: %s" % str(child.position))
+			pass
 		if child is CanvasItem:
 			# DEBUG: print("  Z-Index: %s" % child.z_index)
 			# DEBUG: print("  Visible: %s" % child.visible)
+			pass
 		if child is Control:
 			# DEBUG: print("  Size: %s" % str(child.size))
+			pass
 		if child is TextureRect:
 			# DEBUG: print("  Has Texture: %s" % (child.texture != null))
 			if child.texture:
 				# DEBUG: print("  Texture Size: %s" % str(child.texture.get_size()))
-	print("# DEBUG: print("=== BATTLE|=== COMPLETE|=== END SCENE TREE ===\n")
+				pass
+	# DEBUG: print("=== BATTLE|=== COMPLETE|=== END SCENE TREE ===\n")
 
 # ============================================================================
 # INITIALIZE PLAYER CARDS METHOD (Java: lines 391-416)
