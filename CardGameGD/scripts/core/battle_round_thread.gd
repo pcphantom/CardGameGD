@@ -81,8 +81,12 @@ func execute() -> void:
 	# Java: if (summonedCardImage != null) { (line 81)
 	if summoned_card_image != null:
 		# Java: summonedCardImage.getCreature().onSummoned(); (line 84)
-		if summoned_card_image.get_creature():
-			summoned_card_image.get_creature().onSummoned()
+		var creature = summoned_card_image.get_creature()
+		if creature:
+			print("[BATTLE] Calling onSummoned() for %s (creature type: %s)" % [summoned_card_image.get_card().getName(), creature.get_class()])
+			creature.onSummoned()
+		else:
+			print("[BATTLE] ERROR: summoned_card_image has NO CREATURE! Card: %s" % summoned_card_image.get_card().getName())
 
 	# Java: else if (spellCardImage != null) { (line 94)
 	elif spell_card_image != null:
