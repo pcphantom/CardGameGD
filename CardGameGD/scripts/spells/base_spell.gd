@@ -38,14 +38,14 @@ func on_cast() -> void:
 	if owner_player != null and card != null:
 		owner_player.decrement_strength(card.get_type(), cost)
 
-	var owner_cards: Array = []
+	var friendly_cards: Array = []
 	if owner != null and owner.has_method("get_slot_cards"):
-		owner_cards = owner.get_slot_cards()
+		friendly_cards = owner.get_slot_cards()
 
 	for index in range(6):
-		if index >= owner_cards.size():
+		if index >= friendly_cards.size():
 			continue
-		var ci = owner_cards[index]
+		var ci = friendly_cards[index]
 		if ci == null:
 			continue
 		if ci.has_method("get_card"):
@@ -134,7 +134,7 @@ func adjust_damage(current_damage_value: int) -> int:
 		var card_name: String = team_card.get_name().to_lower()
 
 		if card_name == "dragon":
-			qualified_damage_value += int(qualified_damage_value / 2)
+			qualified_damage_value += int(float(qualified_damage_value) / 2.0)
 
 	return qualified_damage_value
 

@@ -427,7 +427,7 @@ func clone_card() -> CardImage:
 # =============================================================================
 
 # Java: public boolean decrementLife(BaseFunctions attacker, int value, Cards game)
-func decrement_life(attacker, value: int, game_ref) -> bool:
+func decrement_life(attacker, value: int, _game_ref) -> bool:
 	# Java: creature.onAttacked(attacker, value); (line 147)
 	if creature and creature.has_method("on_attacked"):
 		creature.on_attacked(attacker, value)
