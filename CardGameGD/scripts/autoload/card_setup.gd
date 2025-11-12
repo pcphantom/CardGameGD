@@ -188,14 +188,14 @@ func get_cards_by_type_from_set(type: CardType.Type, max_number: int, from_set: 
 	var result: Array = []
 
 	# DEBUG: Print what we're looking for
-	print("    [DEBUG] get_cards_by_type_from_set: Looking for type ", type, " (", CardType.get_title(type), ")")
-	print("    [DEBUG] card_set has ", from_set.size(), " cards total")
+	# DEBUG: print("    [DEBUG] get_cards_by_type_from_set: Looking for type ", type, " (", CardType.get_title(type), ")")
+	# DEBUG: print("    [DEBUG] card_set has ", from_set.size(), " cards total")
 
 	# DEBUG: Show first few card types
 	var count = 0
 	for card in from_set.keys():
 		if count < 3:
-			print("      [DEBUG] Card '", card.get_name(), "' has type ", card.get_type(), " (", CardType.get_title(card.get_type()), ")")
+			# DEBUG: print("      [DEBUG] Card '", card.get_name(), "' has type ", card.get_type(), " (", CardType.get_title(card.get_type()), ")")
 			count += 1
 
 	# Filter cards by type (CardPredicate functionality)
@@ -203,7 +203,7 @@ func get_cards_by_type_from_set(type: CardType.Type, max_number: int, from_set: 
 		if card.get_type() == type:
 			result.append(card)
 
-	print("    [DEBUG] Found ", result.size(), " cards of type ", CardType.get_title(type))
+	# DEBUG: print("    [DEBUG] Found ", result.size(), " cards of type ", CardType.get_title(type))
 
 	# Java: if (maxNumber > result.size()) return result;
 	if max_number > result.size():
@@ -252,7 +252,7 @@ func get_card_images_by_type(type: CardType.Type, max_number: int) -> Array:
 	# Java: List<Card> picks = getCardsByType(type, maxNumber);
 	var picks: Array = get_cards_by_type(type, max_number)
 
-	print("    [DEBUG] get_card_images_by_type: picks.size() = ", picks.size())
+	# DEBUG: print("    [DEBUG] get_card_images_by_type: picks.size() = ", picks.size())
 
 	# Java: List<CardImage> images = new ArrayList<CardImage>();
 	var images: Array = []
@@ -264,12 +264,12 @@ func get_card_images_by_type(type: CardType.Type, max_number: int) -> Array:
 		var img: CardImage = CardImage.new()
 		img.setup_card(c, "small")  # Loads texture from TextureManager.get_small_card_texture()
 
-		print("      [DEBUG] Created CardImage for card: ", c.get_name())
+		# DEBUG: print("      [DEBUG] Created CardImage for card: ", c.get_name())
 
 		# Java: images.add(img);
 		images.append(img)
 
-	print("    [DEBUG] get_card_images_by_type: returning ", images.size(), " images")
+	# DEBUG: print("    [DEBUG] get_card_images_by_type: returning ", images.size(), " images")
 
 	# Java: return images;
 	return images
@@ -289,7 +289,7 @@ func get_card_image_by_name(card_name: String) -> CardImage:
 	var img: CardImage = CardImage.new()
 	img.setup_card(c, "small")  # Loads texture from TextureManager.get_small_card_texture()
 
-	print("[DEBUG] Created CardImage for card by name: ", c.get_name())
+	# DEBUG: print("[DEBUG] Created CardImage for card by name: ", c.get_name())
 
 	# Java: return img;
 	return img
