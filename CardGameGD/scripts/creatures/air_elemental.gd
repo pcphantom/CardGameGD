@@ -5,18 +5,18 @@ func _init(game_ref, card_ref: Card, card_image_ref, slot_idx: int, owner_ref, o
 	super._init(game_ref, card_ref, card_image_ref, slot_idx, owner_ref, opponent_ref)
 
 func on_summoned() -> void:
-	# Set attack to current air strength
+	# Java: this.card.setAttack(ownerPlayer.getStrengthAir()); (line 16)
 	if card != null and owner_player != null:
 		card.set_attack(owner_player.get_strength_air())
 
-	# Deal 8 damage to opponent player
+	# Java: damageOpponent(8); (line 17)
 	damage_opponent(8)
 
-	# Increment air growth rate by 1 (permanent +1 per turn)
+	# Java: ownerPlayer.incrementStrength(CardType.AIR, 1); (line 18)
 	if owner_player != null:
-		owner_player.increment_growth_rate(CardType.Type.AIR, 1)
+		owner_player.increment_strength(CardType.Type.AIR, 1)
 
-	# Call parent implementation
+	# Java: super.onSummoned(); (line 19)
 	super.on_summoned()
 
 func start_of_turn_check() -> void:

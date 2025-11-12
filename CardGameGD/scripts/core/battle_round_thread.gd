@@ -251,9 +251,8 @@ func execute() -> void:
 			await attacker.get_creature().onAttack()
 
 	# Java: oi.incrementStrengthAll(1); pi.incrementStrengthAll(1); (lines 236-237)
-	# GROWTH RATE: Apply growth rates (base +1/turn, modified by cards in play)
-	oi.apply_growth_rates()
-	pi.apply_growth_rates()
+	oi.incrementStrengthAll(1)
+	pi.incrementStrengthAll(1)
 
 	# Java: endOfTurnCheck(opponent); (line 239)
 	end_of_turn_check(opponent)
