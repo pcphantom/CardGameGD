@@ -102,6 +102,7 @@ func execute() -> void:
 
 	# Java: for (int index = 0; index<6; index++) { (line 120)
 	# Attack with all player creatures (except just-summoned one)
+	# NOTE: Attacks happen sequentially (left to right) with animation delays
 	for index in range(6):
 		var attacker: CardImage = player.get_slot_cards()[index]
 		if attacker == null:
@@ -118,6 +119,8 @@ func execute() -> void:
 		# Java: attacker.getCreature().onAttack(); (line 129)
 		if attacker.get_creature():
 			attacker.get_creature().onAttack()
+			# Wait for attack animation to complete (1 second total: 0.5s out + 0.5s back)
+			await game.get_tree().create_timer(1.0).timeout
 
 	# AI TURN
 	# Java: startOfTurnCheck(opponent); (line 155)
@@ -208,7 +211,7 @@ func execute() -> void:
 				oppt_spell.onCast()
 
 	# Java: for (CardImage attacker : opponent.getSlotCards()) { (line 226)
-	# AI creatures attack
+	# AI creatures attack sequentially (left to right)
 	var j: int = -1
 	for attacker in opponent.get_slot_cards():
 		j += 1
@@ -223,6 +226,8 @@ func execute() -> void:
 		# Java: attacker.getCreature().onAttack(); (line 233)
 		if attacker.get_creature():
 			attacker.get_creature().onAttack()
+			# Wait for attack animation to complete (1 second total: 0.5s out + 0.5s back)
+			await game.get_tree().create_timer(1.0).timeout
 
 	# Java: oi.incrementStrengthAll(1); pi.incrementStrengthAll(1); (lines 236-237)
 	# GROWTH RATE: Both players gain +1 to all elemental strengths

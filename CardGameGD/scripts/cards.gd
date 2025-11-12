@@ -190,9 +190,10 @@ const HAND_Z_INDEX: int = 5
 # SAFE RANGES: X: 0-824, Y: 0-518
 const CARD_DESC_X: int = 20             # Card description X (left side)
 # Java: cdi = new CardDescriptionImage(20, ydown(512)); where ydown(512) = 768-512 = 256
-# In Java (Y=0 at bottom): Y=256 means 256 pixels from bottom = 512 pixels from top
-# In Godot (Y=0 at top): Y=512 means 512 pixels from top
-const CARD_DESC_Y: int = 512            # Card description Y (converted from ydown)
+# In Java (Y=0 at bottom): position is BOTTOM-LEFT corner at y=256, height=207, so spans 256-463 from bottom
+# In Godot (Y=0 at top): position is TOP-LEFT corner, so top = 768-463 = 305
+# Game log spans 559-732, so card description at 305-(305+207)=305-512 is above it with 47px gap
+const CARD_DESC_Y: int = 305            # Card description Y (converted from ydown)
 const CARD_DESC_Z_INDEX: int = 3
 
 # Shared: Game log panel (scrolling text log - LEFT BOTTOM)
@@ -1609,10 +1610,11 @@ func canStartMyTurn() -> bool:
 
 ## Animate card during battle attack
 ## Java: public void moveCardActorOnBattle(CardImage ci, PlayerImage pi) (Cards.java line 827)
-func move_card_actor_on_battle(ci: CardImage, pi: PlayerImage) -> void:
+## Returns: Tween that can be awaited for sequential animations
+func move_card_actor_on_battle(ci: CardImage, pi: PlayerImage) -> Tween:
 	if ci == null or pi == null:
 		push_error("move_card_actor_on_battle: null ci or pi")
-		return
+		return null
 
 	# Java: Sounds.play(Sound.ATTACK); (line 834)
 	if SoundManager:
@@ -1621,24 +1623,28 @@ func move_card_actor_on_battle(ci: CardImage, pi: PlayerImage) -> void:
 	# Java: if (pi.getSlots()[0] == null) return; (lines 836-838)
 	var slots: Array = pi.get_slots()
 	if slots.is_empty() or slots[0] == null:
-		return
+		return null
 
 	# Java: boolean isBottom = pi.getSlots()[0].isBottomSlots(); (line 842)
 	var is_bottom: bool = slots[0].is_bottom_slots()
 
 	# Java: ci.addAction(sequence(moveBy(0, isBottom ? 20 : -20, 0.5f), moveBy(0, isBottom ? -20 : 20, 0.5f), ...)); (line 844)
-	# Move card up/down by 20 pixels and back over 1 second total
-	# COORDINATE CONVERSION: Java Y increases up, Godot Y increases down
-	# Java "move up 20" (+20) → Godot "move up 20" (-20)
-	# Java "move down 20" (-20) → Godot "move down 20" (+20)
-	var move_offset: float = 20.0 if is_bottom else -20.0  # Godot coordinates: + is down, - is up
+	# In Java LibGDX: isBottom ? 20 : -20 means:
+	#   - Player (bottom): +20 Y = move UP toward opponent (Y+ is up in LibGDX)
+	#   - Opponent (top): -20 Y = move DOWN toward player
+	# In Godot (Y+ is down, opposite of LibGDX):
+	#   - Player (bottom): -20 Y = move UP toward opponent
+	#   - Opponent (top): +20 Y = move DOWN toward player
+	var move_offset: float = -20.0 if is_bottom else 20.0
 
 	var tween := create_tween()
 	tween.set_trans(Tween.TRANS_LINEAR)
-	# Move in one direction for 0.5s
+	# Move toward target for 0.5s
 	tween.tween_property(ci, "position:y", ci.position.y + move_offset, 0.5)
-	# Move back for 0.5s
+	# Move back to original position for 0.5s
 	tween.tween_property(ci, "position:y", ci.position.y, 0.5)
+
+	return tween
 
 ## Add message to game log
 ## Java equivalent: Cards.logScrollPane.add(message)
