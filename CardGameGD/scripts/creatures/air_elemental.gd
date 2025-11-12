@@ -12,9 +12,9 @@ func on_summoned() -> void:
 	# Deal 8 damage to opponent player
 	damage_opponent(8)
 
-	# Increment air strength by 1
+	# Increment air growth rate by 1 (permanent +1 per turn)
 	if owner_player != null:
-		owner_player.increment_strength(CardType.Type.AIR, 1)
+		owner_player.increment_growth_rate(CardType.Type.AIR, 1)
 
 	# Call parent implementation
 	super.on_summoned()

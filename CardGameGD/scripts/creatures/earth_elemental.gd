@@ -9,9 +9,9 @@ func on_summoned() -> void:
 	if card != null and owner_player != null:
 		card.set_attack(owner_player.get_strength_earth())
 
-	# Increment earth strength by 1
+	# Increment earth growth rate by 1 (permanent +1 per turn)
 	if owner_player != null:
-		owner_player.increment_strength(CardType.Type.EARTH, 1)
+		owner_player.increment_growth_rate(CardType.Type.EARTH, 1)
 
 	# Call parent implementation
 	super.on_summoned()

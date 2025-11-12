@@ -14,9 +14,9 @@ func on_summoned() -> void:
 		if game != null:
 			owner.increment_life(10, game)
 
-	# Increment water strength by 1
+	# Increment water growth rate by 1 (permanent +1 per turn)
 	if owner_player != null:
-		owner_player.increment_strength(CardType.Type.WATER, 1)
+		owner_player.increment_growth_rate(CardType.Type.WATER, 1)
 
 	# Call parent implementation
 	super.on_summoned()
