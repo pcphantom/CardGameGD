@@ -312,7 +312,7 @@ func enableDisableCards(type) -> void:
 	var pstr: int = get_strength(type)
 	var cards: Array = get_cards(type)
 	for card in cards:
-		if card.get_card().getCost() <= pstr:
+		if card.get_card().get_cost() <= pstr:
 			card.set_enabled(true)
 			card.set_color(Color.WHITE)
 		else:
