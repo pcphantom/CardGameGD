@@ -219,14 +219,12 @@ func on_attacked(_attacker, damage: int) -> int:
 		if team_cards[nl].has_method("get_card"):
 			var left_neighbor: String = team_cards[nl].get_card().get_name().to_lower()
 			if left_neighbor == "holyguard":
-				print("[HOLY GUARD] Left neighbor reduced damage: %d → %d" % [modified_damage, modified_damage - 2])
 				modified_damage = modified_damage - 2
 
 	if nr <= 5 and nr < team_cards.size() and team_cards[nr] != null:
 		if team_cards[nr].has_method("get_card"):
 			var right_neighbor: String = team_cards[nr].get_card().get_name().to_lower()
 			if right_neighbor == "holyguard":
-				print("[HOLY GUARD] Right neighbor reduced damage: %d → %d" % [modified_damage, modified_damage - 2])
 				modified_damage = modified_damage - 2
 
 	if modified_damage < 0:

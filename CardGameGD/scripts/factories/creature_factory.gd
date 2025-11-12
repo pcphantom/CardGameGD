@@ -31,7 +31,8 @@ static func get_creature_class(
 
 	# Java: try { constructor = Class.forName(packageName + className).getConstructor(...); }
 	# Convert to snake_case for Godot file naming (e.g., "FireDrake" -> "fire_drake.gd")
-	var creature_script_path: String = CREATURE_PATH + _to_snake_case(creature_class_name) + ".gd"
+	var snake_case_name := _to_snake_case(creature_class_name)
+	var creature_script_path: String = CREATURE_PATH + snake_case_name + ".gd"
 
 	# Attempt to load specific creature class
 	if ResourceLoader.exists(creature_script_path):

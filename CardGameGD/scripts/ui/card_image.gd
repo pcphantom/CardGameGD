@@ -84,16 +84,15 @@ func update_stats_display() -> void:
 	var co: int = card.get_cost()
 	var li: int = card.get_life()
 
-	# Update attack label (only if it exists and is visible)
-	if attack_label and attack_label.visible:
+	# Java draws stats every frame if li > 0
+	# We update labels every frame to match, regardless of visibility state
+	if attack_label:
 		attack_label.text = str(at)
 
-	# Update cost label
-	if cost_label and cost_label.visible:
+	if cost_label:
 		cost_label.text = str(co)
 
-	# Update life label (only if it exists and is visible)
-	if life_label and life_label.visible:
+	if life_label:
 		life_label.text = str(li)
 
 # Java: private static void initTextures()

@@ -38,7 +38,8 @@ static func get_spell_class(
 
 	# Convert class name to snake_case for file name (e.g., "FlameWave" -> "flame_wave")
 	# Use custom conversion to handle cases like "CalltoThunder" -> "call_to_thunder"
-	var spell_script_path: String = SPELL_PATH + _to_snake_case(spell_class_name) + ".gd"
+	var snake_case_name := _to_snake_case(spell_class_name)
+	var spell_script_path: String = SPELL_PATH + snake_case_name + ".gd"
 
 	# Try to load the specific spell class
 	if ResourceLoader.exists(spell_script_path):

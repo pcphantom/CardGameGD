@@ -1463,7 +1463,6 @@ func _animateDamageTextImpl(value: int, sx: float, sy: float, _dx: float, _dy: f
 
 	# Java: stage.addActor(label); (line 807)
 	stage.add_child(label)
-	print("[DAMAGE] Created damage number: -%d at position (%.1f, %.1f)" % [value, sx, sy])
 
 	# Java: label.addAction(sequence(moveTo(dx - damageOffsetter, dy, 3), fadeOut(1), removeActor(label))); (line 808)
 	var tween: Tween = create_tween()
@@ -1495,7 +1494,6 @@ func _animateHealingTextImpl(value: int, sx: float, sy: float, _dx: float, _dy: 
 
 	# Java: stage.addActor(label); (line 823)
 	stage.add_child(label)
-	print("[HEALING] Created healing number: +%d at position (%.1f, %.1f)" % [value, sx, sy])
 
 	# Java: label.addAction(sequence(moveTo(dx - damageOffsetter, dy, 3), fadeOut(1), removeActor(label))); (line 824)
 	var tween: Tween = create_tween()
