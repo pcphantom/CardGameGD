@@ -44,6 +44,7 @@ static func get_spell_class(
 		var SpellClass = load(spell_script_path)
 		if SpellClass != null:
 			spell = SpellClass.new(game, card, card_image, owner, opponent)
+			print("[SPELL] Loaded specific spell: %s from %s" % [spell_class_name, spell_script_path])
 			return spell
 
 	# Fallback to BaseSpell if specific class not found

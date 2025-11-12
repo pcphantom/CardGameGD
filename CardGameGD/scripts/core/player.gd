@@ -114,6 +114,7 @@ func decrement_strength(type: CardType.Type, amount: int) -> void:
 	set_strength(type, current - amount)
 
 func increment_strength_all(incr: int) -> void:
+	print("[GROWTH] Player %s gaining +%d to all elemental strengths" % [name, incr])
 	for type in TYPES:
 		increment_strength(type, incr)
 

@@ -58,7 +58,7 @@ func _init(game_ref, player_ref: PlayerImage, opponent_ref: PlayerImage, summone
 ## Main battle round execution
 ## Java: public void run() (line 65)
 func execute() -> void:
-	# DEBUG: print("[BattleRound] START")
+	print("\n[===== BATTLE ROUND START =====]")
 
 	# Java: game.startTurn(); (line 68)
 	game.startTurn()
@@ -269,7 +269,7 @@ func execute() -> void:
 	# Java: game.finishTurn(); (line 257)
 	game.finishTurn()
 
-	# DEBUG: print("[BattleRound] COMPLETE")
+	print("[===== BATTLE ROUND COMPLETE =====]\n")
 
 ## Java: private boolean isTriplicateSummon(CardImage summoned, CardImage attacker) (line 263)
 func is_triplicate_summon(summoned: CardImage, attacker: CardImage) -> bool:
