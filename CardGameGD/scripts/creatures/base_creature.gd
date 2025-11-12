@@ -91,7 +91,7 @@ func on_summoned() -> void:
 		var left_neighbor: String = team_cards[nl].get_card().get_name().to_lower()
 
 		if left_neighbor == "merfolkoverlord":
-			on_attack()
+			await on_attack()
 
 		if left_neighbor == "orcchieftain":
 			if card != null:
@@ -112,7 +112,7 @@ func on_summoned() -> void:
 		var right_neighbor: String = team_cards[nr].get_card().get_name().to_lower()
 
 		if right_neighbor == "merfolkoverlord":
-			on_attack()
+			await on_attack()
 
 		if right_neighbor == "orcchieftain":
 			if card != null:

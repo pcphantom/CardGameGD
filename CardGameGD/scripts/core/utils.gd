@@ -16,7 +16,7 @@ static func attack_with_network_event(creature, player: Player, index: int) -> v
 		send_attack_network_event(player, index)
 		return
 
-	creature.on_attack()
+	await creature.on_attack()
 
 	if GameManager.network_game != null:
 		send_attack_network_event(player, index)

@@ -192,7 +192,7 @@ func get_card(cards: Array, index: int) -> Control:
 		return get_empty_slot_image()
 
 	# Java: CardImage clone = ci.clone(); (line 86)
-	var clone: CardImage = ci.clone()
+	var clone: CardImage = ci.clone_card()
 
 	# Java: clone.setEnabled(cards.get(index).isEnabled()); (line 87)
 	clone.set_enabled(cards[index].is_enabled())

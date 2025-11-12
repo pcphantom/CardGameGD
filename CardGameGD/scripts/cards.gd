@@ -1035,11 +1035,15 @@ func _on_show_oppt_cards_pressed() -> void:
 	var title_text: String = getPlayerDescription(opponent.get_player_info())
 	var window = OpponentCardWindow.new(title_text, opponent.get_player_info(), self, skin)
 
+	# Connect close signal to reset flag
+	window.close_requested.connect(func():
+		opptCardsShown = false
+		window.queue_free()
+	)
+
 	# Add window to scene and show it
 	stage.add_child(window)
 	window.popup_centered()
-
-	# Close button handled within OpponentCardWindow class via built-in Window close button
 
 func _on_skip_turn_pressed() -> void:
 	# Java: lines 195-203
@@ -1047,6 +1051,11 @@ func _on_skip_turn_pressed() -> void:
 	# DEBUG: print("=== SKIP TURN PRESSED ===")
 	if gameOver:
 		# DEBUG: print("  -> Game is over, cannot skip turn")
+		return
+
+	# Prevent clicking skip turn while a turn is already in progress
+	if activeTurn:
+		# DEBUG: print("  -> Turn already in progress, cannot skip")
 		return
 
 	# Java: BattleRoundThread t = new BattleRoundThread(Cards.this, player, opponent); (line 200)

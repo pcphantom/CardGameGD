@@ -9,9 +9,9 @@ func on_summoned() -> void:
 	if card != null and owner_player != null:
 		card.set_attack(owner_player.get_strength_fire())
 
-	# Increment fire strength by 1
+	# Increment fire growth rate by 1 (permanent +1 per turn)
 	if owner_player != null:
-		owner_player.increment_strength(CardType.Type.FIRE, 1)
+		owner_player.increment_growth_rate(CardType.Type.FIRE, 1)
 
 	# Damage all opponent creatures for 3
 	damage_all(opponent, 3)
