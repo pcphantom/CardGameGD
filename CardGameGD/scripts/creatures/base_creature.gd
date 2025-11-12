@@ -165,8 +165,12 @@ func on_attack() -> void:
 	else:
 		inflict_damage_to_player(opponent, attack)
 
+	# Java: Cards.moveCardActorOnBattle() blocks the thread with while(!doneBattle.get()) { Thread.sleep(50); }
+	# In Godot, we await the tween animation to complete before continuing
 	if game != null and game.has_method("move_card_actor_on_battle"):
-		game.move_card_actor_on_battle(card_image, owner)
+		var tween: Tween = game.move_card_actor_on_battle(card_image, owner)
+		if tween != null:
+			await tween.finished
 
 	var owner_slot_cards: Array = []
 	if owner != null and owner.has_method("get_slot_cards"):

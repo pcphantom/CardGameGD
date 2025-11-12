@@ -1049,7 +1049,7 @@ func _on_skip_turn_pressed() -> void:
 	# This constructor variant means no creature summoned and no spell cast
 	# Just process attacks and AI turn
 	var battle_thread := BattleRoundThread.new(self, player, opponent)
-	battle_thread.execute()
+	await battle_thread.execute()
 
 	print("=== SKIP TURN COMPLETE ===")
 
@@ -1153,7 +1153,7 @@ func _on_card_clicked(card_visual: CardImage) -> void:
 			# Java: t.start(); (line 550)
 			startTurn()
 			var battle_thread := BattleRoundThread.new(self, player, opponent, selectedCard)
-			battle_thread.execute()
+			await battle_thread.execute()
 
 	# Java: else if (selectedCard.getCard().getMustBeSummoneOnCard() != null) { (line 553)
 	elif card_data.get_must_be_summoned_on_card() != null and card_data.get_must_be_summoned_on_card() != "":
@@ -1322,7 +1322,7 @@ func _on_slot_clicked(slot: SlotImage) -> void:
 			# Java: BattleRoundThread t = new BattleRoundThread(Cards.this, player, opponent, clone, si.getIndex()); (line 693)
 			# Java: t.start(); (line 694)
 			var battle_thread := BattleRoundThread.new(self, player, opponent, clone, slot_index)
-			battle_thread.execute()
+			await battle_thread.execute()
 		)
 
 	# Java: else if (selectedCard.getCard().isSpell() && si.isHighlighted()) { (line 699)
@@ -1338,7 +1338,7 @@ func _on_slot_clicked(slot: SlotImage) -> void:
 		# Java: BattleRoundThread t = new BattleRoundThread(Cards.this, player, opponent, selectedCard, null, player.getPlayerInfo().getId(), si.getIndex()); (line 704)
 		# Java: t.start(); (line 705)
 		var battle_thread := BattleRoundThread.new(self, player, opponent, selectedCard, slot.get_slot_index(), player.get_player_info().getId())
-		battle_thread.execute()
+		await battle_thread.execute()
 
 	else:
 		print("  -> No action taken (conditions not met)")
@@ -1403,7 +1403,7 @@ func _on_battlefield_card_clicked(card_visual: CardImage, owner_id: String, slot
 	clearHighlights()
 
 	var battle_thread := BattleRoundThread.new(self, player, opponent, selectedCard, card_visual, owner_id)
-	battle_thread.execute()
+	await battle_thread.execute()
 
 ## Java: public void animateDamageText(int value, CardImage ci)
 func animateDamageText(value: int, target) -> void:
