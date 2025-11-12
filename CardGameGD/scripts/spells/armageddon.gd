@@ -9,9 +9,7 @@ func on_cast() -> void:
 	super.on_cast()
 
 	# Calculate damage: 8 + fire strength
-	var value: int = 8
-	if owner_player != null:
-		value += owner_player.get_strength_fire()
+	var value: int = 8 + owner_player.get_strength_fire()
 
 	# Deal damage to all opponent creatures
 	damage_all(opponent, adjust_damage(value))

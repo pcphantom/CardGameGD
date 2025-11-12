@@ -10,11 +10,7 @@ func on_cast() -> void:
 
 	# Heal targeted creature 8 HP if there is one
 	if targeted_card_image != null:
-		if targeted_card_image.has_method("increment_life"):
-			if game != null:
-				targeted_card_image.increment_life(8, game)
+		targeted_card_image.increment_life(8, game)
 
 	# Heal owner 8 HP
-	if owner != null and owner.has_method("increment_life"):
-		if game != null:
-			owner.increment_life(8, game)
+	owner.increment_life(8, game)

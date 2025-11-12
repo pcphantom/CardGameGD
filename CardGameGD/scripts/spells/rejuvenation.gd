@@ -9,11 +9,7 @@ func on_cast() -> void:
 	super.on_cast()
 
 	# Calculate healing: earth strength * 2
-	var heal: int = 0
-	if owner_player != null:
-		heal = owner_player.get_strength_earth() * 2
+	var heal: int = owner_player.get_strength_earth() * 2
 
 	# Heal owner
-	if owner != null and owner.has_method("increment_life"):
-		if game != null:
-			owner.increment_life(heal, game)
+	owner.increment_life(heal, game)
