@@ -1530,6 +1530,10 @@ func moveCardActorOnMagic(ci: CardImage, pi: PlayerImage) -> void:
 	tween.tween_property(pi, "position:y", pi.position.y, 0.5)
 	await tween.finished
 
+## Snake_case alias for GDScript convention
+func move_card_actor_on_magic(ci: CardImage, pi: PlayerImage) -> void:
+	moveCardActorOnMagic(ci, pi)
+
 ## Java: public CardImage getSelectedCard()
 func getSelectedCard() -> CardImage:
 	return selectedCard

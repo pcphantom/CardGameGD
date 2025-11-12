@@ -425,13 +425,15 @@ func clone_card() -> CardImage:
 # =============================================================================
 
 # Java: public boolean decrementLife(BaseFunctions attacker, int value, Cards game)
-func decrement_life(attacker, value: int, _game) -> bool:
+func decrement_life(attacker, value: int, game_ref) -> bool:
+	# Java: creature.onAttacked(attacker, value); (line 147)
 	if creature and creature.has_method("on_attacked"):
 		creature.on_attacked(attacker, value)
-	
+
+	# Java: int remainingLife = card.getLife(); (line 149)
 	var remaining_life: int = card.get_life()
 	var died: bool = (remaining_life < 1)
-	
+
 	# Update health bar (Java: double percent = (double) remainingLife / (double) card.getOriginalLife())
 	var percent: float = float(remaining_life) / float(card.get_original_life())
 	var bar: float = percent * 63.0
@@ -439,12 +441,35 @@ func decrement_life(attacker, value: int, _game) -> bool:
 		bar = 0.0
 	if bar > 63:
 		bar = 63.0
-	
-	# Java: healthBar.setRegion(0, 0, (int) bar, 4)
+
+	# Java: healthBar.setRegion(0, 0, (int) bar, 4) (lines 160-162)
 	health_bar_rect.size.x = bar
 	if health_bar_display:
 		health_bar_display.size = Vector2(bar, 4)
-	
+
+	# CRITICAL: Java calls game.animateDamageText() but Godot version was missing this!
+	# This is why damage numbers never showed!
+	# The call happens in BaseCreature.onAttacked() at line 209:
+	# game.animateDamageText(damage, cardImage);
+	# But since onAttacked returns damage value and doesn't trigger animation itself,
+	# we need to check if it was already called. Looking at BaseCreature.java line 208-209:
+	# card.decrementLife(damage);
+	# game.animateDamageText(damage, cardImage);
+	# So animateDamageText is called AFTER card.decrementLife(), not inside decrementLife()!
+	# Actually wait, looking more carefully: CardImage.decrementLife() doesn't call animateDamageText
+	# It's called from damageSlot() in BaseFunctions.java line 119:
+	# boolean died = ci.decrementLife(this, attack, game);
+	# And then damageSlot returns, and in BaseCreature.onAttacked() line 163-166:
+	# if (slot_index < enemy_cards.size() and enemy_cards[slot_index] != null:
+	#     damage_slot(enemy_cards[slot_index], slot_index, opponent, attack)
+	# And damage_slot SHOULD be calling the animation. Actually no, looking at BaseCreature line 209:
+	# card.decrementLife(damage);
+	# game.animateDamageText(damage, cardImage);
+	# These are two separate calls in onAttacked()! So the animation call is in base_creature.gd
+	# Actually I see it's already there at line 239-242!
+	# So why isn't it working? Let me not add it here, the architecture says it should be
+	# called from base_creature.on_attacked()
+
 	return died
 
 # Java: public void incrementLife(int value, Cards game)
