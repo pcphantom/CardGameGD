@@ -8,11 +8,14 @@ func on_summoned() -> void:
 	# Call parent summon logic first
 	super.on_summoned()
 
-	# Increment fire strength by 1
+	# Increase fire growth rate by +1 per turn
 	if owner_player != null:
-		var old_strength = owner_player.get_strength(CardType.Type.FIRE)
-		owner_player.increment_strength(CardType.Type.FIRE, 1)
-		var new_strength = owner_player.get_strength(CardType.Type.FIRE)
-		print("[PRIEST OF FIRE] Increased fire strength: %d → %d" % [old_strength, new_strength])
+		owner_player.increment_growth_rate(CardType.Type.FIRE, 1)
 	else:
 		push_error("[PRIEST OF FIRE] owner_player is NULL!")
+
+func on_dying() -> void:
+	# Reverse the growth rate bonus when priest dies
+	if owner_player != null:
+		owner_player.decrement_growth_rate(CardType.Type.FIRE, 1)
+	super.on_dying()

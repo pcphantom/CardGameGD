@@ -8,14 +8,17 @@ func on_summoned() -> void:
 	# Call parent summon logic first
 	super.on_summoned()
 
-	# Elf Hermit boosts earth strength by 2
+	# Elf Hermit increases earth growth rate by +2 per turn
 	if owner_player != null:
-		var old_strength = owner_player.get_strength(CardType.Type.EARTH)
-		owner_player.increment_strength(CardType.Type.EARTH, 2)
-		var new_strength = owner_player.get_strength(CardType.Type.EARTH)
-		print("[ELF HERMIT] Increased earth strength: %d → %d" % [old_strength, new_strength])
+		owner_player.increment_growth_rate(CardType.Type.EARTH, 2)
 	else:
 		push_error("[ELF HERMIT] owner_player is NULL!")
+
+func on_dying() -> void:
+	# Reverse the growth rate bonus when elf hermit dies
+	if owner_player != null:
+		owner_player.decrement_growth_rate(CardType.Type.EARTH, 2)
+	super.on_dying()
 
 func on_attack() -> void:
 	super.on_attack()
