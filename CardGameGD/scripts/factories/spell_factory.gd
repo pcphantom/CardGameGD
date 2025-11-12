@@ -37,7 +37,8 @@ static func get_spell_class(
 	var spell: BaseSpell = null
 
 	# Convert class name to snake_case for file name (e.g., "FlameWave" -> "flame_wave")
-	var spell_script_path: String = SPELL_PATH + spell_class_name.to_snake_case() + ".gd"
+	# Use custom conversion to handle cases like "CalltoThunder" -> "call_to_thunder"
+	var spell_script_path: String = SPELL_PATH + _to_snake_case(spell_class_name) + ".gd"
 
 	# Try to load the specific spell class
 	if ResourceLoader.exists(spell_script_path):
@@ -63,6 +64,46 @@ static func get_spell_class(
 
 	return spell
 
+## Helper to convert PascalCase to snake_case for file naming
+## Handles cases like "CalltoThunder" -> "call_to_thunder"
+static func _to_snake_case(pascal_case: String) -> String:
+	# Common prepositions that should have underscores added
+	const PREPOSITIONS := ["of", "to", "the", "in", "on", "at", "by", "for", "with", "from"]
+
+	var result := ""
+	var i := 0
+	while i < pascal_case.length():
+		var c := pascal_case[i]
+
+		# Check if we're at a preposition
+		var found_prep := false
+		for prep in PREPOSITIONS:
+			var prep_len := prep.length()
+			if i + prep_len <= pascal_case.length():
+				var substring := pascal_case.substr(i, prep_len).to_lower()
+				if substring == prep:
+					# Check it's not at start and followed by capital or end
+					if i > 0 and (i + prep_len >= pascal_case.length() or pascal_case[i + prep_len] == pascal_case[i + prep_len].to_upper()):
+						if result != "":
+							result += "_"
+						result += prep
+						if i + prep_len < pascal_case.length():
+							result += "_"
+						i += prep_len
+						found_prep = true
+						break
+
+		if found_prep:
+			continue
+
+		# Normal capital letter handling
+		if c == c.to_upper() and i > 0:
+			result += "_"
+		result += c.to_lower()
+		i += 1
+
+	return result
+
 static func spell_exists(spell_class_name: String) -> bool:
-	var spell_script_path: String = SPELL_PATH + spell_class_name.to_snake_case() + ".gd"
+	var spell_script_path: String = SPELL_PATH + _to_snake_case(spell_class_name) + ".gd"
 	return ResourceLoader.exists(spell_script_path)
