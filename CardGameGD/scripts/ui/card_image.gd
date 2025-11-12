@@ -64,6 +64,10 @@ func _ready() -> void:
 	_init_static_textures()
 	_create_visual_elements()
 
+	# Connect mouse signals for hover tooltips
+	mouse_entered.connect(_mouse_entered)
+	mouse_exited.connect(_mouse_exited)
+
 # Java: private static void initTextures()
 static func _init_static_textures() -> void:
 	if health_box_texture != null:

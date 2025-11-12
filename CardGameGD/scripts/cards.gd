@@ -1593,3 +1593,9 @@ func canStartMyTurn() -> bool:
 
 	# Java: return !activeTurn; (line 966)
 	return not activeTurn
+
+## Add message to game log
+## Java equivalent: Cards.logScrollPane.add(message)
+func log_message(message: String) -> void:
+	if logScrollPane and logScrollPane.has_method("add"):
+		logScrollPane.add(message)
