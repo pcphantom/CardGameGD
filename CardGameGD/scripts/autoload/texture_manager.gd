@@ -152,7 +152,26 @@ func load_texture_atlas(atlas_path: String, image_path: String) -> Dictionary:
 					var atlas_tex := AtlasTexture.new()
 					atlas_tex.atlas = atlas_texture
 					atlas_tex.region = Rect2(current_x, current_y, current_width, current_height)
-					atlas_dict[current_card_name] = atlas_tex
+
+					# CRITICAL: TGA atlas textures need to be flipped vertically
+					# Java flips TGA sprites twice (CardSetup.java line 155 + 161)
+					# This ends up as no net flip for TGA, but without the flips they appear upside down
+					# Check if this is a TGA atlas by checking the atlas_path
+					var is_tga_atlas: bool = atlas_path.contains("TGA")
+					if is_tga_atlas:
+						# Flip vertically by inverting the Y coordinates in the region
+						# Original: region starts at current_y with height current_height
+						# Flipped: need to read from bottom to top
+						# LibGDX flip(false, true) flips vertically, we achieve same by modifying UV
+						# Actually, we need to flip the image data itself
+						# Create an Image from the atlas region and flip it
+						var img := atlas_texture.get_image()
+						var sub_img := img.get_region(Rect2(current_x, current_y, current_width, current_height))
+						sub_img.flip_y()  # Flip vertically
+						var flipped_tex := ImageTexture.create_from_image(sub_img)
+						atlas_dict[current_card_name] = flipped_tex
+					else:
+						atlas_dict[current_card_name] = atlas_tex
 
 	file.close()
 	return atlas_dict

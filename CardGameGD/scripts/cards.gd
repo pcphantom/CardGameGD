@@ -189,7 +189,10 @@ const HAND_Z_INDEX: int = 5
 # TOTAL FRAME SIZE: ~200×250 pixels (single panel)
 # SAFE RANGES: X: 0-824, Y: 0-518
 const CARD_DESC_X: int = 20             # Card description X (left side)
-const CARD_DESC_Y: int = 256            # Card description Y (middle-left)
+# Java: cdi = new CardDescriptionImage(20, ydown(512)); where ydown(512) = 768-512 = 256
+# In Java (Y=0 at bottom): Y=256 means 256 pixels from bottom = 512 pixels from top
+# In Godot (Y=0 at top): Y=512 means 512 pixels from top
+const CARD_DESC_Y: int = 512            # Card description Y (converted from ydown)
 const CARD_DESC_Z_INDEX: int = 3
 
 # Shared: Game log panel (scrolling text log - LEFT BOTTOM)
