@@ -199,6 +199,25 @@ func execute() -> void:
 				summoned_creature.onSummoned()
 
 			else:
+				# Opponent is casting a spell - show the spell card briefly so player knows what was cast
+				# Clone the card to display it temporarily
+				var spell_display = oppt_pick.clone_card()
+				if spell_display != null and game != null:
+					# Position the spell card in the center of the screen for visibility
+					spell_display.position = Vector2(400, 350)
+					game.add_child(spell_display)
+
+					# Fade in, wait, then fade out
+					var display_tween = game.create_tween()
+					display_tween.tween_property(spell_display, "modulate:a", 0.0, 0.0)
+					display_tween.tween_property(spell_display, "modulate:a", 1.0, 0.3)
+					display_tween.tween_interval(1.5)  # Show for 1.5 seconds
+					display_tween.tween_property(spell_display, "modulate:a", 0.0, 0.3)
+					display_tween.tween_callback(spell_display.queue_free)
+
+					# Wait for fade in to complete before casting spell
+					await game.get_tree().create_timer(0.3).timeout
+
 				# Java: Spell opptSpell = SpellFactory.getSpellClass(...); opptSpell.onCast(); (lines 213-214)
 				var oppt_spell = SpellFactory.get_spell_class(
 					oppt_pick.get_card().getName(),
@@ -209,6 +228,10 @@ func execute() -> void:
 					player
 				)
 				oppt_spell.onCast()
+
+				# Wait for spell card to finish displaying
+				if spell_display != null:
+					await game.get_tree().create_timer(1.8).timeout  # Wait for fade out
 
 	# Java: for (CardImage attacker : opponent.getSlotCards()) { (line 226)
 	# AI creatures attack sequentially (left to right)
