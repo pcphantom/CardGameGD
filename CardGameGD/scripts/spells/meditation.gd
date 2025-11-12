@@ -9,7 +9,6 @@ func on_cast() -> void:
 	super.on_cast()
 
 	# Meditation boosts Air, Fire, and Earth strengths by 1 each
-	if owner_player != null:
-		owner_player.increment_strength(CardType.Type.AIR, 1)
-		owner_player.increment_strength(CardType.Type.FIRE, 1)
-		owner_player.increment_strength(CardType.Type.EARTH, 1)
+	owner_player.increment_strength(CardType.Type.AIR, 1)
+	owner_player.increment_strength(CardType.Type.FIRE, 1)
+	owner_player.increment_strength(CardType.Type.EARTH, 1)

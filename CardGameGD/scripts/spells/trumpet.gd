@@ -8,5 +8,4 @@ func on_cast() -> void:
 	super.on_cast()
 
 	# Increase Beast power by 1
-	if owner_player != null:
-		owner_player.increment_strength(CardType.Type.BEAST, 1)
+	owner_player.increment_strength(CardType.Type.BEAST, 1)
