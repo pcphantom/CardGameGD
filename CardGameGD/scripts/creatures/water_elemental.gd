@@ -5,20 +5,20 @@ func _init(game_ref, card_ref: Card, card_image_ref, slot_idx: int, owner_ref, o
 	super._init(game_ref, card_ref, card_image_ref, slot_idx, owner_ref, opponent_ref)
 
 func on_summoned() -> void:
-	# Set attack to current water strength
+	# Java: this.card.setAttack(ownerPlayer.getStrengthWater()); (line 16)
 	if card != null and owner_player != null:
 		card.set_attack(owner_player.get_strength_water())
 
-	# Heal owner for 10 HP
+	# Java: owner.incrementLife(10, game); (line 17)
 	if owner != null and owner.has_method("increment_life"):
 		if game != null:
 			owner.increment_life(10, game)
 
-	# Increment water growth rate by 1 (permanent +1 per turn)
+	# Java: ownerPlayer.incrementStrength(CardType.WATER, 1); (line 18)
 	if owner_player != null:
-		owner_player.increment_growth_rate(CardType.Type.WATER, 1)
+		owner_player.increment_strength(CardType.Type.WATER, 1)
 
-	# Call parent implementation
+	# Java: super.onSummoned(); (line 19)
 	super.on_summoned()
 
 func on_attack() -> void:
