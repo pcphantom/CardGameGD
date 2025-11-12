@@ -22,4 +22,7 @@ func on_summoned() -> void:
 func start_of_turn_check() -> void:
 	# Update attack to current air strength at start of turn
 	if card != null and owner_player != null:
-		card.set_attack(owner_player.get_strength_air())
+		var old_attack := card.get_attack()
+		var air_strength := owner_player.get_strength_air()
+		card.set_attack(air_strength)
+		print("[AIR ELEMENTAL] start_of_turn_check: updated attack %d → %d (air strength: %d)" % [old_attack, card.get_attack(), air_strength])
