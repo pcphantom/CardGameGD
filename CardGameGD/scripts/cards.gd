@@ -1419,6 +1419,13 @@ func animateHealingText(value: int, target) -> void:
 	elif target is PlayerImage:
 		_animateHealingTextImpl(value, target.position.x + 90, target.position.y + 5, target.position.x + 90, target.position.y + 55)
 
+## Snake_case aliases for GDScript convention
+func animate_damage_text(value: int, target) -> void:
+	animateDamageText(value, target)
+
+func animate_healing_text(value: int, target) -> void:
+	animateHealingText(value, target)
+
 ## Java: private void animateDamageText(int value, float sx, float sy, float dx, float dy)
 func _animateDamageTextImpl(value: int, sx: float, sy: float, _dx: float, _dy: float) -> void:
 	# Java: if (redStyle == null) { return; } (lines 796-798)
