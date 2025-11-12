@@ -71,13 +71,7 @@ func _ready() -> void:
 ## Java: CardImage.draw() reads card stats every frame (lines 81-93)
 ## In Godot, we need to update labels when card stats change
 ## This matches Java's behavior where draw() continuously updates display
-var _process_frame_count: int = 0
 func _process(_delta: float) -> void:
-	_process_frame_count += 1
-	if _process_frame_count == 60:  # Debug print once per second at 60 FPS
-		if card:
-			print("[CARD %s] _process() is running (frame %d)" % [card.get_name(), _process_frame_count])
-		_process_frame_count = 0
 	update_stats_display()
 
 ## Update card stats labels to match current card values
@@ -90,31 +84,17 @@ func update_stats_display() -> void:
 	var co: int = card.get_cost()
 	var li: int = card.get_life()
 
-	# Update attack label
-	if attack_label:
-		if attack_label.visible:
-			var old_text := attack_label.text
-			attack_label.text = str(at)
-			if old_text != attack_label.text:
-				print("[CARD %s] Attack label updated: %s → %s" % [card.get_name(), old_text, attack_label.text])
-	else:
-		if card and not card.is_spell():
-			print("[CARD %s] Warning: attack_label is null!" % card.get_name())
+	# Update attack label (only if it exists and is visible)
+	if attack_label and attack_label.visible:
+		attack_label.text = str(at)
 
 	# Update cost label
 	if cost_label and cost_label.visible:
 		cost_label.text = str(co)
 
-	# Update life label
-	if life_label:
-		if life_label.visible:
-			var old_life := life_label.text
-			life_label.text = str(li)
-			if old_life != life_label.text:
-				print("[CARD %s] Life label updated: %s → %s (actual life: %d)" % [card.get_name(), old_life, life_label.text, li])
-	else:
-		if card and not card.is_spell():
-			print("[CARD %s] Warning: life_label is null!" % card.get_name())
+	# Update life label (only if it exists and is visible)
+	if life_label and life_label.visible:
+		life_label.text = str(li)
 
 # Java: private static void initTextures()
 static func _init_static_textures() -> void:
