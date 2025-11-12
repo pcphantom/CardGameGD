@@ -39,10 +39,12 @@ static func get_creature_class(
 		if CreatureClass != null:
 			# Java: creature = (Creature) constructor.newInstance(game, card, cardImage, slotIndex, owner, opponent);
 			creature = CreatureClass.new(game, card, card_image, slot_index, owner, opponent)
+			print("[CREATURE] Loaded specific creature: %s from %s" % [creature_class_name, creature_script_path])
 			return creature
 
 	# Java: catch (Exception e) { constructor = Class.forName(packageName + "BaseCreature").getConstructor(...); }
 	# Fallback to BaseCreature if specific class not found
+	print("[CREATURE] Using BaseCreature for %s - specific class not found at %s" % [creature_class_name, creature_script_path])
 	creature = BaseCreature.new(game, card, card_image, slot_index, owner, opponent)
 
 	return creature

@@ -98,7 +98,11 @@ func on_summoned() -> void:
 				card.increment_attack(2)
 
 		if name == "orcchieftain":
+			var neighbor_name = team_cards[nl].get_card().get_name()
+			var old_attack = team_cards[nl].get_card().get_attack()
 			team_cards[nl].get_card().increment_attack(2)
+			var new_attack = team_cards[nl].get_card().get_attack()
+			print("[ORC CHIEF] Boosted left neighbor %s attack: %d → %d" % [neighbor_name, old_attack, new_attack])
 
 		if name == "goblinhero":
 			if card != null:
@@ -115,7 +119,11 @@ func on_summoned() -> void:
 				card.increment_attack(2)
 
 		if name == "orcchieftain":
+			var neighbor_name = team_cards[nr].get_card().get_name()
+			var old_attack = team_cards[nr].get_card().get_attack()
 			team_cards[nr].get_card().increment_attack(2)
+			var new_attack = team_cards[nr].get_card().get_attack()
+			print("[ORC CHIEF] Boosted right neighbor %s attack: %d → %d" % [neighbor_name, old_attack, new_attack])
 
 		if name == "goblinhero":
 			if card != null:
@@ -211,12 +219,14 @@ func on_attacked(_attacker, damage: int) -> int:
 		if team_cards[nl].has_method("get_card"):
 			var left_neighbor: String = team_cards[nl].get_card().get_name().to_lower()
 			if left_neighbor == "holyguard":
+				print("[HOLY GUARD] Left neighbor reduced damage: %d → %d" % [modified_damage, modified_damage - 2])
 				modified_damage = modified_damage - 2
 
 	if nr <= 5 and nr < team_cards.size() and team_cards[nr] != null:
 		if team_cards[nr].has_method("get_card"):
 			var right_neighbor: String = team_cards[nr].get_card().get_name().to_lower()
 			if right_neighbor == "holyguard":
+				print("[HOLY GUARD] Right neighbor reduced damage: %d → %d" % [modified_damage, modified_damage - 2])
 				modified_damage = modified_damage - 2
 
 	if modified_damage < 0:
