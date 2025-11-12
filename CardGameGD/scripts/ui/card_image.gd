@@ -68,6 +68,34 @@ func _ready() -> void:
 	mouse_entered.connect(_mouse_entered)
 	mouse_exited.connect(_mouse_exited)
 
+## Java: CardImage.draw() reads card stats every frame (lines 81-93)
+## In Godot, we need to update labels when card stats change
+## This matches Java's behavior where draw() continuously updates display
+func _process(_delta: float) -> void:
+	update_stats_display()
+
+## Update card stats labels to match current card values
+## Called every frame to match Java's draw() behavior
+func update_stats_display() -> void:
+	if card == null:
+		return
+
+	var at: int = card.get_attack()
+	var co: int = card.get_cost()
+	var li: int = card.get_life()
+
+	# Update attack label
+	if attack_label and attack_label.visible:
+		attack_label.text = str(at)
+
+	# Update cost label
+	if cost_label and cost_label.visible:
+		cost_label.text = str(co)
+
+	# Update life label
+	if life_label and life_label.visible:
+		life_label.text = str(li)
+
 # Java: private static void initTextures()
 static func _init_static_textures() -> void:
 	if health_box_texture != null:

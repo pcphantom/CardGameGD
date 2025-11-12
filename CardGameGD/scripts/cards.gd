@@ -189,7 +189,10 @@ const HAND_Z_INDEX: int = 5
 # TOTAL FRAME SIZE: ~200×250 pixels (single panel)
 # SAFE RANGES: X: 0-824, Y: 0-518
 const CARD_DESC_X: int = 20             # Card description X (left side)
-const CARD_DESC_Y: int = 256            # Card description Y (middle-left)
+# Java: cdi = new CardDescriptionImage(20, ydown(512)); where ydown(512) = 768-512 = 256
+# In Java (Y=0 at bottom): Y=256 means 256 pixels from bottom = 512 pixels from top
+# In Godot (Y=0 at top): Y=512 means 512 pixels from top
+const CARD_DESC_Y: int = 512            # Card description Y (converted from ydown)
 const CARD_DESC_Z_INDEX: int = 3
 
 # Shared: Game log panel (scrolling text log - LEFT BOTTOM)
@@ -1603,6 +1606,39 @@ func canStartMyTurn() -> bool:
 
 	# Java: return !activeTurn; (line 966)
 	return not activeTurn
+
+## Animate card during battle attack
+## Java: public void moveCardActorOnBattle(CardImage ci, PlayerImage pi) (Cards.java line 827)
+func move_card_actor_on_battle(ci: CardImage, pi: PlayerImage) -> void:
+	if ci == null or pi == null:
+		push_error("move_card_actor_on_battle: null ci or pi")
+		return
+
+	# Java: Sounds.play(Sound.ATTACK); (line 834)
+	if SoundManager:
+		SoundManager.play_sound(SoundTypes.Sound.ATTACK)
+
+	# Java: if (pi.getSlots()[0] == null) return; (lines 836-838)
+	var slots: Array = pi.get_slots()
+	if slots.is_empty() or slots[0] == null:
+		return
+
+	# Java: boolean isBottom = pi.getSlots()[0].isBottomSlots(); (line 842)
+	var is_bottom: bool = slots[0].is_bottom_slots()
+
+	# Java: ci.addAction(sequence(moveBy(0, isBottom ? 20 : -20, 0.5f), moveBy(0, isBottom ? -20 : 20, 0.5f), ...)); (line 844)
+	# Move card up/down by 20 pixels and back over 1 second total
+	# COORDINATE CONVERSION: Java Y increases up, Godot Y increases down
+	# Java "move up 20" (+20) → Godot "move up 20" (-20)
+	# Java "move down 20" (-20) → Godot "move down 20" (+20)
+	var move_offset: float = 20.0 if is_bottom else -20.0  # Godot coordinates: + is down, - is up
+
+	var tween := create_tween()
+	tween.set_trans(Tween.TRANS_LINEAR)
+	# Move in one direction for 0.5s
+	tween.tween_property(ci, "position:y", ci.position.y + move_offset, 0.5)
+	# Move back for 0.5s
+	tween.tween_property(ci, "position:y", ci.position.y, 0.5)
 
 ## Add message to game log
 ## Java equivalent: Cards.logScrollPane.add(message)
