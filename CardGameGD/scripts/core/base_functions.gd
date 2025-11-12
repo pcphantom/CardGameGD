@@ -27,8 +27,9 @@ func inflict_damage(target_card, amount: int) -> bool:
 
 	var damage: int = amount
 
+	# Java: target_card.decrementLife(this, damage, game) - CardImage needs 3 args
 	if target_card.has_method("decrement_life"):
-		target_card.decrement_life(damage)
+		target_card.decrement_life(self, damage, game)
 
 		if game != null and game.has_method("log_message"):
 			game.log_message("%s dealt %d damage to %s" % [

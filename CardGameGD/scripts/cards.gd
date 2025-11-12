@@ -387,6 +387,16 @@ func init() -> void:
 	# Godot Note: Texture atlases handled differently in Godot - uses AtlasTexture or individual
 	# sprite loading. Card textures are loaded on-demand via CardImage.load_card_texture()
 
+	# Java: greenfont = new BitmapFont(Gdx.files.classpath("fonts/BellMT_16.fnt"), false); (lines 148-149)
+	# Java: greenfont.setColor(Color.valueOf("105410"));
+	greenfont = load("res://assets/fonts/BellMT_16.fnt")
+
+	# Java: customFont = new BitmapFont(Gdx.files.classpath("fonts/Arial_12.fnt"), false); (lines 150-151)
+	# Java: customFont.setColor(Color.BLACK);
+	customFont = load("res://assets/fonts/Arial_12.fnt")
+
+	print("Cards.init() - Loaded fonts")
+
 	# Java: background = new Texture(...); (lines 140-142)
 	background = load("res://assets/images/background.jpg")
 	# Java: sprBg = new Sprite(background); (creates sprite from background texture)
@@ -1593,3 +1603,9 @@ func canStartMyTurn() -> bool:
 
 	# Java: return !activeTurn; (line 966)
 	return not activeTurn
+
+## Add message to game log
+## Java equivalent: Cards.logScrollPane.add(message)
+func log_message(message: String) -> void:
+	if logScrollPane and logScrollPane.has_method("add"):
+		logScrollPane.add(message)

@@ -64,6 +64,9 @@ var font: Font = null  # Font for rendering stats and text
 ## @param p_x X position
 ## @param p_y Y position
 func _init(p_img: Texture2D = null, p_frame: Texture2D = null, p_font: Font = null, p_card: Card = null, p_x: float = 0.0, p_y: float = 0.0) -> void:
+	# Allow mouse events to pass through tooltip to cards underneath
+	mouse_filter = Control.MOUSE_FILTER_IGNORE
+
 	# Determine which constructor pattern was used
 	if p_img != null and p_frame != null and p_font != null and p_card != null:
 		# Java: Constructor 3 (lines 27-34)
@@ -125,30 +128,35 @@ func draw(_batch = null, parentAlpha: float = 1.0) -> void:
 	var co: int = card.getCost()
 	var li: int = card.getLife()
 
+	# COORDINATE CONVERSION: LibGDX Y=0 at bottom, Godot Y=0 at top
+	# Card height is 207 (from cards.gd line 572)
+	# Java "y + offset" means "offset from bottom" → Godot: "207 - offset" from top
+	const CARD_HEIGHT: int = 207
+
 	# Java: if (!card.isSpell()) { (line 54)
 	if not card.isSpell():
 		# Java: font.draw(batch, "" + at, (at > 9 ? x + 5 : x + 7), y + 15); (line 55)
 		var at_x: float = x + 5 if at > 9 else x + 7
-		draw_string(font, Vector2(at_x, y + 15), str(at), HORIZONTAL_ALIGNMENT_LEFT, -1, 16, draw_color)
+		draw_string(font, Vector2(at_x, CARD_HEIGHT - 15), str(at), HORIZONTAL_ALIGNMENT_LEFT, -1, 16, draw_color)
 
 		# Java: font.draw(batch, "" + co, (co > 9 ? x + 132 : x + 130), y + 150); (line 56)
 		var co_x: float = x + 132 if co > 9 else x + 130
-		draw_string(font, Vector2(co_x, y + 150), str(co), HORIZONTAL_ALIGNMENT_LEFT, -1, 16, draw_color)
+		draw_string(font, Vector2(co_x, CARD_HEIGHT - 150), str(co), HORIZONTAL_ALIGNMENT_LEFT, -1, 16, draw_color)
 
 		# Java: font.draw(batch, "" + li, (li > 9 ? x + 131 : x + 134), y + 15); (line 57)
 		var li_x: float = x + 131 if li > 9 else x + 134
-		draw_string(font, Vector2(li_x, y + 15), str(li), HORIZONTAL_ALIGNMENT_LEFT, -1, 16, draw_color)
+		draw_string(font, Vector2(li_x, CARD_HEIGHT - 15), str(li), HORIZONTAL_ALIGNMENT_LEFT, -1, 16, draw_color)
 	else:
 		# Java: font.draw(batch, "" + co, (co > 9 ? x + 132 : x + 130), y + 15); (line 59)
 		var co_x: float = x + 132 if co > 9 else x + 130
-		draw_string(font, Vector2(co_x, y + 15), str(co), HORIZONTAL_ALIGNMENT_LEFT, -1, 16, draw_color)
+		draw_string(font, Vector2(co_x, CARD_HEIGHT - 15), str(co), HORIZONTAL_ALIGNMENT_LEFT, -1, 16, draw_color)
 
 	# Java: font.draw(batch, card.getCardname(), x + 190, y + 150); (line 62)
-	draw_string(font, Vector2(x + 190, y + 150), card.getCardname(), HORIZONTAL_ALIGNMENT_LEFT, -1, 16, draw_color)
+	draw_string(font, Vector2(x + 190, CARD_HEIGHT - 150), card.getCardname(), HORIZONTAL_ALIGNMENT_LEFT, -1, 16, draw_color)
 
 	# Java: font.draw(batch, card.getDesc(), x + 190, y + 125); //should draw this wrapped width of 240 (line 63)
 	# Godot Note: Text wrapping handled by draw_string() width parameter (240)
-	draw_string(font, Vector2(x + 190, y + 125), card.getDesc(), HORIZONTAL_ALIGNMENT_LEFT, 240, 16, draw_color)
+	draw_string(font, Vector2(x + 190, CARD_HEIGHT - 125), card.getDesc(), HORIZONTAL_ALIGNMENT_LEFT, 240, 16, draw_color)
 
 # Override _draw to call draw() method
 func _draw() -> void:
