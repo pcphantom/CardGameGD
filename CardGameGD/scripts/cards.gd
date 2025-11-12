@@ -566,6 +566,10 @@ func init() -> void:
 	cdi = CardDescriptionImage.new(null, null, greenfont, null, CARD_DESC_X, CARD_DESC_Y)
 	cdi.setFont(greenfont)
 	cdi.z_index = CARD_DESC_Z_INDEX
+	# CRITICAL: Set size so _draw() can render content
+	# Large card (150x207) + text area to right (190 offset + 240 width) = ~580x207
+	cdi.custom_minimum_size = Vector2(580, 207)
+	cdi.size = Vector2(580, 207)
 
 	# Java: logScrollPane = new LogScrollPane(skin); (lines 241-242)
 	logScrollPane = LogScrollPane.new()
@@ -1241,6 +1245,9 @@ func _on_slot_clicked(slot: SlotImage) -> void:
 
 		# Java: startTurn(); (line 672)
 		startTurn()
+
+		# Clear slot highlights after selecting slot (not in Java but needed for correct UX)
+		clearHighlights()
 
 		# Java: final CardImage clone = selectedCard.clone(); (line 674)
 		var clone: CardImage = selectedCard.clone_card()
