@@ -29,42 +29,19 @@ var stunned: Texture2D = null
 var is_loaded: bool = false
 
 func _ready() -> void:
-	print("TextureManager: Initializing")
 	load_textures()
 
 func load_textures() -> void:
-	# REASON FOR EDIT: Add debug printing for texture loading verification
-	# PROBLEM: Need to verify all frame textures load successfully
-	# FIX: Print status for each frame texture loaded
-	# WHY: User needs to see if files are actually loading from disk
-
-	print("TextureManager: Loading frame textures...")
 	# Load frame textures
 	ramka = load_texture("res://assets/images/ramka.png")
-	print("  - ramka.png: %s" % ("LOADED" if ramka != null else "FAILED"))
-
 	spell_ramka = load_texture("res://assets/images/ramkaspell.png")
-	print("  - ramkaspell.png: %s" % ("LOADED" if spell_ramka != null else "FAILED"))
-
 	portrait_ramka = load_texture("res://assets/images/portraitramka.png")
-	print("  - portraitramka.png: %s" % ("LOADED" if portrait_ramka != null else "FAILED"))
-
 	ramka_big = load_texture("res://assets/images/ramkabig.png")
-	print("  - ramkabig.png: %s" % ("LOADED" if ramka_big != null else "FAILED"))
-
 	ramka_big_spell = load_texture("res://assets/images/ramkabigspell.png")
-	print("  - ramkabigspell.png: %s" % ("LOADED" if ramka_big_spell != null else "FAILED"))
-
 	slot_texture = load_texture("res://assets/images/slot.png")
-	print("  - slot.png: %s" % ("LOADED" if slot_texture != null else "FAILED"))
-
 	background_texture = load_texture("res://assets/images/background.jpg")
-	print("  - background.jpg: %s" % ("LOADED" if background_texture != null else "FAILED"))
-
 	stunned = load_texture("res://assets/images/stunned.png")
-	print("  - stunned.png: %s" % ("LOADED" if stunned != null else "FAILED"))
 
-	print("TextureManager: Loading card atlases...")
 	# Load card atlases
 	small_card_atlas = load_texture_atlas("res://assets/images/smallCardsPack.txt", "res://assets/images/smallTiles.png")
 	large_card_atlas = load_texture_atlas("res://assets/images/largeCardsPack.txt", "res://assets/images/largeTiles.png")
@@ -73,12 +50,6 @@ func load_textures() -> void:
 	face_card_atlas = load_texture_atlas("res://assets/images/faceCardsPack.txt", "res://assets/images/faceTiles.png")
 
 	is_loaded = true
-	print("TextureManager: Atlas loading complete!")
-	print("  - Small cards: %d loaded" % small_card_atlas.size())
-	print("  - Large cards: %d loaded" % large_card_atlas.size())
-	print("  - Face cards: %d loaded" % face_card_atlas.size())
-	print("  - Small TGA cards: %d loaded" % small_tga_card_atlas.size())
-	print("  - Large TGA cards: %d loaded" % large_tga_card_atlas.size())
 
 func load_texture(path: String) -> Texture2D:
 	if ResourceLoader.exists(path):

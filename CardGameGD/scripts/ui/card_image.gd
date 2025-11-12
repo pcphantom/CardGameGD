@@ -88,12 +88,18 @@ func update_stats_display() -> void:
 	# We update labels every frame to match, regardless of visibility state
 	if attack_label:
 		attack_label.text = str(at)
+	elif not card.is_spell():
+		push_warning("[CARD STATS] %s has NO attack_label!" % card.get_name())
 
 	if cost_label:
 		cost_label.text = str(co)
+	else:
+		push_warning("[CARD STATS] %s has NO cost_label!" % card.get_name())
 
 	if life_label:
 		life_label.text = str(li)
+	elif not card.is_spell():
+		push_warning("[CARD STATS] %s has NO life_label!" % card.get_name())
 
 # Java: private static void initTextures()
 static func _init_static_textures() -> void:
