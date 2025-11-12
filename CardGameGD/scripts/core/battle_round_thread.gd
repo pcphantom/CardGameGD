@@ -81,11 +81,16 @@ func execute() -> void:
 	# Java: if (summonedCardImage != null) { (line 81)
 	if summoned_card_image != null:
 		# Java: summonedCardImage.getCreature().onSummoned(); (line 84)
-		if summoned_card_image.get_creature():
-			summoned_card_image.get_creature().onSummoned()
+		var creature = summoned_card_image.get_creature()
+		if creature:
+			print("[BATTLE] Calling onSummoned() for %s (creature type: %s)" % [summoned_card_image.get_card().getName(), creature.get_class()])
+			creature.onSummoned()
+		else:
+			print("[BATTLE] ERROR: summoned_card_image has NO CREATURE! Card: %s" % summoned_card_image.get_card().getName())
 
 	# Java: else if (spellCardImage != null) { (line 94)
 	elif spell_card_image != null:
+		print("[BATTLE] Casting spell: %s" % spell_card_image.get_card().getName())
 
 		# Java: Spell spell = SpellFactory.getSpellClass(...); spell.onCast(); (lines 97-100)
 		var spell = SpellFactory.get_spell_class(
@@ -96,9 +101,12 @@ func execute() -> void:
 			player,
 			opponent
 		)
+		print("[BATTLE] Spell object type: %s, is_spell: %s" % [spell.get_class(), spell.is_spell])
 		spell.set_targeted(targeted_card_image)
 		spell.set_target_slot(targeted_slot)
+		print("[BATTLE] Calling spell.onCast()")
 		spell.onCast()
+		print("[BATTLE] Spell cast complete")
 
 	# Java: for (int index = 0; index<6; index++) { (line 120)
 	# Attack with all player creatures (except just-summoned one)
