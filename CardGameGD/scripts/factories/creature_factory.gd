@@ -39,22 +39,54 @@ static func get_creature_class(
 		if CreatureClass != null:
 			# Java: creature = (Creature) constructor.newInstance(game, card, cardImage, slotIndex, owner, opponent);
 			creature = CreatureClass.new(game, card, card_image, slot_index, owner, opponent)
+			print("[CREATURE] Loaded specific creature: %s from %s" % [creature_class_name, creature_script_path])
 			return creature
 
 	# Java: catch (Exception e) { constructor = Class.forName(packageName + "BaseCreature").getConstructor(...); }
 	# Fallback to BaseCreature if specific class not found
+	print("[CREATURE] Using BaseCreature for %s - specific class not found at %s" % [creature_class_name, creature_script_path])
 	creature = BaseCreature.new(game, card, card_image, slot_index, owner, opponent)
 
 	return creature
 
 ## Helper to convert PascalCase to snake_case for file naming
+## Handles cases like "PriestofFire" -> "priest_of_fire"
 static func _to_snake_case(pascal_case: String) -> String:
+	# Common prepositions that should have underscores added
+	const PREPOSITIONS := ["of", "to", "the", "in", "on", "at", "by", "for", "with", "from"]
+
 	var result := ""
-	for i in range(pascal_case.length()):
+	var i := 0
+	while i < pascal_case.length():
 		var c := pascal_case[i]
+
+		# Check if we're at a preposition
+		var found_prep := false
+		for prep in PREPOSITIONS:
+			var prep_len := prep.length()
+			if i + prep_len <= pascal_case.length():
+				var substring := pascal_case.substr(i, prep_len).to_lower()
+				if substring == prep:
+					# Check it's not at start and followed by capital or end
+					if i > 0 and (i + prep_len >= pascal_case.length() or pascal_case[i + prep_len] == pascal_case[i + prep_len].to_upper()):
+						if result != "":
+							result += "_"
+						result += prep
+						if i + prep_len < pascal_case.length():
+							result += "_"
+						i += prep_len
+						found_prep = true
+						break
+
+		if found_prep:
+			continue
+
+		# Normal capital letter handling
 		if c == c.to_upper() and i > 0:
 			result += "_"
 		result += c.to_lower()
+		i += 1
+
 	return result
 
 static func creature_exists(creature_class_name: String) -> bool:

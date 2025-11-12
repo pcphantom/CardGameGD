@@ -25,6 +25,16 @@ var strength: Dictionary = {
 	CardType.Type.OTHER: 0
 }
 
+# Growth rate tracking - cards can modify these while in play
+# Base growth rate is +1 per turn, cards add/subtract from this
+var growth_rate: Dictionary = {
+	CardType.Type.FIRE: 1,
+	CardType.Type.AIR: 1,
+	CardType.Type.WATER: 1,
+	CardType.Type.EARTH: 1,
+	CardType.Type.OTHER: 1
+}
+
 var fire_cards: Array = []
 var air_cards: Array = []
 var water_cards: Array = []
@@ -114,9 +124,36 @@ func decrement_strength(type: CardType.Type, amount: int) -> void:
 	set_strength(type, current - amount)
 
 func increment_strength_all(incr: int) -> void:
-	print("[GROWTH] Player %s gaining +%d to all elemental strengths" % [name, incr])
 	for type in TYPES:
 		increment_strength(type, incr)
+
+## Apply growth rates to strengths - called each turn
+func apply_growth_rates() -> void:
+	print("[GROWTH RATE] Player %s applying growth rates:" % name)
+	for type in TYPES:
+		var rate: int = growth_rate[type]
+		if rate != 0:
+			var type_name := CardType.get_title(type)
+			var old_str := get_strength(type)
+			increment_strength(type, rate)
+			var new_str := get_strength(type)
+			print("  %s: %d (rate: %+d) -> %d" % [type_name, old_str, rate, new_str])
+
+## Modify growth rate for a type - cards call this when summoned/dying
+func increment_growth_rate(type: CardType.Type, amount: int) -> void:
+	if growth_rate.has(type):
+		growth_rate[type] += amount
+		print("[GROWTH RATE] Player %s %s growth rate: %+d (now %+d/turn)" % [name, CardType.get_title(type), amount, growth_rate[type]])
+
+func decrement_growth_rate(type: CardType.Type, amount: int) -> void:
+	increment_growth_rate(type, -amount)
+
+func increment_growth_rate_all(amount: int) -> void:
+	for type in TYPES:
+		increment_growth_rate(type, amount)
+
+func decrement_growth_rate_all(amount: int) -> void:
+	increment_growth_rate_all(-amount)
 
 func reset_strengths() -> void:
 	for type in TYPES:

@@ -121,7 +121,7 @@ func _build_window_content(container: VBoxContainer) -> void:
 	for i in range(5):
 		var l := Label.new()
 		# Java: game.topStrengthLabels[i].getText()
-		if game and game.has("topStrengthLabels") and game.topStrengthLabels.size() > i:
+		if game and game.topStrengthLabels and game.topStrengthLabels.size() > i:
 			l.text = game.topStrengthLabels[i].text
 		# Java: Cards.whiteStyle
 		l.add_theme_color_override("font_color", Color.WHITE)
