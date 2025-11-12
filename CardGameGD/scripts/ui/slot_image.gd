@@ -121,9 +121,10 @@ func clear_actions() -> void:
 	for tween in tweens:
 		if tween and is_instance_valid(tween):
 			# Check if this tween is animating this node
-			var bound_node = tween.get_meta("bound_node", null)
-			if bound_node == self:
-				tween.kill()
+			if tween.has_meta("bound_node"):
+				var bound_node = tween.get_meta("bound_node")
+				if bound_node == self:
+					tween.kill()
 
 # ============================================================================
 # TRANSLATION NOTES
