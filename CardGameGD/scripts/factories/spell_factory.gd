@@ -38,16 +38,24 @@ static func get_spell_class(
 
 	# Convert class name to snake_case for file name (e.g., "FlameWave" -> "flame_wave")
 	# Use custom conversion to handle cases like "CalltoThunder" -> "call_to_thunder"
-	var spell_script_path: String = SPELL_PATH + _to_snake_case(spell_class_name) + ".gd"
+	var snake_case_name := _to_snake_case(spell_class_name)
+	var spell_script_path: String = SPELL_PATH + snake_case_name + ".gd"
+
+	print("[SPELL FACTORY] Loading spell: %s" % spell_class_name)
+	print("[SPELL FACTORY]   Snake case: %s" % snake_case_name)
+	print("[SPELL FACTORY]   Path: %s" % spell_script_path)
+	print("[SPELL FACTORY]   Exists: %s" % ResourceLoader.exists(spell_script_path))
 
 	# Try to load the specific spell class
 	if ResourceLoader.exists(spell_script_path):
 		var SpellClass = load(spell_script_path)
 		if SpellClass != null:
 			spell = SpellClass.new(game, card, card_image, owner, opponent)
+			print("[SPELL FACTORY]   SUCCESS: Loaded %s" % spell.get_class())
 			return spell
 
 	# Fallback to BaseSpell if specific class not found
+	print("[SPELL FACTORY]   FALLBACK: Using BaseSpell")
 	if game != null and game.has_method("log_message"):
 		game.log_message("SpellFactory: Using base spell for %s - specific class not found at %s" % [spell_class_name, spell_script_path])
 	else:
