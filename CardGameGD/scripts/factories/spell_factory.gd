@@ -78,7 +78,7 @@ static func _to_snake_case(pascal_case: String) -> String:
 		# Check if we're at a preposition
 		var found_prep := false
 		for prep in PREPOSITIONS:
-			var prep_len := prep.length()
+			var prep_len: int = prep.length()
 			if i + prep_len <= pascal_case.length():
 				var substring := pascal_case.substr(i, prep_len).to_lower()
 				if substring == prep:
