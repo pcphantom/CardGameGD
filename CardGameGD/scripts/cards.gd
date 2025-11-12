@@ -369,7 +369,7 @@ static var damageOffsetter: int = 0
 ## Java: @Override public void init()
 ## Initialize all game resources: textures, fonts, UI, player images
 func init() -> void:
-	print("Cards.init() START")
+	# DEBUG: print("Cards.init() START")
 
 	# Initialize Specializations static data before accessing any specializations
 	Specializations._ensure_initialized()
@@ -378,7 +378,7 @@ func init() -> void:
 	# CardSetup is an autoload singleton, access directly
 	cs = CardSetup
 	CardSetup.parse_cards()
-	print("Cards.init() - Parsed cards")
+	# DEBUG: print("Cards.init() - Parsed cards")
 
 	# Java: batch = new SpriteBatch(); (line 123)
 	# Not needed in Godot
@@ -404,7 +404,7 @@ func init() -> void:
 	# Java: customFont.setColor(Color.BLACK);
 	customFont = load("res://assets/fonts/Arial_12.fnt")
 
-	print("Cards.init() - Loaded fonts")
+	# DEBUG: print("Cards.init() - Loaded fonts")
 
 	# Java: background = new Texture(...); (lines 140-142)
 	background = load("res://assets/images/background.jpg")
@@ -440,7 +440,7 @@ func init() -> void:
 	var player_portrait_texture = TextureManager.get_face_texture(player_data.get_img_name())
 	if player_portrait_texture:
 		player.set_texture(player_portrait_texture)
-		print("Cards.init(): Set player portrait texture from imgName: ", player_data.get_img_name())
+		# DEBUG: print("Cards.init(): Set player portrait texture from imgName: ", player_data.get_img_name())
 	else:
 		push_warning("Cards.init(): Failed to load player portrait texture for: ", player_data.get_img_name())
 
@@ -459,7 +459,7 @@ func init() -> void:
 	var opponent_portrait_texture = TextureManager.get_face_texture(opponent_data.get_img_name())
 	if opponent_portrait_texture:
 		opponent.set_texture(opponent_portrait_texture)
-		print("Cards.init(): Set opponent portrait texture from imgName: ", opponent_data.get_img_name())
+		# DEBUG: print("Cards.init(): Set opponent portrait texture from imgName: ", opponent_data.get_img_name())
 	else:
 		push_warning("Cards.init(): Failed to load opponent portrait texture for: ", opponent_data.get_img_name())
 
@@ -469,8 +469,13 @@ func init() -> void:
 	defaultFont = ThemeDB.fallback_font
 
 	# Java: whiteStyle = new Label.LabelStyle(defaultFont, Color.WHITE); (lines 153-155)
+	# Java: redStyle = new Label.LabelStyle(defaultFont, Color.RED);
+	# Java: greenStyle = new Label.LabelStyle(defaultFont, Color.GREEN);
 	# Godot Note: Label styling handled via add_theme_* methods on Label nodes
 	# Styles are applied per-node rather than as reusable style objects
+	# Initialize to non-null so damage/healing text animations work
+	redStyle = true  # Just needs to be non-null
+	greenStyle = true  # Just needs to be non-null
 
 	# Java: playerInfoLabel = new Label(...); (lines 157-160)
 	# Java: playerInfoLabel.setPosition(80 + 10 + 120, ydown(300));
@@ -618,16 +623,16 @@ func init() -> void:
 	chooser = SingleDuelChooser.new()
 	chooser.init(self)
 	stage.add_child(chooser)
-	print("Cards.init() - Created and added chooser to stage")
-	print("  stage children: ", stage.get_child_count())
-	print("  chooser position: ", chooser.position)
-	print("  chooser size: ", chooser.size)
+	# DEBUG: print("Cards.init() - Created and added chooser to stage")
+	# DEBUG: print("  stage children: ", stage.get_child_count())
+	# DEBUG: print("  chooser position: ", chooser.position)
+	# DEBUG: print("  chooser size: ", chooser.size)
 
 	# Java: Sounds.startBackGroundMusic(); (line 261)
 	if SoundManager:
 		SoundManager.start_background_music()
 
-	print("Cards.init() END - Battle UI created, chooser active")
+	# DEBUG: print("Cards.init() END - Battle UI created, chooser active")
 
 # ============================================================================
 # YDOWN METHOD (Java: public static int ydown, lines 265-267)
@@ -653,7 +658,7 @@ func draw(_delta: float) -> void:
 			# chooser renders automatically via _process()
 			pass
 		else:
-			print("Cards.draw() - Chooser DONE, starting battle initialization")
+			# DEBUG: print("Cards.draw() - Chooser DONE, starting battle initialization")
 			# Hide chooser to show battle UI (initialize() will set chooser = null)
 			chooser.visible = false
 
@@ -672,19 +677,19 @@ func draw(_delta: float) -> void:
 			marker.name = "_battle_debug_printed"
 			add_child(marker)
 			print("\n=== BATTLE MODE RENDERING ===")
-			print("  Player:")
-			print("    Visible:", player.visible, " Pos:", player.position, " Children:", player.get_child_count())
-			print("  Opponent:")
-			print("    Visible:", opponent.visible, " Pos:", opponent.position, " Children:", opponent.get_child_count())
-			print("  PlayerInfoLabel:")
-			print("    Visible:", playerInfoLabel.visible, " Pos:", playerInfoLabel.position, " Text:", playerInfoLabel.text)
-			print("  OpptInfoLabel:")
-			print("    Visible:", opptInfoLabel.visible, " Pos:", opptInfoLabel.position, " Text:", opptInfoLabel.text)
-			print("  LogScrollPane:")
-			print("    Visible:", logScrollPane.visible, " Pos:", logScrollPane.position)
-			print("  SkipTurnButton:")
-			print("    Visible:", skipTurnButton.visible, " Pos:", skipTurnButton.position)
-			print("  Total stage children:", stage.get_child_count())
+			# DEBUG: print("  Player:")
+			# DEBUG: print("    Visible:", player.visible, " Pos:", player.position, " Children:", player.get_child_count())
+			# DEBUG: print("  Opponent:")
+			# DEBUG: print("    Visible:", opponent.visible, " Pos:", opponent.position, " Children:", opponent.get_child_count())
+			# DEBUG: print("  PlayerInfoLabel:")
+			# DEBUG: print("    Visible:", playerInfoLabel.visible, " Pos:", playerInfoLabel.position, " Text:", playerInfoLabel.text)
+			# DEBUG: print("  OpptInfoLabel:")
+			# DEBUG: print("    Visible:", opptInfoLabel.visible, " Pos:", opptInfoLabel.position, " Text:", opptInfoLabel.text)
+			# DEBUG: print("  LogScrollPane:")
+			# DEBUG: print("    Visible:", logScrollPane.visible, " Pos:", logScrollPane.position)
+			# DEBUG: print("  SkipTurnButton:")
+			# DEBUG: print("    Visible:", skipTurnButton.visible, " Pos:", skipTurnButton.position)
+			# DEBUG: print("  Total stage children:", stage.get_child_count())
 			print("==============================\n")
 
 		# Java: batch.begin(); sprBg.draw(batch); (lines 286-287)
@@ -744,16 +749,16 @@ func _initialize_game_thread() -> void:
 ## Java: public void initialize() throws Exception
 ## Initialize game state for new game
 func initialize() -> void:
-	print("Cards.initialize() START")
+	# DEBUG: print("Cards.initialize() START")
 	# Java: synchronized (this) { (line 335)
 	# Java: if (chooser == null) { return; } (lines 337-339)
 	if chooser == null:
-		print("  ERROR: chooser is null, aborting")
+		# DEBUG: print("  ERROR: chooser is null, aborting")
 		return
-	print("  chooser exists, proceeding with init")
+	# DEBUG: print("  chooser exists, proceeding with init")
 
 	# Java: for (int index = 0; index < 6; index++) { (line 341)
-	print("  Clearing slots...")
+	# DEBUG: print("  Clearing slots...")
 	for index in range(6):
 		# Java: if (player.get_slot_cards()[index] != null) { player.get_slot_cards()[index].remove(); } (lines 342-344)
 		if player.get_slot_cards()[index] != null:
@@ -770,23 +775,23 @@ func initialize() -> void:
 		opponent.get_slots()[index].set_occupied(false)
 
 	# Java: player.set_img(chooser.pi.get_img()); (lines 355-357)
-	print("  Setting player images and info from chooser...")
-	print("    chooser.pi.img:", chooser.pi.img)
-	print("    chooser.oi.img:", chooser.oi.img)
+	# DEBUG: print("  Setting player images and info from chooser...")
+	# DEBUG: print("    chooser.pi.img:", chooser.pi.img)
+	# DEBUG: print("    chooser.oi.img:", chooser.oi.img)
 	player.set_img(chooser.pi.get_img())
 	player.set_player_info(chooser.pi.get_player_info())
 	player.get_player_info().init()
-	print("    Player class:", player.get_player_info().get_player_class().get_title())
+	# DEBUG: print("    Player class:", player.get_player_info().get_player_class().get_title())
 
 	# Java: opponent.set_img(chooser.oi.get_img()); (lines 359-361)
 	opponent.set_img(chooser.oi.get_img())
 	opponent.set_player_info(chooser.oi.get_player_info())
 	opponent.get_player_info().init()
-	print("    Opponent class:", opponent.get_player_info().get_player_class().get_title())
+	# DEBUG: print("    Opponent class:", opponent.get_player_info().get_player_class().get_title())
 
 	# Java: chooser = null; gameOver = false; Cards.logScrollPane.clear(); (lines 363-365)
 	# Free chooser after copying data from it
-	print("  Freeing chooser...")
+	# DEBUG: print("  Freeing chooser...")
 	var temp_chooser = chooser
 	chooser = null
 	if temp_chooser:
@@ -797,7 +802,7 @@ func initialize() -> void:
 	if logScrollPane:
 		logScrollPane.clear()
 		logScrollPane.visible = true  # Show log panel now that we're in battle
-		print("    Game log cleared and shown")
+		# DEBUG: print("    Game log cleared and shown")
 
 	# Show portraits now that battle has started (were hidden during class select)
 	if player:
@@ -811,12 +816,12 @@ func initialize() -> void:
 			player.get_slots()[i].visible = true
 		if opponent and opponent.get_slots()[i]:
 			opponent.get_slots()[i].visible = true
-	print("    Portraits and slots are now visible")
+	# DEBUG: print("    Portraits and slots are now visible")
 
 	# Java: initializePlayerCards(player.get_player_info(), true); (lines 369-370)
-	print("  Initializing player cards (visible=true)...")
+	# DEBUG: print("  Initializing player cards (visible=true)...")
 	initializePlayerCards(player.get_player_info(), true)
-	print("  Initializing opponent cards (visible=false)...")
+	# DEBUG: print("  Initializing opponent cards (visible=false)...")
 	initializePlayerCards(opponent.get_player_info(), false)
 
 	# Java: if (NET_GAME != null) { (lines 372-381)
@@ -826,12 +831,12 @@ func initialize() -> void:
 		pass
 
 	# Java: for (CardType type : Player.TYPES) { (lines 384-387)
-	print("  Enabling/disabling cards by type...")
+	# DEBUG: print("  Enabling/disabling cards by type...")
 	for type in Player.TYPES:
 		player.get_player_info().enable_disable_cards(type)
 		opponent.get_player_info().enable_disable_cards(type)
 
-	print("Cards.initialize() COMPLETE - Battle should be ready")
+	# DEBUG: print("Cards.initialize() COMPLETE - Battle should be ready")
 
 	# Debug: Print complete scene tree
 	debug_scene_tree()
@@ -841,23 +846,23 @@ func initialize() -> void:
 # ============================================================================
 
 func debug_scene_tree() -> void:
-	print("\n=== COMPLETE SCENE TREE ===")
+	print("\n# DEBUG: print("=== BATTLE|=== COMPLETE|=== END SCENE TREE ===")
 	for i in range(stage.get_child_count()):
 		var child = stage.get_child(i)
 		print("Child %d: %s" % [i, child.name if child.name else "<unnamed>"])
-		print("  Type: %s" % child.get_class())
+		# DEBUG: print("  Type: %s" % child.get_class())
 		if child is Node2D or child is Control:
-			print("  Position: %s" % str(child.position))
+			# DEBUG: print("  Position: %s" % str(child.position))
 		if child is CanvasItem:
-			print("  Z-Index: %s" % child.z_index)
-			print("  Visible: %s" % child.visible)
+			# DEBUG: print("  Z-Index: %s" % child.z_index)
+			# DEBUG: print("  Visible: %s" % child.visible)
 		if child is Control:
-			print("  Size: %s" % str(child.size))
+			# DEBUG: print("  Size: %s" % str(child.size))
 		if child is TextureRect:
-			print("  Has Texture: %s" % (child.texture != null))
+			# DEBUG: print("  Has Texture: %s" % (child.texture != null))
 			if child.texture:
-				print("  Texture Size: %s" % str(child.texture.get_size()))
-	print("=== END SCENE TREE ===\n")
+				# DEBUG: print("  Texture Size: %s" % str(child.texture.get_size()))
+	print("# DEBUG: print("=== BATTLE|=== COMPLETE|=== END SCENE TREE ===\n")
 
 # ============================================================================
 # INITIALIZE PLAYER CARDS METHOD (Java: lines 391-416)
@@ -865,7 +870,7 @@ func debug_scene_tree() -> void:
 
 ## Java: public void initializePlayerCards(Player player, boolean visible) throws Exception
 func initializePlayerCards(p_player: Player, show_cards: bool) -> void:
-	print("    initializePlayerCards: visible=", show_cards)
+	# DEBUG: print("    initializePlayerCards: visible=", show_cards)
 	# Java: selectedCard = null; (line 393)
 	selectedCard = null
 
@@ -876,7 +881,7 @@ func initializePlayerCards(p_player: Player, show_cards: bool) -> void:
 	# This means the constant NAMES don't match their actual usage!
 	var x: int = HAND_START_Y  # SWAPPED: x should be horizontal, comes from _Y constant!
 	var y: int = HAND_START_X  # SWAPPED: y should be vertical, comes from _X constant!
-	print("      Starting position: x=", x, " y=", y)
+	# DEBUG: print("      Starting position: x=", x, " y=", y)
 
 	# Java: CardType[] types = {...}; (line 398)
 	var types: Array = [CardType.Type.FIRE, CardType.Type.AIR, CardType.Type.WATER, CardType.Type.EARTH, p_player.get_player_class().get_type()]
@@ -892,14 +897,14 @@ func initializePlayerCards(p_player: Player, show_cards: bool) -> void:
 		# Java: List<CardImage> v1 = cs.getCardImagesByType(...); (line 408)
 		# Godot: TextureManager handles atlases internally, no atlas parameters needed
 		var v1: Array = cs.get_card_images_by_type(type, 4)
-		print("      Type ", CardType.get_title(type), ": created ", v1.size(), " cards")
+		# DEBUG: print("      Type ", CardType.get_title(type), ": created ", v1.size(), " cards")
 
 		# Java: x += 104; (line 409)
 		# Use configurable horizontal spacing from constants
 		x += HAND_SPACING_X
 
 		# Java: addVerticalGroupCards(x, y, v1, player, type, visible); (line 410)
-		print("      Adding vertical group at x=", x, " y=", y, " visible=", show_cards)
+		# DEBUG: print("      Adding vertical group at x=", x, " y=", y, " visible=", show_cards)
 		addVerticalGroupCards(x, y, v1, p_player, type, show_cards)
 
 		# Java: player.set_cards(type, v1); (line 411)
@@ -1035,14 +1040,14 @@ func _on_show_oppt_cards_pressed() -> void:
 func _on_skip_turn_pressed() -> void:
 	# Java: lines 195-203
 	# Java: if (gameOver) { return true; } (lines 197-199)
-	print("=== SKIP TURN PRESSED ===")
+	# DEBUG: print("=== SKIP TURN PRESSED ===")
 	if gameOver:
-		print("  -> Game is over, cannot skip turn")
+		# DEBUG: print("  -> Game is over, cannot skip turn")
 		return
 
 	# Java: BattleRoundThread t = new BattleRoundThread(Cards.this, player, opponent); (line 200)
 	# Java: t.start(); (line 201)
-	print("  -> Starting battle round (opponent's turn)")
+	# DEBUG: print("  -> Starting battle round (opponent's turn)")
 
 	# Clear any selections
 	selectedCard = null
@@ -1055,7 +1060,7 @@ func _on_skip_turn_pressed() -> void:
 	var battle_thread := BattleRoundThread.new(self, player, opponent)
 	await battle_thread.execute()
 
-	print("=== SKIP TURN COMPLETE ===")
+	# DEBUG: print("=== SKIP TURN COMPLETE ===")
 
 func _on_shuffle_cards_pressed() -> void:
 	# Java: lines 209-217
@@ -1069,44 +1074,44 @@ func _on_shuffle_cards_pressed() -> void:
 ## Java source: Cards.java lines 480-577 (MouseOverCardListener.touchDown)
 ## Handles clicking cards in the player's hand
 func _on_card_clicked(card_visual: CardImage) -> void:
-	print("=== CARD CLICKED ===")
+	# DEBUG: print("=== CARD CLICKED ===")
 	print("Card: ", card_visual.get_card().name if card_visual.get_card() else "null")
 	print("Game over: ", gameOver, " Can start turn: ", canStartMyTurn())
 
 	# Java: if (gameOver || !canStartMyTurn()) { return true; } (lines 482-484)
 	if gameOver or not canStartMyTurn():
-		print("  -> Cannot interact: gameOver or not my turn")
+		# DEBUG: print("  -> Cannot interact: gameOver or not my turn")
 		return
 
 	# Java: selectedCard = (CardImage) actor; (line 489)
 	selectedCard = card_visual
-	print("  -> Selected card set to: ", selectedCard.get_card().name if selectedCard.get_card() else "null")
+	# DEBUG: print("  -> Selected card set to: ", selectedCard.get_card().name if selectedCard.get_card() else "null")
 
 	# Java: clearHighlights(); (line 491)
 	clearHighlights()
 
 	# Java: if (canStartMyTurn() && selectedCard.isEnabled()) { (line 493)
 	if not canStartMyTurn() or not selectedCard.is_enabled():
-		print("  -> Card not enabled or can't start turn")
+		# DEBUG: print("  -> Card not enabled or can't start turn")
 		return
 
 	var card_data: Card = selectedCard.get_card()
 
 	# Java: if (selectedCard.getCard().isSpell()) { (line 495)
 	if card_data.is_spell():
-		print("  -> Card is a SPELL")
+		# DEBUG: print("  -> Card is a SPELL")
 
 		# Java: if (selectedCard.getCard().isTargetable()) { (line 497)
 		if card_data.is_targetable():
-			print("    -> Spell is TARGETABLE")
+			# DEBUG: print("    -> Spell is TARGETABLE")
 			var target_type := card_data.get_target_type()
-			print("    -> Target type: ", target_type)
+			# DEBUG: print("    -> Target type: ", target_type)
 
 			# Java: switch (selectedCard.getCard().getTargetType()) { (line 500)
 			match target_type:
 				Card.TargetType.OWNER:
 					# Java: case OWNER: (lines 501-509)
-					print("      -> Highlighting OWNER (player) cards")
+					# DEBUG: print("      -> Highlighting OWNER (player) cards")
 					var cards: Array[CardImage] = player.get_slot_cards()
 					for ci in cards:
 						if ci != null:
@@ -1116,7 +1121,7 @@ func _on_card_clicked(card_visual: CardImage) -> void:
 
 				Card.TargetType.OPPONENT:
 					# Java: case OPPONENT: (lines 510-518)
-					print("      -> Highlighting OPPONENT cards")
+					# DEBUG: print("      -> Highlighting OPPONENT cards")
 					var cards: Array[CardImage] = opponent.get_slot_cards()
 					for ci in cards:
 						if ci != null:
@@ -1126,7 +1131,7 @@ func _on_card_clicked(card_visual: CardImage) -> void:
 
 				Card.TargetType.ANY:
 					# Java: case ANY: (lines 519-534)
-					print("      -> Highlighting ANY (both player and opponent) cards")
+					# DEBUG: print("      -> Highlighting ANY (both player and opponent) cards")
 					# Highlight player's creatures
 					var player_cards: Array[CardImage] = player.get_slot_cards()
 					for ci in player_cards:
@@ -1142,7 +1147,7 @@ func _on_card_clicked(card_visual: CardImage) -> void:
 
 		# Java: else if (selectedCard.getCard().isTargetableOnEmptySlotOnly()) { (line 537)
 		elif card_data.is_targetable_on_empty_slot_only():
-			print("    -> Spell targetable on EMPTY SLOT only")
+			# DEBUG: print("    -> Spell targetable on EMPTY SLOT only")
 			# Java: for (SlotImage si : player.getSlots()) { (line 540)
 			for si in player.get_slots():
 				if not si.is_occupied():
@@ -1152,7 +1157,7 @@ func _on_card_clicked(card_visual: CardImage) -> void:
 
 		# Java: else { //cast the spell (line 547)
 		else:
-			print("    -> Spell is NON-TARGETABLE, casting immediately")
+			# DEBUG: print("    -> Spell is NON-TARGETABLE, casting immediately")
 			# Java: BattleRoundThread t = new BattleRoundThread(Cards.this, player, opponent, selectedCard); (line 549)
 			# Java: t.start(); (line 550)
 			startTurn()
@@ -1161,10 +1166,10 @@ func _on_card_clicked(card_visual: CardImage) -> void:
 
 	# Java: else if (selectedCard.getCard().getMustBeSummoneOnCard() != null) { (line 553)
 	elif card_data.get_must_be_summoned_on_card() != null and card_data.get_must_be_summoned_on_card() != "":
-		print("  -> Card must be summoned on specific card")
+		# DEBUG: print("  -> Card must be summoned on specific card")
 		# Java: String requiredTarget = selectedCard.getCard().getMustBeSummoneOnCard(); (line 556)
 		var required_target: String = card_data.get_must_be_summoned_on_card()
-		print("    -> Required target: ", required_target)
+		# DEBUG: print("    -> Required target: ", required_target)
 
 		# Java: for (CardImage ci : player.getSlotCards()) { (line 559)
 		for ci in player.get_slot_cards():
@@ -1172,27 +1177,27 @@ func _on_card_clicked(card_visual: CardImage) -> void:
 				var target_name: String = ci.get_card().name if ci.get_card() else ""
 				# Java: if (ci != null && (ci.getCard().getName().equalsIgnoreCase(requiredTarget) || requiredTarget.equals("any"))) { (line 560)
 				if target_name.to_lower() == required_target.to_lower() or required_target.to_lower() == "any":
-					print("      -> Highlighting valid target: ", target_name)
+					# DEBUG: print("      -> Highlighting valid target: ", target_name)
 					ci.set_highlighted(true)
 					# Java: ci.addAction(forever(sequence(color(Color.GREEN, .75f), color(Color.WHITE, .75f)))); (line 562)
 					add_color_pulse(ci)
 
 	# Regular creature - highlight available slots
 	else:
-		print("  -> Regular CREATURE card, highlighting player slots")
+		# DEBUG: print("  -> Regular CREATURE card, highlighting player slots")
 		# Highlight player's slots for summoning
 		for si in player.get_slots():
 			if not si.is_occupied():
 				si.set_highlighted(true)
 				add_color_pulse(si)
 
-	print("=== CARD CLICKED COMPLETE ===")
+	# DEBUG: print("=== CARD CLICKED COMPLETE ===")
 
 ## Card hover handler - ShowDescriptionListener.enter() equivalent
 ## Java source: Cards.java lines 715-744 (ShowDescriptionListener.enter)
 ## Shows large card preview when hovering
 func _on_card_hovered(card_visual: CardImage) -> void:
-	print("Card hovered: ", card_visual.get_card().name if card_visual.get_card() else "null")
+	# DEBUG: print("Card hovered: ", card_visual.get_card().name if card_visual.get_card() else "null")
 
 	# Java: if (actor == null) { return; } (lines 718-720)
 	if card_visual == null or card_visual.get_card() == null:
@@ -1210,7 +1215,7 @@ func _on_card_hovered(card_visual: CardImage) -> void:
 
 	# Java: if (sp == null) { cdi.setImg(null); return; } (lines 733-736)
 	if card_texture == null:
-		print("  -> No texture found for: ", card_name_lower)
+		# DEBUG: print("  -> No texture found for: ", card_name_lower)
 		cdi.setImg(null)
 		return
 
@@ -1229,7 +1234,7 @@ func _on_card_hovered(card_visual: CardImage) -> void:
 ## Java source: Cards.java lines 746-748 (ShowDescriptionListener.exit)
 ## Hides large card preview when mouse leaves
 func _on_card_unhovered(card_visual: CardImage) -> void:
-	print("Card unhovered: ", card_visual.get_card().name if card_visual.get_card() else "null")
+	# DEBUG: print("Card unhovered: ", card_visual.get_card().name if card_visual.get_card() else "null")
 	# Java: cdi.setImg(null); (line 747)
 	cdi.setImg(null)
 
@@ -1237,30 +1242,30 @@ func _on_card_unhovered(card_visual: CardImage) -> void:
 ## Java source: Cards.java lines 658-711 (SlotListener.touchDown)
 ## Handles clicking slots to place cards or cast spells
 func _on_slot_clicked(slot: SlotImage) -> void:
-	print("=== SLOT CLICKED ===")
+	# DEBUG: print("=== SLOT CLICKED ===")
 	print("Slot index: ", slot.get_slot_index(), " Bottom: ", slot.is_bottom_slots(), " Occupied: ", slot.is_occupied())
 	print("Game over: ", gameOver, " Can start turn: ", canStartMyTurn())
 	print("Selected card: ", selectedCard.get_card().name if selectedCard and selectedCard.get_card() else "null")
 
 	# Java: if (gameOver) { return true; } (lines 660-662)
 	if gameOver:
-		print("  -> Game is over, ignoring click")
+		# DEBUG: print("  -> Game is over, ignoring click")
 		return
 
 	# Java: if (canStartMyTurn() && selectedCard != null && selectedCard.isEnabled() && si.isBottomSlots()) { (line 669)
 	if not canStartMyTurn() or selectedCard == null or not selectedCard.is_enabled():
-		print("  -> Cannot act: can't start turn, no card selected, or card not enabled")
+		# DEBUG: print("  -> Cannot act: can't start turn, no card selected, or card not enabled")
 		return
 
 	if not slot.is_bottom_slots():
-		print("  -> Cannot click opponent's slots")
+		# DEBUG: print("  -> Cannot click opponent's slots")
 		return
 
 	var card_data: Card = selectedCard.get_card()
 
 	# Java: if (!selectedCard.getCard().isSpell() && selectedCard.getCard().getMustBeSummoneOnCard() == null) { (line 671)
 	if not card_data.is_spell() and (card_data.get_must_be_summoned_on_card() == null or card_data.get_must_be_summoned_on_card() == ""):
-		print("  -> Summoning creature to slot ", slot.get_slot_index())
+		# DEBUG: print("  -> Summoning creature to slot ", slot.get_slot_index())
 
 		# Java: startTurn(); (line 672)
 		startTurn()
@@ -1322,7 +1327,7 @@ func _on_slot_clicked(slot: SlotImage) -> void:
 			1.0
 		)
 		tween.tween_callback(func():
-			print("    -> Animation complete, executing battle round")
+			# DEBUG: print("    -> Animation complete, executing battle round")
 			# Java: BattleRoundThread t = new BattleRoundThread(Cards.this, player, opponent, clone, si.getIndex()); (line 693)
 			# Java: t.start(); (line 694)
 			var battle_thread := BattleRoundThread.new(self, player, opponent, clone, slot_index)
@@ -1331,7 +1336,7 @@ func _on_slot_clicked(slot: SlotImage) -> void:
 
 	# Java: else if (selectedCard.getCard().isSpell() && si.isHighlighted()) { (line 699)
 	elif card_data.is_spell() and slot.is_highlighted_slot():
-		print("  -> Casting SPELL on empty slot ", slot.get_slot_index())
+		# DEBUG: print("  -> Casting SPELL on empty slot ", slot.get_slot_index())
 
 		# Java: startTurn(); (line 700)
 		startTurn()
@@ -1345,9 +1350,9 @@ func _on_slot_clicked(slot: SlotImage) -> void:
 		await battle_thread.execute()
 
 	else:
-		print("  -> No action taken (conditions not met)")
+		# DEBUG: print("  -> No action taken (conditions not met)")
 
-	print("=== SLOT CLICKED COMPLETE ===")
+	# DEBUG: print("=== SLOT CLICKED COMPLETE ===")
 
 # ============================================================================
 # HELPER METHODS CONTINUED (Java: lines 751-968)

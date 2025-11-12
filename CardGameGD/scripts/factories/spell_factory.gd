@@ -31,22 +31,27 @@ static func get_spell_class(
 	opponent: PlayerImage
 ) -> BaseSpell:
 
-	# Phase 3 Stub: Always return BaseSpell
-	# In Phase 6, this will attempt to load specific spell classes
+	# Java: Uses reflection to load "org.antinori.cards.spells." + className
+	# Godot: Uses load() to dynamically load spell scripts by name
 
 	var spell: BaseSpell = null
 
-	# Attempt to load specific spell class (will be implemented in Phase 6)
-	var _spell_script_path: String = SPELL_PATH + spell_class_name.to_lower() + ".gd"
+	# Convert class name to snake_case for file name (e.g., "FlameWave" -> "flame_wave")
+	var spell_script_path: String = SPELL_PATH + spell_class_name.to_snake_case() + ".gd"
 
-	# For now, we don't have specific spell implementations
-	# Always use BaseSpell
+	# Try to load the specific spell class
+	if ResourceLoader.exists(spell_script_path):
+		var SpellClass = load(spell_script_path)
+		if SpellClass != null:
+			spell = SpellClass.new(game, card, card_image, owner, opponent)
+			return spell
+
+	# Fallback to BaseSpell if specific class not found
 	if game != null and game.has_method("log_message"):
-		game.log_message("SpellFactory: Using base spell for %s - specific implementation pending" % spell_class_name)
+		game.log_message("SpellFactory: Using base spell for %s - specific class not found at %s" % [spell_class_name, spell_script_path])
 	else:
-		print("SpellFactory: Using base spell for %s - specific implementation pending" % spell_class_name)
+		push_warning("SpellFactory: Using base spell for %s - specific class not found at %s" % [spell_class_name, spell_script_path])
 
-	# Create BaseSpell instance
 	spell = BaseSpell.new(
 		game,
 		card,
@@ -55,19 +60,8 @@ static func get_spell_class(
 		opponent
 	)
 
-	# Future Phase 6 implementation will look like:
-	#
-	# if ResourceLoader.exists(spell_script_path):
-	#     var SpellClass = load(spell_script_path)
-	#     if SpellClass != null:
-	#         spell = SpellClass.new(game, card, card_image, owner, opponent)
-	#         return spell
-	#
-	# # Fallback to BaseSpell if specific class not found
-	# spell = BaseSpell.new(game, card, card_image, owner, opponent)
-
 	return spell
 
 static func spell_exists(spell_class_name: String) -> bool:
-	var spell_script_path: String = SPELL_PATH + spell_class_name.to_lower() + ".gd"
+	var spell_script_path: String = SPELL_PATH + spell_class_name.to_snake_case() + ".gd"
 	return ResourceLoader.exists(spell_script_path)

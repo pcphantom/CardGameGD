@@ -221,7 +221,7 @@ func _render_card(size_type: String) -> void:
 	# Load card artwork from texture atlas
 	if TextureManager and TextureManager.is_loaded:
 		var card_name: String = card.get_name().to_lower()
-		print("[CardImage._render_card] Rendering card texture for: ", card_name)
+		# DEBUG: print("[CardImage._render_card] Rendering card texture for: ", card_name)
 		var card_texture: Texture2D = null
 
 		if is_large:
@@ -231,7 +231,7 @@ func _render_card(size_type: String) -> void:
 
 		if card_texture != null:
 			portrait.texture = card_texture
-			print("[CardImage._render_card] Successfully loaded texture for: ", card_name)
+			# DEBUG: print("[CardImage._render_card] Successfully loaded texture for: ", card_name)
 		else:
 			push_warning("CardImage: Missing texture for card: %s" % card_name)
 	
@@ -402,9 +402,9 @@ func clone_card() -> CardImage:
 	# Java's clone() works because LibGDX's Image copies the drawable automatically
 	# In Godot, we must explicitly set up all the TextureRect/Label child nodes
 	if card != null:
-		print("[CardImage.clone_card] Cloning card: ", card.get_name())
+		# DEBUG: print("[CardImage.clone_card] Cloning card: ", card.get_name())
 		var cloned_card_data = card.clone()
-		print("[CardImage.clone_card] Cloned card name: ", cloned_card_data.get_name())
+		# DEBUG: print("[CardImage.clone_card] Cloned card name: ", cloned_card_data.get_name())
 		ci.setup_card(cloned_card_data, "small")  # Creates visual elements and renders
 
 	# Copy remaining properties (setup_card already sets card, img, frame, font internally via _render_card)
@@ -415,7 +415,7 @@ func clone_card() -> CardImage:
 	# Copy creature reference if exists
 	# NOTE: Hand cards should NOT have creatures, only battlefield cards should
 	if creature != null:
-		print("[CardImage.clone_card] WARNING: Hand card has creature! This should not happen.")
+		# DEBUG: print("[CardImage.clone_card] WARNING: Hand card has creature! This should not happen.")
 		ci.set_creature(creature)
 
 	return ci
