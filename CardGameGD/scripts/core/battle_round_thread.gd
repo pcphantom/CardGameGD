@@ -129,9 +129,11 @@ func execute() -> void:
 
 	if si != null:
 
-		# Java: opptPick = oi.pickRandomEnabledCard(); (line 167)
-		# oi is Player (line 79), method in Godot is snake_case
-		var oppt_pick: CardImage = oi.pick_random_enabled_card()
+		# Java: do { opptPick = oi.pickRandomEnabledCard(); } while (opptPick == null); (lines 165-168)
+		# Keep trying until we get a valid card (matching Java do-while loop)
+		var oppt_pick: CardImage = null
+		while oppt_pick == null:
+			oppt_pick = oi.pickRandomEnabledCard()
 
 		if oppt_pick != null:
 			if not oppt_pick.get_card().is_spell():
