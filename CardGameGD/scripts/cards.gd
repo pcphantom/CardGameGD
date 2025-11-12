@@ -191,9 +191,10 @@ const HAND_Z_INDEX: int = 5
 const CARD_DESC_X: int = 20             # Card description X (left side)
 # Java: cdi = new CardDescriptionImage(20, ydown(512)); where ydown(512) = 768-512 = 256
 # In Java (Y=0 at bottom): position is BOTTOM-LEFT corner at y=256, height=207, so spans 256-463 from bottom
-# In Godot (Y=0 at top): position is TOP-LEFT corner, so top = 768-463 = 305
-# Game log spans 559-732, so card description at 305-(305+207)=305-512 is above it with 47px gap
-const CARD_DESC_Y: int = 305            # Card description Y (converted from ydown)
+# In Godot (Y=0 at top): position is TOP-LEFT corner
+# Game log spans 559-732, tooltip height is 207
+# With y=340: tooltip spans 340-547, leaving 12px gap above game log (559-547=12)
+const CARD_DESC_Y: int = 340            # Card description Y (converted from ydown)
 const CARD_DESC_Z_INDEX: int = 3
 
 # Shared: Game log panel (scrolling text log - LEFT BOTTOM)
