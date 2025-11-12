@@ -378,7 +378,7 @@ func onSummoned() -> void:
 	on_summoned()
 
 func onAttack() -> void:
-	on_attack()
+	await on_attack()
 
 func startOfTurnCheck() -> void:
 	start_of_turn_check()
