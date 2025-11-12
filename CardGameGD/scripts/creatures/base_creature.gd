@@ -179,10 +179,6 @@ func on_attack() -> void:
 		var tween: Tween = game.move_card_actor_on_battle(card_image, owner)
 		if tween != null:
 			await tween.finished
-		else:
-			push_warning("[COMBAT] Tween is NULL for %s - attacks will not be sequential!" % (card.get_name() if card else "Unknown"))
-	else:
-		push_warning("[COMBAT] Game is NULL or missing method for %s - attacks will not be sequential!" % (card.get_name() if card else "Unknown"))
 
 	var owner_slot_cards: Array = []
 	if owner != null and owner.has_method("get_slot_cards"):

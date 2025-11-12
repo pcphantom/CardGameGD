@@ -1710,12 +1710,16 @@ func move_card_actor_on_battle(ci: CardImage, pi: PlayerImage) -> Tween:
 	#   - Opponent (top): +20 Y = move DOWN toward player
 	var move_offset: float = -20.0 if is_bottom else 20.0
 
+	# CRITICAL: Store original position BEFORE tweening
+	# Otherwise the second tween uses the CHANGED position from the first tween
+	var original_y: float = ci.position.y
+
 	var tween := create_tween()
 	tween.set_trans(Tween.TRANS_LINEAR)
 	# Move toward target for 0.5s
-	tween.tween_property(ci, "position:y", ci.position.y + move_offset, 0.5)
+	tween.tween_property(ci, "position:y", original_y + move_offset, 0.5)
 	# Move back to original position for 0.5s
-	tween.tween_property(ci, "position:y", ci.position.y, 0.5)
+	tween.tween_property(ci, "position:y", original_y, 0.5)
 
 	return tween
 
