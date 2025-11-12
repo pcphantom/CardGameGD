@@ -100,7 +100,8 @@ func cast() -> void:
 				self_damage
 			])
 		if owner != null and owner.has_method("decrement_life"):
-			owner.decrement_life(self_damage)
+			# Java: owner.decrementLife(value, game) - needs game parameter
+			owner.decrement_life(self_damage, game)
 
 	on_cast()
 
