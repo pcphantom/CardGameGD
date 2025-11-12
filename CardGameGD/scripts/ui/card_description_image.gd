@@ -104,9 +104,13 @@ func draw(_batch = null, parentAlpha: float = 1.0) -> void:
 	var color: Color = modulate
 	var draw_color := Color(color.r, color.g, color.b, color.a * parentAlpha)
 
-	# Java: float x = getX(); float y = getY(); (lines 45-46)
-	var x: float = position.x
-	var y: float = position.y
+	# CRITICAL FIX: Godot's _draw() uses LOCAL coordinates, not SCREEN coordinates
+	# In LibGDX: getX()/getY() returns screen position, batch.draw() uses absolute coords
+	# In Godot: position property is handled by scene graph transform automatically
+	# Drawing at (position.x, position.y) doubles the offset - WRONG!
+	# Must draw at (0, 0) in local space - the position property handles placement
+	var x: float = 0.0  # ✅ CORRECT: Local coordinate origin
+	var y: float = 0.0  # ✅ CORRECT: Local coordinate origin
 
 	# Java: batch.draw(img, x, y); (line 47)
 	draw_texture(img, Vector2(x, y), draw_color)
