@@ -25,4 +25,7 @@ func on_summoned() -> void:
 func start_of_turn_check() -> void:
 	# Update attack to current fire strength at start of turn
 	if card != null and owner_player != null:
-		card.set_attack(owner_player.get_strength_fire())
+		var old_attack := card.get_attack()
+		var fire_strength := owner_player.get_strength_fire()
+		card.set_attack(fire_strength)
+		print("[FIRE ELEMENTAL] start_of_turn_check: updated attack %d → %d (fire strength: %d)" % [old_attack, card.get_attack(), fire_strength])

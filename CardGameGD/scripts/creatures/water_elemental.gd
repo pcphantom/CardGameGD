@@ -27,4 +27,7 @@ func on_attack() -> void:
 func start_of_turn_check() -> void:
 	# Update attack to current water strength at start of turn
 	if card != null and owner_player != null:
-		card.set_attack(owner_player.get_strength_water())
+		var old_attack := card.get_attack()
+		var water_strength := owner_player.get_strength_water()
+		card.set_attack(water_strength)
+		print("[WATER ELEMENTAL] start_of_turn_check: updated attack %d → %d (water strength: %d)" % [old_attack, card.get_attack(), water_strength])
