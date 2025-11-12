@@ -124,9 +124,9 @@ func draw(_batch = null, parentAlpha: float = 1.0) -> void:
 	# Java: int at = card.getAttack(); (lines 50-52)
 	# Java: int co = card.getCost();
 	# Java: int li = card.getLife();
-	var at: int = card.getAttack()
-	var co: int = card.getCost()
-	var li: int = card.getLife()
+	var at: int = card.get_attack()
+	var co: int = card.get_cost()
+	var li: int = card.get_life()
 
 	# COORDINATE CONVERSION: LibGDX Y=0 at bottom, Godot Y=0 at top
 	# Card height is 207 (from cards.gd line 572)
@@ -134,7 +134,7 @@ func draw(_batch = null, parentAlpha: float = 1.0) -> void:
 	const CARD_HEIGHT: int = 207
 
 	# Java: if (!card.isSpell()) { (line 54)
-	if not card.isSpell():
+	if not card.is_spell():
 		# Java: font.draw(batch, "" + at, (at > 9 ? x + 5 : x + 7), y + 15); (line 55)
 		var at_x: float = x + 5 if at > 9 else x + 7
 		draw_string(font, Vector2(at_x, CARD_HEIGHT - 15), str(at), HORIZONTAL_ALIGNMENT_LEFT, -1, 16, draw_color)
@@ -152,11 +152,11 @@ func draw(_batch = null, parentAlpha: float = 1.0) -> void:
 		draw_string(font, Vector2(co_x, CARD_HEIGHT - 15), str(co), HORIZONTAL_ALIGNMENT_LEFT, -1, 16, draw_color)
 
 	# Java: font.draw(batch, card.getCardname(), x + 190, y + 150); (line 62)
-	draw_string(font, Vector2(x + 190, CARD_HEIGHT - 150), card.getCardname(), HORIZONTAL_ALIGNMENT_LEFT, -1, 16, draw_color)
+	draw_string(font, Vector2(x + 190, CARD_HEIGHT - 150), card.get_cardname(), HORIZONTAL_ALIGNMENT_LEFT, -1, 16, draw_color)
 
 	# Java: font.draw(batch, card.getDesc(), x + 190, y + 125); //should draw this wrapped width of 240 (line 63)
 	# Godot Note: Text wrapping handled by draw_string() width parameter (240)
-	draw_string(font, Vector2(x + 190, CARD_HEIGHT - 125), card.getDesc(), HORIZONTAL_ALIGNMENT_LEFT, 240, 16, draw_color)
+	draw_string(font, Vector2(x + 190, CARD_HEIGHT - 125), card.get_desc(), HORIZONTAL_ALIGNMENT_LEFT, 240, 16, draw_color)
 
 # Override _draw to call draw() method
 func _draw() -> void:

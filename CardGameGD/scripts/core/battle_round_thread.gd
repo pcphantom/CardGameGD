@@ -117,10 +117,10 @@ func execute() -> void:
 			continue
 
 		# Java: attacker.getCreature().onAttack(); (line 129)
+		# Java blocks the thread inside moveCardActorOnBattle() with while(!doneBattle.get())
+		# In Godot, on_attack() awaits the animation, so we await the call
 		if attacker.get_creature():
-			attacker.get_creature().onAttack()
-			# Wait for attack animation to complete (1 second total: 0.5s out + 0.5s back)
-			await game.get_tree().create_timer(1.0).timeout
+			await attacker.get_creature().onAttack()
 
 	# AI TURN
 	# Java: startOfTurnCheck(opponent); (line 155)
@@ -224,10 +224,10 @@ func execute() -> void:
 			continue
 
 		# Java: attacker.getCreature().onAttack(); (line 233)
+		# Java blocks the thread inside moveCardActorOnBattle() with while(!doneBattle.get())
+		# In Godot, on_attack() awaits the animation, so we await the call
 		if attacker.get_creature():
-			attacker.get_creature().onAttack()
-			# Wait for attack animation to complete (1 second total: 0.5s out + 0.5s back)
-			await game.get_tree().create_timer(1.0).timeout
+			await attacker.get_creature().onAttack()
 
 	# Java: oi.incrementStrengthAll(1); pi.incrementStrengthAll(1); (lines 236-237)
 	# GROWTH RATE: Both players gain +1 to all elemental strengths

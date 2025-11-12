@@ -191,9 +191,10 @@ const HAND_Z_INDEX: int = 5
 const CARD_DESC_X: int = 20             # Card description X (left side)
 # Java: cdi = new CardDescriptionImage(20, ydown(512)); where ydown(512) = 768-512 = 256
 # In Java (Y=0 at bottom): position is BOTTOM-LEFT corner at y=256, height=207, so spans 256-463 from bottom
-# In Godot (Y=0 at top): position is TOP-LEFT corner, so top = 768-463 = 305
-# Game log spans 559-732, so card description at 305-(305+207)=305-512 is above it with 47px gap
-const CARD_DESC_Y: int = 305            # Card description Y (converted from ydown)
+# In Godot (Y=0 at top): position is TOP-LEFT corner
+# Game log spans 559-732, tooltip height is 207
+# With y=340: tooltip spans 340-547, leaving 12px gap above game log (559-547=12)
+const CARD_DESC_Y: int = 340            # Card description Y (converted from ydown)
 const CARD_DESC_Z_INDEX: int = 3
 
 # Shared: Game log panel (scrolling text log - LEFT BOTTOM)
@@ -1048,7 +1049,7 @@ func _on_skip_turn_pressed() -> void:
 	# This constructor variant means no creature summoned and no spell cast
 	# Just process attacks and AI turn
 	var battle_thread := BattleRoundThread.new(self, player, opponent)
-	battle_thread.execute()
+	await battle_thread.execute()
 
 	print("=== SKIP TURN COMPLETE ===")
 
@@ -1152,7 +1153,7 @@ func _on_card_clicked(card_visual: CardImage) -> void:
 			# Java: t.start(); (line 550)
 			startTurn()
 			var battle_thread := BattleRoundThread.new(self, player, opponent, selectedCard)
-			battle_thread.execute()
+			await battle_thread.execute()
 
 	# Java: else if (selectedCard.getCard().getMustBeSummoneOnCard() != null) { (line 553)
 	elif card_data.get_must_be_summoned_on_card() != null and card_data.get_must_be_summoned_on_card() != "":
@@ -1321,7 +1322,7 @@ func _on_slot_clicked(slot: SlotImage) -> void:
 			# Java: BattleRoundThread t = new BattleRoundThread(Cards.this, player, opponent, clone, si.getIndex()); (line 693)
 			# Java: t.start(); (line 694)
 			var battle_thread := BattleRoundThread.new(self, player, opponent, clone, slot_index)
-			battle_thread.execute()
+			await battle_thread.execute()
 		)
 
 	# Java: else if (selectedCard.getCard().isSpell() && si.isHighlighted()) { (line 699)
@@ -1337,7 +1338,7 @@ func _on_slot_clicked(slot: SlotImage) -> void:
 		# Java: BattleRoundThread t = new BattleRoundThread(Cards.this, player, opponent, selectedCard, null, player.getPlayerInfo().getId(), si.getIndex()); (line 704)
 		# Java: t.start(); (line 705)
 		var battle_thread := BattleRoundThread.new(self, player, opponent, selectedCard, slot.get_slot_index(), player.get_player_info().getId())
-		battle_thread.execute()
+		await battle_thread.execute()
 
 	else:
 		print("  -> No action taken (conditions not met)")
@@ -1402,7 +1403,7 @@ func _on_battlefield_card_clicked(card_visual: CardImage, owner_id: String, slot
 	clearHighlights()
 
 	var battle_thread := BattleRoundThread.new(self, player, opponent, selectedCard, card_visual, owner_id)
-	battle_thread.execute()
+	await battle_thread.execute()
 
 ## Java: public void animateDamageText(int value, CardImage ci)
 func animateDamageText(value: int, target) -> void:
