@@ -1,27 +1,22 @@
 extends RefCounted
 class_name CreatureFactory
 
-# Creature Factory
-#
-# This factory creates creature instances by name using dynamic class loading.
-# The Java version uses reflection to load creature classes at runtime.
-#
-# Current Implementation (Phase 3):
-# - Returns BaseCreature for all creature names
-# - Logs a warning indicating specific implementation is pending
-#
-# Future Implementation (Phase 5):
-# - Will load specific creature classes (FireDrake, Minotaur, Dragon, etc.)
-# - Uses GDScript's load() to dynamically load creature scripts
-# - Falls back to BaseCreature if specific class not found
-#
-# Usage:
-#   var creature = CreatureFactory.get_creature_class(
-#       "FireDrake", game, card, card_image, 0, owner, opponent
-#   )
+## ============================================================================
+## CreatureFactory.gd - EXACT translation of CreatureFactory.java
+## ============================================================================
+## Dynamically loads creature classes by name, falling back to BaseCreature
+## if specific implementation doesn't exist.
+##
+## Original: src/main/java/org/antinori/cards/CreatureFactory.java
+## Translation: scripts/factories/creature_factory.gd
+##
+## Java uses reflection: Class.forName(packageName + className)
+## Godot uses load(): load("res://scripts/creatures/" + class_name + ".gd")
+## ============================================================================
 
 const CREATURE_PATH: String = "res://scripts/creatures/"
 
+## Java: public static Creature getCreatureClass(String className, ...)
 static func get_creature_class(
 	creature_class_name: String,
 	game,  # Cards (main game controller)
@@ -32,44 +27,36 @@ static func get_creature_class(
 	opponent: PlayerImage
 ) -> BaseCreature:
 
-	# Phase 3 Stub: Always return BaseCreature
-	# In Phase 5, this will attempt to load specific creature classes
-
 	var creature: BaseCreature = null
 
-	# Attempt to load specific creature class (will be implemented in Phase 5)
-	var _creature_script_path: String = CREATURE_PATH + creature_class_name.to_lower() + ".gd"
+	# Java: try { constructor = Class.forName(packageName + className).getConstructor(...); }
+	# Convert to snake_case for Godot file naming (e.g., "FireDrake" -> "fire_drake.gd")
+	var creature_script_path: String = CREATURE_PATH + _to_snake_case(creature_class_name) + ".gd"
 
-	# For now, we don't have specific creature implementations
-	# Always use BaseCreature
-	if game != null and game.has_method("log_message"):
-		game.log_message("CreatureFactory: Using base creature for %s - specific implementation pending" % creature_class_name)
-	else:
-		print("CreatureFactory: Using base creature for %s - specific implementation pending" % creature_class_name)
+	# Attempt to load specific creature class
+	if ResourceLoader.exists(creature_script_path):
+		var CreatureClass = load(creature_script_path)
+		if CreatureClass != null:
+			# Java: creature = (Creature) constructor.newInstance(game, card, cardImage, slotIndex, owner, opponent);
+			creature = CreatureClass.new(game, card, card_image, slot_index, owner, opponent)
+			return creature
 
-	# Create BaseCreature instance
-	creature = BaseCreature.new(
-		game,
-		card,
-		card_image,
-		slot_index,
-		owner,
-		opponent
-	)
-
-	# Future Phase 5 implementation will look like:
-	#
-	# if ResourceLoader.exists(creature_script_path):
-	#     var CreatureClass = load(creature_script_path)
-	#     if CreatureClass != null:
-	#         creature = CreatureClass.new(game, card, card_image, slot_index, owner, opponent)
-	#         return creature
-	#
-	# # Fallback to BaseCreature if specific class not found
-	# creature = BaseCreature.new(game, card, card_image, slot_index, owner, opponent)
+	# Java: catch (Exception e) { constructor = Class.forName(packageName + "BaseCreature").getConstructor(...); }
+	# Fallback to BaseCreature if specific class not found
+	creature = BaseCreature.new(game, card, card_image, slot_index, owner, opponent)
 
 	return creature
 
+## Helper to convert PascalCase to snake_case for file naming
+static func _to_snake_case(pascal_case: String) -> String:
+	var result := ""
+	for i in range(pascal_case.length()):
+		var c := pascal_case[i]
+		if c == c.to_upper() and i > 0:
+			result += "_"
+		result += c.to_lower()
+	return result
+
 static func creature_exists(creature_class_name: String) -> bool:
-	var creature_script_path: String = CREATURE_PATH + creature_class_name.to_lower() + ".gd"
+	var creature_script_path: String = CREATURE_PATH + _to_snake_case(creature_class_name) + ".gd"
 	return ResourceLoader.exists(creature_script_path)
