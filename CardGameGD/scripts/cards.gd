@@ -1607,6 +1607,39 @@ func canStartMyTurn() -> bool:
 	# Java: return !activeTurn; (line 966)
 	return not activeTurn
 
+## Animate card during battle attack
+## Java: public void moveCardActorOnBattle(CardImage ci, PlayerImage pi) (Cards.java line 827)
+func move_card_actor_on_battle(ci: CardImage, pi: PlayerImage) -> void:
+	if ci == null or pi == null:
+		push_error("move_card_actor_on_battle: null ci or pi")
+		return
+
+	# Java: Sounds.play(Sound.ATTACK); (line 834)
+	if SoundManager:
+		SoundManager.play_sound(SoundTypes.Sound.ATTACK)
+
+	# Java: if (pi.getSlots()[0] == null) return; (lines 836-838)
+	var slots: Array = pi.get_slots()
+	if slots.is_empty() or slots[0] == null:
+		return
+
+	# Java: boolean isBottom = pi.getSlots()[0].isBottomSlots(); (line 842)
+	var is_bottom: bool = slots[0].is_bottom_slots()
+
+	# Java: ci.addAction(sequence(moveBy(0, isBottom ? 20 : -20, 0.5f), moveBy(0, isBottom ? -20 : 20, 0.5f), ...)); (line 844)
+	# Move card up/down by 20 pixels and back over 1 second total
+	# COORDINATE CONVERSION: Java Y increases up, Godot Y increases down
+	# Java "move up 20" (+20) → Godot "move up 20" (-20)
+	# Java "move down 20" (-20) → Godot "move down 20" (+20)
+	var move_offset: float = 20.0 if is_bottom else -20.0  # Godot coordinates: + is down, - is up
+
+	var tween := create_tween()
+	tween.set_trans(Tween.TRANS_LINEAR)
+	# Move in one direction for 0.5s
+	tween.tween_property(ci, "position:y", ci.position.y + move_offset, 0.5)
+	# Move back for 0.5s
+	tween.tween_property(ci, "position:y", ci.position.y, 0.5)
+
 ## Add message to game log
 ## Java equivalent: Cards.logScrollPane.add(message)
 func log_message(message: String) -> void:
