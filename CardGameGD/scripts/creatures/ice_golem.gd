@@ -14,7 +14,7 @@ func on_attacked(attacker, damage: int) -> int:
 	# Ice Golem is immune to spell damage
 	var modified_damage: int = damage
 
-	if attacker != null and attacker.has("is_spell"):
+	if attacker != null and "is_spell" in attacker:
 		if attacker.is_spell:
 			modified_damage = 0
 
