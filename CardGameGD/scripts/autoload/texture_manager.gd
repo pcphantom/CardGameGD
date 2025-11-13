@@ -69,16 +69,22 @@ func load_texture_atlas(atlas_path: String, image_path: String) -> Dictionary:
 		push_warning("TextureManager: Atlas image not found: %s" % image_path)
 		return atlas_dict
 
-	# CRITICAL FIX: Load as Image resource directly (not Texture2D)
-	# This bypasses CompressedTexture2D entirely, fixing Android gl_compatibility bug
-	print("[TextureManager] Loading atlas as Image: %s (OS: %s)" % [image_path, OS.get_name()])
+	# Load atlas texture
+	print("[TextureManager] Loading atlas: %s (OS: %s)" % [image_path, OS.get_name()])
 
-	var img: Image = load(image_path)
-	if img == null:
-		push_error("TextureManager: Failed to load atlas image: %s" % image_path)
+	var atlas_texture: Texture2D = load(image_path)
+	if atlas_texture == null:
+		push_error("TextureManager: Failed to load atlas texture: %s" % image_path)
 		return atlas_dict
 
-	print("[TextureManager] Loaded Image, size: %dx%d, format: %s" % [img.get_width(), img.get_height(), img.get_format()])
+	print("[TextureManager] Atlas type: %s" % atlas_texture.get_class())
+	var img := atlas_texture.get_image()
+
+	if img == null:
+		push_error("TextureManager: get_image() returned null for atlas: %s" % image_path)
+		return atlas_dict
+
+	print("[TextureManager] Got image, size: %dx%d, format: %s" % [img.get_width(), img.get_height(), img.get_format()])
 
 	# Parse the atlas text file
 	var file := FileAccess.open(atlas_path, FileAccess.READ)
