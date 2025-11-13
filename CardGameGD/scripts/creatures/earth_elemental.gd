@@ -10,11 +10,18 @@ func on_summoned() -> void:
 		card.set_attack(owner_player.get_strength_earth())
 
 	# Java: ownerPlayer.incrementStrength(CardType.EARTH, 1); (line 17)
+	# Increase earth growth rate by +1 per turn while alive
 	if owner_player != null:
-		owner_player.increment_strength(CardType.Type.EARTH, 1)
+		owner_player.increment_growth_rate(CardType.Type.EARTH, 1)
 
 	# Java: super.onSummoned(); (line 18)
 	super.on_summoned()
+
+func on_dying() -> void:
+	# Reverse the growth rate bonus when elemental dies
+	if owner_player != null:
+		owner_player.decrement_growth_rate(CardType.Type.EARTH, 1)
+	super.on_dying()
 
 func on_attack() -> void:
 	super.on_attack()
@@ -22,7 +29,4 @@ func on_attack() -> void:
 func start_of_turn_check() -> void:
 	# Update attack to current earth strength at start of turn
 	if card != null and owner_player != null:
-		var old_attack := card.get_attack()
-		var earth_strength := owner_player.get_strength(CardType.Type.EARTH)
-		card.set_attack(earth_strength)
-		print("[EARTH ELEMENTAL] start_of_turn_check: updated attack %d → %d (earth strength: %d)" % [old_attack, card.get_attack(), earth_strength])
+		card.set_attack(owner_player.get_strength(CardType.Type.EARTH))

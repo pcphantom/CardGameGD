@@ -8,10 +8,12 @@ func on_summoned() -> void:
 	# Call parent summon logic first
 	super.on_summoned()
 
-	# Mind Master boosts all elemental strengths by 1
+	# Mind Master increases growth rate for all power types by +1 per turn while alive
 	if owner_player != null:
-		owner_player.increment_strength(CardType.Type.FIRE, 1)
-		owner_player.increment_strength(CardType.Type.AIR, 1)
-		owner_player.increment_strength(CardType.Type.EARTH, 1)
-		owner_player.increment_strength(CardType.Type.WATER, 1)
-		owner_player.increment_strength(CardType.Type.OTHER, 1)
+		owner_player.increment_growth_rate_all(1)
+
+func on_dying() -> void:
+	# Reverse the growth rate bonus when mind master dies
+	if owner_player != null:
+		owner_player.decrement_growth_rate_all(1)
+	super.on_dying()

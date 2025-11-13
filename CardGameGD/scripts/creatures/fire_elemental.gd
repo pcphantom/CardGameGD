@@ -10,8 +10,9 @@ func on_summoned() -> void:
 		card.set_attack(owner_player.get_strength_fire())
 
 	# Java: ownerPlayer.incrementStrength(CardType.FIRE, 1); (line 18)
+	# Increase fire growth rate by +1 per turn while alive
 	if owner_player != null:
-		owner_player.increment_strength(CardType.Type.FIRE, 1)
+		owner_player.increment_growth_rate(CardType.Type.FIRE, 1)
 
 	# Java: damageAll(opponent, 3); (line 19)
 	damage_all(opponent, 3)
@@ -22,10 +23,13 @@ func on_summoned() -> void:
 	# Java: super.onSummoned(); (line 21)
 	super.on_summoned()
 
+func on_dying() -> void:
+	# Reverse the growth rate bonus when elemental dies
+	if owner_player != null:
+		owner_player.decrement_growth_rate(CardType.Type.FIRE, 1)
+	super.on_dying()
+
 func start_of_turn_check() -> void:
 	# Update attack to current fire strength at start of turn
 	if card != null and owner_player != null:
-		var old_attack := card.get_attack()
-		var fire_strength := owner_player.get_strength_fire()
-		card.set_attack(fire_strength)
-		print("[FIRE ELEMENTAL] start_of_turn_check: updated attack %d → %d (fire strength: %d)" % [old_attack, card.get_attack(), fire_strength])
+		card.set_attack(owner_player.get_strength_fire())
