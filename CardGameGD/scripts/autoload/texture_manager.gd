@@ -69,38 +69,17 @@ func load_texture_atlas(atlas_path: String, image_path: String) -> Dictionary:
 		push_warning("TextureManager: Atlas image not found: %s" % image_path)
 		return atlas_dict
 
-	# Load atlas texture
-	print("[TextureManager] Loading atlas: %s (OS: %s)" % [image_path, OS.get_name()])
-
-	# Use ResourceLoader to ensure full load
-	var atlas_texture: Texture2D = ResourceLoader.load(image_path, "Texture2D", ResourceLoader.CACHE_MODE_REUSE)
+	# Load the atlas image
+	var atlas_texture: Texture2D = load(image_path)
 	if atlas_texture == null:
-		push_error("TextureManager: Failed to load atlas texture: %s" % image_path)
+		push_error("TextureManager: Failed to load atlas image: %s" % image_path)
 		return atlas_dict
 
-	print("[TextureManager] Atlas type: %s, size: %s" % [atlas_texture.get_class(), atlas_texture.get_size()])
-
-	# CRITICAL ANDROID WORKAROUND: For CompressedTexture2D on Android, get_image() may fail
-	# Try multiple approaches to get the image data
-	var img: Image = null
-
-	if atlas_texture is CompressedTexture2D:
-		# Method 1: Try direct get_image()
-		img = atlas_texture.get_image()
-
-		if img == null:
-			# Method 2: Try getting data through get_data()
-			push_warning("[TextureManager] get_image() failed, this is expected on Android gl_compatibility")
-			push_error("TextureManager: Cannot extract image data from CompressedTexture2D on Android - this is Godot bug #108707")
-			return atlas_dict
-	else:
-		img = atlas_texture.get_image()
-
+	# Get image data from texture
+	var img := atlas_texture.get_image()
 	if img == null:
-		push_error("TextureManager: get_image() returned null for atlas: %s" % image_path)
+		push_error("TextureManager: Failed to get image from atlas: %s" % image_path)
 		return atlas_dict
-
-	print("[TextureManager] Got image, size: %dx%d, format: %s" % [img.get_width(), img.get_height(), img.get_format()])
 
 	# Parse the atlas text file
 	var file := FileAccess.open(atlas_path, FileAccess.READ)
@@ -145,13 +124,13 @@ func load_texture_atlas(atlas_path: String, image_path: String) -> Dictionary:
 				current_width = size[0].strip_edges().to_int()
 				current_height = size[1].strip_edges().to_int()
 
-				# We have all the info we need, create the texture region
+				# We have all the info we need, create the AtlasTexture
 				if not current_card_name.is_empty() and current_width > 0 and current_height > 0:
 					# CRITICAL: TGA atlas textures need to be flipped vertically
 					# Java flips TGA sprites twice (CardSetup.java line 155 + 161)
 					var is_tga_atlas: bool = atlas_path.contains("TGA")
 
-					# Extract the region from the base image (reuse img variable from line 82)
+					# Extract the region from the base image
 					var sub_img := img.get_region(Rect2(current_x, current_y, current_width, current_height))
 
 					# Flip TGA textures
