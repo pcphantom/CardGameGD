@@ -389,8 +389,9 @@ func add_creature(name: String, index: int, slot) -> void:
 	var card_img = null
 	if game.has_method("get_card_image_by_name"):
 		card_img = game.get_card_image_by_name(name)
-	elif game.get("cs") != null and game.cs.has_method("get_card_image_by_name"):
-		card_img = game.cs.get_card_image_by_name(name)
+	elif game.has_method("cs") and game.cs != null:
+		if game.cs.has_method("get_card_image_by_name"):
+			card_img = game.cs.get_card_image_by_name(name)
 
 	if card_img == null:
 		push_error("BaseFunctions.add_creature: Could not find card: " + name)
@@ -442,8 +443,9 @@ func swap_card(new_card_name: String, card_type, old_card_name: String, player_i
 	var new_card = null
 	if game.has_method("get_card_image_by_name"):
 		new_card = game.get_card_image_by_name(new_card_name)
-	elif game.get("cs") != null and game.cs.has_method("get_card_image_by_name"):
-		new_card = game.cs.get_card_image_by_name(new_card_name)
+	elif game.has_method("cs") and game.cs != null:
+		if game.cs.has_method("get_card_image_by_name"):
+			new_card = game.cs.get_card_image_by_name(new_card_name)
 
 	if new_card == null:
 		push_error("BaseFunctions.swap_card: Could not find card: " + new_card_name)
