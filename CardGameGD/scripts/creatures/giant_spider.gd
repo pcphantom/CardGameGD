@@ -16,16 +16,16 @@ func on_summoned() -> void:
 	if owner != null and owner.has_method("get_slots"):
 		slots = owner.get_slots()
 
-	var owner_cards: Array = []
+	# Use base class owner_cards variable instead of shadowing it
 	if owner != null and owner.has_method("get_slot_cards"):
 		owner_cards = owner.get_slot_cards()
 
 	# Summon ForestSpider to the left if slot is empty
 	if nl >= 0 and nl < owner_cards.size():
 		if owner_cards[nl] == null and nl < slots.size():
-			add_creature("ForestSpider", nl, slots[nl])
+			add_creature("forestspider", nl, slots[nl])
 
 	# Summon ForestSpider to the right if slot is empty
 	if nr <= 5 and nr < owner_cards.size():
 		if owner_cards[nr] == null and nr < slots.size():
-			add_creature("ForestSpider", nr, slots[nr])
+			add_creature("forestspider", nr, slots[nr])
