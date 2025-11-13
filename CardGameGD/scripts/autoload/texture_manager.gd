@@ -69,22 +69,17 @@ func load_texture_atlas(atlas_path: String, image_path: String) -> Dictionary:
 		push_warning("TextureManager: Atlas image not found: %s" % image_path)
 		return atlas_dict
 
-	# Load the atlas image
-	var atlas_texture: Texture2D = load(image_path)
-	if atlas_texture == null:
-		push_error("TextureManager: Failed to load atlas image: %s" % image_path)
-		return atlas_dict
-
-	# CRITICAL FIX: Convert to ImageTexture for better compatibility
-	# AtlasTexture doesn't work reliably with CompressedTexture2D on some platforms (esp. Android GL ES)
+	# CRITICAL FIX: Load image data directly, bypassing CompressedTexture2D
+	# get_image() can fail on CompressedTexture2D, so load the raw PNG instead
 	print("[TextureManager] Loading atlas: %s (OS: %s)" % [image_path, OS.get_name()])
 
-	var img := atlas_texture.get_image()
+	# Convert res:// path to actual file path for Image.load_from_file()
+	var img := Image.load_from_file(image_path)
 	if img == null:
-		push_error("TextureManager: Failed to get image data from atlas: %s" % image_path)
+		push_error("TextureManager: Failed to load image data from atlas: %s" % image_path)
 		return atlas_dict
 
-	print("[TextureManager] Converting atlas to ImageTexture, size: %dx%d" % [img.get_width(), img.get_height()])
+	print("[TextureManager] Loaded atlas image, size: %dx%d" % [img.get_width(), img.get_height()])
 	var base_texture := ImageTexture.create_from_image(img)
 
 	# Parse the atlas text file
