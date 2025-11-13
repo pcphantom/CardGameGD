@@ -389,11 +389,25 @@ func add_creature(name: String, index: int, slot) -> void:
 
 	# Get the card image from card setup
 	var card_img = null
+	print("[ADD_CREATURE] game.has_method('get_card_image_by_name'): ", game.has_method("get_card_image_by_name"))
 	if game.has_method("get_card_image_by_name"):
+		print("[ADD_CREATURE] Calling game.get_card_image_by_name('", name, "')")
 		card_img = game.get_card_image_by_name(name)
-	elif game.has_method("cs") and game.cs != null:
-		if game.cs.has_method("get_card_image_by_name"):
-			card_img = game.cs.get_card_image_by_name(name)
+		print("[ADD_CREATURE] Result from game: ", card_img)
+	elif game.has_method("cs"):
+		print("[ADD_CREATURE] game has 'cs' property, game.cs = ", game.cs)
+		if game.cs != null:
+			print("[ADD_CREATURE] game.cs is not null")
+			if game.cs.has_method("get_card_image_by_name"):
+				print("[ADD_CREATURE] Calling game.cs.get_card_image_by_name('", name, "')")
+				card_img = game.cs.get_card_image_by_name(name)
+				print("[ADD_CREATURE] Result from game.cs: ", card_img)
+			else:
+				print("[ADD_CREATURE] game.cs does not have get_card_image_by_name method")
+		else:
+			print("[ADD_CREATURE] game.cs is null")
+	else:
+		print("[ADD_CREATURE] game does not have 'cs' property")
 
 	print("[ADD_CREATURE] Got card_img: ", card_img)
 
