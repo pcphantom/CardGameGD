@@ -136,12 +136,7 @@ func load_texture_atlas(atlas_path: String, image_path: String) -> Dictionary:
 					# Java flips TGA sprites twice (CardSetup.java line 155 + 161)
 					var is_tga_atlas: bool = atlas_path.contains("TGA")
 
-					# Extract the region from the base image
-					var img := base_texture.get_image()
-					if img == null:
-						push_warning("TextureManager: Failed to get image for card: %s" % current_card_name)
-						continue
-
+					# Extract the region from the base image (reuse img variable from line 82)
 					var sub_img := img.get_region(Rect2(current_x, current_y, current_width, current_height))
 
 					# Flip TGA textures
