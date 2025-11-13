@@ -69,17 +69,44 @@ func load_texture_atlas(atlas_path: String, image_path: String) -> Dictionary:
 		push_warning("TextureManager: Atlas image not found: %s" % image_path)
 		return atlas_dict
 
-	# CRITICAL FIX: Load image data directly, bypassing CompressedTexture2D
-	# get_image() can fail on CompressedTexture2D, so load the raw PNG instead
+	# CRITICAL FIX: Load texture and convert to uncompressed format for Android compatibility
 	print("[TextureManager] Loading atlas: %s (OS: %s)" % [image_path, OS.get_name()])
 
-	# Convert res:// path to actual file path for Image.load_from_file()
-	var img := Image.load_from_file(image_path)
-	if img == null:
-		push_error("TextureManager: Failed to load image data from atlas: %s" % image_path)
+	# Load as resource first
+	var atlas_texture: Texture2D = load(image_path)
+	if atlas_texture == null:
+		push_error("TextureManager: Failed to load atlas texture: %s" % image_path)
 		return atlas_dict
 
-	print("[TextureManager] Loaded atlas image, size: %dx%d" % [img.get_width(), img.get_height()])
+	# For Android: Convert CompressedTexture2D to plain Image, then create uncompressed ImageTexture
+	# This ensures the texture data is accessible for creating atlas regions
+	var img: Image = null
+
+	# Try to get image data - this may fail with certain compression modes
+	if atlas_texture is CompressedTexture2D:
+		print("[TextureManager] Atlas is CompressedTexture2D, attempting to extract image data")
+		img = atlas_texture.get_image()
+		if img == null:
+			# Fallback: Try loading the original PNG directly from the imported resource
+			push_warning("[TextureManager] get_image() failed, trying alternate method")
+			# On Android, we need to load from the actual resource path
+			var image_file = FileAccess.open(image_path, FileAccess.READ)
+			if image_file:
+				var buffer = image_file.get_buffer(image_file.get_length())
+				image_file.close()
+				img = Image.new()
+				var err = img.load_png_from_buffer(buffer)
+				if err != OK:
+					push_error("[TextureManager] Failed to load PNG from buffer: %s" % err)
+					return atlas_dict
+	else:
+		img = atlas_texture.get_image()
+
+	if img == null:
+		push_error("TextureManager: Failed to get image data from atlas: %s" % image_path)
+		return atlas_dict
+
+	print("[TextureManager] Successfully loaded atlas image, size: %dx%d, format: %s" % [img.get_width(), img.get_height(), img.get_format()])
 	var base_texture := ImageTexture.create_from_image(img)
 
 	# Parse the atlas text file
