@@ -75,18 +75,17 @@ func load_texture_atlas(atlas_path: String, image_path: String) -> Dictionary:
 		push_error("TextureManager: Failed to load atlas image: %s" % image_path)
 		return atlas_dict
 
-	# CRITICAL ANDROID FIX: Force texture to load into memory
-	# On Android, AtlasTexture may fail if base texture isn't fully loaded
-	# Convert CompressedTexture2D to Image and back to ImageTexture for compatibility
-	var use_image_texture := OS.get_name() == "Android"
-	var base_texture: Texture2D = atlas_texture
+	# CRITICAL FIX: Convert to ImageTexture for better compatibility
+	# AtlasTexture doesn't work reliably with CompressedTexture2D on some platforms (esp. Android GL ES)
+	print("[TextureManager] Loading atlas: %s (OS: %s)" % [image_path, OS.get_name()])
 
-	if use_image_texture:
-		var img := atlas_texture.get_image()
-		if img == null:
-			push_error("TextureManager: Failed to get image data for Android: %s" % image_path)
-			return atlas_dict
-		base_texture = ImageTexture.create_from_image(img)
+	var img := atlas_texture.get_image()
+	if img == null:
+		push_error("TextureManager: Failed to get image data from atlas: %s" % image_path)
+		return atlas_dict
+
+	print("[TextureManager] Converting atlas to ImageTexture, size: %dx%d" % [img.get_width(), img.get_height()])
+	var base_texture := ImageTexture.create_from_image(img)
 
 	# Parse the atlas text file
 	var file := FileAccess.open(atlas_path, FileAccess.READ)
@@ -131,35 +130,27 @@ func load_texture_atlas(atlas_path: String, image_path: String) -> Dictionary:
 				current_width = size[0].strip_edges().to_int()
 				current_height = size[1].strip_edges().to_int()
 
-				# We have all the info we need, create the AtlasTexture
+				# We have all the info we need, create the texture region
 				if not current_card_name.is_empty() and current_width > 0 and current_height > 0:
-					var atlas_tex := AtlasTexture.new()
-					atlas_tex.atlas = base_texture
-					atlas_tex.region = Rect2(current_x, current_y, current_width, current_height)
-
 					# CRITICAL: TGA atlas textures need to be flipped vertically
 					# Java flips TGA sprites twice (CardSetup.java line 155 + 161)
-					# This ends up as no net flip for TGA, but without the flips they appear upside down
-					# Check if this is a TGA atlas by checking the atlas_path
 					var is_tga_atlas: bool = atlas_path.contains("TGA")
+
+					# Extract the region from the base image
+					var img := base_texture.get_image()
+					if img == null:
+						push_warning("TextureManager: Failed to get image for card: %s" % current_card_name)
+						continue
+
+					var sub_img := img.get_region(Rect2(current_x, current_y, current_width, current_height))
+
+					# Flip TGA textures
 					if is_tga_atlas:
-						# Flip vertically by inverting the Y coordinates in the region
-						# Original: region starts at current_y with height current_height
-						# Flipped: need to read from bottom to top
-						# LibGDX flip(false, true) flips vertically, we achieve same by modifying UV
-						# Actually, we need to flip the image data itself
-						# Create an Image from the atlas region and flip it
-						var img := base_texture.get_image()
-						if img == null:
-							push_warning("TextureManager: Failed to get image for TGA flip: %s" % current_card_name)
-							atlas_dict[current_card_name] = atlas_tex
-							continue
-						var sub_img := img.get_region(Rect2(current_x, current_y, current_width, current_height))
-						sub_img.flip_y()  # Flip vertically
-						var flipped_tex := ImageTexture.create_from_image(sub_img)
-						atlas_dict[current_card_name] = flipped_tex
-					else:
-						atlas_dict[current_card_name] = atlas_tex
+						sub_img.flip_y()
+
+					# Create individual ImageTexture for each card
+					var card_tex := ImageTexture.create_from_image(sub_img)
+					atlas_dict[current_card_name] = card_tex
 
 	file.close()
 	return atlas_dict

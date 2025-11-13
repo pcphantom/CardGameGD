@@ -118,6 +118,7 @@ func _create_visual_elements() -> void:
 	portrait = TextureRect.new()
 	portrait.z_index = 1
 	portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	portrait.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST  # Pixel art needs nearest filtering
 	add_child(portrait)
 
 	# Frame (border) - z_index 2 (on top of portrait)
@@ -233,7 +234,7 @@ func _render_card(size_type: String) -> void:
 
 		if card_texture != null:
 			portrait.texture = card_texture
-			# DEBUG: print("[CardImage._render_card] Successfully loaded texture for: ", card_name)
+			print("[CardImage] Loaded texture for: %s, size: %s, type: %s" % [card_name, portrait.texture.get_size(), portrait.texture.get_class()])
 		else:
 			push_warning("CardImage: Missing texture for card: %s" % card_name)
 	
