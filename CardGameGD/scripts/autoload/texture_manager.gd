@@ -75,6 +75,19 @@ func load_texture_atlas(atlas_path: String, image_path: String) -> Dictionary:
 		push_error("TextureManager: Failed to load atlas image: %s" % image_path)
 		return atlas_dict
 
+	# CRITICAL ANDROID FIX: Force texture to load into memory
+	# On Android, AtlasTexture may fail if base texture isn't fully loaded
+	# Convert CompressedTexture2D to Image and back to ImageTexture for compatibility
+	var use_image_texture := OS.get_name() == "Android"
+	var base_texture: Texture2D = atlas_texture
+
+	if use_image_texture:
+		var img := atlas_texture.get_image()
+		if img == null:
+			push_error("TextureManager: Failed to get image data for Android: %s" % image_path)
+			return atlas_dict
+		base_texture = ImageTexture.create_from_image(img)
+
 	# Parse the atlas text file
 	var file := FileAccess.open(atlas_path, FileAccess.READ)
 	if file == null:
@@ -121,7 +134,7 @@ func load_texture_atlas(atlas_path: String, image_path: String) -> Dictionary:
 				# We have all the info we need, create the AtlasTexture
 				if not current_card_name.is_empty() and current_width > 0 and current_height > 0:
 					var atlas_tex := AtlasTexture.new()
-					atlas_tex.atlas = atlas_texture
+					atlas_tex.atlas = base_texture
 					atlas_tex.region = Rect2(current_x, current_y, current_width, current_height)
 
 					# CRITICAL: TGA atlas textures need to be flipped vertically
@@ -136,7 +149,11 @@ func load_texture_atlas(atlas_path: String, image_path: String) -> Dictionary:
 						# LibGDX flip(false, true) flips vertically, we achieve same by modifying UV
 						# Actually, we need to flip the image data itself
 						# Create an Image from the atlas region and flip it
-						var img := atlas_texture.get_image()
+						var img := base_texture.get_image()
+						if img == null:
+							push_warning("TextureManager: Failed to get image for TGA flip: %s" % current_card_name)
+							atlas_dict[current_card_name] = atlas_tex
+							continue
 						var sub_img := img.get_region(Rect2(current_x, current_y, current_width, current_height))
 						sub_img.flip_y()  # Flip vertically
 						var flipped_tex := ImageTexture.create_from_image(sub_img)
