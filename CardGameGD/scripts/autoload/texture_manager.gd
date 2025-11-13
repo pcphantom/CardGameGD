@@ -82,31 +82,25 @@ func load_texture_atlas(atlas_path: String, image_path: String) -> Dictionary:
 	# This ensures the texture data is accessible for creating atlas regions
 	var img: Image = null
 
-	# Try to get image data - this may fail with certain compression modes
-	if atlas_texture is CompressedTexture2D:
-		print("[TextureManager] Atlas is CompressedTexture2D, attempting to extract image data")
-		img = atlas_texture.get_image()
-		if img == null:
-			# Fallback: Try loading the original PNG directly from the imported resource
-			push_warning("[TextureManager] get_image() failed, trying alternate method")
-			# On Android, we need to load from the actual resource path
-			var image_file = FileAccess.open(image_path, FileAccess.READ)
-			if image_file:
-				var buffer = image_file.get_buffer(image_file.get_length())
-				image_file.close()
-				img = Image.new()
-				var err = img.load_png_from_buffer(buffer)
-				if err != OK:
-					push_error("[TextureManager] Failed to load PNG from buffer: %s" % err)
-					return atlas_dict
-	else:
-		img = atlas_texture.get_image()
+	# Try to get image data from CompressedTexture2D
+	print("[TextureManager] Atlas type: %s" % atlas_texture.get_class())
+	img = atlas_texture.get_image()
 
 	if img == null:
-		push_error("TextureManager: Failed to get image data from atlas: %s" % image_path)
+		push_error("TextureManager: get_image() returned null for atlas: %s" % image_path)
 		return atlas_dict
 
-	print("[TextureManager] Successfully loaded atlas image, size: %dx%d, format: %s" % [img.get_width(), img.get_height(), img.get_format()])
+	print("[TextureManager] Got image, size: %dx%d, format: %s, compressed: %s" % [img.get_width(), img.get_height(), img.get_format(), img.is_compressed()])
+
+	# CRITICAL: Decompress if needed (required for get_region() to work properly)
+	if img.is_compressed():
+		print("[TextureManager] Decompressing image...")
+		var err = img.decompress()
+		if err != OK:
+			push_error("[TextureManager] Failed to decompress image: %s" % err)
+			return atlas_dict
+		print("[TextureManager] Image decompressed successfully, new format: %s" % img.get_format())
+
 	var base_texture := ImageTexture.create_from_image(img)
 
 	# Parse the atlas text file
