@@ -381,35 +381,18 @@ func damage_all_except_current_index(attack: int, player_image) -> void:
 
 ## Java: protected void addCreature(String name, int index, SlotImage slot)
 func add_creature(name: String, index: int, slot) -> void:
-	print("[ADD_CREATURE] Called with name='", name, "' index=", index, " slot=", slot)
-
 	if game == null or owner == null:
 		push_error("BaseFunctions.add_creature: game or owner is null")
 		return
 
 	# Get the card image from card setup
 	var card_img = null
-	print("[ADD_CREATURE] game.has_method('get_card_image_by_name'): ", game.has_method("get_card_image_by_name"))
 	if game.has_method("get_card_image_by_name"):
-		print("[ADD_CREATURE] Calling game.get_card_image_by_name('", name, "')")
 		card_img = game.get_card_image_by_name(name)
-		print("[ADD_CREATURE] Result from game: ", card_img)
-	elif game.has_method("cs"):
-		print("[ADD_CREATURE] game has 'cs' property, game.cs = ", game.cs)
-		if game.cs != null:
-			print("[ADD_CREATURE] game.cs is not null")
-			if game.cs.has_method("get_card_image_by_name"):
-				print("[ADD_CREATURE] Calling game.cs.get_card_image_by_name('", name, "')")
-				card_img = game.cs.get_card_image_by_name(name)
-				print("[ADD_CREATURE] Result from game.cs: ", card_img)
-			else:
-				print("[ADD_CREATURE] game.cs does not have get_card_image_by_name method")
-		else:
-			print("[ADD_CREATURE] game.cs is null")
-	else:
-		print("[ADD_CREATURE] game does not have 'cs' property")
-
-	print("[ADD_CREATURE] Got card_img: ", card_img)
+	elif "cs" in game and game.cs != null:
+		# cs is a property, not a method - check with "in" operator
+		if game.cs.has_method("get_card_image_by_name"):
+			card_img = game.cs.get_card_image_by_name(name)
 
 	if card_img == null:
 		push_error("BaseFunctions.add_creature: Could not find card: " + name)
@@ -417,13 +400,11 @@ func add_creature(name: String, index: int, slot) -> void:
 
 	# Clone the card image
 	var cloned_card = card_img.duplicate() if card_img.has_method("duplicate") else card_img
-	print("[ADD_CREATURE] Cloned card: ", cloned_card)
 
 	# Create the creature instance
 	var creature_instance = null
 	# CreatureFactory is a static class, just call the method directly
 	creature_instance = CreatureFactory.get_creature_class(name, game, cloned_card.get_card(), cloned_card, index, owner, opponent)
-	print("[ADD_CREATURE] Created creature instance: ", creature_instance)
 
 	if creature_instance != null and cloned_card.has_method("set_creature"):
 		cloned_card.set_creature(creature_instance)
@@ -431,14 +412,12 @@ func add_creature(name: String, index: int, slot) -> void:
 	# Set slot as occupied
 	if slot != null and slot.has_method("set_occupied"):
 		slot.set_occupied(true)
-		print("[ADD_CREATURE] Set slot ", index, " as occupied")
 
 	# Add to owner's slot cards
 	if owner.has_method("get_slot_cards"):
 		var slot_cards: Array = owner.get_slot_cards()
 		if index >= 0 and index < slot_cards.size():
 			slot_cards[index] = cloned_card
-			print("[ADD_CREATURE] Added to slot_cards at index ", index)
 
 	# Position the card
 	if slot != null and cloned_card.has_method("set_position"):
@@ -446,7 +425,6 @@ func add_creature(name: String, index: int, slot) -> void:
 		var slot_y: float = slot.position.y if slot is Node2D else 0
 		# COORDINATE CONVERSION: Godot Y offset = slot.y + 6 (see battle_round_thread.gd for explanation)
 		cloned_card.position = Vector2(slot_x + 5, slot_y + 6)
-		print("[ADD_CREATURE] Positioned card at: ", cloned_card.position)
 
 	# Play summon sound
 	if SoundManager:
@@ -455,9 +433,6 @@ func add_creature(name: String, index: int, slot) -> void:
 	# Add to scene
 	if game.has_method("add_child"):
 		game.add_child(cloned_card)
-		print("[ADD_CREATURE] Added card to scene tree")
-
-	print("[ADD_CREATURE] COMPLETE for '", name, "' at slot ", index)
 
 ## Java: protected void swapCard(String newCardName, CardType type, String oldCardName, PlayerImage pi)
 func swap_card(new_card_name: String, card_type, old_card_name: String, player_image) -> void:
@@ -469,7 +444,8 @@ func swap_card(new_card_name: String, card_type, old_card_name: String, player_i
 	var new_card = null
 	if game.has_method("get_card_image_by_name"):
 		new_card = game.get_card_image_by_name(new_card_name)
-	elif game.has_method("cs") and game.cs != null:
+	elif "cs" in game and game.cs != null:
+		# cs is a property, not a method - check with "in" operator
 		if game.cs.has_method("get_card_image_by_name"):
 			new_card = game.cs.get_card_image_by_name(new_card_name)
 
