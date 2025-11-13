@@ -5,7 +5,7 @@ type="CompressedTexture2D"
 uid="uid://b4ckw2fg4sm8w"
 path="res://.godot/imported/faceTiles.png-cddf6959d969367e9fb006d40a9804b1.ctex"
 metadata={
-"vram_texture": false
+"vram_texture": true
 }
 
 [deps]
@@ -15,8 +15,8 @@ dest_files=["res://.godot/imported/faceTiles.png-cddf6959d969367e9fb006d40a9804b
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/hdr_compression=1
 compress/normal_map=0
