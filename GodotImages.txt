@@ -1,0 +1,545 @@
+Research:
+```
+Diagnostic Analysis and Resolution for AtlasTexture Loading Failures on Android in Godot 4.5.1
+I. Executive Summary: Diagnosis of the Android Texture Failure
+This report presents a comprehensive diagnostic analysis of a critical failure involving AtlasTexture resources not loading or rendering on Android exports from Godot 4.5.1.
+
+Initial Symptom The primary symptom is the failure of Sprite2D nodes, TextureRect nodes, or other elements using an AtlasTexture to render their texture when the project is exported to Android. These elements appear to be invisible or display a default "empty" texture. This issue is platform-specific; it does not manifest during testing on desktop platforms (Windows, macOS, Linux) but appears consistently on Android devices, particularly when the gl_compatibility rendering backend is employed.   
+
+Core Diagnostic The failure is not a simple "missing file" or "incorrect path" error. The root cause is a critical GPU-to-CPU data access failure at the engine level. This failure is triggered when Godot's gl_compatibility renderer on the Android platform attempts to execute a Texture2D.get_image() method call on a CompressedTexture2D resource (the source spritesheet for the atlas) that has been imported using the "VRAM Compressed" setting.   
+
+The Critical Failure Point A specific and documented bug in Godot 4.5.x, identified as GitHub Issue #108707, is the precise point of failure. When get_image() is called on a VRAM-compressed texture (e.g., ETC2, ASTC) within the Android gl_compatibility renderer, the method does not return null and it does not return the correct compressed image data. Instead, it incorrectly and silently returns a seemingly valid Image object that is flagged with the uncompressed FORMAT_RGBA8 but is, in reality, empty or contains corrupt data. This "silent failure" provides no runtime error, but any subsequent code that attempts to use this corrupt Image object (e.g., to create an ImageTexture or read pixel data) will fail, leading to the observed "invisible texture" symptom.   
+
+Why Common Fixes Fail Standard forum-based advice for handling compressed textures involves calling Image.decompress() after retrieving the Image object. This solution is a red herring for this specific problem. The official Godot documentation confirms that the Image.decompress() method only supports desktop VRAM formats (DXT, RGTC, BPTC). It explicitly does not support the mobile-native formats ETC1 and ETC2 , which are the formats used on Android. Therefore, this "fix" is non-functional on the target platform.   
+
+Primary Solution The definitive and immediate solution is to change the import settings of the source atlas image file. The developer must locate the texture in the Godot editor's FileSystem dock, select it, go to the Import dock, and change the Compress -> Mode setting from "VRAM Compressed" to "Lossless" or "Lossy". After clicking "Reimport," the texture will be stored uncompressed in VRAM, allowing the get_image() method to perform a simple, reliable data copy that functions correctly on all platforms, including Android gl_compatibility.   
+
+Secondary Solution For loading atlas images at runtime (e.g., from a user:// directory), the problem is bypassed entirely by avoiding the load() function and the import system. The robust method involves using FileAccess.open() to read the file's raw bytes into a buffer, using Image.load_png_from_buffer() (or a similar function) to create a CPU-side Image, and then using ImageTexture.create_from_image() to generate the usable texture.   
+
+Tertiary Check A secondary, concurrent issue is likely present. Mobile hardware, especially low-end devices targeted by gl_compatibility, has a strict GL_MAX_TEXTURE_SIZE limit, often as low as 2048x2048 pixels. Textures exceeding this size will fail to load silently. The user's query context, which mentions a texture size of 2850x1500, indicates this limit is being exceeded. The atlas texture must be resized to a maximum of 2048x2048 (or split into multiple atlases) to ensure compatibility, in addition to fixing the import settings.   
+
+II. Deconstructing the User's Workflow: The AtlasTexture and its Source
+To understand the failure, it is essential to first deconstruct the AtlasTexture class and analyze the specific workflows that lead to the problematic get_image() call.
+
+The AtlasTexture Resource
+The AtlasTexture class in Godot is a lightweight resource; it is not, by itself, a texture containing pixel data. Instead, it acts as a "pointer" or a "view" into a larger, existing Texture2D resource. Its primary purpose is to optimize draw calls and video memory by packing many smaller images (e.g., sprite frames, icons) into a single, large spritesheet, which is then loaded into VRAM once.   
+
+An AtlasTexture resource has two fundamental properties :   
+
+atlas: This property holds a reference to the source Texture2D (e.g., CompressedTexture2D, ImageTexture) that contains the full spritesheet.
+
+region: This property defines a Rect2 (x, y, width, height) that specifies the exact sub-region of the atlas texture that this AtlasTexture resource should represent and draw.
+
+How AtlasTexture is Used
+The distinction between creating an AtlasTexture in the editor versus creating it programmatically in-game is the most critical factor in this diagnosis.
+
+Workflow A: Editor-Created .tres Resource In this workflow, the developer creates the resource directly in the editor's FileSystem dock (Right-click > New Resource > AtlasTexture). This creates a .tres file. The developer then selects this file, and in the Inspector dock, manually assigns the source spritesheet (e.g., my_atlas.png) to the atlas property and sets the region coordinates.   
+
+When this AtlasTexture.tres file is dragged into a Sprite2D's texture slot, the Godot engine performs a very simple operation at runtime: it loads the single, large atlas texture (my_atlas.png, as a CompressedTexture2D) into VRAM and then tells the Sprite2D's renderer to only draw the UV coordinates corresponding to the region.
+
+Crucially, this workflow does not require any call to Texture2D.get_image(). The engine is operating entirely on the GPU side. The data is loaded from disk directly into VRAM and stays there. A developer using only this workflow would never encounter the get_image() returns null error.
+
+Workflow B: Programmatic Generation (The Likely Culprit) In this workflow, the AtlasTexture is created at runtime using GDScript (or C#). This is common for procedural systems, managing complex inventories, or populating UI elements from a manifest file (e.g., a JSON file).   
+
+The code for this typically looks like:
+
+GDScript
+var atlas_tex = AtlasTexture.new()
+atlas_tex.atlas = load("res://my_atlas.png")
+atlas_tex.region = Rect2(x_coord, y_coord, width, height)
+$Sprite2D.texture = atlas_tex
+This code, on its own, is also safe and does not call get_image(). It functions similarly to Workflow A, simply creating the "pointer" resource in memory instead of loading it from a .tres file. The load() function retrieves the CompressedTexture2D resource handle, and the engine's renderer uses it directly.
+
+Identifying the User's Probable Workflow
+The user's own diagnostic query—"Godot 4.5.1 Android get_image() returns null gl_compatibility"—is the definitive clue. The fact that the user is investigating get_image() at all indicates that their problem is more complex than a simple AtlasTexture failing to load.   
+
+This reveals that the "invisible atlas" is not the root problem; it is a downstream symptom of a separate, preceding operation that is failing. The user's code, or the code of a plugin they are using, is explicitly calling var img = my_atlas_texture.get_image() on their source CompressedTexture2D atlas.
+
+There are several common reasons for doing this, all of which are problematic when combined with VRAM compression:
+
+Attempting to Read Pixel Data: The code may be trying to read pixel data from the atlas, perhaps to get the color of a specific coordinate for a minimap, or to perform manual image manipulation.   
+
+Incorrectly Following Runtime-Loading Examples: The user may be conflating loading an imported resource with loading a new external file. Many examples online for loading external images (e.g., from user://) show a pattern like Image.load_...() -> ImageTexture.create_from_image(). A user might incorrectly try to apply this logic to an imported resource by first calling get_image() to get an Image object from their CompressedTexture2D, and then creating an ImageTexture from that.   
+
+Use of a Third-Party Add-on: A a tool or add-on for managing sprites or animations might be calling get_image() under the hood to perform its own logic, unaware of the VRAM compression conflict.
+
+Regardless of the specific reason, the analysis is clear: the user is not in a simple "load and display" workflow. Their code is actively attempting a GPU-to-CPU data transfer by calling get_image(). This specific action is the trigger for the entire bug.
+
+III. The Root Cause: The GPU/CPU Barrier and the get_image() Data Transfer
+The failure is rooted in the fundamental distinction between how data is stored and accessed by the computer's main processor (CPU) and its graphics processor (GPU), and how Godot's import system manages this divide.
+
+Understanding Texture Storage: CPU vs. GPU (VRAM)
+In Godot, and in all modern game engines, "images" and "textures" are two distinct concepts:
+
+Image (CPU-side): An Image is a resource that lives in standard system RAM. Its data is stored as a PackedByteArray that the CPU can freely and directly access. This is what allows for methods like Image.get_pixel(x, y), Image.set_pixel(x, y), and Image.decompress(). While flexible, this data is slow to render, as it must be sent over the system bus to the GPU for every frame it's drawn.   
+
+Texture2D (GPU-side): A Texture2D is a resource that acts as an opaque handle to a block of data living in the GPU's dedicated, high-speed memory (VRAM). This data is optimized for rendering and can be drawn to the screen extremely quickly. However, because it resides on the GPU, it is inaccessible to the CPU. The CPU code cannot "reach in" and read the pixels from VRAM directly.   
+
+The Godot Import System: A One-Way Street
+When a .png file is dropped into a Godot project, the import system's default behavior is to convert it from a CPU-side Image into a GPU-side Texture2D. This process generates a .ctex file (CompressedTexture2D) in the .godot/ directory. This is an optimization: the engine pre-processes the image into a format the GPU can use instantly at runtime, avoiding the costly conversion step.   
+
+The Role of Texture2D.get_image()
+The Texture2D.get_image() method is the only bridge to reverse this one-way process. When this method is called, the engine must:   
+
+Stall the rendering pipeline.
+
+Issue a command to the graphics driver to locate the texture data in VRAM.
+
+Perform a costly data transfer from the GPU, across the bus, and back into system RAM.
+
+Construct a new CPU-side Image object from this transferred data.
+
+The official Godot documentation explicitly warns against this, noting: "This will fetch the texture data from the GPU, which might cause performance problems when overused. Avoid calling get_image() every frame, especially on large textures". The user's problem is that on their specific platform, this operation is not just slow—it is functionally broken.   
+
+The "VRAM Compressed" Trap
+The CompressedTexture2D import settings are the final piece of the puzzle. The "Compress" -> "Mode" setting dictates the format of the data that gets stored in VRAM.   
+
+"Lossless" or "Lossy" Mode: These modes compress the image on disk (as WebP) to save project space. However, when the game runs, the texture is decompressed and sent to VRAM as standard, uncompressed FORMAT_RGBA8 pixel data. In this case, get_image() is a simple, reliable operation. It just copies the raw, uncompressed pixel data from VRAM back to RAM. This always works.
+
+"VRAM Compressed" Mode (The Culprit): This mode is fundamentally different. It converts the texture into a hardware-specific compressed format (e.g., DXT on desktop, ETC2 or ASTC on Android) and sends it to the GPU in that compressed format. This is a major optimization, as it uses significantly less VRAM and can be sampled faster by the GPU.
+
+This creates the critical conflict. When get_image() is called on a VRAM-compressed texture, the data in VRAM is not a simple grid of pixels. It is an opaque, compressed block of data that only the GPU's texture-sampling hardware understands. The engine cannot just "copy" this data. It must ask the graphics driver to perform a reverse-transcode—to take the hardware-compressed VRAM data and turn it back into a standard Image object.
+
+This is a complex, non-standard operation, and it is precisely this specific, fragile pathway that is broken on the gl_compatibility renderer for Android in Godot 4.5.1.
+
+IV. Identifying the Critical Bug: Godot Issue #108707
+The behavior described is not theoretical; it is a documented engine bug.
+
+Presenting the Evidence
+The root cause is Godot GitHub Issue #108707: "Android compatibility renderer vram compressed textures get_image returns RGBA8 image".   
+
+Analysis of the Bug
+This bug report, filed for Godot 4.5, perfectly aligns with every parameter of the user's problem:
+
+Platform: Android.
+
+Renderer: Compatibility (gl_compatibility) renderer.   
+
+Asset: VRAM compressed textures (ETC2, ASTC, or Basis Universal).
+
+Action: Calling tex.get_image().
+
+Expected Result: The method should return an Image object with the correct compressed format (e.g., FORMAT_ETC2_RGBA8).
+
+Actual (Buggy) Result: The method incorrectly returns an Image object that claims to have FORMAT_RGBA8 (the uncompressed format), but this image is empty or corrupt.
+
+Why this Bug Causes the "Invisible Texture"
+This bug is particularly insidious because it "fails silently." If the get_image() method returned null, the developer's code would crash with an obvious "Attempt to call function '...' on a null instance" error, which is easy to find and debug.
+
+Instead, the bug provides a non-null, "zombie" Image object. The developer's code proceeds without error. For example:
+
+GDScript
+# 1. Load the VRAM-compressed texture on Android gl_compatibility
+var vram_tex = load("res://my_vram_atlas.png")
+
+# 2. Call the bugged method.
+# vram_tex.get_image() returns a *non-null* Image object,
+# but its data is empty and its format is incorrectly set to FORMAT_RGBA8.
+var img = vram_tex.get_image() # 
+
+# 3. Code continues, no crash occurs.
+print(img) # This will print "[Image]" - looks valid!
+
+# 4. Any attempt to *use* the image fails silently.
+# create_from_image() creates a texture from an empty data buffer.
+var img_tex = ImageTexture.create_from_image(img)
+
+# 5. The final symptom: the Sprite appears invisible.
+$Sprite2D.texture = img_tex
+The "invisible texture" is the end result of a chain of failures initiated by the corrupt, but seemingly valid, Image object returned by get_image() due to Issue #108707. This matches numerous forum posts where users report textures being valid but simply not appearing, with no errors in the console.   
+
+Visualizing the Failure Point
+The following table summarizes the behavior of Texture2D.get_image() based on import settings and platform, highlighting the specific failure case.
+
+Table 1: Texture Import Settings vs. get_image() Behavior (Godot 4.5.x)
+
+Import Mode	Platform / Renderer	texture.get_image() Result	Analysis & Key Sources
+"Lossless" or "Lossy"	Any (Desktop or Android)	Success: Returns a valid, uncompressed Image (FORMAT_RGBA8).	
+This is the recommended fix. The texture is uncompressed in VRAM, so get_image() is a simple, reliable data copy. 
+
+"VRAM Compressed"	Desktop (Forward+ / Mobile)	Success: Returns a valid, compressed Image (e.g., FORMAT_DXT5).	
+This Image can then be decompressed using image.decompress() because desktop DXT formats are supported. 
+
+"VRAM Compressed"	Android (Mobile Renderer)	Success: Returns a valid, compressed Image (e.g., FORMAT_ETC2_RGBA8).	
+This is the expected behavior. However, this Image cannot be decompressed using image.decompress(). 
+
+"VRAM Compressed"	Android (Compatibility Renderer)	FAILURE (BUG #108707): Returns a corrupt or empty Image with an incorrect format (FORMAT_RGBA8).	
+This is the user's exact problem. The engine is bugged and returns garbage data instead of the correct compressed image or null. 
+
+  
+V. Failure Point Analysis: Why Image.decompress() Is Not a Viable Solution
+A common "fix" proposed in various forums for handling compressed textures is to call Image.decompress(). This solution is fundamentally incorrect for the Android platform and represents a critical misunderstanding of the engine's capabilities.   
+
+Disproving the "Fix" with Documentation
+The official Godot 4.x documentation for the Image.decompress() method provides the definitive evidence. It states:
+
+Error decompress()
+
+Decompresses the image if it is VRAM compressed in a supported format. Returns @GlobalScope.OK if the format is supported, otherwise @GlobalScope.ERR_UNAVAILABLE.
+
+Note: The following formats can be decompressed: DXT, RGTC, BPTC. The formats ETC1 and ETC2 are not supported.    
+
+This note is the key. Other sources confirm that decompress() is intended for VRAM formats, not standard PNG/JPG data, and its support is limited to those specific formats.   
+
+The Platform Mismatch
+This limitation creates a direct conflict with the requirements of the Android platform:
+
+Desktop GPUs (NVIDIA, AMD, modern Intel) use DXT, RGTC, or BPTC for VRAM compression. These are the formats Image.decompress() does support.
+
+Android GPUs (Mali, Adreno, PowerVR) running OpenGL ES (the foundation of the gl_compatibility renderer ) require ETC1 (for RGB) and ETC2 (for RGBA) or ASTC. These are the formats Image.decompress() explicitly does not support.   
+
+Therefore, even if the get_image() bug (Issue #108707) did not exist, and the method correctly returned a compressed Image with FORMAT_ETC2_RGBA8, any subsequent call to image.decompress() would still fail. It would return @GlobalScope.ERR_UNAVAILABLE, and the image data would remain compressed and unusable by the CPU.
+
+The Image.decompress() function is a desktop-centric feature and cannot be part of any viable solution on Android.
+
+Visualizing the decompress() Trap
+This table clarifies the platform-specific support mismatch that makes Image.decompress() a non-solution on Android.
+
+Table 2: Image.decompress() Support vs. Platform VRAM Formats
+
+VRAM Format Family	
+Supported by Image.decompress()? 
+
+Typical Desktop Format?	Typical Android (OpenGL ES) Format?
+DXT, RGTC, BPTC	Yes	Yes	No
+ETC1, ETC2	No	No	Yes
+ASTC	No	No	Yes
+Conclusion:	The function cannot be used to decompress Android-native VRAM formats.		
+  
+VI. Secondary Diagnostic: Investigating Texture Dimensionality and Hardware Limits
+While Issue #108707 is the primary cause of the get_image() failure, another critical, and likely concurrent, issue will prevent the texture from loading even after the import settings are fixed. This is a hardware limitation, not an engine bug.
+
+The GL_MAX_TEXTURE_SIZE Problem
+All graphics hardware imposes a GL_MAX_TEXTURE_SIZE limit, which defines the maximum width and height of a single texture the GPU can handle.
+
+On desktop PCs, this limit is extremely generous. Godot's documentation lists it as 16384x16384 pixels.   
+
+On mobile devices, this limit is far more restrictive and highly variable. A high-end modern phone might support 8192x8192, but older or lower-end devices—the exact devices that would run the gl_compatibility renderer—often have a hard limit of 4096x4096 or even 2048x2048 pixels.   
+
+Analysis of User's Texture
+The user query's context mentioned an atlas texture with dimensions of 2850x1500. While the height (1500) is safe, the width (2850) is problematic.
+
+It is larger than 2048 pixels. This means the texture will fail to load on any Android device with a GL_MAX_TEXTURE_SIZE of 2048.
+
+It is non-power-of-two (NPOT). While modern OpenGL ES 3.0 (which gl_compatibility targets ) supports NPOT textures, they can be less efficient and were forbidden on older hardware, further risking incompatibility.   
+
+The "Silent Failure" Symptom
+Much like the get_image() bug, exceeding GL_MAX_TEXTURE_SIZE is a silent failure. The graphics driver does not crash the application. It simply fails to create the texture in VRAM and returns a null handle to the engine. In Godot, this manifests as the texture failing to load. The Sprite2D becomes invisible, just as it does with the get_image() bug.   
+
+This means the user is very likely facing two distinct problems that produce the same symptom:
+
+Issue 1 (Bug): get_image() fails on the VRAM-compressed texture.   
+
+Issue 2 (Hardware): The texture is too large for the mobile GPU's limits.   
+
+Fixing only one of these issues will not solve the problem. Both must be addressed.
+
+Recommendation
+The atlas texture must be resized. For broad, safe compatibility across the maximum number of Android devices, all texture atlases should be constrained to 2048x2048 pixels. If the assets do not fit, they must be split into multiple 2048x2048 atlases (e.g., atlas_01.png, atlas_02.png, etc.).
+
+VII. Comprehensive Resolution Strategy (The "Fix")
+Based on the preceding analysis, the following multi-step solution will resolve the "invisible texture" failure. These steps must be followed precisely.
+
+Primary Solution: Fix the Import Settings (The 99% Fix)
+This solution corrects the root cause of the get_image() bug (Issue #108707) by changing the texture's VRAM storage format.
+
+Open the Godot 4.5.1 project in the editor.
+
+In the FileSystem dock, navigate to and click once on the source atlas image file (e.g., my_atlas.png). Do not click the .ctex file; click the original .png or .jpg file.
+
+In the Import dock (which appears in the top-left panel), locate the Compress section.
+
+Find the Mode dropdown. It is currently set to "VRAM Compressed".
+
+Click the dropdown and change the Mode to "Lossless".
+
+Justification: As per the analysis , "Lossless" mode compresses the file on disk (using WebP) but ensures it is loaded uncompressed (FORMAT_RGBA8) into the GPU's VRAM. As established in Table 1, the get_image() method functions correctly and reliably on uncompressed VRAM data, completely bypassing the bug.   
+
+Alternative: If disk size is a greater concern than absolute quality, "Lossy" may be used. Do not use "VRAM Compressed" or "Basis Universal" if the CPU ever needs to access the image data via get_image().
+
+After changing the mode, click the "Reimport" button at the bottom of the Import dock.
+
+It is strongly recommended to delete the project's .godot/ directory to ensure a clean rebuild.
+
+Re-export the project for Android.
+
+Result: The get_image() call in the game's code will now succeed, as it is operating on a simple, uncompressed VRAM buffer. This will fix the "invisible atlas" symptom if this is the only issue.
+
+Secondary Solution: The Robust Runtime Loading Method
+This solution is for a different, but related, use case: loading a texture atlas at runtime from a file outside the res:// project bundle (e.g., downloaded from a server or selected by the user, stored in user://).
+
+This workflow is robust because it never uses the Godot import system or the CompressedTexture2D class. It operates entirely on the CPU side.
+
+The Wrong Way:
+
+GDScript
+# This will NOT work for user:// files.
+# load() is for engine-managed resources in res://
+var tex = load("user://my_atlas.png") # Fails
+   
+
+The Correct Way (The FileAccess Workflow): This method uses FileAccess to read the raw file bytes, loads them into a CPU-side Image, and then creates a texture from that Image.   
+
+GDScript
+# Function to robustly load an external image file and return a usable Texture2D.
+func load_atlas_from_path(file_path: String) -> Texture2D:
+    # 1. Check for file existence and open it for reading.
+    if not FileAccess.file_exists(file_path):
+        printerr("File not found: ", file_path)
+        return null
+    
+    var file = FileAccess.open(file_path, FileAccess.READ)
+    if file == null:
+        printerr("Failed to open file. Error: ", FileAccess.get_open_error())
+        return null
+    
+    # 2. Read the entire file into a byte buffer.
+    var buffer: PackedByteArray = file.get_buffer(file.get_length())
+    file.close()
+
+    # 3. Create a new, empty Image object (CPU-side).
+    var img = Image.new()
+    
+    # 4. Load the byte buffer data *into* the Image.
+    # Use the appropriate method for your file type.
+    var err = img.load_png_from_buffer(buffer)
+    # Alternatively: err = img.load_jpg_from_buffer(buffer)
+    # Alternatively: err = img.load_webp_from_buffer(buffer)
+
+    if err!= OK:
+        printerr("Failed to load image from buffer. Error: ", err)
+        return null
+        
+    # 5. Create a render-able ImageTexture from the CPU-side Image.
+    # This texture is now safe to use.
+    var img_tex = ImageTexture.create_from_image(img)
+    return img_tex
+
+# Example usage:
+func create_atlas_texture():
+    # Load the source atlas using the robust method
+    var source_atlas_texture = load_atlas_from_path("user://my_atlas.png")
+    
+    if source_atlas_texture:
+        var atlas_tex = AtlasTexture.new()
+        atlas_tex.atlas = source_atlas_texture
+        atlas_tex.region = Rect2(0, 0, 64, 64)
+        $Sprite2D.texture = atlas_tex
+    else:
+        print("Could not create atlas texture.")
+This workflow  completely bypasses the VRAM import pipeline, Issue #108707, and the Image.decompress() limitations, making it the definitive solution for runtime external image loading.   
+
+Tertiary Solution: Enforce Hardware Constraints
+This step is mandatory and must be performed in addition to the Primary Solution.
+
+Open the source atlas image file (my_atlas.png) in an image editor (e.g., GIMP, Krita, Photoshop).
+
+Check its dimensions. The user's context suggests 2850x1500.
+
+Resize the image so that both its width and height are 2048 pixels or less.
+
+Recommendation: A 2048x2048 atlas is the "safe" standard for maximum compatibility on Android devices.   
+
+If the assets no longer fit on a single 2048x2048 atlas, they must be split into multiple atlas files (e.g., atlas_character.png, atlas_ui.png, atlas_world.png), each adhering to the 2048x2048 limit.
+
+Save the new, resized atlas(es) and re-import them into Godot (using the "Lossless" setting as defined in the Primary Solution).
+
+VIII. Definitive Recommendations for Android Texture Management
+To prevent this and similar failures, the following best practices for texture management in Godot projects targeting Android, especially with the gl_compatibility renderer, should be adopted.
+
+The Golden Rule: Match Import Settings to Intended Use A texture's import settings must reflect how it will be used in-game.
+
+Use "VRAM Compressed": This setting should be the default for any texture that is "fire-and-forget." This includes 3D model textures (Albedo, Normal, etc.) and most 2D sprites or backgrounds that are simply loaded and displayed. The CPU will never need to read their pixel data. This provides the best VRAM savings and rendering performance.
+
+Use "Lossless" or "Lossy": This setting is mandatory for any texture that the CPU must access data from. This includes:
+
+Textures that will be passed to a get_image() call for any reason.
+
+Textures used to procedurally generate AtlasTexture objects if that process involves reading pixel data.
+
+Textures used as data maps (e.g., heightmaps) that the CPU needs to parse.
+
+Embrace the gl_compatibility Renderer's Limitations When targeting the gl_compatibility renderer, the project is explicitly aiming for older, weaker hardware. This requires a conservative approach.   
+
+Texture Size: Enforce a strict project-wide limit of 2048x2048 for all textures.
+
+CPU Access: Avoid Texture2D.get_image() in any performance-critical code (e.g., _process()). The call stalls the GPU and is slow. If data must be read from a texture, perform the get_image() call once during an initial loading screen and cache the resulting Image object in a variable for all future CPU access.   
+
+Runtime Loading Best Practice Never use the load() or preload() functions to access files in user:// or to load files downloaded from the network. These functions are only for compile-time, res:// resources. The FileAccess -> Image.load_..._from_buffer() -> ImageTexture.create_from_image() pipeline is the only correct, robust, and platform-agnostic method for loading external images at runtime.   
+
+On Godot 4.5.1 This specific engine version  carries the get_image() bug. The only way to make get_image() function on an imported texture on the Android gl_compatibility renderer is to not use VRAM compression. The Primary Solution (changing the import mode to "Lossless") is the definitive fix for this engine version.   
+
+
+forum.godotengine.org
+Texture of sprites and texturerects won't load in android - Help - Godot Forum
+Opens in a new window
+
+reddit.com
+Panels, Color Rects and button backgrounds are invisible on Android : r/godot - Reddit
+Opens in a new window
+
+reddit.com
+One of my TextureRects only shows on PC, but disappears on mobile (Godot 4.4.1) - Reddit
+Opens in a new window
+
+github.com
+Godot 4.2.1 Compatibility Rendering (GLES3) don't works at all on a 3 Years Old Andoid Device #86112 - GitHub
+Opens in a new window
+
+github.com
+Android compatibility renderer vram compressed textures `get_image` returns RGBA8 image · Issue #108707 · godotengine/godot - GitHub
+Opens in a new window
+
+forum.godotengine.org
+Cannot get_pixel() on Compressed Image Formats - Help - Godot Forum
+Opens in a new window
+
+docs.godotengine.org
+Image — Godot Engine (stable) documentation in English
+Opens in a new window
+
+docs.godotengine.org
+CompressedTexture2D — Godot Engine (stable) documentation in English
+Opens in a new window
+
+docs.godotengine.org
+Runtime file loading and saving - Godot Docs
+Opens in a new window
+
+reddit.com
+How load a PNG texture from file system and assign it to a node in GODOT 4 please??
+Opens in a new window
+
+reddit.com
+Texture size limits? : r/godot - Reddit
+Opens in a new window
+
+stackoverflow.com
+Android devices GL_MAX_TEXTURE_SIZE limitation, safe texture size - Stack Overflow
+Opens in a new window
+
+reddit.com
+Calling get_texture on valid texture returns null (Godot4) : r/godot - Reddit
+Opens in a new window
+
+docs.godotengine.org
+AtlasTexture — Godot Engine (4.x) documentation in English
+Opens in a new window
+
+docs.godotengine.org
+AtlasTexture — Godot Engine (stable) documentation in English
+Opens in a new window
+
+github.com
+Add a method to create a Texture from a Sprite region or AtlasTexture · Issue #3882 · godotengine/godot-proposals - GitHub
+Opens in a new window
+
+reddit.com
+[Godot 4.2] How do you share a single AtlasTexture between multiple resources? (more info in the comments) - Reddit
+Opens in a new window
+
+reddit.com
+Resource textures 2D : r/godot - Reddit
+Opens in a new window
+
+docs.godotengine.org
+AtlasTexture — Godot Engine (4.5) documentation in English
+Opens in a new window
+
+godotforums.randommomentania.com
+Help with AtlasTexture.tres - Godot Community Forums - RandomMomentania
+Opens in a new window
+
+davcri.it
+Programmatically create an AtlasTexture in Godot - davcri
+Opens in a new window
+
+reddit.com
+How way to go, to implement texture atlas support for richt text fields / bbcode : r/godot
+Opens in a new window
+
+godotengine.org
+Maintenance release: Godot 4.5.1
+Opens in a new window
+
+forum.godotengine.org
+Retrieving Image Data From NoiseTexture2D returns Null - Programming - Godot Forum
+Opens in a new window
+
+gamedevacademy.org
+AtlasTexture In Godot - Complete Guide - GameDev Academy
+Opens in a new window
+
+docs.godotengine.org
+Texture2D — Godot Engine (stable) documentation in English
+Opens in a new window
+
+docs.godotengine.org
+Overview of renderers — Godot Engine (stable) documentation in English
+Opens in a new window
+
+github.com
+Image::decompress() does not seem to do anything. · Issue #51528 · godotengine/godot
+Opens in a new window
+
+forum.godotengine.org
+Any guidelines on how much memory I should use for textures? - Shaders - Godot Forum
+Opens in a new window
+
+reddit.com
+Godot 4: what is the correct way to import image at runtime please? - Reddit
+```
+
+Q&A:
+```
+Q. If I try to make your changes, I end up unable to export due to required formatting.
+
+A. This is an excellent and crucial clarification. You have uncovered the central (and very confusing) catch-22 of texture exporting for Android, and the image you've provided is the key.
+
+My previous analysis and this error message are not contradictory—they are two sides of the same coin. Here is the precise explanation and the fix.
+
+You are correct that the target platform, Android, requires the ETC2/ASTC compression format. The error message you see is from the Project Settings, which globally enables or disables the capability for Godot to create textures in this format.
+
+However, the fix from my report (setting the atlas to "Lossless") relates to the Import Settings for a specific texture file, which overrides the project-wide default.
+
+Here is the step-by-step solution to fix this:
+
+1. Satisfy the Project Exporter (Fixing the Error in Your Image)
+First, you must do what the error message says. This does not break our fix; it just enables the option for ETC2 compression project-wide, which the Android exporter needs to see.
+
+In the error message in your screenshot, click the blue link that says "Show Project Setting".
+
+This will open your Project -> Project Settings window and take you directly to Rendering -> Textures.
+
+The setting will be "Import ETC2 ASTC". Turn this On.
+
+Close the Project Settings. The red error message in the Export dialog will now be gone.
+
+2. Apply the "Invisible Texture" Fix (What My Report Detailed)
+Now that your project globally supports ETC2/ASTC (satisfying the exporter), we must locally override your problematic atlas textures to not use it, which fixes the get_image() bug.   
+
+Go to the FileSystem dock in the Godot editor.
+
+Find your atlas images (e.g., smallTiles.png, largeTiles.png, faceTiles.png).
+
+Click on one of them (e.g., smallTiles.png).
+
+Go to the Import dock.
+
+In the Compress section, set the Mode to "Lossless". (As noted in the report, this uses more VRAM but stores the texture uncompressed, bypassing the get_image() bug on Android's gl_compatibility renderer ).   
+
+Click the "Reimport" button at the bottom of the Import dock.
+
+Repeat steps 3-6 for all of your other atlas textures that were invisible.
+
+Summary: Why This Works
+This two-part solution resolves both issues:
+
+By turning "Import ETC2 ASTC" ON in the Project Settings, you satisfy the Android exporter, which just needs to know the project is capable of handling the platform's native format.
+
+By setting your atlas Compress -> Mode to "Lossless" in the Import Dock, you override that project default for those specific files. This ensures the atlases are loaded uncompressed into VRAM, which allows the get_image() function to work correctly and fixes the bug where your cards and portraits were invisible.
+
+This approach gives you the best of both worlds: your project is compliant with Android's requirements, but your specific, problematic textures use the "Lossless" workaround to avoid the engine bug.
+
+https://github.com/godotengine/godot/issues/108707
+```
