@@ -235,8 +235,22 @@ func _render_card(size_type: String) -> void:
 		if card_texture != null:
 			portrait.texture = card_texture
 			print("[CardImage] Loaded texture for: %s, size: %s, type: %s" % [card_name, portrait.texture.get_size(), portrait.texture.get_class()])
+
+			# DEBUG: Add green border to confirm texture loaded and is rendering
+			var debug_border := ColorRect.new()
+			debug_border.color = Color.GREEN
+			debug_border.position = Vector2(-2, -2)
+			debug_border.size = portrait.size + Vector2(4, 4)
+			debug_border.z_index = -1
+			portrait.add_child(debug_border)
 		else:
-			push_warning("CardImage: Missing texture for card: %s" % card_name)
+			# DEBUG: Show a colored rectangle if texture is missing so we can see if rendering works
+			push_warning("CardImage: Missing texture for card: %s - showing red debug rect" % card_name)
+			portrait.texture = null
+			var debug_color := ColorRect.new()
+			debug_color.color = Color.RED
+			debug_color.size = portrait.size
+			portrait.add_child(debug_color)
 	
 	# Java: if (creature != null && creature.mustSkipNextAttack()) batch.draw(stunned, x, y)
 	if creature != null:
