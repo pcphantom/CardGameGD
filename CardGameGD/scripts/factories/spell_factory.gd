@@ -41,12 +41,20 @@ static func get_spell_class(
 	var snake_case_name := _to_snake_case(spell_class_name)
 	var spell_script_path: String = SPELL_PATH + snake_case_name + ".gd"
 
+	print("[SPELL FACTORY] Looking for spell: '%s'" % spell_class_name)
+	print("[SPELL FACTORY] Converted to: '%s'" % snake_case_name)
+	print("[SPELL FACTORY] Path: '%s'" % spell_script_path)
+	print("[SPELL FACTORY] Exists: %s" % ResourceLoader.exists(spell_script_path))
+
 	# Try to load the specific spell class
 	if ResourceLoader.exists(spell_script_path):
 		var SpellClass = load(spell_script_path)
 		if SpellClass != null:
+			print("[SPELL FACTORY] Successfully loaded spell class: %s" % spell_class_name)
 			spell = SpellClass.new(game, card, card_image, owner, opponent)
 			return spell
+		else:
+			print("[SPELL FACTORY ERROR] Failed to load spell script even though it exists!")
 
 	# Fallback to BaseSpell if specific class not found
 	if game != null and game.has_method("log_message"):
