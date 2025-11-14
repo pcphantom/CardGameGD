@@ -39,25 +39,31 @@ func _init():
 	else:
 		log_path = "user://texture_debug.log"
 
+	print("TextureManager _init(): Attempting to create log at: %s" % log_path)
 	log_file = FileAccess.open(log_path, FileAccess.WRITE)
 
 	if log_file:
-		write_log("=== TEXTURE MANAGER DEBUG LOG ===")
-		write_log("OS: %s" % OS.get_name())
-		write_log("Godot Version: %s" % Engine.get_version_info().string)
-		write_log("Log Path: %s" % log_path)
-		write_log("Renderer: %s" % ProjectSettings.get_setting("rendering/renderer/rendering_method"))
-		write_log("VRAM Compression Enabled: %s" % ProjectSettings.get_setting("rendering/textures/vram_compression/import_etc2_astc"))
+		print("TextureManager _init(): Log file created successfully!")
+		log_file.store_line("=== TEXTURE MANAGER DEBUG LOG ===")
+		log_file.store_line("OS: %s" % OS.get_name())
+		log_file.store_line("Godot Version: %s" % Engine.get_version_info().string)
+		log_file.store_line("Log Path: %s" % log_path)
+		log_file.store_line("Renderer: %s" % ProjectSettings.get_setting("rendering/renderer/rendering_method"))
+		log_file.store_line("VRAM Compression Enabled: %s" % ProjectSettings.get_setting("rendering/textures/vram_compression/import_etc2_astc"))
 
 		# Get system info
 		var video_adapter = RenderingServer.get_video_adapter_name()
-		write_log("GPU: %s" % video_adapter)
-		write_log("GPU Vendor: %s" % RenderingServer.get_video_adapter_vendor())
-		write_log("GPU API Version: %s" % RenderingServer.get_video_adapter_api_version())
+		log_file.store_line("GPU: %s" % video_adapter)
+		log_file.store_line("GPU Vendor: %s" % RenderingServer.get_video_adapter_vendor())
+		log_file.store_line("GPU API Version: %s" % RenderingServer.get_video_adapter_api_version())
 
-		write_log("===================================")
+		log_file.store_line("===================================")
+		log_file.flush()
+		print("TextureManager _init(): Initial log entries written and flushed")
 	else:
-		push_error("Failed to create log file at: %s (error: %s)" % [log_path, FileAccess.get_open_error()])
+		var error_code = FileAccess.get_open_error()
+		push_error("Failed to create log file at: %s (error code: %s)" % [log_path, error_code])
+		print("TextureManager _init(): FAILED to create log file! Error: %s" % error_code)
 
 func write_log(message: String):
 	if log_file:
