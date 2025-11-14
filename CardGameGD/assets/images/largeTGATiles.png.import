@@ -15,7 +15,7 @@ dest_files=["res://.godot/imported/largeTGATiles.png-4a129d67d7ca6c10577f722a5f1
 
 [params]
 
-compress/mode=1
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1
