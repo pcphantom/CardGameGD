@@ -33,14 +33,18 @@ var log_file: FileAccess = null
 var log_path: String = ""
 
 func _init():
-	# Set up debug log file in user:// directory (accessible on Android)
-	log_path = "user://texture_debug.log"
+	# Set up debug log file in Documents folder (accessible on Android)
+	if OS.get_name() == "Android":
+		log_path = "/storage/emulated/0/Documents/texture_debug.log"
+	else:
+		log_path = "user://texture_debug.log"
+
 	log_file = FileAccess.open(log_path, FileAccess.WRITE)
 	if log_file:
 		write_log("=== TEXTURE MANAGER DEBUG LOG ===")
 		write_log("OS: %s" % OS.get_name())
 		write_log("Godot Version: %s" % Engine.get_version_info().string)
-		write_log("Log Path: %s" % ProjectSettings.globalize_path(log_path))
+		write_log("Log Path: %s" % log_path)
 		write_log("===================================")
 	else:
 		push_error("Failed to create log file at: %s" % log_path)
