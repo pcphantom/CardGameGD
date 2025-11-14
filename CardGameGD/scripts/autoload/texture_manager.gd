@@ -49,7 +49,7 @@ func write_log(message: String):
 	if log_file:
 		log_file.store_line(message)
 		log_file.flush()  # Ensure it's written immediately
-	write_log(message)  # Also print to console
+	print(message)  # Also print to console
 
 func _notification(what):
 	if what == NOTIFICATION_PREDELETE:
