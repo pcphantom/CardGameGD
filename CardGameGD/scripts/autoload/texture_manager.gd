@@ -43,17 +43,38 @@ func load_textures() -> void:
 	stunned = load_texture("res://assets/images/stunned.png")
 
 	# Load card atlases
+	print("[TextureManager] ========================================")
+	print("[TextureManager] STARTING ATLAS LOADING")
+	print("[TextureManager] ========================================")
+
 	small_card_atlas = load_texture_atlas("res://assets/images/smallCardsPack.txt", "res://assets/images/smallTiles.png")
+	print("[TextureManager] small_card_atlas entries: %d" % small_card_atlas.size())
+
 	# Load split large card atlases (largeTiles was split into two 2048x2048-compliant files)
 	var large_atlas_1 = load_texture_atlas("res://assets/images/largeCardsPack.txt", "res://assets/images/largeTiles1.png")
+	print("[TextureManager] large_atlas_1 entries: %d" % large_atlas_1.size())
+
 	var large_atlas_2 = load_texture_atlas("res://assets/images/largeCardsPack.txt", "res://assets/images/largeTiles2.png")
+	print("[TextureManager] large_atlas_2 entries: %d" % large_atlas_2.size())
+
 	# Merge the two large atlases into one dictionary
 	large_card_atlas = large_atlas_1.duplicate()
 	for key in large_atlas_2:
 		large_card_atlas[key] = large_atlas_2[key]
+	print("[TextureManager] large_card_atlas total entries: %d" % large_card_atlas.size())
+
 	small_tga_card_atlas = load_texture_atlas("res://assets/images/smallTGACardsPack.txt", "res://assets/images/smallTGATiles.png")
+	print("[TextureManager] small_tga_card_atlas entries: %d" % small_tga_card_atlas.size())
+
 	large_tga_card_atlas = load_texture_atlas("res://assets/images/largeTGACardsPack.txt", "res://assets/images/largeTGATiles.png")
+	print("[TextureManager] large_tga_card_atlas entries: %d" % large_tga_card_atlas.size())
+
 	face_card_atlas = load_texture_atlas("res://assets/images/faceCardsPack.txt", "res://assets/images/faceTiles.png")
+	print("[TextureManager] face_card_atlas entries: %d" % face_card_atlas.size())
+
+	print("[TextureManager] ========================================")
+	print("[TextureManager] ALL ATLASES LOADED")
+	print("[TextureManager] ========================================")
 
 	is_loaded = true
 
@@ -67,12 +88,17 @@ func load_texture(path: String) -> Texture2D:
 func load_texture_atlas(atlas_path: String, image_path: String) -> Dictionary:
 	var atlas_dict: Dictionary = {}
 
+	print("[TextureManager] === LOADING ATLAS ===")
+	print("[TextureManager] Atlas path: %s" % atlas_path)
+	print("[TextureManager] Image path: %s" % image_path)
+	print("[TextureManager] OS: %s" % OS.get_name())
+
 	if not FileAccess.file_exists(atlas_path):
-		push_warning("TextureManager: Atlas file not found: %s" % atlas_path)
+		push_error("TextureManager: Atlas file not found: %s" % atlas_path)
 		return atlas_dict
 
 	if not ResourceLoader.exists(image_path):
-		push_warning("TextureManager: Atlas image not found: %s" % image_path)
+		push_error("TextureManager: Atlas image not found: %s" % image_path)
 		return atlas_dict
 
 	# CRITICAL FIX: Load the atlas texture WITHOUT calling get_image()
@@ -81,6 +107,10 @@ func load_texture_atlas(atlas_path: String, image_path: String) -> Dictionary:
 	if atlas_texture == null:
 		push_error("TextureManager: Failed to load atlas image: %s" % image_path)
 		return atlas_dict
+
+	print("[TextureManager] Atlas texture loaded successfully")
+	print("[TextureManager] Texture class: %s" % atlas_texture.get_class())
+	print("[TextureManager] Texture size: %s" % atlas_texture.get_size())
 
 	# Parse the atlas text file
 	var file := FileAccess.open(atlas_path, FileAccess.READ)
@@ -93,6 +123,7 @@ func load_texture_atlas(atlas_path: String, image_path: String) -> Dictionary:
 	var current_y: int = 0
 	var current_width: int = 0
 	var current_height: int = 0
+	var cards_loaded: int = 0
 
 	while not file.eof_reached():
 		var line := file.get_line()
@@ -136,8 +167,17 @@ func load_texture_atlas(atlas_path: String, image_path: String) -> Dictionary:
 					# NOTE: TGA flip logic removed - TGA atlases must be pre-flipped
 					# If TGA textures appear upside-down, flip them in an image editor
 					atlas_dict[current_card_name] = atlas_tex
+					cards_loaded += 1
+
+					# Debug log first 3 cards
+					if cards_loaded <= 3:
+						print("[TextureManager] Loaded card '%s': region=(%d,%d,%d,%d)" % [current_card_name, current_x, current_y, current_width, current_height])
 
 	file.close()
+
+	print("[TextureManager] Total cards loaded: %d" % cards_loaded)
+	print("[TextureManager] === ATLAS LOADING COMPLETE ===")
+
 	return atlas_dict
 
 func get_small_card_texture(card_name: String) -> Texture2D:
