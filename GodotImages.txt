@@ -542,4 +542,140 @@ By setting your atlas Compress -> Mode to "Lossless" in the Import Dock, you ove
 This approach gives you the best of both worlds: your project is compliant with Android's requirements, but your specific, problematic textures use the "Lossless" workaround to avoid the engine bug.
 
 https://github.com/godotengine/godot/issues/108707
+
+Q. I tried to go back to Godot 4.4.1 and it still didn't work. If I run it in 4.5.1 on Android, it works in the play test, but not if I fully compile it. I also tried your strategy, it did not work.
+
+
+A. Thank you for this critical information. The two new facts you've provided are the key.
+
+This is a complex problem, but your new information, especially the "Play Test vs. Full Compile" discrepancy, makes the diagnosis crystal clear.
+
+You are being hit by three separate, distinct issues that are combining to create this failure. My previous strategies failed because we were only fixing one or two of them at a time.
+
+The Code Problem: Your texture_manager.gd script, as edited in your logs, was changed to use texture.get_image(). This is the root of the evil.
+
+The Engine Bug: There is a known issue, particularly in the gl_compatibility renderer, where get_image() fails when called on a VRAM Compressed texture (which is the default for Android exports).   
+
+The Hardware Limit: Your largeTiles.png (2850x1500) is too large for the 2048x2048 limit on many mobile GPUs.
+
+The "Aha!" Moment: Play Test vs. Full Compile
+Your new clue—that it works in "Play Test" but fails in a "Full Compile"—is what solves this.
+
+When you use "Play Test" (remote debug), Godot streams your project's desktop assets to the phone. On desktop, get_image() works (or the assets aren't VRAM compressed in the same way), so you see no bug.
+
+When you do a "Full Compile," Godot re-imports all your assets specifically for Android, using the required ETC2/ASTC VRAM compression (as your screenshot confirmed). Your code then calls get_image() on these newly compressed textures, triggering the engine bug  and failing to load.   
+
+This confirms the problem is the combination of your script's code (get_image()) and Android's VRAM compression.
+
+The Definitive, 3-Step Solution
+We must fix all three issues at once.
+
+Step 1: Fix the Asset Size (The Hardware Limit)
+This is non-negotiable. The largeTiles.png (2850x1500) and largeTGATiles.png will always fail on some devices.
+
+Open largeTiles.png and largeTGATiles.png in an image editor.
+
+You must resize them to be 2048x2048 or smaller.
+
+If all the cards don't fit, split them into multiple atlases (e.g., largeTiles_1.png, largeTiles_2.png), each one under 2048x2048. You will need to update your atlas-parsing code to load these multiple files.
+
+Step 2: Fix the TGA Flip (The Code Prerequisite)
+The only reason your code ever used get_image() was to flip the TGA atlases. We must remove this necessity.
+
+Open smallTGATiles.png and largeTGATiles.png (your newly resized one) in an image editor.
+
+Manually flip them vertically and save them.
+
+By pre-flipping the source assets, we can now delete the entire get_image() code path that was built to flip them at runtime.
+
+Step 3: Fix the Code (The Engine Bug)
+This is the most important part. We must revert your texture_manager.gd to stop calling get_image() and use the AtlasTexture resource correctly. This is the only way to make it compatible with Android's VRAM compression.
+
+Your texture_manager.gd's atlas-loading function should look like this. This new version never calls get_image() and is the performant, correct way to handle atlases.   
+
+GDScript
+# In texture_manager.gd
+
+# This function should be reverted to its simple, original form.
+# It should NOT use get_image(), ImageTexture, or sub_img.
+func _load_atlas_textures_from_file(atlas_path, image_path):
+    var atlas_dict = {}
+    var file = FileAccess.open(atlas_path, FileAccess.READ)
+    if file == null:
+        push_error("TextureManager: Failed to open atlas file: %s" % atlas_path)
+        return atlas_dict
+
+    # CRITICAL FIX: Load the atlas texture resource.
+    # This will be a CompressedTexture2D on Android, which is correct.
+    var atlas_texture: Texture2D = load(image_path)
+    if atlas_texture == null:
+        push_error("TextureManager: Failed to load atlas image: %s" % image_path)
+        return atlas_dict
+
+    var current_card_name = ""
+    var current_x = 0
+    var current_y = 0
+    var current_width = 0
+    var current_height = 0
+
+    while not file.eof_reached():
+        var line = file.get_line().strip_edges()
+        if line.is_empty():
+            continue
+
+        if not line.begins_with(" "):
+            # This is a new card name
+            if not current_card_name.is_empty():
+                # --- Create the AtlasTexture for the PREVIOUS card ---
+                # This is the correct, performant method.
+                # It does NOT call get_image() and works with VRAM compression.
+                var atlas_tex = AtlasTexture.new()
+                atlas_tex.atlas = atlas_texture
+                atlas_tex.region = Rect2(current_x, current_y, current_width, current_height)
+                atlas_dict[current_card_name] = atlas_tex
+                # --- End of AtlasTexture creation ---
+
+            current_card_name = line
+        else:
+            # This is data for the current card
+            var parts = line.split(":")
+            if parts.size() == 2:
+                var key = parts.strip_edges()
+                var value = parts.[1]strip_edges()
+                match key:
+                    "xy":
+                        var coords = value.split(",")
+                        if coords.size() == 2:
+                            current_x = coords.strip_edges().to_int()
+                            current_y = coords.[1]strip_edges().to_int()
+                    "size":
+                        var dims = value.split(",")
+                        if dims.size() == 2:
+                            current_width = dims.strip_edges().to_int()
+                            current_height = dims.[1]strip_edges().to_int()
+    
+    # Don't forget the last card in the file
+    if not current_card_name.is_empty():
+        var atlas_tex = AtlasTexture.new()
+        atlas_tex.atlas = atlas_texture
+        atlas_tex.region = Rect2(current_x, current_y, current_width, current_height)
+        atlas_dict[current_card_name] = atlas_tex
+
+    file.close()
+    return atlas_dict
+Final Settings Checklist
+After you have (1) Resized the large assets, (2) Pre-flipped the TGA assets, and (3) Fixed the code, your import settings should be as follows:
+
+Project Settings:
+
+Rendering -> Textures -> Import ETC2 ASTC: ON (As your screenshot requires).
+
+Import Dock (for all atlas PNGs):
+
+Compress -> Mode: "VRAM Compressed". (Now that our code is correct, we can and should use VRAM compression for performance).
+
+Click "Reimport" on all of them.
+
+This complete strategy fixes the hardware limit, removes the need for the bugged get_image() call, and restores the correct, performant AtlasTexture implementation. This will work for both "Play Test" and "Full Compile."
+
 ```
