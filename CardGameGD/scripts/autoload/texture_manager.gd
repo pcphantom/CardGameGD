@@ -158,7 +158,6 @@ func load_texture_atlas(atlas_path: String, image_path: String) -> Dictionary:
 
 	if atlas_texture == null:
 		write_log("[TextureManager] ERROR: Failed to load atlas image: %s" % image_path)
-		write_log("[TextureManager] ResourceLoader error: %s" % ResourceLoader.get_resource_error_text(image_path))
 		return atlas_dict
 
 	write_log("[TextureManager] ✓ Atlas texture loaded successfully")
