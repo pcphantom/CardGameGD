@@ -44,7 +44,10 @@ func load_textures() -> void:
 
 	# Load card atlases
 	small_card_atlas = load_texture_atlas("res://assets/images/smallCardsPack.txt", "res://assets/images/smallTiles.png")
-	large_card_atlas = load_texture_atlas("res://assets/images/largeCardsPack.txt", "res://assets/images/largeTiles.png")
+	# TEMPORARILY DISABLED: largeTiles.png exceeds GL_MAX_TEXTURE_SIZE (2850x1500 > 2048x2048)
+	# Testing if other atlases work without it
+	#large_card_atlas = load_texture_atlas("res://assets/images/largeCardsPack.txt", "res://assets/images/largeTiles.png")
+	large_card_atlas = {}  # Empty for now
 	small_tga_card_atlas = load_texture_atlas("res://assets/images/smallTGACardsPack.txt", "res://assets/images/smallTGATiles.png")
 	large_tga_card_atlas = load_texture_atlas("res://assets/images/largeTGACardsPack.txt", "res://assets/images/largeTGATiles.png")
 	face_card_atlas = load_texture_atlas("res://assets/images/faceCardsPack.txt", "res://assets/images/faceTiles.png")
