@@ -85,8 +85,8 @@ func load_textures() -> void:
 
 	is_loaded = true
 
-	# Save debug log to error_log.txt in Documents
-	_save_debug_log()
+	# Add all debug messages to game log
+	_output_debug_to_game_log()
 
 func load_texture(path: String) -> Texture2D:
 	if ResourceLoader.exists(path):
@@ -95,38 +95,33 @@ func load_texture(path: String) -> Texture2D:
 		write_log("TextureManager: Texture not found: %s" % path)
 		return null
 
-func _save_debug_log():
-	"""Save all debug messages to error_log.txt in Documents."""
-	var log_path: String
-	if OS.get_name() == "Android":
-		log_path = "/storage/emulated/0/Documents/error_log.txt"
-	else:
-		log_path = "user://error_log.txt"
+func _output_debug_to_game_log():
+	"""Output all debug messages to the game log."""
+	# Wait for Cards to initialize
+	await get_tree().process_frame
+	await get_tree().process_frame
 
-	# Add system info at the beginning
-	var full_log: Array[String] = []
-	full_log.append("=== TEXTURE MANAGER DEBUG LOG ===")
-	full_log.append("OS: %s" % OS.get_name())
-	full_log.append("Godot Version: %s" % Engine.get_version_info().string)
-	full_log.append("Renderer: %s" % ProjectSettings.get_setting("rendering/renderer/rendering_method"))
-	full_log.append("VRAM Compression: %s" % ProjectSettings.get_setting("rendering/textures/vram_compression/import_etc2_astc"))
-	full_log.append("GPU: %s" % RenderingServer.get_video_adapter_name())
-	full_log.append("GPU Vendor: %s" % RenderingServer.get_video_adapter_vendor())
-	full_log.append("GPU API: %s" % RenderingServer.get_video_adapter_api_version())
-	full_log.append("===================================\n")
+	var Cards = get_node_or_null("/root/Cards")
+	if not Cards or not Cards.logScrollPane:
+		push_error("TextureManager: Cannot access game log")
+		return
+
+	var log = Cards.logScrollPane
+
+	# Add system info
+	log.add("=== TEXTURE DEBUG ===")
+	log.add("OS: %s" % OS.get_name())
+	log.add("Godot: %s" % Engine.get_version_info().string)
+	log.add("Renderer: %s" % ProjectSettings.get_setting("rendering/renderer/rendering_method"))
+	log.add("VRAM Compression: %s" % ProjectSettings.get_setting("rendering/textures/vram_compression/import_etc2_astc"))
+	log.add("GPU: %s" % RenderingServer.get_video_adapter_name())
+	log.add("GPU Vendor: %s" % RenderingServer.get_video_adapter_vendor())
+	log.add("GPU API: %s" % RenderingServer.get_video_adapter_api_version())
+	log.add("===")
 
 	# Add all debug messages
 	for msg in debug_messages:
-		full_log.append(msg)
-
-	# Write to file
-	var file = FileAccess.open(log_path, FileAccess.WRITE)
-	if file:
-		file.store_string("\n".join(full_log))
-		file.close()
-		print("Debug log saved to: %s" % log_path)
-	else:
-		push_error("Failed to save debug log to: %s (error: %s)" % [log_path, FileAccess.get_open_error()])
+		log.add(msg)
 
 func load_texture_atlas(atlas_path: String, image_path: String) -> Dictionary:
 	var atlas_dict: Dictionary = {}
