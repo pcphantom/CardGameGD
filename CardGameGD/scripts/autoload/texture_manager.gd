@@ -28,48 +28,12 @@ var stunned: Texture2D = null
 # Loading state
 var is_loaded: bool = false
 
-# Debug log file
-var log_file: FileAccess = null
-var log_path: String = ""
-
-func _init():
-	# Set up debug log file in Documents folder (accessible on Android)
-	if OS.get_name() == "Android":
-		log_path = "/storage/emulated/0/Documents/texture_debug.log"
-	else:
-		log_path = "user://texture_debug.log"
-
-	log_file = FileAccess.open(log_path, FileAccess.WRITE)
-
-	if log_file:
-		write_log("=== TEXTURE MANAGER DEBUG LOG ===")
-		write_log("OS: %s" % OS.get_name())
-		write_log("Godot Version: %s" % Engine.get_version_info().string)
-		write_log("Log Path: %s" % log_path)
-		write_log("Renderer: %s" % ProjectSettings.get_setting("rendering/renderer/rendering_method"))
-		write_log("VRAM Compression Enabled: %s" % ProjectSettings.get_setting("rendering/textures/vram_compression/import_etc2_astc"))
-
-		# Get system info
-		var video_adapter = RenderingServer.get_video_adapter_name()
-		write_log("GPU: %s" % video_adapter)
-		write_log("GPU Vendor: %s" % RenderingServer.get_video_adapter_vendor())
-		write_log("GPU API Version: %s" % RenderingServer.get_video_adapter_api_version())
-
-		write_log("===================================")
-	else:
-		push_error("Failed to create log file at: %s (error: %s)" % [log_path, FileAccess.get_open_error()])
+# Debug logging - stores messages temporarily
+var debug_messages: Array[String] = []
 
 func write_log(message: String):
-	if log_file:
-		log_file.store_line(message)
-		log_file.flush()  # Ensure it's written immediately
+	debug_messages.append(message)
 	print(message)  # Also print to console
-
-func _notification(what):
-	if what == NOTIFICATION_PREDELETE:
-		if log_file:
-			write_log("=== CLOSING LOG FILE ===")
-			log_file.close()
 
 func _ready() -> void:
 	load_textures()
@@ -121,12 +85,48 @@ func load_textures() -> void:
 
 	is_loaded = true
 
+	# Save debug log to error_log.txt in Documents
+	_save_debug_log()
+
 func load_texture(path: String) -> Texture2D:
 	if ResourceLoader.exists(path):
 		return load(path)
 	else:
 		write_log("TextureManager: Texture not found: %s" % path)
 		return null
+
+func _save_debug_log():
+	"""Save all debug messages to error_log.txt in Documents."""
+	var log_path: String
+	if OS.get_name() == "Android":
+		log_path = "/storage/emulated/0/Documents/error_log.txt"
+	else:
+		log_path = "user://error_log.txt"
+
+	# Add system info at the beginning
+	var full_log: Array[String] = []
+	full_log.append("=== TEXTURE MANAGER DEBUG LOG ===")
+	full_log.append("OS: %s" % OS.get_name())
+	full_log.append("Godot Version: %s" % Engine.get_version_info().string)
+	full_log.append("Renderer: %s" % ProjectSettings.get_setting("rendering/renderer/rendering_method"))
+	full_log.append("VRAM Compression: %s" % ProjectSettings.get_setting("rendering/textures/vram_compression/import_etc2_astc"))
+	full_log.append("GPU: %s" % RenderingServer.get_video_adapter_name())
+	full_log.append("GPU Vendor: %s" % RenderingServer.get_video_adapter_vendor())
+	full_log.append("GPU API: %s" % RenderingServer.get_video_adapter_api_version())
+	full_log.append("===================================\n")
+
+	# Add all debug messages
+	for msg in debug_messages:
+		full_log.append(msg)
+
+	# Write to file
+	var file = FileAccess.open(log_path, FileAccess.WRITE)
+	if file:
+		file.store_string("\n".join(full_log))
+		file.close()
+		print("Debug log saved to: %s" % log_path)
+	else:
+		push_error("Failed to save debug log to: %s (error: %s)" % [log_path, FileAccess.get_open_error()])
 
 func load_texture_atlas(atlas_path: String, image_path: String) -> Dictionary:
 	var atlas_dict: Dictionary = {}
