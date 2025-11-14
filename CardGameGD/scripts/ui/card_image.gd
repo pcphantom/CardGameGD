@@ -233,8 +233,9 @@ func _render_card(size_type: String) -> void:
 
 		if card_texture != null:
 			portrait.texture = card_texture
+			TextureManager.write_log("[CardImage] ✓ Texture assigned for '%s': size=%s, class=%s" % [card_name, card_texture.get_size(), card_texture.get_class()])
 		else:
-			push_warning("CardImage: Missing texture for card: %s" % card_name)
+			TextureManager.write_log("[CardImage] ✗ MISSING TEXTURE for card: %s" % card_name)
 	
 	# Java: if (creature != null && creature.mustSkipNextAttack()) batch.draw(stunned, x, y)
 	if creature != null:
