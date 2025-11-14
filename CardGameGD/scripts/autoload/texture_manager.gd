@@ -44,10 +44,13 @@ func load_textures() -> void:
 
 	# Load card atlases
 	small_card_atlas = load_texture_atlas("res://assets/images/smallCardsPack.txt", "res://assets/images/smallTiles.png")
-	# TEMPORARILY DISABLED: largeTiles.png exceeds GL_MAX_TEXTURE_SIZE (2850x1500 > 2048x2048)
-	# Testing if other atlases work without it
-	#large_card_atlas = load_texture_atlas("res://assets/images/largeCardsPack.txt", "res://assets/images/largeTiles.png")
-	large_card_atlas = {}  # Empty for now
+	# Load split large card atlases (largeTiles was split into two 2048x2048-compliant files)
+	var large_atlas_1 = load_texture_atlas("res://assets/images/largeCardsPack.txt", "res://assets/images/largeTiles1.png")
+	var large_atlas_2 = load_texture_atlas("res://assets/images/largeCardsPack.txt", "res://assets/images/largeTiles2.png")
+	# Merge the two large atlases into one dictionary
+	large_card_atlas = large_atlas_1.duplicate()
+	for key in large_atlas_2:
+		large_card_atlas[key] = large_atlas_2[key]
 	small_tga_card_atlas = load_texture_atlas("res://assets/images/smallTGACardsPack.txt", "res://assets/images/smallTGATiles.png")
 	large_tga_card_atlas = load_texture_atlas("res://assets/images/largeTGACardsPack.txt", "res://assets/images/largeTGATiles.png")
 	face_card_atlas = load_texture_atlas("res://assets/images/faceCardsPack.txt", "res://assets/images/faceTiles.png")
@@ -72,16 +75,11 @@ func load_texture_atlas(atlas_path: String, image_path: String) -> Dictionary:
 		push_warning("TextureManager: Atlas image not found: %s" % image_path)
 		return atlas_dict
 
-	# Load the atlas image
+	# CRITICAL FIX: Load the atlas texture WITHOUT calling get_image()
+	# This allows VRAM compressed textures to work on Android
 	var atlas_texture: Texture2D = load(image_path)
 	if atlas_texture == null:
 		push_error("TextureManager: Failed to load atlas image: %s" % image_path)
-		return atlas_dict
-
-	# Get image data from texture
-	var img := atlas_texture.get_image()
-	if img == null:
-		push_error("TextureManager: Failed to get image from atlas: %s" % image_path)
 		return atlas_dict
 
 	# Parse the atlas text file
@@ -128,21 +126,16 @@ func load_texture_atlas(atlas_path: String, image_path: String) -> Dictionary:
 				current_height = size[1].strip_edges().to_int()
 
 				# We have all the info we need, create the AtlasTexture
+				# CRITICAL: Use AtlasTexture DIRECTLY - do NOT call get_image()
+				# AtlasTexture works with VRAM compressed textures on Android
 				if not current_card_name.is_empty() and current_width > 0 and current_height > 0:
-					# CRITICAL: TGA atlas textures need to be flipped vertically
-					# Java flips TGA sprites twice (CardSetup.java line 155 + 161)
-					var is_tga_atlas: bool = atlas_path.contains("TGA")
+					var atlas_tex := AtlasTexture.new()
+					atlas_tex.atlas = atlas_texture
+					atlas_tex.region = Rect2(current_x, current_y, current_width, current_height)
 
-					# Extract the region from the base image
-					var sub_img := img.get_region(Rect2(current_x, current_y, current_width, current_height))
-
-					# Flip TGA textures
-					if is_tga_atlas:
-						sub_img.flip_y()
-
-					# Create individual ImageTexture for each card
-					var card_tex := ImageTexture.create_from_image(sub_img)
-					atlas_dict[current_card_name] = card_tex
+					# NOTE: TGA flip logic removed - TGA atlases must be pre-flipped
+					# If TGA textures appear upside-down, flip them in an image editor
+					atlas_dict[current_card_name] = atlas_tex
 
 	file.close()
 	return atlas_dict
