@@ -45,6 +45,15 @@ func _init():
 		write_log("OS: %s" % OS.get_name())
 		write_log("Godot Version: %s" % Engine.get_version_info().string)
 		write_log("Log Path: %s" % log_path)
+		write_log("Renderer: %s" % ProjectSettings.get_setting("rendering/renderer/rendering_method"))
+		write_log("VRAM Compression Enabled: %s" % ProjectSettings.get_setting("rendering/textures/vram_compression/import_etc2_astc"))
+
+		# Get system info
+		var video_adapter = RenderingServer.get_video_adapter_name()
+		write_log("GPU: %s" % video_adapter)
+		write_log("GPU Vendor: %s" % RenderingServer.get_video_adapter_vendor())
+		write_log("GPU API Version: %s" % RenderingServer.get_video_adapter_api_version())
+
 		write_log("===================================")
 	else:
 		push_error("Failed to create log file at: %s" % log_path)
@@ -126,24 +135,45 @@ func load_texture_atlas(atlas_path: String, image_path: String) -> Dictionary:
 	write_log("[TextureManager] Image path: %s" % image_path)
 	write_log("[TextureManager] OS: %s" % OS.get_name())
 
-	if not FileAccess.file_exists(atlas_path):
-		push_error("TextureManager: Atlas file not found: %s" % atlas_path)
+	# Check atlas file exists
+	var atlas_exists = FileAccess.file_exists(atlas_path)
+	write_log("[TextureManager] Atlas file exists: %s" % atlas_exists)
+	if not atlas_exists:
+		write_log("[TextureManager] ERROR: Atlas file not found: %s" % atlas_path)
+		write_log("[TextureManager] FileAccess error: %s" % FileAccess.get_open_error())
 		return atlas_dict
 
-	if not ResourceLoader.exists(image_path):
-		push_error("TextureManager: Atlas image not found: %s" % image_path)
+	# Check image resource exists
+	var image_exists = ResourceLoader.exists(image_path)
+	write_log("[TextureManager] Image resource exists: %s" % image_exists)
+	if not image_exists:
+		write_log("[TextureManager] ERROR: Atlas image not found: %s" % image_path)
 		return atlas_dict
 
 	# CRITICAL FIX: Load the atlas texture WITHOUT calling get_image()
 	# This allows VRAM compressed textures to work on Android
+	write_log("[TextureManager] Attempting to load texture...")
 	var atlas_texture: Texture2D = load(image_path)
+
 	if atlas_texture == null:
-		push_error("TextureManager: Failed to load atlas image: %s" % image_path)
+		write_log("[TextureManager] ERROR: Failed to load atlas image: %s" % image_path)
+		write_log("[TextureManager] ResourceLoader error: %s" % ResourceLoader.get_resource_error_text(image_path))
 		return atlas_dict
 
-	write_log("[TextureManager] Atlas texture loaded successfully")
+	write_log("[TextureManager] ✓ Atlas texture loaded successfully")
 	write_log("[TextureManager] Texture class: %s" % atlas_texture.get_class())
 	write_log("[TextureManager] Texture size: %s" % atlas_texture.get_size())
+	write_log("[TextureManager] Texture resource path: %s" % atlas_texture.resource_path)
+
+	# Check if texture is valid
+	if atlas_texture.get_width() == 0 or atlas_texture.get_height() == 0:
+		write_log("[TextureManager] WARNING: Texture has zero dimensions!")
+
+	# Check texture size limits
+	var tex_width = atlas_texture.get_width()
+	var tex_height = atlas_texture.get_height()
+	if tex_width > 2048 or tex_height > 2048:
+		write_log("[TextureManager] WARNING: Texture exceeds 2048x2048 limit! May fail on some devices.")
 
 	# Parse the atlas text file
 	var file := FileAccess.open(atlas_path, FileAccess.READ)
@@ -197,18 +227,37 @@ func load_texture_atlas(atlas_path: String, image_path: String) -> Dictionary:
 					atlas_tex.atlas = atlas_texture
 					atlas_tex.region = Rect2(current_x, current_y, current_width, current_height)
 
+					# Verify AtlasTexture was created properly
+					if atlas_tex.atlas == null:
+						write_log("[TextureManager] ERROR: AtlasTexture.atlas is null for card: %s" % current_card_name)
+					if atlas_tex.get_width() == 0 or atlas_tex.get_height() == 0:
+						write_log("[TextureManager] WARNING: AtlasTexture has zero size for card: %s" % current_card_name)
+
 					# NOTE: TGA flip logic removed - TGA atlases must be pre-flipped
 					# If TGA textures appear upside-down, flip them in an image editor
 					atlas_dict[current_card_name] = atlas_tex
 					cards_loaded += 1
 
-					# Debug log first 3 cards
-					if cards_loaded <= 3:
-						write_log("[TextureManager] Loaded card '%s': region=(%d,%d,%d,%d)" % [current_card_name, current_x, current_y, current_width, current_height])
+					# Debug log first 5 cards AND last 5 cards
+					if cards_loaded <= 5:
+						write_log("[TextureManager] Card#%d '%s': region=(%d,%d,%d,%d) size=%s" % [cards_loaded, current_card_name, current_x, current_y, current_width, current_height, atlas_tex.get_size()])
 
 	file.close()
 
 	write_log("[TextureManager] Total cards loaded: %d" % cards_loaded)
+
+	# Log sample of card names in dictionary
+	if atlas_dict.size() > 0:
+		write_log("[TextureManager] Sample card names in atlas:")
+		var count = 0
+		for card_name in atlas_dict.keys():
+			write_log("[TextureManager]   - '%s'" % card_name)
+			count += 1
+			if count >= 5:
+				break
+	else:
+		write_log("[TextureManager] WARNING: Atlas dictionary is EMPTY!")
+
 	write_log("[TextureManager] === ATLAS LOADING COMPLETE ===")
 
 	return atlas_dict
