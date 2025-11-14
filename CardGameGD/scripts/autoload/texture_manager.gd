@@ -35,31 +35,11 @@ var log_path: String = ""
 func _init():
 	# Set up debug log file in Documents folder (accessible on Android)
 	if OS.get_name() == "Android":
-		# Try Documents folder first
-		var docs_path = "/storage/emulated/0/Documents"
-		var dir = DirAccess.open("/storage/emulated/0")
-		if dir:
-			if not dir.dir_exists("Documents"):
-				var err = dir.make_dir("Documents")
-				print("Creating Documents folder, error code: %s" % err)
-
 		log_path = "/storage/emulated/0/Documents/texture_debug.log"
-		log_file = FileAccess.open(log_path, FileAccess.WRITE)
-
-		# If Documents fails, try Download folder
-		if not log_file:
-			print("Documents failed (error %s), trying Download..." % FileAccess.get_open_error())
-			log_path = "/storage/emulated/0/Download/texture_debug.log"
-			log_file = FileAccess.open(log_path, FileAccess.WRITE)
-
-		# If Download fails, use app data directory
-		if not log_file:
-			print("Download failed (error %s), using user:// directory..." % FileAccess.get_open_error())
-			log_path = "user://texture_debug.log"
-			log_file = FileAccess.open(log_path, FileAccess.WRITE)
 	else:
 		log_path = "user://texture_debug.log"
-		log_file = FileAccess.open(log_path, FileAccess.WRITE)
+
+	log_file = FileAccess.open(log_path, FileAccess.WRITE)
 
 	if log_file:
 		write_log("=== TEXTURE MANAGER DEBUG LOG ===")
