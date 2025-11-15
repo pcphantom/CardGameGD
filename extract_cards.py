@@ -11,32 +11,26 @@ import json
 from PIL import Image
 
 # Atlas configurations
+# Use the largest/best quality atlases for extraction
+# We'll extract from these and generate both HD (300x300 PNG) and SD (150x150 JPG)
 ATLAS_CONFIGS = [
-    {
-        "name": "small",
-        "pack_file": "CardGameGD/assets/images/smallCardsPack.txt",
-        "image_file": "CardGameGD/assets/images/smallTiles.png",
-        "output_size": (150, 150)  # Resize from 80x80 to 150x150
-    },
     {
         "name": "large",
         "pack_file": "CardGameGD/assets/images/largeCardsPack.txt",
         "image_file": "CardGameGD/assets/images/largeTiles.png",
-        "output_size": (150, 150)  # Resize from 150x207 to 150x150
-    },
-    {
-        "name": "small_tga",
-        "pack_file": "CardGameGD/assets/images/smallTGACardsPack.txt",
-        "image_file": "CardGameGD/assets/images/smallTGATiles.png",
-        "output_size": (150, 150)
+        "priority": 1  # Use first
     },
     {
         "name": "large_tga",
         "pack_file": "CardGameGD/assets/images/largeTGACardsPack.txt",
         "image_file": "CardGameGD/assets/images/largeTGATiles.png",
-        "output_size": (150, 150)
+        "priority": 2  # Use for cards not in large atlas
     }
 ]
+
+# Output settings
+HD_SIZE = (300, 300)
+SD_SIZE = (150, 150)
 
 OUTPUT_BASE = "CardGameGD/assets/images/cards"
 
@@ -115,8 +109,8 @@ def parse_atlas_pack(pack_file):
 
     return cards
 
-def extract_card(atlas_image, card_info, card_type_map, output_size):
-    """Extract a single card from atlas and save to appropriate folder"""
+def extract_card(atlas_image, card_info, card_type_map):
+    """Extract a single card from atlas and save both HD (PNG) and SD (JPG) versions"""
     card_name = card_info['name']
     x = card_info.get('x', 0)
     y = card_info.get('y', 0)
@@ -126,38 +120,42 @@ def extract_card(atlas_image, card_info, card_type_map, output_size):
     # Get card type from map
     card_type = card_type_map.get(card_name, 'other')
 
-    # Create output directory
-    output_dir = os.path.join(OUTPUT_BASE, card_type, 'sd')
-    os.makedirs(output_dir, exist_ok=True)
-
     # Extract region from atlas
     card_image = atlas_image.crop((x, y, x + width, y + height))
 
-    # Resize to output size (150x150)
-    if card_image.size != output_size:
-        card_image = card_image.resize(output_size, Image.Resampling.LANCZOS)
+    # === Create HD version (300x300 PNG) ===
+    hd_dir = os.path.join(OUTPUT_BASE, card_type, 'hd')
+    os.makedirs(hd_dir, exist_ok=True)
 
-    # Convert RGBA to RGB (JPEG doesn't support transparency)
-    if card_image.mode == 'RGBA':
+    hd_image = card_image.resize(HD_SIZE, Image.Resampling.LANCZOS)
+    hd_path = os.path.join(hd_dir, f"{card_name}.png")
+    hd_image.save(hd_path, 'PNG')  # Keep transparency if present
+
+    # === Create SD version (150x150 JPG) ===
+    sd_dir = os.path.join(OUTPUT_BASE, card_type, 'sd')
+    os.makedirs(sd_dir, exist_ok=True)
+
+    sd_image = card_image.resize(SD_SIZE, Image.Resampling.LANCZOS)
+
+    # Convert RGBA to RGB for JPEG (JPEG doesn't support transparency)
+    if sd_image.mode == 'RGBA':
         # Create white background
-        background = Image.new('RGB', card_image.size, (255, 255, 255))
-        background.paste(card_image, mask=card_image.split()[3])  # Use alpha channel as mask
-        card_image = background
-    elif card_image.mode != 'RGB':
-        card_image = card_image.convert('RGB')
+        background = Image.new('RGB', sd_image.size, (255, 255, 255))
+        background.paste(sd_image, mask=sd_image.split()[3])  # Use alpha channel as mask
+        sd_image = background
+    elif sd_image.mode != 'RGB':
+        sd_image = sd_image.convert('RGB')
 
-    # Save as JPG
-    output_path = os.path.join(output_dir, f"{card_name}.jpg")
-    card_image.save(output_path, 'JPEG', quality=95)
+    sd_path = os.path.join(sd_dir, f"{card_name}.jpg")
+    sd_image.save(sd_path, 'JPEG', quality=95)
 
-    return output_path
+    return (hd_path, sd_path)
 
-def extract_atlas(config, card_type_map):
-    """Extract all cards from a single atlas"""
+def extract_atlas(config, card_type_map, already_extracted):
+    """Extract all cards from a single atlas (skip already extracted cards)"""
     atlas_name = config['name']
     pack_file = config['pack_file']
     image_file = config['image_file']
-    output_size = config['output_size']
 
     print(f"\n--- Processing atlas: {atlas_name} ---")
 
@@ -179,20 +177,30 @@ def extract_atlas(config, card_type_map):
 
     # Extract each card
     extracted_count = 0
+    skipped_count = 0
     for card_info in cards:
+        card_name = card_info['name']
+
+        # Skip if already extracted from higher priority atlas
+        if card_name in already_extracted:
+            skipped_count += 1
+            continue
+
         try:
-            output_path = extract_card(atlas_image, card_info, card_type_map, output_size)
+            hd_path, sd_path = extract_card(atlas_image, card_info, card_type_map)
+            already_extracted.add(card_name)
             extracted_count += 1
             # Uncomment for verbose output:
-            # print(f"  ✓ {card_info['name']} -> {output_path}")
+            # print(f"  ✓ {card_name} -> HD: {hd_path}, SD: {sd_path}")
         except Exception as e:
-            print(f"  ✗ FAILED: {card_info['name']} - {e}")
+            print(f"  ✗ FAILED: {card_name} - {e}")
 
-    print(f"Extracted {extracted_count} cards from {atlas_name}")
+    print(f"Extracted {extracted_count} cards from {atlas_name} (skipped {skipped_count} already extracted)")
     return extracted_count
 
 def main():
-    print("=== ATLAS CARD EXTRACTION SCRIPT ===\n")
+    print("=== ATLAS CARD EXTRACTION SCRIPT ===")
+    print("Extracting BOTH HD (300x300 PNG) and SD (150x150 JPG) versions\n")
 
     # Load card type mappings
     card_type_map = load_card_type_map()
@@ -200,17 +208,23 @@ def main():
         print("ERROR: Failed to load card type map")
         return
 
-    # Extract from all atlases
+    # Extract from atlases in priority order (avoid duplicates)
     total_extracted = 0
-    extracted_cards = set()
+    already_extracted = set()
 
-    for config in ATLAS_CONFIGS:
-        count = extract_atlas(config, card_type_map)
+    # Sort configs by priority
+    sorted_configs = sorted(ATLAS_CONFIGS, key=lambda x: x['priority'])
+
+    for config in sorted_configs:
+        count = extract_atlas(config, card_type_map, already_extracted)
         total_extracted += count
 
-    # Count unique cards
+    # Count unique cards from SD directory
+    extracted_cards = set()
     for card_type in os.listdir(OUTPUT_BASE):
         sd_dir = os.path.join(OUTPUT_BASE, card_type, 'sd')
+        hd_dir = os.path.join(OUTPUT_BASE, card_type, 'hd')
+
         if os.path.isdir(sd_dir):
             for filename in os.listdir(sd_dir):
                 if filename.endswith('.jpg'):
@@ -219,8 +233,10 @@ def main():
 
     # Report results
     print("\n=== EXTRACTION COMPLETE ===")
-    print(f"Total extractions: {total_extracted}")
-    print(f"Unique cards: {len(extracted_cards)} / 193 expected")
+    print(f"Unique cards extracted: {len(extracted_cards)} / 193 expected")
+    print(f"Output formats:")
+    print(f"  - HD: 300x300 PNG in */hd/ folders")
+    print(f"  - SD: 150x150 JPG in */sd/ folders")
 
     # Check for missing cards
     print("\nChecking for missing cards...")
@@ -237,6 +253,7 @@ def main():
         print("✓ All cards extracted successfully!")
 
     print(f"\nCards extracted to: {OUTPUT_BASE}")
+    print("\nYou can now add frames to both HD and SD versions as needed.")
 
 if __name__ == '__main__':
     main()
