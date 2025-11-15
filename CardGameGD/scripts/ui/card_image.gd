@@ -233,9 +233,9 @@ func _render_card(size_type: String) -> void:
 
 		if card_texture != null:
 			portrait.texture = card_texture
-			TextureManager.write_log("[CardImage] ✓ Texture assigned for '%s': size=%s, class=%s" % [card_name, card_texture.get_size(), card_texture.get_class()])
+			# DEBUG: print("[CardImage._render_card] Successfully loaded texture for: ", card_name)
 		else:
-			TextureManager.write_log("[CardImage] ✗ MISSING TEXTURE for card: %s" % card_name)
+			push_warning("CardImage: Missing texture for card: %s" % card_name)
 	
 	# Java: if (creature != null && creature.mustSkipNextAttack()) batch.draw(stunned, x, y)
 	if creature != null:
@@ -591,11 +591,9 @@ func clear_actions() -> void:
 	for tween in tweens:
 		if tween and is_instance_valid(tween):
 			# Check if this tween is animating this node
-			# Use has_meta first to avoid error when key doesn't exist
-			if tween.has_meta("bound_node"):
-				var bound_node = tween.get_meta("bound_node")
-				if bound_node == self:
-					tween.kill()
+			var bound_node = tween.get_meta("bound_node", null)
+			if bound_node == self:
+				tween.kill()
 
 # =============================================================================
 # DEBUG/UTILITY (Java: toString)
